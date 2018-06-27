@@ -1,0 +1,16 @@
+<resources>
+
+    <!--App-->
+    <string name="app_name">Words</string>
+
+    <!--Notifications-->
+    <string name="data_notification_channel_name">Data Notification</string>
+    <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
+    <string name="data_seed_notification_title">Initializing Dictionary</string>
+    <string name="data_seed_notification_text">Unpacking and loading words…</string>
+
+    <!--Menus-->
+    <string name="menu_favorite_title">Favorite</string>
+    <string name="menu_share_title">Share</string>
+
+</resources>

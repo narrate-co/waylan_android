@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="keyline_1">4dp</dimen>
+    <dimen name="keyline_2">8dp</dimen>
+    <dimen name="keyline_3">16dp</dimen>
+
+    <dimen name="search_min_peek_height">96dp</dimen>
+    <dimen name="search_max_peek_height">200dp</dimen>
+</resources>
