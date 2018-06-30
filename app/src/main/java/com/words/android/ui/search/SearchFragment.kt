@@ -13,9 +13,9 @@ import com.words.android.App
 import com.words.android.MainActivity
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.Word
 import com.words.android.databinding.SearchFragmentBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.words.android.data.repository.Word
 
 
 class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
@@ -64,13 +64,11 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
             }
         })
 
-
-
         return binding.root
     }
 
     override fun onWordClicked(word: Word) {
-        sharedViewHolder.setCurrentWord(word)
+        sharedViewHolder.setCurrentWordId(word.dbWord?.word ?: "")
         setPeekHighMin()
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         (activity as MainActivity).showDetails()

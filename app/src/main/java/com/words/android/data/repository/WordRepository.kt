@@ -1,46 +1,75 @@
 package com.words.android.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
-import com.words.android.data.Meaning
-import com.words.android.data.Word
-import com.words.android.data.WordAndMeanings
+import androidx.lifecycle.MediatorLiveData
+import com.words.android.data.disk.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import com.words.android.data.firestore.FirestoreStore
+import com.words.android.data.firestore.UserWord
+import com.words.android.util.LiveDataHelper
 import kotlinx.coroutines.experimental.launch
-import org.threeten.bp.OffsetDateTime
 
-class WordRepository(private val db: AppDatabase) {
+class WordRepository(
+        private val db: AppDatabase,
+        private val firestoreStore: FirestoreStore?
+) {
 
-
-    fun insertWord(word: String) = launch {
-        db.wordDao().insert(Word(
-                word,
-                0,
-                OffsetDateTime.now(),
-                OffsetDateTime.now()))
+    fun filterWords(query: String): LiveData<List<Word>> {
+        val mediatorLiveData = MediatorLiveData<List<Word>>()
+        mediatorLiveData.value = listOf()
+        mediatorLiveData.addSource(db.wordDao().load("$query%")) {
+            val words = it?.map { Word().apply { dbWord = it } }
+            mediatorLiveData.value = words
+        }
+        return mediatorLiveData
     }
 
-    fun filterWords(query: String): LiveData<List<Word>> =
-            db.wordDao().load("$query%")
-
-    fun getWordLive(word: String): LiveData<Word> =
-            db.wordDao().getLive(word)
-
-    fun getWord(word: String): Deferred<Word?> = async {
-        db.wordDao().get(word)
-    }
-
-    fun getMeaningsLive(word: String): LiveData<List<Meaning>> =
-            db.meaningDao().getLive(word)
-
-    fun getMeanings(word: String): Deferred<List<Meaning>?> = async {
-        db.meaningDao().get(word)
-    }
-
-    fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
+    private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
             db.wordDao().getWordAndMeanings(word)
+
+    fun getRepoWord(id: String): LiveData<Word>  {
+        val mediatorLiveData = MediatorLiveData<Word>()
+        mediatorLiveData.value = com.words.android.data.repository.Word()
+        mediatorLiveData.addSource(getWordAndMeanings(id)) {
+            println("WordRepo - mediatorLiveData word&Meaning = ${it?.word?.word}")
+            val word = mediatorLiveData.value
+            word?.dbWord = it?.word
+            word?.dbMeanings = it?.meanings ?: emptyList()
+            mediatorLiveData.value = word
+        }
+        mediatorLiveData.addSource(getUserWord(id)) {
+            println("WordRepo - mediatorLiveData getUserWord = ${it?.id}")
+            val word = mediatorLiveData.value
+            word?.userWord = it
+            mediatorLiveData.value = word
+        }
+
+        //TODO add remaining sources
+
+        return mediatorLiveData
+    }
+
+    private fun getUserWord(id: String): LiveData<UserWord> {
+        if (firestoreStore == null) {
+            return LiveDataHelper.empty()
+        }
+
+        return firestoreStore.getUserWordLive(id)
+    }
+
+//    fun getFavorites(): LiveData<List<com.words.android.data.repository.Word>> {
+//        if (firestoreStore == null) {
+//            return MutableLiveData<List<UserWord>>()
+//        }
+//
+//        return firestoreStore.getFavorites()
+//    }
+
+    fun setFavorite(id: String, favorite: Boolean) {
+        launch {
+            firestoreStore?.setFavorite(id, favorite)
+        }
+    }
 
 }
 

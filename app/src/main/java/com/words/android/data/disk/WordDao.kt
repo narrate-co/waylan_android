@@ -1,12 +1,7 @@
 package com.words.android.data.disk
 
-import androidx.annotation.IntegerRes
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
-import com.words.android.data.Word
-import com.words.android.data.WordAndMeanings
 
 @Dao
 interface WordDao {

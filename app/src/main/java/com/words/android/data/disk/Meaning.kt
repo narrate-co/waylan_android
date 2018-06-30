@@ -1,4 +1,4 @@
-package com.words.android.data
+package com.words.android.data.disk
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

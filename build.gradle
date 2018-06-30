@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.2.41'
+        kotlin_version = '1.2.50'
         lifecycle_version = '2.0.0-alpha1'
         room_version = '2.0.0-alpha1'
         paging_version = '1.0.0'
@@ -21,7 +21,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.2.0-beta01"
+        classpath "com.android.tools.build:gradle:3.2.0-beta02"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         classpath 'com.google.gms:google-services:4.0.0'

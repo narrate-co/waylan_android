@@ -82,10 +82,10 @@ dependencies {
     // GSON
     implementation "com.google.code.gson:gson:$gson_version"
 
-    // Firebase
+    // Firebase & Firestore
     implementation "com.google.firebase:firebase-core:$firebase_core"
     implementation "com.google.firebase:firebase-auth:$firebase_auth"
-
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
 
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"

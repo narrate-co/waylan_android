@@ -3,6 +3,10 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:windowLightStatusBar">true</item>
     </style>
+    
+    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">?android:windowBackground</item>
+    </style>
 
-    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash"/>
 </resources>

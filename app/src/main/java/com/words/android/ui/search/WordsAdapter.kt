@@ -1,13 +1,12 @@
 package com.words.android.ui.search
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.words.android.R
-import com.words.android.data.Word
+import com.words.android.data.repository.Word
 import com.words.android.databinding.WordLayoutBinding
 
 class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<Word, WordViewHolder>(diffCallback), WordViewHolder.WordViewHolderHandlers {
@@ -15,10 +14,10 @@ class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<Word,
     companion object {
         val diffCallback: DiffUtil.ItemCallback<Word> = object : DiffUtil.ItemCallback<Word>() {
             override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean =
-                    oldItem.word == newItem.word
+                    oldItem.dbWord?.word == newItem.dbWord?.word
 
             override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean =
-                    oldItem.popularity == newItem.popularity && oldItem.modified == newItem.modified
+                    oldItem.dbWord?.popularity == newItem.dbWord?.popularity && oldItem.dbWord?.modified == newItem.dbWord?.modified
         }
     }
 

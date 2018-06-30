@@ -2,10 +2,16 @@
 <resources>
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">?android:windowBackground</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">@color/colorAccentMedium</item>
     </style>
 
-    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash"/>
+    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:statusBarColor">?android:windowBackground</item>
+        <item name="android:navigationBarColor">?android:windowBackground</item>
+    </style>
+
 </resources>
 

@@ -1,9 +1,11 @@
 package com.words.android.data
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.words.android.data.disk.Example
+import com.words.android.data.disk.Label
+import com.words.android.data.disk.Synonym
 import org.aaronhe.threetengson.ThreeTenGsonAdapter
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter

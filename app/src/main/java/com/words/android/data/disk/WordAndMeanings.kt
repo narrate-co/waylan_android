@@ -1,4 +1,4 @@
-package com.words.android.data
+package com.words.android.data.disk
 
 import androidx.room.Embedded
 import androidx.room.Relation

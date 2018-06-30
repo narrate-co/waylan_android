@@ -8,10 +8,10 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.words.android.R
-import com.words.android.data.disk.AppDatabase
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.words.android.data.disk.*
 import kotlinx.coroutines.experimental.launch
 import org.threeten.bp.OffsetDateTime
 
@@ -98,9 +98,14 @@ class DatabaseSeedService: Service() {
                                 m.def ?: "",
                                 if (m.example == null) emptyList() else listOf(Example(m.example, OffsetDateTime.now(), OffsetDateTime.now())),
                                 m.speechPart ?: "unknown part of speech",
-                                m.synonyms?.filter { it != null }?.map { Synonym(it!!, OffsetDateTime.now(), OffsetDateTime.now()) } ?: emptyList(),
-                                value.labels?.map { Label(it.name ?: "unknown region", it.isDialect ?: false, OffsetDateTime.now(), OffsetDateTime.now()) } ?: emptyList()
-                                )
+                                m.synonyms?.filter { it != null }?.map { Synonym(it!!, OffsetDateTime.now(), OffsetDateTime.now()) }
+                                        ?: emptyList(),
+                                value.labels?.map {
+                                    Label(it.name
+                                            ?: "unknown region", it.isDialect
+                                            ?: false, OffsetDateTime.now(), OffsetDateTime.now())
+                                } ?: emptyList()
+                        )
                         //insert meaning
                         println("inserting meaning")
                         //TODO

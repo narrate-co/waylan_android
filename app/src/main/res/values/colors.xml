@@ -3,8 +3,9 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorPrimaryLight">#ffffff</color>
-    <color name="colorAccent">#b388ff</color>
-    <color name="colorAccentLight">#e7b9ff</color>
-    <color name="colorAccentDark">#805acb</color>
+    <color name="colorAccent">#936565</color>
+    <color name="colorAccentLight">#c3a3a3</color>
+    <color name="colorAccentMedium">#a7807f</color>
+    <color name="colorAccentDark">#613739</color>
     <color name="colorBorders">#12000000</color>
 </resources>

@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.Example
-import com.words.android.data.Meaning
-import com.words.android.data.Synonym
+import com.words.android.data.disk.Example
+import com.words.android.data.disk.Meaning
+import com.words.android.data.disk.Synonym
 import com.words.android.databinding.DetailsFragmentBinding
 import com.google.android.material.chip.Chip
+import com.words.android.data.firestore.UserWord
+import com.words.android.data.firestore.UserWordType
+import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
 class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
@@ -25,7 +28,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         fun newInstance() = DetailsFragment()
     }
 
-    val sharedViewModel by lazy {
+    private val sharedViewModel by lazy {
         ViewModelProviders
                 .of(activity!!, (activity!!.application as App).viewModelFactory)
                 .get(MainViewModel::class.java)
@@ -40,10 +43,10 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         binding.toolbar.setNavigationOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
-        sharedViewModel.getCurrentMeanings().observe(this, Observer {
-            if (it != null) {
-                setMeanings(it)
-            }
+
+        sharedViewModel.currentWord.observe(this, Observer {
+            setMeanings(it?.dbMeanings)
+            setUserWord(it?.userWord)
         })
         return binding.root
     }
@@ -51,7 +54,15 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         //TODO finish implementation
         println("menu item clicked")
-        return true
+        return when (item?.itemId) {
+            R.id.action_favorite -> {
+                val isChecked = item.isChecked
+                println("menu item favorite clicked. is Checked = $isChecked")
+                sharedViewModel.setCurrentWordFavorited(!item.isChecked)
+                true
+            }
+            else -> false
+        }
     }
 
 
@@ -65,7 +76,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, view?.chipGroup, false) as Chip
         chip.chipText = synonym.synonym
         chip.setOnClickListener {
-            sharedViewModel.setCurrentWord(synonym.synonym)
+            sharedViewModel.setCurrentWordId(synonym.synonym)
         }
         return chip
     }
@@ -76,7 +87,8 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         return textView
     }
 
-    private fun setMeanings(meanings: List<Meaning>) {
+    private fun setMeanings(meanings: List<Meaning>?) {
+        if (meanings == null) return
 
         //remove all views
         view?.definitionsLinearLayout?.removeAllViews()
@@ -84,7 +96,10 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         view?.examplesLinearLayout?.removeAllViews()
 
         //set part of speech
-        view?.partOfSpeechTextView?.text = meanings.map { it.partOfSpeech }.distinct().reduce { acc, s -> "$acc | $s" }
+        val posMap = meanings.map { it.partOfSpeech }.distinct()
+        if (posMap.isNotEmpty()) {
+            view?.partOfSpeechTextView?.text = posMap.reduce { acc, s -> "$acc | $s" }
+        }
 
         //add definitions
         meanings.forEach {
@@ -100,6 +115,15 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         meanings.map { it.examples }.flatten().forEach {
             view?.examplesLinearLayout?.addView(createExampleView(it))
         }
+
+    }
+
+    private fun setUserWord(userWord: UserWord?) {
+        println("setUserWord - userWord = $userWord")
+        val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
+        val isFavorited = userWord?.types?.containsKey(UserWordType.FAVORITED.name) ?: false
+        favoriteMenuItem?.isChecked = isFavorited
+        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
 
     }
 

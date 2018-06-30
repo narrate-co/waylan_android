@@ -3,9 +3,7 @@ package com.words.android.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.words.android.data.Word
+import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
 
 class SearchViewModel(val wordRepository: WordRepository): ViewModel() {
