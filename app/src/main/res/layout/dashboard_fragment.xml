@@ -19,10 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/dashboard_popular_card_layout" />
+            <com.words.android.ui.dashboard.PopularCardView
+                android:id="@+id/popularCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?android:windowBackground"
+                />
 
-            <include layout="@layout/dashboard_recents_card_layout" />
-
+            <com.words.android.ui.dashboard.RecentsCardView
+                android:id="@+id/recentsCard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?android:windowBackground"/>
 
         </LinearLayout>
 

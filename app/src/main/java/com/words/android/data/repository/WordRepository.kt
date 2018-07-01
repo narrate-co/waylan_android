@@ -16,7 +16,7 @@ class WordRepository(
 
     fun filterWords(query: String): LiveData<List<Word>> {
         val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.value = listOf()
+//        mediatorLiveData.value = listOf()
         mediatorLiveData.addSource(db.wordDao().load("$query%")) {
             val words = it?.map { Word().apply { dbWord = it } }
             mediatorLiveData.value = words
@@ -24,22 +24,19 @@ class WordRepository(
         return mediatorLiveData
     }
 
-    private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
-            db.wordDao().getWordAndMeanings(word)
-
-    fun getRepoWord(id: String): LiveData<Word>  {
+    fun getWord(id: String): LiveData<Word>  {
         val mediatorLiveData = MediatorLiveData<Word>()
-        mediatorLiveData.value = com.words.android.data.repository.Word()
+//        mediatorLiveData.value = com.words.android.data.repository.Word()
         mediatorLiveData.addSource(getWordAndMeanings(id)) {
             println("WordRepo - mediatorLiveData word&Meaning = ${it?.word?.word}")
-            val word = mediatorLiveData.value
+            val word = mediatorLiveData.value ?: Word()
             word?.dbWord = it?.word
             word?.dbMeanings = it?.meanings ?: emptyList()
             mediatorLiveData.value = word
         }
         mediatorLiveData.addSource(getUserWord(id)) {
             println("WordRepo - mediatorLiveData getUserWord = ${it?.id}")
-            val word = mediatorLiveData.value
+            val word = mediatorLiveData.value ?: Word()
             word?.userWord = it
             mediatorLiveData.value = word
         }
@@ -49,6 +46,9 @@ class WordRepository(
         return mediatorLiveData
     }
 
+    private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
+            db.wordDao().getWordAndMeanings(word)
+
     private fun getUserWord(id: String): LiveData<UserWord> {
         if (firestoreStore == null) {
             return LiveDataHelper.empty()
@@ -57,17 +57,37 @@ class WordRepository(
         return firestoreStore.getUserWordLive(id)
     }
 
-//    fun getFavorites(): LiveData<List<com.words.android.data.repository.Word>> {
-//        if (firestoreStore == null) {
-//            return MutableLiveData<List<UserWord>>()
-//        }
-//
-//        return firestoreStore.getFavorites()
-//    }
+    fun getFavorites(): LiveData<List<Word>> {
+        if (firestoreStore == null) return LiveDataHelper.empty()
+
+        val mediatorLiveData = MediatorLiveData<List<Word>>()
+        mediatorLiveData.addSource(firestoreStore.getFavorites()) {
+            mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
+        }
+
+        return mediatorLiveData
+    }
 
     fun setFavorite(id: String, favorite: Boolean) {
         launch {
             firestoreStore?.setFavorite(id, favorite)
+        }
+    }
+
+    fun getRecents(): LiveData<List<Word>> {
+        if (firestoreStore == null) return LiveDataHelper.empty()
+
+        val mediatorLiveData = MediatorLiveData<List<Word>>()
+        mediatorLiveData.addSource(firestoreStore.getRecents()) {
+            mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
+        }
+
+        return mediatorLiveData
+    }
+
+    fun setRecent(id: String) {
+        launch {
+            firestoreStore?.setRecent(id)
         }
     }
 

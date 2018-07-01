@@ -8,7 +8,7 @@ class MainViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
     private var currentWordId = MutableLiveData<String>()
     val currentWord: LiveData<Word> = Transformations.switchMap(currentWordId) {
-        wordRepository.getRepoWord(it)
+        wordRepository.getWord(it)
     }
 
     fun setCurrentWordId(id: String) {
@@ -16,9 +16,13 @@ class MainViewModel(private val wordRepository: WordRepository) : ViewModel() {
     }
 
     fun setCurrentWordFavorited(favorite: Boolean) {
-        val id = currentWordId?.value ?: return
-
+        val id = currentWordId.value ?: return
         wordRepository.setFavorite(id, favorite)
+    }
+
+    fun setCurrentWordRecented() {
+        val id = currentWordId.value ?: return
+        wordRepository.setRecent(id)
     }
 
 

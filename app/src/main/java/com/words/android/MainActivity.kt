@@ -3,8 +3,6 @@ package com.words.android
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import androidx.transition.FragmentTransitionSupport
 import com.words.android.ui.dashboard.DashboardFragment
 import com.words.android.ui.details.DetailsFragment
 

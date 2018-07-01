@@ -4,11 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
 import com.words.android.data.DataOwners
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
 import com.words.android.data.firestore.util.liveData
 import com.words.android.util.toDate
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
+import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirestoreStore(
@@ -27,26 +33,37 @@ class FirestoreStore(
                 .liveData(UserWord::class.java)
     }
 
-    private suspend fun getUserWord(id: String): UserWord = suspendCoroutine { cont ->
+    private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord = suspendCoroutine { cont ->
         firestore.userWords(user.uid).document(id).get()
                 .addOnFailureListener { cont.resumeWithException(it) }
                 .addOnSuccessListener {
                     if (it.exists()) {
                         cont.resume(it.toObject(UserWord::class.java)!!)
                     } else {
-                        cont.resumeWithException(FirebaseFirestoreNotFoundException(id))
+                        if (createIfDoesNotExist) {
+                            launch {
+                                val newUserWord = newUserWord(id).await()
+                                if (newUserWord != null) {
+                                    cont.resume(newUserWord)
+                                } else {
+                                    cont.resumeWithException(FirebaseFirestoreException("Unable to create new UserWord", FirebaseFirestoreException.Code.UNKNOWN))
+                                }
+                            }
+                        } else {
+                            cont.resumeWithException(FirebaseFirestoreNotFoundException(id))
+                        }
                     }
                 }
     }
 
-    suspend fun newUserWord(id: String): UserWord = suspendCoroutine { cont ->
+    private fun newUserWord(id: String): Deferred<UserWord?> = async {
         //get word from db.
         val word = db.wordDao().get(id)
         //get meanings from db.
         val meanings = db.meaningDao().get(id)
 
         if (word == null) {
-            cont.resumeWithException(IllegalArgumentException("No word fround for id $id"))
+            null
         } else {
 
             val partOfSpeech: Map<String, String> = meanings?.map { it.partOfSpeech to DataOwners.WORDSET.name }?.distinct()?.toMap() ?: mapOf()
@@ -66,7 +83,7 @@ class FirestoreStore(
                     synonyms.toMutableMap(),
                     labels.toMutableMap())
 
-            cont.resume(userWord)
+            userWord
         }
     }
 
@@ -74,34 +91,46 @@ class FirestoreStore(
     fun getFavorites(): LiveData<List<UserWord>> {
         return firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
+                .orderBy("modified", Query.Direction.DESCENDING)
                 .liveData(UserWord::class.java)
     }
 
     //favorite a word for user
     suspend fun setFavorite(id: String, favorite: Boolean) {
         try {
-            val userWord = getUserWord(id)
-            setFavorite(favorite, userWord)
-        } catch (e: Exception) {
-            try {
-                if (!favorite) return
-
-                val newUserWord = newUserWord(id)
-                setFavorite(favorite, newUserWord)
-            } catch (e: Exception) {
-                Log.d(TAG, "Unable to create new UserWord: $e")
+            val userWord = getUserWord(id, favorite)
+            if (favorite) {
+                userWord.types[UserWordType.FAVORITED.name] = true
+            } else {
+                userWord.types.remove(UserWordType.FAVORITED.name)
             }
+            userWord.types[UserWordType.RECENT.name] = true
+            setUserWord(userWord)
+        } catch (e: Exception) {
+            Log.d(TAG, "Unable to ${if (favorite) "favorite" else "unfavorite"} UserWord: $e")
         }
-
     }
 
-    private fun setFavorite(favorite: Boolean, userWord: UserWord) {
-        if (favorite) {
-            userWord.types[UserWordType.FAVORITED.name] = true
-        } else {
-            userWord.types.remove(UserWordType.FAVORITED.name)
+    fun getRecents(): LiveData<List<UserWord>> {
+        return firestore.userWords(user.uid)
+                .whereEqualTo("types.${UserWordType.RECENT.name}", true)
+                .liveData(UserWord::class.java)
+    }
+
+    suspend fun setRecent(id: String) {
+        try {
+            val userWord = getUserWord(id, true)
+            if (userWord.types.containsKey(UserWordType.RECENT.name)) return
+
+            userWord.types[UserWordType.RECENT.name] = true
+            setUserWord(userWord)
+        } catch (e: Exception) {
+            Log.d(TAG, "Unable to set recent UserWord: $e")
         }
-        userWord.types[UserWordType.RECENT.name] = true
+    }
+
+
+    private fun setUserWord(userWord: UserWord) {
         firestore.userWords(user.uid).document(userWord.id).set(userWord)
                 .addOnFailureListener { Log.d(TAG, "Unable to set UserWord ${userWord.id}: $it") }
                 .addOnSuccessListener { Log.d(TAG, "Successfully set UserWord ${userWord.id}") }

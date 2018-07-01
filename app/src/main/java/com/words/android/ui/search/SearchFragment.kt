@@ -51,16 +51,11 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
         binding.recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recycler.adapter = adapter
 
-        viewModel.searchInputData.observe(this, Observer {
+        viewModel.searchResults.observe(this, Observer {
             if (it != null) {
-                viewModel.getSearchResults(it).observe(this, Observer {
-                    //TODO manage sheet peek height
-                    //if list is empty, set peek height to just show the search bar
-                    //if list is not empty, set peek height to show three items
-                    val list = it ?: emptyList()
-                    if (list.isEmpty()) setPeekHighMin() else setPeekHighMax()
-                    adapter.submitList(list)
-                })
+                println("search results changed. size = ${it.size}")
+                if (it.isEmpty()) setPeekHighMin() else setPeekHighMax()
+                adapter.submitList(it)
             }
         })
 

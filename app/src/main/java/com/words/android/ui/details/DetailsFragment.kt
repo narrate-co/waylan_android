@@ -19,6 +19,7 @@ import com.words.android.databinding.DetailsFragmentBinding
 import com.google.android.material.chip.Chip
 import com.words.android.data.firestore.UserWord
 import com.words.android.data.firestore.UserWordType
+import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
@@ -45,6 +46,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
         sharedViewModel.currentWord.observe(this, Observer {
+            sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
             setUserWord(it?.userWord)
         })
@@ -70,15 +72,6 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
         textView.text = ": $def"
         return textView
-    }
-
-    private fun createSynonymChip(synonym: Synonym): Chip {
-        val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, view?.chipGroup, false) as Chip
-        chip.chipText = synonym.synonym
-        chip.setOnClickListener {
-            sharedViewModel.setCurrentWordId(synonym.synonym)
-        }
-        return chip
     }
 
     private fun createExampleView(example: Example): AppCompatTextView {
@@ -108,7 +101,9 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
 
         //add synonyms
         meanings.map { it.synonyms }.flatten().forEach {
-            view?.chipGroup?.addView(createSynonymChip(it))
+            view?.chipGroup?.addView(it.toChip(context!!, view?.chipGroup) {
+                sharedViewModel.setCurrentWordId(it.synonym)
+            })
         }
 
         //add examples
