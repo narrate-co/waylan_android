@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.words.android.data.disk.*
+import com.words.android.data.disk.wordset.*
 import kotlinx.coroutines.experimental.launch
 import org.threeten.bp.OffsetDateTime
 
@@ -110,7 +111,6 @@ class DatabaseSeedService: Service() {
                         println("inserting meaning")
                         //TODO
                         meanings.add(meaning)
-//                        db.meaningDao().insert(meaning)
                     }
                 }
 

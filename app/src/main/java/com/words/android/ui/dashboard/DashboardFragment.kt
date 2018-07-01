@@ -11,7 +11,6 @@ import com.words.android.App
 import com.words.android.MainActivity
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.repository.Word
 import kotlinx.android.synthetic.main.dashboard_fragment.*
 import kotlinx.android.synthetic.main.dashboard_fragment.view.*
 
@@ -36,22 +35,23 @@ class DashboardFragment: Fragment(), PopularCardView.PopularCardListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dashboard_fragment, container, false)
         view.popularCard.setPopularCardListener(this)
+        view.recentsCard.setCardIcon(R.drawable.ic_access_time_black_24dp)
+        view.recentsCard.setListCardListener(recentsCardListener)
+        view.favoritesCard.setListCardListener(favoritesCardListener)
+        view.favoritesCard.setCardIcon(R.drawable.ic_favorite_black_24dp)
         dashboardViewModel.favoriteWord.observe(this, Observer {
+            it?.let { favoritesCard.setWords(it) }
             it?.firstOrNull()?.let {
                 popularCard.setWord(it)
             }
         })
+        dashboardViewModel.recentWords.observe(this, Observer {
+            it?.let { recentsCard.setWords(it) }
+        })
         return view
     }
 
-    override fun onStop() {
-        view?.popularCard?.removePopularCardListener()
-        super.onStop()
-    }
-
-    override fun onPopularCardClicked(word: Word) {
-        println("onPopularCardClicked. id = ${word.userWord?.id}")
-        val id = word.userWord?.id ?: return
+    override fun onPopularCardClicked(id: String) {
         sharedViewModel.setCurrentWordId(id)
         (activity as MainActivity).showDetails()
     }
@@ -60,5 +60,26 @@ class DashboardFragment: Fragment(), PopularCardView.PopularCardListener {
         sharedViewModel.setCurrentWordId(id)
         (activity as MainActivity).showDetails()
     }
+
+    val recentsCardListener = object : ListCardLayout.ListCardListener {
+        override fun onListWordClicked(id: String) {
+            sharedViewModel.setCurrentWordId(id)
+            (activity as MainActivity).showDetails()
+        }
+        override fun onListMoreClicked() {
+            //TODO show full list of recents
+        }
+    }
+
+    val favoritesCardListener = object : ListCardLayout.ListCardListener {
+        override fun onListWordClicked(id: String) {
+            sharedViewModel.setCurrentWordId(id)
+            (activity as MainActivity).showDetails()
+        }
+        override fun onListMoreClicked() {
+            //TODO show full list of favorites
+        }
+    }
+
 }
 

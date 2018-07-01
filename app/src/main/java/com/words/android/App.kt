@@ -5,6 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.firestore.FirestoreStore
+import com.words.android.data.firestore.User
+import com.words.android.data.mw.MerriamWebsterStore
+import com.words.android.data.mw.RetrofitService
 import com.words.android.data.repository.WordRepository
 
 class App: Application() {
@@ -21,24 +24,33 @@ class App: Application() {
      * should be disallowed. This would only occur if the user doesn't have internet to
      * sign in anonymously and should rarely be the case.
      */
-    var user: FirebaseUser? = null
+    var user: User? = null
         set(value) {
             field = value
-            if (value != null) {
-                firestoreStore = FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, value)
+
+            if (value?.firebaseUser != null) {
+                firestoreStore = FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, value.firebaseUser)
             } else {
                 firestoreStore = null
             }
 
-            wordRepository = WordRepository(appDatabase, firestoreStore)
+            if (value?.isMerriamWebsterSubscriber == true) {
+                merriamWebsterStore = MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
+            } else {
+                merriamWebsterStore = null
+            }
+
+            wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
         }
 
     var firestoreStore: FirestoreStore? = null
 
+    var merriamWebsterStore: MerriamWebsterStore? = null
+
     override fun onCreate() {
         super.onCreate()
         appDatabase.init()
-        wordRepository = WordRepository(appDatabase, firestoreStore)
+        wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
     }
 
 

@@ -11,7 +11,9 @@
     <androidx.core.widget.NestedScrollView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/search_max_peek_height"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:id="@+id/cardsLinearLayout"
@@ -27,10 +29,17 @@
                 app:cardBackgroundColor="?android:windowBackground"
                 />
 
-            <com.words.android.ui.dashboard.RecentsCardView
+            <com.words.android.ui.dashboard.ListCardLayout
                 android:id="@+id/recentsCard"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?android:windowBackground"/>
+
+            <com.words.android.ui.dashboard.ListCardLayout
+                android:id="@+id/favoritesCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="?android:windowBackground"/>
 
@@ -50,7 +59,7 @@
             android:background="?android:windowBackground"
             app:title="Words"
             app:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll">
 
         </androidx.appcompat.widget.Toolbar>
 

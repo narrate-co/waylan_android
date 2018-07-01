@@ -1,12 +1,12 @@
-package com.words.android.data.disk
+package com.words.android.data.disk.mw
 
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class WordAndMeanings(
+data class WordAndDefinitions(
         @Embedded
         var word: Word? = null,
         @Relation(parentColumn = "word", entityColumn = "parentWord")
-        var meanings: List<Meaning> = ArrayList()
+        var definitions: List<Definition> = ArrayList()
 )
 

@@ -91,6 +91,9 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
+
 
     androidTestImplementation "androidx.test:runner:$appcompat_version"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'

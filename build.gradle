@@ -13,7 +13,7 @@ buildscript {
         firebase_core = '16.0.1'
         firebase_auth = '16.0.2'
         gson_version = '2.8.4'
-
+        retrofit_version = '2.4.0'
     }
 
     repositories {

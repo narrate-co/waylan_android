@@ -1,4 +1,4 @@
-package com.words.android.data.disk
+package com.words.android.data.disk.wordset
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
 import com.words.android.MainActivity
 import com.words.android.R
+import com.words.android.data.firestore.User
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -51,7 +52,8 @@ class AuthActivity : AppCompatActivity() {
 
 
     private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
-        (application as App).user = user
+        //TODO set isMerriamWebsterSubscriber properly
+        (application as App).user = User(user, true)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 

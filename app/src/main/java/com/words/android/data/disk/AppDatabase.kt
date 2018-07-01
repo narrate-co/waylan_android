@@ -11,8 +11,19 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.words.android.data.AppTypeConverters
 import com.words.android.data.DatabaseSeedService
+import com.words.android.data.disk.mw.Definition
+import com.words.android.data.disk.mw.MwDao
+import com.words.android.data.disk.wordset.Meaning
+import com.words.android.data.disk.wordset.MeaningDao
+import com.words.android.data.disk.wordset.Word
+import com.words.android.data.disk.wordset.WordDao
 
-@Database(entities = [(Word::class), (Meaning::class)], version = 1)
+@Database(entities = [
+    (Word::class),
+    (Meaning::class),
+    (com.words.android.data.disk.mw.Word::class),
+    (Definition::class)
+], version = 2)
 @TypeConverters(AppTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -20,9 +31,9 @@ abstract class AppDatabase: RoomDatabase() {
         Log.d("AppDatabase", "Initializing...")
     }
 
-
     abstract fun wordDao(): WordDao
     abstract fun meaningDao(): MeaningDao
+    abstract fun mwDao(): MwDao
 
     companion object {
 

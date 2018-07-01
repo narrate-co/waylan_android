@@ -12,11 +12,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.disk.Example
-import com.words.android.data.disk.Meaning
-import com.words.android.data.disk.Synonym
+import com.words.android.data.disk.wordset.Example
+import com.words.android.data.disk.wordset.Meaning
 import com.words.android.databinding.DetailsFragmentBinding
-import com.google.android.material.chip.Chip
 import com.words.android.data.firestore.UserWord
 import com.words.android.data.firestore.UserWordType
 import com.words.android.util.toChip
@@ -46,6 +44,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
         sharedViewModel.currentWord.observe(this, Observer {
+            println("currentWordChanged!")
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
             setUserWord(it?.userWord)

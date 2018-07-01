@@ -10,10 +10,12 @@ import com.words.android.data.DataOwners
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
 import com.words.android.data.firestore.util.liveData
+import com.words.android.util.isMoreThanOneMinuteAgo
 import com.words.android.util.toDate
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import java.util.*
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
@@ -35,7 +37,26 @@ class FirestoreStore(
 
     private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord = suspendCoroutine { cont ->
         firestore.userWords(user.uid).document(id).get()
-                .addOnFailureListener { cont.resumeWithException(it) }
+                .addOnFailureListener {
+                    Log.d(TAG, "getUserWord onFailureListner = $it. Code = ${(it as FirebaseFirestoreException).code}")
+                    when ((it as FirebaseFirestoreException).code) {
+                        FirebaseFirestoreException.Code.UNAVAILABLE -> {
+                            if (createIfDoesNotExist) {
+                                launch {
+                                    val newUserWord = newUserWord(id).await()
+                                    if (newUserWord != null) {
+                                        cont.resume(newUserWord)
+                                    } else {
+                                        cont.resumeWithException(FirebaseFirestoreException("Unable to create new UserWord", FirebaseFirestoreException.Code.UNKNOWN))
+                                    }
+                                }
+                            } else {
+                                cont.resumeWithException(it)
+                            }
+                        }
+                        else -> cont.resumeWithException(it)
+                    }
+                }
                 .addOnSuccessListener {
                     if (it.exists()) {
                         cont.resume(it.toObject(UserWord::class.java)!!)
@@ -50,6 +71,7 @@ class FirestoreStore(
                                 }
                             }
                         } else {
+                            Log.d(TAG, "getUserWord !createIfDoesNotExist. Does not exist: $id")
                             cont.resumeWithException(FirebaseFirestoreNotFoundException(id))
                         }
                     }
@@ -75,8 +97,8 @@ class FirestoreStore(
             val userWord = UserWord(
                     id,
                     word.word,
-                    word.created.toDate,
-                    word.modified.toDate,
+                    Date(),
+                    Date(),
                     mutableMapOf(),
                     partOfSpeech.toMutableMap(),
                     defs.toMutableMap(),
@@ -114,21 +136,21 @@ class FirestoreStore(
     fun getRecents(): LiveData<List<UserWord>> {
         return firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.RECENT.name}", true)
+                .orderBy("modified", Query.Direction.DESCENDING)
                 .liveData(UserWord::class.java)
     }
 
     suspend fun setRecent(id: String) {
         try {
             val userWord = getUserWord(id, true)
-            if (userWord.types.containsKey(UserWordType.RECENT.name)) return
-
-            userWord.types[UserWordType.RECENT.name] = true
-            setUserWord(userWord)
+            if (!userWord.types.containsKey(UserWordType.RECENT.name) || userWord.modified.isMoreThanOneMinuteAgo) {
+                userWord.types[UserWordType.RECENT.name] = true
+                setUserWord(userWord)
+            }
         } catch (e: Exception) {
             Log.d(TAG, "Unable to set recent UserWord: $e")
         }
     }
-
 
     private fun setUserWord(userWord: UserWord) {
         firestore.userWords(user.uid).document(userWord.id).set(userWord)

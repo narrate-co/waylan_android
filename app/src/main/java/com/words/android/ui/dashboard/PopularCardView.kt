@@ -5,12 +5,11 @@ import android.util.AttributeSet
 import android.view.View
 import com.google.android.material.card.MaterialCardView
 import com.words.android.R
-import com.words.android.data.disk.Synonym
+import com.words.android.data.disk.wordset.Synonym
 import com.words.android.data.repository.Word
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.dashboard_popular_card_layout.view.*
 import org.threeten.bp.OffsetDateTime
-import java.util.*
 
 class PopularCardView @JvmOverloads constructor(
         context: Context,
@@ -23,7 +22,7 @@ class PopularCardView @JvmOverloads constructor(
     }
 
     interface PopularCardListener {
-        fun onPopularCardClicked(word: Word)
+        fun onPopularCardClicked(id: String)
         fun onPopularSynonymClicked(id: String)
     }
 
@@ -56,8 +55,10 @@ class PopularCardView @JvmOverloads constructor(
 
 
         //TODO handle on card click
-        popularCard.setOnClickListener {
-            listener?.onPopularCardClicked(word)
+        popularCardInner.setOnClickListener {
+            word.userWord?.id?.let {
+                listener?.onPopularCardClicked(it)
+            }
         }
 
     }

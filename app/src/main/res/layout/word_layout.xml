@@ -5,7 +5,7 @@
     <data>
         <variable
             name="word"
-            type="com.words.android.data.disk.Word"/>
+            type="com.words.android.data.disk.wordset.Word"/>
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener"/>
