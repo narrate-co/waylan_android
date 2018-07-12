@@ -55,13 +55,24 @@
 
             <!--Definitions Container-->
             <LinearLayout
+                android:id="@+id/merriamDefinitionsLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/colorBackgroundEmphasized"
+                app:layout_constraintTop_toBottomOf="@+id/partOfSpeechTextView"/>
+            <LinearLayout
                 android:id="@+id/definitionsLinearLayout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/partOfSpeechTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/merriamDefinitionsLinearLayout" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -100,7 +111,7 @@
 
             <LinearLayout
                 android:id="@+id/examplesLinearLayout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="8dp"

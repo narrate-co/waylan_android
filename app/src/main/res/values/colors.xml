@@ -8,4 +8,5 @@
     <color name="colorAccentMedium">#a7807f</color>
     <color name="colorAccentDark">#613739</color>
     <color name="colorBorders">#12000000</color>
+    <color name="colorBackgroundEmphasized">#ececec</color>
 </resources>

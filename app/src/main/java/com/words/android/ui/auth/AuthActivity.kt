@@ -7,6 +7,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
+import com.words.android.Config
 import com.words.android.MainActivity
 import com.words.android.R
 import com.words.android.data.firestore.User
@@ -53,7 +54,7 @@ class AuthActivity : AppCompatActivity() {
 
     private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
-        (application as App).user = User(user, true)
+        (application as App).user = User(user, Config.DEBUG_USER_IS_PREMIUM)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 

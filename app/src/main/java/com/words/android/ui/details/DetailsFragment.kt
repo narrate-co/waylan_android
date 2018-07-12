@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
+import com.words.android.data.disk.mw.Definition
+import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
 import com.words.android.databinding.DetailsFragmentBinding
@@ -47,6 +49,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
             println("currentWordChanged!")
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
+            setMerriamWebsterWord(it?.mwWord, it?.mwDefinitions)
             setUserWord(it?.userWord)
         })
         return binding.root
@@ -70,6 +73,12 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
     private fun createDefinitionView(def: String): AppCompatTextView {
         val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
         textView.text = ": $def"
+        return textView
+    }
+
+     private fun createMwDefinitionView(def: String): AppCompatTextView {
+        val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
+        textView.text = def
         return textView
     }
 
@@ -110,6 +119,24 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
             view?.examplesLinearLayout?.addView(createExampleView(it))
         }
 
+    }
+
+    private fun setMerriamWebsterWord(word: Word?, definitions: List<Definition>?) {
+        if (word == null || definitions == null || definitions.isEmpty()) {
+            view?.merriamDefinitionsLinearLayout?.visibility = View.GONE
+            view?.merriamDefinitionsLinearLayout?.removeAllViews()
+            return
+        }
+
+        view?.merriamDefinitionsLinearLayout?.removeAllViews()
+        view?.merriamDefinitionsLinearLayout?.visibility = View.VISIBLE
+        definitions.flatMap { it.defs }.forEach {
+            view?.merriamDefinitionsLinearLayout?.addView(createMwDefinitionView(it))
+        }
+
+        //TODO add examples
+
+        //TODO add synonyms
     }
 
     private fun setUserWord(userWord: UserWord?) {

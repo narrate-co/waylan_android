@@ -2,6 +2,9 @@ package com.words.android.data.mw
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.room.RoomDatabase
+import com.words.android.data.disk.AppDatabase
+import com.words.android.data.disk.mw.Definition
 import com.words.android.data.disk.mw.MwDao
 import com.words.android.data.disk.mw.WordAndDefinitions
 import kotlinx.coroutines.experimental.launch
@@ -16,8 +19,9 @@ class MerriamWebsterStore(
 
     companion object {
         private const val TAG = "MerriamWebsterStore"
-        //TODO update with real key
-        private const val DEV_KEY = "1234"
+
+        //TODO obfuscate
+        private const val DEV_KEY = "d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2"
     }
 
     fun getWord(word: String): LiveData<WordAndDefinitions> {
@@ -29,15 +33,24 @@ class MerriamWebsterStore(
         return mwDao.getWordAndDefinitions(word)
     }
 
-    private val mwApiWordCallback = object : Callback<MwApiWord> {
-        override fun onFailure(call: Call<MwApiWord>?, t: Throwable?) {
+    private val mwApiWordCallback = object : Callback<EntryList> {
+        override fun onFailure(call: Call<EntryList>?, t: Throwable?) {
             Log.e(TAG, "mwApiWordCallback on Failure = $t")
         }
-        override fun onResponse(call: Call<MwApiWord>?, response: Response<MwApiWord>?) {
+        override fun onResponse(call: Call<EntryList>?, response: Response<EntryList>?) {
             //Save to db
-            response?.body()?.let {
-                mwDao.insert(it.toDbMwWord)
-                mwDao.insertAll(*it.toDbMwDefinitions.toTypedArray())
+            response?.body()?.let { entryList ->
+                launch {
+                    entryList.entries.forEach {
+                        Log.d(TAG, "Adding entry word: ${it.word} - ${it.def.dts}")
+                        mwDao.insert(it.toDbMwWord)
+                    }
+
+                    entryList.entries.forEach {
+                        Log.d(TAG, "Adding entry definitions: ${it.word} - ${it.def.dts}")
+                        mwDao.insertAll(*it.toDbMwDefinitions.toTypedArray())
+                    }
+                }
             }
         }
     }

@@ -25,7 +25,7 @@
         />
 
     <fragment
-        android:id="@+id/search_fragment"
+        android:id="@+id/searchFragment"
         android:name="com.words.android.ui.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -42,10 +42,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/dashboard_list_card_word_item" />
-            <include layout="@layout/dashboard_list_card_word_item" />
-            <include layout="@layout/dashboard_list_card_word_item" />
-
         </LinearLayout>
 
         <FrameLayout

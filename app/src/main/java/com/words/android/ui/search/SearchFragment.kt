@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.App
 import com.words.android.MainActivity
 import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.databinding.SearchFragmentBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.data.repository.Word
 
 

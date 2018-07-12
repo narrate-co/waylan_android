@@ -18,10 +18,10 @@ import androidx.room.PrimaryKey
         ]
 )
 data class Definition(
+        @PrimaryKey
+        var id: String = "",
         val parentWord: String,
         val date: String,
-        val defs: List<String>,
-
-        @PrimaryKey(autoGenerate = true)
-        var id: Int = 0
+        val sns: List<String>,
+        val defs: List<String>
 )

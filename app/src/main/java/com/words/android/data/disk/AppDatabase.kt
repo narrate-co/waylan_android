@@ -23,7 +23,7 @@ import com.words.android.data.disk.wordset.WordDao
     (Meaning::class),
     (com.words.android.data.disk.mw.Word::class),
     (Definition::class)
-], version = 2)
+], version = 1)
 @TypeConverters(AppTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
 

@@ -6,6 +6,12 @@ import androidx.room.*
 @Dao
 interface MwDao {
 
+    @Transaction
+    fun insert(word: Word, definitions: List<Definition>) {
+        insert(word)
+        insertAll(*definitions.toTypedArray())
+    }
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(word: Word)
 
