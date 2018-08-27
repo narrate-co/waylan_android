@@ -3,6 +3,8 @@ package com.words.android.data
 import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.words.android.data.disk.mw.OrderedDefinitionItem
+import com.words.android.data.disk.mw.Sound
 import com.words.android.data.disk.mw.Uro
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Label
@@ -90,6 +92,32 @@ object AppTypeConverters {
     @TypeConverter
     @JvmStatic
     fun fromStringList(value: List<String>): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toSound(value: String): Sound {
+        val type = object : TypeToken<Sound>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromSound(value: Sound): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toOrderedDefinitionItemList(value: String): List<OrderedDefinitionItem> {
+        val type = object : TypeToken<List<OrderedDefinitionItem>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromOrderedDefinitionItemList(value: List<OrderedDefinitionItem>): String {
         return gson.toJson(value)
     }
 }

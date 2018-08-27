@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.App
 import com.words.android.MainActivity
@@ -16,6 +17,10 @@ import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.databinding.SearchFragmentBinding
 import com.words.android.data.repository.Word
+import com.words.android.util.hideSoftKeyboard
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 
 
 class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
@@ -42,19 +47,26 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
 
     private val adapter by lazy { WordsAdapter(this) }
 
+    private var hideKeyboard = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: SearchFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.search_fragment, container, false)
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
 
         //set up recycler view
-        binding.recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recycler.adapter = adapter
+
+        binding.searchEditText.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
 
         viewModel.searchResults.observe(this, Observer {
             if (it != null) {
-                println("search results changed. size = ${it.size}")
-                if (it.isEmpty()) setPeekHighMin() else setPeekHighMax()
+                println("SearchFragment::search results changed. size = ${it.size}")
                 adapter.submitList(it)
             }
         })
@@ -63,18 +75,12 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
     }
 
     override fun onWordClicked(word: Word) {
+        println("SearchFragment::onWordClicked")
         sharedViewHolder.setCurrentWordId(word.dbWord?.word ?: "")
-        setPeekHighMin()
+        hideKeyboard = true
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        activity?.hideSoftKeyboard()
         (activity as MainActivity).showDetails()
-    }
-
-    private fun setPeekHighMin() {
-        bottomSheetBehavior.peekHeight = resources.getDimensionPixelOffset(R.dimen.search_min_peek_height)
-    }
-
-    private fun setPeekHighMax() {
-        bottomSheetBehavior.peekHeight = resources.getDimensionPixelOffset(R.dimen.search_max_peek_height)
     }
 
 }

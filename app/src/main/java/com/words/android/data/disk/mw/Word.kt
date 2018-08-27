@@ -8,8 +8,9 @@ import androidx.room.PrimaryKey
 data class Word(
         @PrimaryKey
         val word: String,
+        val subj: String,
         val phonetic: String,
-        val wav: String,
+        val sound: Sound,
         val pronunciation: String,
         val partOfSpeech: String,
         val etymology: String,

@@ -22,6 +22,5 @@ data class Definition(
         var id: String = "",
         val parentWord: String,
         val date: String,
-        val sns: List<String>,
-        val defs: List<String>
+        val definitions: List<OrderedDefinitionItem>
 )

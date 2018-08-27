@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?actionBarSize">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/trending"
+        style="@style/Words.Widget.TextView.MenuButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingLeft="@dimen/keyline_3"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:paddingRight="@dimen/keyline_3"
+        android:text="Trending"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/trendingPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pluralism, calm, compeer, equal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="12dp"
+        style="@style/Words.Widget.TextView.MenuPreview"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/recent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Words.Widget.TextView.MenuButton"
+        android:paddingTop="12dp"
+        android:paddingLeft="@dimen/keyline_3"
+        android:paddingRight="@dimen/keyline_3"
+        android:text="Recent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/recentPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="quiescent, apathy, epigram"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="12dp"
+        style="@style/Words.Widget.TextView.MenuPreview"
+        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Words.Widget.TextView.MenuButton"
+        android:paddingTop="12dp"
+        android:paddingLeft="@dimen/keyline_3"
+        android:paddingRight="@dimen/keyline_3"
+        android:text="Favorite"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/favoritePreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="egalitarianism, equanimity, solicitude, quint..."
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="12dp"
+        style="@style/Words.Widget.TextView.MenuPreview"
+        />
+
+    <View
+        android:layout_width="72dp"
+        android:layout_height="2dp"
+        android:background="@drawable/title_underline_background"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="@dimen/keyline_3"
+        android:layout_marginBottom="32dp"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Words.Widget.TextView.MenuButton"
+        android:paddingLeft="@dimen/keyline_3"
+        android:paddingRight="@dimen/keyline_3"
+        android:text="Settings"
+        />
+
+</LinearLayout>

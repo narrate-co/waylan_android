@@ -2,17 +2,13 @@
 <navigation xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/dashboardFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.words.android.ui.dashboard.DashboardFragment"
-        tools:layout="@layout/dashboard_fragment"
-        android:label="DashboardFragment" >
-        <action
-            android:id="@+id/action_dashboardFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-    </fragment>
+        android:id="@+id/homeFragment"
+        android:name="com.words.android.ui.home.HomeFragment"
+        tools:layout="@layout/home_fragment"
+        android:label="HomeFragment" />
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.words.android.ui.details.DetailsFragment"

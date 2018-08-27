@@ -17,28 +17,37 @@
         android:background="@drawable/search_background"
         android:elevation="24dp">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <FrameLayout
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:foregroundGravity="center_vertical"
+            android:minHeight="48dp"
+            android:background="@drawable/search_input_background"
+            android:padding="@dimen/keyline_2"
+            android:layout_marginTop="@dimen/keyline_3"
+            android:layout_marginStart="@dimen/keyline_2"
+            android:layout_marginEnd="@dimen/keyline_2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
-            <com.google.android.material.textfield.TextInputEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccentDark"
-                android:hint="Search dictionary"
+                android:layout_marginStart="@dimen/keyline_2"
+                android:layout_marginEnd="48dp"
+                android:hint="Search Words"
                 android:text="@={viewModel.searchInput}"
+                android:paddingStart="8dp"
+                android:layout_gravity="left|center_vertical"
+                style="@style/Words.Widget.EditText.SearchBar"
                 />
 
-        </com.google.android.material.textfield.TextInputLayout>
+
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

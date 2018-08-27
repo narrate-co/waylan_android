@@ -30,7 +30,10 @@ class AuthActivity : AppCompatActivity() {
         val firebaseUser: FirebaseUser? = auth.currentUser
         if (firebaseUser != null) {
             Log.d(TAG, "User already signed in. Entering with user uid ${firebaseUser.uid}")
-            launchHome(firebaseUser, true)
+            launch(UI) {
+                delay(1500)
+                launchHome(firebaseUser, true)
+            }
         } else {
             signInAnonymously(auth)
         }

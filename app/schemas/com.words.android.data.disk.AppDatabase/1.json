@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3289a0bf14c31604b753525956ac4fcb",
+    "identityHash": "340bc9ea7aa11fb82b37eb00abc8b4b1",
     "entities": [
       {
         "tableName": "words",
@@ -121,11 +121,17 @@
       },
       {
         "tableName": "mw_words",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `wav` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`word`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word` TEXT NOT NULL, `subj` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `sound` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`word`))",
         "fields": [
           {
             "fieldPath": "word",
             "columnName": "word",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subj",
+            "columnName": "subj",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -136,8 +142,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "wav",
-            "columnName": "wav",
+            "fieldPath": "sound",
+            "columnName": "sound",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -177,7 +183,7 @@
       },
       {
         "tableName": "mw_definitions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `parentWord` TEXT NOT NULL, `date` TEXT NOT NULL, `sns` TEXT NOT NULL, `defs` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`parentWord`) REFERENCES `mw_words`(`word`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `parentWord` TEXT NOT NULL, `date` TEXT NOT NULL, `definitions` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`parentWord`) REFERENCES `mw_words`(`word`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "id",
@@ -198,14 +204,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "sns",
-            "columnName": "sns",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "defs",
-            "columnName": "defs",
+            "fieldPath": "definitions",
+            "columnName": "definitions",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -243,7 +243,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3289a0bf14c31604b753525956ac4fcb\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"340bc9ea7aa11fb82b37eb00abc8b4b1\")"
     ]
   }
 }

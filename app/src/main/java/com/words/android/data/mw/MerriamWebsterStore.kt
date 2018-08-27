@@ -41,14 +41,36 @@ class MerriamWebsterStore(
             //Save to db
             response?.body()?.let { entryList ->
                 launch {
+
+
+                    //Delete all definitions and words if they exist - keep data fresh
                     entryList.entries.forEach {
-                        Log.d(TAG, "Adding entry word: ${it.word} - ${it.def.dts}")
-                        mwDao.insert(it.toDbMwWord)
+
+                        Log.d(TAG, "Deleting all definitions with parent word: ${it.word}")
+                        mwDao.deleteDefinitions(it.word)
+
+
+                        Log.d(TAG, "Deleting entry word: ${it.word}")
+                        mwDao.deleteWord(it.word)
+
+                    }
+
+
+                    entryList.entries.forEach {
+                        val word = it.toDbMwWord
+
+                        Log.d(TAG, "Adding entry word: ${word.word}")
+                        mwDao.insert(word)
                     }
 
                     entryList.entries.forEach {
-                        Log.d(TAG, "Adding entry definitions: ${it.word} - ${it.def.dts}")
-                        mwDao.insertAll(*it.toDbMwDefinitions.toTypedArray())
+
+                        val definitions = it.toDbMwDefinitions
+                        definitions.forEach {
+                            Log.d(TAG, "Adding entry definitions: id=${it.id}, word=${it.parentWord} - ${it.definitions}")
+                        }
+
+                        mwDao.insertAll(*definitions.toTypedArray())
                     }
                 }
             }

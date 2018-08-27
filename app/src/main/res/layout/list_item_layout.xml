@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/keyline_3"
+    android:paddingBottom="@dimen/keyline_3"
+    android:background="?selectableItemBackground"
+    android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/word"
+            style="@style/Words.Widget.TextView.ListWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/keyline_3"
+            android:paddingTop="@dimen/keyline_2"
+            android:paddingEnd="@dimen/keyline_3"
+            android:paddingBottom="@dimen/keyline_1"
+            tools:text="quiescent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/partOfSpeech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/keyline_3"
+            android:paddingEnd="@dimen/keyline_3"
+            tools:text="noun"
+            style="@style/Words.Widget.TextView.PartOfSpeech"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/definition"
+            style="@style/Words.Widget.TextView.Definition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/keyline_3"
+            android:paddingEnd="@dimen/keyline_3"
+            android:paddingBottom="@dimen/keyline_1"
+            tools:text=":marked by inactivity or repose :tranquilly at rest; causing no trouble or symptoms • quiescent gallstones" />
+
+        <HorizontalScrollView
+            android:id="@+id/chipScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/keyline_2"
+            android:paddingBottom="@dimen/keyline_3"
+            android:paddingStart="12dp"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                app:singleLine="true" />
+
+
+        </HorizontalScrollView>
+
+
+</LinearLayout>

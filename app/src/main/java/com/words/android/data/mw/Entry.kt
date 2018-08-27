@@ -1,5 +1,6 @@
 package com.words.android.data.mw
 
+import com.words.android.data.disk.mw.OrderedDefinitionItem
 import com.words.android.data.disk.mw.Word
 import org.simpleframework.xml.*
 import org.simpleframework.xml.convert.Convert
@@ -46,6 +47,7 @@ class EntryList {
     var entries: MutableList<Entry> = mutableListOf()
 }
 
+@Root(name = "entry", strict = false)
 class Entry {
 
     @field:Attribute(name = "id", required = false)
@@ -63,8 +65,14 @@ class Entry {
     @field:Element(name = "hw", required = false)
     var phonetic: String = ""
 
+    @field:Element(name = "lb", required = false)
+    var lb: String = ""
+
     @field:Element(name = "sound", required = false)
     var sound: Sound = Sound()
+
+    @field:Element(name = "vr", required = false)
+    var vr: Vr = Vr()
 
     @field:Element(name = "cx", required = false)
     var cx: Cx = Cx()
@@ -86,6 +94,9 @@ class Entry {
     @field:Element(name = "def", required = false)
     var def: Definition = Definition()
 
+    @field:Element(name = "art", required = false)
+    var art: Art = Art()
+
     @field:Element(name = "dro", required = false)
     var dro: Dro = Dro()
 
@@ -102,11 +113,11 @@ class Cx {
 }
 
 class Sound {
-    @field:Element(name = "wav", required = false)
-    var wav: String = ""
+    @field:ElementList(entry = "wav", inline = true, required = false)
+    var wav: MutableList<String> = mutableListOf()
 
-    @field:Element(name = "wpr", required = false)
-    var wpr: String = ""
+    @field:ElementList(entry = "wpr", inline = true, required = false)
+    var wpr: MutableList<String> = mutableListOf()
 }
 
 class Variants {
@@ -123,50 +134,16 @@ class Variants {
     var il: String = ""
 }
 
-@Root
-@Convert(FormattedStringConverter::class)
-data class FormattedString(var value: String = "")
+class Art {
 
-class FormattedStringConverter: Converter<FormattedString> {
+    @field:Element(name = "bmp", required = false)
+    var bmp: String = ""
 
-    override fun write(node: OutputNode?, value: FormattedString?) {
-        //Do nothing. We're not writing XML
-    }
-
-    override fun read(node: InputNode?): FormattedString {
-        val builder = StringBuilder()
-
-        builder.append(node?.value ?: "")
-        flatten(node, node?.next, builder)
-
-        val formattedString = FormattedString(builder.toString())
-        println("FormattedStringConverter:: returning = ${formattedString.value}")
-        return formattedString
-    }
-
-    private fun flatten(parent: InputNode?, child: InputNode?, sb: StringBuilder) {
-        if (parent != null) {
-
-            //append floating text before child element
-            sb.append(parent.value ?: "")
-
-
-            var c = child
-            while (c != null) {
-                sb.append("<${c.name}>")
-                sb.append(c.value ?: "")
-                sb.append("</${c.name}>")
-
-                //append floating text after child element
-                sb.append(parent.value ?: "")
-
-                flatten(c, c.next, sb)
-
-                c = parent.next
-            }
-        }
-    }
+    @field:Element(name = "cap", required = false)
+    @field:Convert(FormattedStringConverter::class)
+    var cap: FormattedString = FormattedString()
 }
+
 
 class Definition {
 
@@ -175,6 +152,9 @@ class Definition {
 
     @field:Element(name = "date", required = false)
     var date: String = ""
+
+    @field:Element(name = "sl", required = false)
+    var sl: String = ""
 
     @field:ElementList(inline = true, entry = "sn", required = false)
     var sn: MutableList<String> = mutableListOf()
@@ -247,11 +227,91 @@ class Vr {
 
 }
 
+@Root
+@Convert(FormattedStringConverter::class)
+data class FormattedString(var value: String = "")
+
+class FormattedStringConverter: Converter<FormattedString> {
+
+    override fun write(node: OutputNode?, value: FormattedString?) {
+        //Do nothing. We're not writing XML
+    }
+
+    override fun read(node: InputNode?): FormattedString {
+        val builder = StringBuilder()
+
+        builder.append(node?.value ?: "")
+        flatten(node, node?.next, builder)
+
+        val formattedString = FormattedString(builder.toString())
+        println("FormattedStringConverter:: returning = ${formattedString.value}")
+        return formattedString
+    }
+
+    private fun flatten(parent: InputNode?, child: InputNode?, sb: StringBuilder) {
+        if (parent != null) {
+
+            //append floating text before child element
+            appendValue(parent.value, sb)
+
+            var c = child
+            while (c != null) {
+
+                //TODO use html compliant tags to easily format string in ui
+                /**
+                 *
+                 * d_link -> link to another word
+                 * sx -> all caps link to another word
+                 * vi -> •
+                 * it -> italics
+                 * sxn -> sn reference to another word
+                 * fn -> link to another word
+                 * dx -> start reference to extra material (illustrations)
+                 * dxt -> dx reference name
+                 * dxn -> dx reference type (illustration)
+                 * ag -> attribution (author, name, etc.)
+                 *
+                 */
+
+                when (c.name) {
+                    "d_link", "sx", "fn" -> appendValueInsideTag(if (c.name == "d_link") c.value else c.value.toUpperCase(), "u", sb)
+                    "vi" -> appendValue("• ", sb)
+                    "it" -> appendValueInsideTag(c.value, "i", sb)
+                    "dx", "dxt", "dxn" -> appendValue("", sb) //do nothing. remove
+                    "ag" -> {
+                        appendValue(" - ${c.value}", sb)
+                    }
+                    else -> appendValueInsideTag(c.value, c.name, sb)
+                }
+
+                //append floating text after child element
+                appendValue(parent.value, sb)
+
+                flatten(c, c.next, sb)
+
+                c = parent.next
+            }
+        }
+    }
+
+    private fun appendValue(value: String?, sb: StringBuilder) {
+        val v = value?.replace(":", ": ")
+        sb.append(v ?: "")
+    }
+
+    private fun appendValueInsideTag(value: String?, tagName: String, sb: StringBuilder) {
+        sb.append("<$tagName>")
+        appendValue(value, sb)
+        sb.append("</$tagName>")
+    }
+}
+
 val Entry.toDbMwWord: Word
     get()  = Word(
             this.word,
+            this.subj,
             this.phonetic,
-            this.sound.wav,
+            com.words.android.data.disk.mw.Sound(this.sound.wav.firstOrNull() ?: "", this.sound.wpr.firstOrNull() ?: ""), //TODO restructure db
             this.pronunciation.value,
             this.partOfSpeech,
             this.etymology.value,
@@ -259,13 +319,17 @@ val Entry.toDbMwWord: Word
 
 val Entry.toDbMwDefinitions: List<com.words.android.data.disk.mw.Definition>
     get() {
+        val orderedDefs = this.def.dts.mapIndexed { index, formattedString ->
+            val sn = this.def.sn.getOrNull(index) ?: (index + 1).toString()
+            println("Entry::creating ordered DefItem: $sn - $formattedString")
+            OrderedDefinitionItem(sn, formattedString.value)
+        }
         return listOf(
                 com.words.android.data.disk.mw.Definition(
-                        "${this.word}${this.def.dts}",
+                        "${this.word}${orderedDefs.hashCode()}",
                         this.word,
                         this.def.date,
-                        this.def.sn,
-                        this.def.dts.map { it.value }
+                        orderedDefs
                 )
         )
     }

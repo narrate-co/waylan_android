@@ -1,6 +1,7 @@
 package com.words.android.ui.details
 
 import android.os.Bundle
+import android.text.Html
 import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
@@ -13,12 +14,13 @@ import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.data.disk.mw.Definition
-import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
 import com.words.android.databinding.DetailsFragmentBinding
 import com.words.android.data.firestore.UserWord
 import com.words.android.data.firestore.UserWordType
+import com.words.android.data.repository.Word
+import com.words.android.util.fromHtml
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
@@ -35,6 +37,8 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
                 .get(MainViewModel::class.java)
     }
 
+    private var currentWordValue: Word = Word()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.details_fragment, container, false)
         binding.setLifecycleOwner(this)
@@ -49,9 +53,10 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
             println("currentWordChanged!")
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
-            setMerriamWebsterWord(it?.mwWord, it?.mwDefinitions)
+            setMerriamWebster(it?.mwWord, it?.mwDefinitions)
             setUserWord(it?.userWord)
         })
+
         return binding.root
     }
 
@@ -69,16 +74,19 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
+    private fun setMerriamWebster(mwWord: com.words.android.data.disk.mw.Word?, mwDefinitions: List<Definition>?) {
+        if (mwWord != currentWordValue.mwWord && mwDefinitions != currentWordValue.mwDefinitions) {
+            currentWordValue.mwWord = mwWord
+            currentWordValue.mwDefinitions = mwDefinitions ?: emptyList()
+
+            view?.merriamDefinitionsLinearLayout?.setDefinitions(mwWord, mwDefinitions)
+        }
+    }
+
 
     private fun createDefinitionView(def: String): AppCompatTextView {
         val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
-        textView.text = ": $def"
-        return textView
-    }
-
-     private fun createMwDefinitionView(def: String): AppCompatTextView {
-        val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
-        textView.text = def
+        textView.text = ":$def"
         return textView
     }
 
@@ -89,7 +97,8 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private fun setMeanings(meanings: List<Meaning>?) {
-        if (meanings == null) return
+        if (meanings == null || meanings == currentWordValue.dbMeanings) return
+        currentWordValue.dbMeanings = meanings
 
         //remove all views
         view?.definitionsLinearLayout?.removeAllViews()
@@ -121,30 +130,15 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
 
     }
 
-    private fun setMerriamWebsterWord(word: Word?, definitions: List<Definition>?) {
-        if (word == null || definitions == null || definitions.isEmpty()) {
-            view?.merriamDefinitionsLinearLayout?.visibility = View.GONE
-            view?.merriamDefinitionsLinearLayout?.removeAllViews()
-            return
-        }
-
-        view?.merriamDefinitionsLinearLayout?.removeAllViews()
-        view?.merriamDefinitionsLinearLayout?.visibility = View.VISIBLE
-        definitions.flatMap { it.defs }.forEach {
-            view?.merriamDefinitionsLinearLayout?.addView(createMwDefinitionView(it))
-        }
-
-        //TODO add examples
-
-        //TODO add synonyms
-    }
-
     private fun setUserWord(userWord: UserWord?) {
+        if (userWord == null || currentWordValue.userWord == userWord) return
+        currentWordValue.userWord = userWord
+
         println("setUserWord - userWord = $userWord")
         val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
         val isFavorited = userWord?.types?.containsKey(UserWordType.FAVORITED.name) ?: false
         favoriteMenuItem?.isChecked = isFavorited
-        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_favorite_black_24dp else R.drawable.ic_favorite_border_black_24dp)
+        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
 
     }
 

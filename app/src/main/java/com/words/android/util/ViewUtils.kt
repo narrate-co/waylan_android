@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.get
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.words.android.R
@@ -24,4 +27,23 @@ fun Activity.hideSoftKeyboard() {
     val view = currentFocus ?: View(this)
     im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
 }
+
+class ViewGroupChildIterator(private val viewGroup: ViewGroup): Iterator<View> {
+
+    private var current: Int = 0
+
+    override fun hasNext(): Boolean = viewGroup.childCount > current
+
+    override fun next(): View {
+        val i = current
+        current++
+        return viewGroup.getChildAt(i)
+    }
+
+}
+
+val ViewGroup.children: Iterator<View>
+    get() = ViewGroupChildIterator(this)
+
+
 

@@ -7,5 +7,5 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:layout_marginEnd="@dimen/keyline_3"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-    android:textSize="18sp" />
+    style="@style/Words.Widget.TextView.Definition"
+    />

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -13,21 +14,32 @@
 
 <LinearLayout
     android:id="@+id/container"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="?android:listPreferredItemHeight"
     android:background="?selectableItemBackground"
     android:onClickListener="@{clickListener}"
     >
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/wordIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/keyline_3"
+        android:layout_marginRight="@dimen/keyline_3"
+        android:alpha=".5"
+        app:srcCompat="@drawable/ic_round_access_time_24px"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/wordText"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/keyline_3"
         android:layout_marginRight="@dimen/keyline_3"
         android:gravity="center_vertical"
-        android:textColor="@color/colorAccent"
+        style="@style/Words.Widget.TextView.ListItem"
+        tools:text="quiescent"
         android:text="@{word.word}"
         />
 

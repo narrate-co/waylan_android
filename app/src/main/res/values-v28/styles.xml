@@ -2,8 +2,8 @@
 <resources>
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">@color/colorAccentMedium</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">@color/colorWordsNavyDark</item>
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme.Base.Splash">

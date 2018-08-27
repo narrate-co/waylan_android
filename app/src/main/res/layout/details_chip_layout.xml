@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chip"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     style="@style/Widget.MaterialComponents.Chip.Choice"
+    android:textAppearance="@style/Words.TextAppearance.Chip"
     app:chipBackgroundColor="?android:windowBackground"
-    app:chipStrokeColor="?android:textColorHint"
+    app:chipStrokeColor="@color/colorWordsDarkStrokeLight"
     app:chipStrokeWidth="1dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
