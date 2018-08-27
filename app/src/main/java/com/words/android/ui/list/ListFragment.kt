@@ -62,6 +62,7 @@ class ListFragment: Fragment(), ListTypeAdapter.ListTypeListener {
         return view
     }
 
+
     private fun setUpList(view: View) {
         view.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.recyclerView.adapter = adapter

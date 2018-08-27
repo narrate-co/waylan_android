@@ -2,6 +2,7 @@ package com.words.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             //replace
             supportFragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
+                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
                     .replace(R.id.fragmentContainer, detailsFragment)
                     .addToBackStack("details_fragment_stack_tag")
                     .commit()
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     fun showListFragment(type: ListFragment.ListType) {
         supportFragmentManager
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
                 .replace(R.id.fragmentContainer, when (type) {
                     ListFragment.ListType.TRENDING -> trendingFragment
                     ListFragment.ListType.RECENT -> recentFragment

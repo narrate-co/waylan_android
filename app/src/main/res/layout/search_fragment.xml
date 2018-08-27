@@ -15,7 +15,9 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:background="@drawable/search_background"
-        android:elevation="24dp">
+        android:elevation="16dp"
+
+        >
 
         <FrameLayout
             android:id="@+id/search"

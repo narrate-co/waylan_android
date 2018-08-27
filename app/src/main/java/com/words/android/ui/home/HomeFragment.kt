@@ -20,9 +20,10 @@ class HomeFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
         //TODO set up views
-        view.trending.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.TRENDING) }
-        view.recent.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.RECENT) }
-        view.favorite.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.FAVORITE) }
+        view.trendingContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.TRENDING) }
+        view.recentContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.RECENT) }
+        view.favoriteContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.FAVORITE) }
+        view.settings.setOnClickListener { println("Settings - onclick called") }
         return view
     }
 
