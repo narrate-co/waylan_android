@@ -2,11 +2,15 @@ package com.words.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.FragmentTransaction
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
+import com.words.android.util.displayHeightDp
+import com.words.android.util.displayHeightPx
+import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private val recentFragment by lazy { ListFragment.newInstance(ListFragment.ListType.RECENT) }
     private val trendingFragment by lazy { ListFragment.newInstance(ListFragment.ListType.TRENDING) }
 
+    private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -32,6 +38,11 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.fragmentContainer, homeFragment)
                     .commit()
         }
+
+
+
+        searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
+        bottomSheet.setBottomSheetCallback(bottomSheetSkrimCallback)
     }
 
     fun showDetails() {
@@ -41,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     .beginTransaction()
                     .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
                     .replace(R.id.fragmentContainer, detailsFragment)
-                    .addToBackStack("details_fragment_stack_tag")
+                    .addToBackStack(DetailsFragment.FRAGMENT_TAG)
                     .commit()
         }
     }
@@ -57,6 +68,21 @@ class MainActivity : AppCompatActivity() {
                 })
                 .addToBackStack(type.fragmentTag)
                 .commit()
+    }
+
+
+    private val bottomSheetSkrimCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, offset: Float) {
+            bottomSheetSkrim.alpha = offset
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            if ((newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) && bottomSheetSkrim.visibility != View.GONE) {
+                bottomSheetSkrim.visibility = View.GONE
+            } else {
+                bottomSheetSkrim.visibility = View.VISIBLE
+            }
+        }
     }
 
 }

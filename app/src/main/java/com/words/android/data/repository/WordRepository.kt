@@ -43,7 +43,7 @@ class WordRepository(
             mediatorLiveData.value = word
         }
         mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            println("WordRepo - mediatorLiveData merriamWebsterWord = ${it?.word?.word}")
+            println("WordRepo - mediatorLiveData merriamWebsterWord = ${it?.word?.word}. DEFINITIONS: ${it?.definitions}")
             val word = mediatorLiveData.value ?: Word()
             word.mwWord = it?.word
             word.mwDefinitions = it?.definitions ?: emptyList()

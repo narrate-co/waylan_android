@@ -55,7 +55,9 @@ class ListFragment: Fragment(), ListTypeAdapter.ListTypeListener {
             else -> ListType.TRENDING
         }
         view.toolbarTitle.text = type.title
-        view.navigationIcon.setOnClickListener { activity?.onBackPressed() }
+        view.navigationIcon.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
 
         setUpList(view)
 

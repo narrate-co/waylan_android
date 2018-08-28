@@ -60,7 +60,7 @@
             android:id="@+id/recentPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="pluralism, calm, compeer, equal"
+            android:text="quiescent, apathy, epigram"
             style="@style/Words.Widget.TextView.MenuSubtitle"
             />
 
@@ -90,7 +90,7 @@
             android:id="@+id/favoritePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="pluralism, calm, compeer, equal"
+            android:text="egalitarianism, equanimity, solicitude, quint..."
             style="@style/Words.Widget.TextView.MenuSubtitle"
             />
 

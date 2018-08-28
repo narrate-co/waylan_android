@@ -28,6 +28,8 @@ import kotlinx.android.synthetic.main.details_fragment.view.*
 class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
 
     companion object {
+        private const val TAG = "DetailsFragment"
+        const val FRAGMENT_TAG = "details_fragment_tag"
         fun newInstance() = DetailsFragment()
     }
 
@@ -50,7 +52,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
         sharedViewModel.currentWord.observe(this, Observer {
-            println("currentWordChanged!")
+            println("DetailsFragment::currentWordChanged!. currentWordValue: ${currentWordValue.mwWord?.word ?: "NULL"} newCurrentWordValue: ${it?.mwWord?.word ?: "NULL"}")
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
             setMerriamWebster(it?.mwWord, it?.mwDefinitions)
@@ -60,27 +62,39 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        currentWordValue = Word()
+        view?.merriamDefinitionsLinearLayout?.clear()
+    }
+
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        //TODO finish implementation
-        println("menu item clicked")
         return when (item?.itemId) {
             R.id.action_favorite -> {
-                val isChecked = item.isChecked
-                println("menu item favorite clicked. is Checked = $isChecked")
                 sharedViewModel.setCurrentWordFavorited(!item.isChecked)
                 true
             }
+            //TODO implement share?
             else -> false
         }
     }
 
     private fun setMerriamWebster(mwWord: com.words.android.data.disk.mw.Word?, mwDefinitions: List<Definition>?) {
-        if (mwWord != currentWordValue.mwWord && mwDefinitions != currentWordValue.mwDefinitions) {
-            currentWordValue.mwWord = mwWord
-            currentWordValue.mwDefinitions = mwDefinitions ?: emptyList()
+        //TODO handle words w/o MW Entries!
+        if (mwWord == null || mwDefinitions == null) return
 
-            view?.merriamDefinitionsLinearLayout?.setDefinitions(mwWord, mwDefinitions)
+        if (mwWord != currentWordValue.mwWord) {
+            println("$TAG::setMerriamWebster - word is different. LAST: ${currentWordValue.mwWord} | NEW: $mwWord")
+            currentWordValue.mwWord = mwWord
+            view?.merriamDefinitionsLinearLayout?.setWord(mwWord)
         }
+
+        if (mwDefinitions != currentWordValue.mwDefinitions) {
+            println("$TAG::setMerriamWebster - definitions are different. LAST: ${currentWordValue.mwDefinitions} | NEW $mwDefinitions")
+            currentWordValue.mwDefinitions = mwDefinitions
+            view?.merriamDefinitionsLinearLayout?.setDefinitions(mwDefinitions)
+        }
+
     }
 
 

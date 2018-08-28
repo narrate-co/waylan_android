@@ -14,3 +14,5 @@ val String.fromHtml: Spanned
     @SuppressLint("NewApi")
     get() = if (isNougat) Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY) else Html.fromHtml(this)
 
+infix fun <T> Collection<T>.contentEquals(collection: Collection<T>?): Boolean
+    = collection?.let { this.size == it.size && this.containsAll(collection) } ?: false

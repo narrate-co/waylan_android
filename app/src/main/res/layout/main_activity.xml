@@ -7,6 +7,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     >
 
@@ -23,6 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
+    <View
+        android:id="@+id/bottomSheetSkrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:visibility="gone"
+        android:fitsSystemWindows="true"
+        android:background="@color/colorWordsDarkStrokeLight"/>
 
     <fragment
         android:id="@+id/searchFragment"

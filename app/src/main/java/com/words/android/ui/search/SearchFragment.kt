@@ -64,6 +64,7 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
             }
         }
 
+
         viewModel.searchResults.observe(this, Observer {
             if (it != null) {
                 println("SearchFragment::search results changed. size = ${it.size}")

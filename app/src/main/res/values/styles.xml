@@ -10,7 +10,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorWordsDarkTextMedium</item>
-        <item name="android:statusBarColor">?android:windowBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/colorWordsWindowBackground</item>
     </style>
 
@@ -21,12 +21,12 @@
 
 
     <!--Search Bar Edit Text-->
-    <style name="Words.Widget.EditText.SearchBar" parent="AppTheme">
+    <style name="Words.Widget.EditText" parent="AppTheme">
         <item name="android:fontFamily">@font/source_code_pro</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColorHint">@color/colorWordsDarkTextLight</item>
-        <item name="android:textColor">@color/colorWordsDarkTextMedium</item>
+        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
     </style>
 
 

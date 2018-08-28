@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:background="@drawable/search_background"
         android:elevation="16dp"
-
         >
 
         <FrameLayout
@@ -45,7 +44,7 @@
                 android:text="@={viewModel.searchInput}"
                 android:paddingStart="8dp"
                 android:layout_gravity="left|center_vertical"
-                style="@style/Words.Widget.EditText.SearchBar"
+                style="@style/Words.Widget.EditText"
                 />
 
 

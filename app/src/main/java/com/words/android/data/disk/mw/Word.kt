@@ -15,4 +15,25 @@ data class Word(
         val partOfSpeech: String,
         val etymology: String,
         val uro: Uro
-)
+) {
+        override fun equals(other: Any?): Boolean {
+            if (other == null) return false
+            if (other !is Word) return false
+            if (this === other) return true
+
+            println("mw.Word::comparing THIS: ${this.toString()} | OTHER: ${other.toString()}")
+
+            return word == other.word &&
+                    subj == other.subj &&
+                    phonetic == other.phonetic &&
+                    sound == other.sound &&
+                    pronunciation == other.pronunciation &&
+                    partOfSpeech == other.partOfSpeech &&
+                    etymology == other.etymology
+//            Uro not included!
+        }
+
+    override fun toString(): String {
+        return "$word, $subj, $phonetic, $sound, $pronunciation, $partOfSpeech, $etymology"
+    }
+}
