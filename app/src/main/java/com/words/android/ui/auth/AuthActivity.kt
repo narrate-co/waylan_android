@@ -1,14 +1,19 @@
 package com.words.android.ui.auth
 
 import android.animation.Animator
+import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
@@ -33,6 +38,18 @@ class AuthActivity : AppCompatActivity() {
         ANONYMOUS, SIGN_UP, LOG_IN
     }
 
+    private val errorMessageTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {}
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            hideErrorMessage()
+        }
+    }
+
+    private val authViewModel by lazy {
+        ViewModelProviders.of(this, (application as App).viewModelFactory).get(AuthViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
@@ -46,15 +63,9 @@ class AuthActivity : AppCompatActivity() {
             cancel.setOnClickListener { launchHome(firebaseUser, true) }
         }
 
-        if (true) {
-            launch (UI) {
-                delay(500)
-                setToLoginUi()
-                showCredentialsUi(auth)
-            }
-            return
-        }
-
+        email.addTextChangedListener(errorMessageTextWatcher)
+        password.addTextChangedListener(errorMessageTextWatcher)
+        confirmPassword.addTextChangedListener(errorMessageTextWatcher)
 
         val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
         when (authRoute) {
@@ -62,7 +73,7 @@ class AuthActivity : AppCompatActivity() {
                 launch (UI) {
                     delay(500)
                     if (authRoute == AuthRoute.LOG_IN.name) setToLoginUi() else setToSignUpUi()
-                    showCredentialsUi(auth)
+                    showCredentialsUi()
                 }
             }
             else -> {
@@ -73,7 +84,15 @@ class AuthActivity : AppCompatActivity() {
                         launchHome(firebaseUser, true)
                     }
                 } else {
-                    signInAnonymously(auth)
+                    launch(UI) {
+                        try {
+                            val user = authViewModel.signUpAnonymously()
+                            launchHome(user, true)
+                        } catch (e: Exception) {
+                            showErrorMessage(e.localizedMessage)
+                            e.printStackTrace()
+                        }
+                    }
                 }
             }
         }
@@ -84,18 +103,41 @@ class AuthActivity : AppCompatActivity() {
     private fun setToLoginUi() {
         confirmPassword.visibility = View.GONE
         alternateCredentialType.text = "Sign up"
-        done.setOnClickListener { logIn() }
+        done.text = "Log in"
+        done.setOnClickListener {
+            launch(UI) {
+                try {
+                    val loggedInUser = authViewModel.logIn(email.text.toString(), password.text.toString())
+                    launchHome(loggedInUser, true)
+                } catch (e: Exception) {
+                    showErrorMessage(e.localizedMessage) //TODO make sure this is a user friendly error
+                    e.printStackTrace()
+                }
+            }
+        }
         alternateCredentialType.setOnClickListener { setToSignUpUi() }
     }
 
     private fun setToSignUpUi() {
         confirmPassword.visibility = View.VISIBLE
         alternateCredentialType.text = "Log in"
-        done.setOnClickListener { signUp() }
+        done.text = "Sign up"
+        done.setOnClickListener {
+            launch(UI) {
+                try {
+                    val newlyLinkedUser = authViewModel.signUp(email.text.toString(), password.text.toString(), confirmPassword.text.toString())
+                    launchHome(newlyLinkedUser, true)
+                } catch (e: Exception) {
+                    showErrorMessage(e.localizedMessage) //TODO make sure this is a user friendly error
+                    e.printStackTrace()
+                    println(e)
+                }
+            }
+        }
         alternateCredentialType.setOnClickListener { setToLoginUi() }
     }
 
-    private fun showCredentialsUi(auth: FirebaseAuth) {
+    private fun showCredentialsUi() {
         val set = AnimatorSet()
         set.playTogether(
                 ObjectAnimator.ofFloat(container, "translationY", resources.displayMetrics.density * -100),
@@ -114,32 +156,42 @@ class AuthActivity : AppCompatActivity() {
         set.start()
     }
 
-    private fun signInAnonymously(auth: FirebaseAuth) {
-        auth.signInAnonymously().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                //launch home
-                val firebaseUser = auth.currentUser
-                Log.d(TAG, "Signed in user anonymously. Entering with user uid ${firebaseUser?.uid}...")
-                launchHome(firebaseUser, true)
-            } else {
-                Log.d(TAG, "Unable to sign in user anonymously. Entering guest mode...")
-                launchHome(null, true)
+    private var lastErrorStateIsShown = false
+
+    private fun showErrorMessage(message: String) {
+        synchronized(lastErrorStateIsShown) {
+            if (!lastErrorStateIsShown) {
+                error.text = message
+                error?.animation?.cancel()
+                AnimatorInflater.loadAnimator(this, R.animator.error_text_enter)
+                        .apply {
+                            interpolator = FastOutSlowInInterpolator()
+                            setTarget(error)
+                            start()
+                        }
+                lastErrorStateIsShown = true
             }
         }
     }
 
-    private fun logIn() {
-        //TODO
+    private fun hideErrorMessage() {
+        if (lastErrorStateIsShown) {
+            synchronized(lastErrorStateIsShown) {
+                lastErrorStateIsShown = false
+                error?.animation?.cancel()
+                AnimatorInflater.loadAnimator(this, R.animator.error_text_exit)
+                        .apply {
+                            interpolator = FastOutLinearInInterpolator()
+                            setTarget(error)
+                            start()
+                        }
+            }
+        }
     }
-
-    private fun signUp() {
-        //TODO
-    }
-
-
 
     private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
+        //TODO use showErrorMessage() to show any validation errors
         (application as App).user = User(user, Config.DEBUG_USER_IS_PREMIUM)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)

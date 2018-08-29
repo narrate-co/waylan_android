@@ -10,18 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".ui.auth.AuthActivity"
             android:theme="@style/AppTheme.Splash">
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".data.DatabaseSeedService" />
 
@@ -29,6 +29,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
     </application>
 
 </manifest>

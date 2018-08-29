@@ -12,6 +12,8 @@
     <color name="colorWordsLightTextLight">#50ffffff</color>
     <color name="colorWordsLightTextMedium">#80ffffff</color>
 
+    <color name="colorWordsErrorText">#35ff0000</color>
+
     <color name="colorWordsDarkSolidExtraLight">#10000000</color>
 
     <color name="colorWordsDarkStrokeExtraLight">#10000000</color>
@@ -24,5 +26,6 @@
     <color name="colorWordsPinkAlpha">#50ed1e79</color>
     <color name="colorWordsNavy">#344955</color>
     <color name="colorWordsNavyDark">#2a3a44</color>
+
 
 </resources>

@@ -28,6 +28,7 @@
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:visibility="gone"
+            tools:visibility="visible"
             android:layout_marginLeft="@dimen/keyline_3"
             android:layout_marginRight="@dimen/keyline_3"
             app:layout_constraintTop_toBottomOf="@+id/logo">
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_input_background"
                 android:padding="@dimen/keyline_3"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
 
@@ -75,25 +77,63 @@
 
             </LinearLayout>
 
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/done"
+                android:id="@+id/error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_3"
+                android:paddingLeft="@dimen/keyline_3"
+                android:paddingRight="@dimen/keyline_3"
+                android:layout_marginTop="@dimen/keyline_2"
+                android:layout_marginBottom="@dimen/keyline_2"
+                android:text="Password must contain at least one number or symbol."
+                android:alpha="0"
+                android:textColor="@color/colorWordsErrorText"
+                android:textSize="12sp"
+                android:fontFamily="@font/source_sans_pro"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_2"
+                >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/alternateCredentialType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
-                android:text="Done"
+                android:paddingLeft="@dimen/keyline_3"
+                android:text="Log in"
                 style="@style/Words.Widget.TextView.MenuTitle"
-                android:textSize="18sp"
-                android:gravity="right"
+                android:textSize="14sp"
+                android:textColor="@color/colorWordsDarkTextMedium"
+                android:gravity="left"
+                android:layout_gravity="left|center_vertical"
                 android:background="?selectableItemBackground"
                 />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="@dimen/keyline_3"
+                android:text="Sign up"
+                style="@style/Words.Widget.TextView.MenuTitle"
+                android:textSize="18sp"
+                android:gravity="right|center_vertical"
+                android:layout_gravity="right|center_vertical"
+                android:background="?selectableItemBackground"
+                />
+            </FrameLayout>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cancel"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
@@ -102,22 +142,10 @@
                 style="@style/Words.Widget.TextView.MenuTitle"
                 android:textSize="18sp"
                 android:gravity="right"
+                android:layout_gravity="right"
                 android:background="?selectableItemBackground"
                 />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/alternateCredentialType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/keyline_3"
-                android:text="Log in"
-                style="@style/Words.Widget.TextView.MenuTitle"
-                android:textSize="18sp"
-                android:gravity="right"
-                android:background="?selectableItemBackground"
-                />
 
 
         </LinearLayout>
