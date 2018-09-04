@@ -159,8 +159,8 @@ class Definition {
     @field:ElementList(inline = true, entry = "sn", required = false)
     var sn: MutableList<String> = mutableListOf()
 
-    @field:Element(name = "sd", required = false)
-    var sd: String = ""
+    @field:ElementList(entry = "sd", inline = true, required = false)
+    var sd: MutableList<String> = mutableListOf()
 
     @field:ElementList(entry = "ssl", inline = true, required = false)
     var ssl: MutableList<String> = mutableListOf()
@@ -178,6 +178,9 @@ class Definition {
     @field:ElementList(inline = true, entry = "dt", type = FormattedString::class)
     @field:Convert(FormattedStringConverter::class)
     var dts: MutableList<FormattedString> = mutableListOf()
+
+    @field:ElementList(entry = "snp", inline = true, required = false)
+    var snps: MutableList<String> = mutableListOf()
 
 }
 
@@ -308,6 +311,7 @@ class FormattedStringConverter: Converter<FormattedString> {
 
 val Entry.toDbMwWord: Word
     get()  = Word(
+            this.id,
             this.word,
             this.subj,
             this.phonetic,
@@ -326,7 +330,8 @@ val Entry.toDbMwDefinitions: List<com.words.android.data.disk.mw.Definition>
         }
         return listOf(
                 com.words.android.data.disk.mw.Definition(
-                        "${this.word}${orderedDefs.hashCode()}",
+                        "${this.id}${orderedDefs.hashCode()}",
+                        this.id,
                         this.word,
                         this.def.date,
                         orderedDefs

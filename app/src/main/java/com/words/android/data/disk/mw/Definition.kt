@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey
 
 @Entity(
         tableName = "mw_definitions",
-        indices = [(Index("parentWord"))],
+        indices = [(Index("parentId", "parentWord"))],
         foreignKeys = [
                 ForeignKey(
                         entity = Word::class,
-                        parentColumns = ["word"],
-                        childColumns = ["parentWord"],
+                        parentColumns = ["id"],
+                        childColumns = ["parentId"],
                         deferred = true
                 )
         ]
@@ -20,6 +20,7 @@ import androidx.room.PrimaryKey
 data class Definition(
         @PrimaryKey
         var id: String = "",
+        val parentId: String,
         val parentWord: String,
         val date: String,
         val definitions: List<OrderedDefinitionItem>
@@ -32,12 +33,13 @@ data class Definition(
         println("mw.Definition::comparing THIS: $this | OTHER: $other")
 
         return id == other.id &&
+                parentId == other.parentId &&
                 parentWord == other.parentWord &&
                 definitions.containsAll(other.definitions)
 //        Date excluded!
     }
 
     override fun toString(): String {
-        return "$id, $parentWord, $date, $definitions"
+        return "$id, $parentId, $parentWord, $date, $definitions"
     }
 }

@@ -9,6 +9,7 @@ import com.google.android.material.card.MaterialCardView
 import com.words.android.R
 import com.words.android.data.disk.mw.Definition
 import com.words.android.data.disk.mw.Word
+import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.util.contentEquals
 import com.words.android.util.fromHtml
 import kotlinx.android.synthetic.main.details_source_card_layout.view.*
@@ -30,12 +31,32 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
     private var lastDefinitionList: List<Definition> = emptyList()
 
     fun clear() {
+        println("$TAG::clear")
         lastDefinitionList = emptyList()
+        definitionsContainer.removeAllViews()
         partOfSpeech.text = ""
+        visibility = View.GONE
+    }
+
+    fun setWordAndDefinitions(entries: List<WordAndDefinitions>?) {
+        //TODO add ability to show all entries
+        entries?.firstOrNull()?.let {
+            if (it.word == null && (it.definitions == null || it.definitions.isEmpty())) {
+                //NO MERRIAM WEBSTER WORD
+                //unless it's been erased from the db to be replaced by the new api retrieved word
+                //TODO avoid clearing because an entry is being replaced in the DB
+                clear()
+            } else {
+                setWord(it.word)
+                setDefinitions(it.definitions)
+            }
+        } ?: clear()
+
     }
 
 
-    fun setWord(word: Word?) {
+    private fun setWord(word: Word?) {
+
         if (word == null) return
 
         val sb = StringBuilder()
@@ -44,23 +65,22 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
         if (partOfSpeech.text != sb.toString()) {
             partOfSpeech.text = sb.toString()
         }
-
     }
 
-    fun setDefinitions(definitions: List<Definition>?) {
-        if (definitions != null && !lastDefinitionList.contentEquals(definitions)) {
+    private fun setDefinitions(definitions: List<Definition>?) {
+        if (definitions != null && definitions.isNotEmpty() && !lastDefinitionList.contentEquals(definitions)) {
 
             println("$TAG::setDefinitions - different. LAST: $lastDefinitionList | NEW: $definitions")
             //we've got new definitions!
             lastDefinitionList = definitions
 
             definitionsContainer.removeAllViews()
-            //TODO handle visibility in another place - take care of words w/o MW entries
-//            visibility = View.VISIBLE
 
             definitions.flatMap { it.definitions }.forEachIndexed { i, it ->
                 definitionsContainer.addView(createMwDefinitionView(it.def))
             }
+
+            visibility = View.VISIBLE
         } else {
             //definitions is either null or the same as what's already added
             println("$TAG::setDefinitions - null or the same as what's already set. LAST: $lastDefinitionList | NEW: $definitions")

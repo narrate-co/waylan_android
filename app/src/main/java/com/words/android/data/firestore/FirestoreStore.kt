@@ -110,11 +110,13 @@ class FirestoreStore(
     }
 
     //get all favorites for user
-    fun getFavorites(): LiveData<List<UserWord>> {
-        return firestore.userWords(user.uid)
+    fun getFavorites(limit: Long? = null): LiveData<List<UserWord>> {
+        val query = firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
-                .liveData(UserWord::class.java)
+        if (limit != null) query.limit(limit)
+
+        return query.liveData(UserWord::class.java)
     }
 
     //favorite a word for user
@@ -133,11 +135,13 @@ class FirestoreStore(
         }
     }
 
-    fun getRecents(): LiveData<List<UserWord>> {
-        return firestore.userWords(user.uid)
+    fun getRecents(limit: Long? = null): LiveData<List<UserWord>> {
+        val query = firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.RECENT.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
-                .liveData(UserWord::class.java)
+        if (limit != null) query.limit(limit)
+
+        return query.liveData(UserWord::class.java)
     }
 
     suspend fun setRecent(id: String) {

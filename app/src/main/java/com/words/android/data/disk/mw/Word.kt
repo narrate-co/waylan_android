@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "mw_words")
 data class Word(
         @PrimaryKey
+        val id: String,
         val word: String,
         val subj: String,
         val phonetic: String,
@@ -21,9 +22,8 @@ data class Word(
             if (other !is Word) return false
             if (this === other) return true
 
-            println("mw.Word::comparing THIS: ${this.toString()} | OTHER: ${other.toString()}")
-
-            return word == other.word &&
+            return id == other.id &&
+                    word == other.word &&
                     subj == other.subj &&
                     phonetic == other.phonetic &&
                     sound == other.sound &&
@@ -34,6 +34,6 @@ data class Word(
         }
 
     override fun toString(): String {
-        return "$word, $subj, $phonetic, $sound, $pronunciation, $partOfSpeech, $etymology"
+        return "$id, $word, $subj, $phonetic, $sound, $pronunciation, $partOfSpeech, $etymology"
     }
 }

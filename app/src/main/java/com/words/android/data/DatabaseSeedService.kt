@@ -42,6 +42,7 @@ class DatabaseSeedService: Service() {
                 .setContentTitle(getString(R.string.data_seed_notification_title))
                 .setContentText(getString(R.string.data_seed_notification_text))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setSmallIcon(R.drawable.ic_logo_notif)
                 .setProgress(0, 0, true)
                 .build()
 

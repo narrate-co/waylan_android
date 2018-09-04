@@ -20,6 +20,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //TODO dynamically add settings
         //TODO create custom setting item view
+        navigationIcon.setOnClickListener { onBackPressed() }
 
         pushNotificationsSetting.settingsTitle.text = "Push notifications"
         pushNotificationsSetting.settingsDescription.text = "Enable notifications to remind you of words you’ve recently looked up"
@@ -43,6 +44,7 @@ class SettingsActivity : AppCompatActivity() {
             //TODO remove accountDialogCard
             accountDialogCard.visibility = View.GONE
             //TODO add setting to log out
+            signOutSetting.settingsDescription.text = FirebaseAuth.getInstance().currentUser?.email ?: "Exit and log in with a different account"
             signOutSetting.visibility = View.VISIBLE
         }
 

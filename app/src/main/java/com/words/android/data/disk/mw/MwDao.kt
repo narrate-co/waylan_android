@@ -20,11 +20,11 @@ interface MwDao {
 
     @Transaction
     @Query("SELECT * FROM mw_words WHERE word = :word")
-    fun getWordAndDefinitions(word: String): LiveData<WordAndDefinitions>
+    fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>>
 
-    @Query("DELETE FROM mw_words WHERE word = :word")
-    fun deleteWord(word: String)
+    @Query("DELETE FROM mw_words WHERE id = :id")
+    fun deleteWord(id: String)
 
-    @Query("DELETE FROM mw_definitions WHERE parentWord = :parentWord")
-    fun deleteDefinitions(parentWord: String)
+    @Query("DELETE FROM mw_definitions WHERE parentId = :parentId")
+    fun deleteDefinitions(parentId: String)
 }

@@ -6,7 +6,7 @@ import androidx.room.Relation
 data class WordAndDefinitions(
         @Embedded
         var word: Word? = null,
-        @Relation(parentColumn = "word", entityColumn = "parentWord")
+        @Relation(parentColumn = "id", entityColumn = "parentId")
         var definitions: List<Definition> = ArrayList()
 )
 

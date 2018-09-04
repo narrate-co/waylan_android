@@ -14,6 +14,7 @@ import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.data.disk.mw.Definition
+import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
 import com.words.android.databinding.DetailsFragmentBinding
@@ -52,10 +53,9 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
 
         sharedViewModel.currentWord.observe(this, Observer {
-            println("DetailsFragment::currentWordChanged!. currentWordValue: ${currentWordValue.mwWord?.word ?: "NULL"} newCurrentWordValue: ${it?.mwWord?.word ?: "NULL"}")
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
-            setMerriamWebster(it?.mwWord, it?.mwDefinitions)
+            setMerriamWebster(it?.mwEntry)
             setUserWord(it?.userWord)
         })
 
@@ -64,6 +64,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
 
     override fun onStop() {
         super.onStop()
+        println("$TAG::onStop")
         currentWordValue = Word()
         view?.merriamDefinitionsLinearLayout?.clear()
     }
@@ -79,22 +80,16 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
-    private fun setMerriamWebster(mwWord: com.words.android.data.disk.mw.Word?, mwDefinitions: List<Definition>?) {
+    private fun setMerriamWebster(entry: List<WordAndDefinitions>?) {
         //TODO handle words w/o MW Entries!
-        if (mwWord == null || mwDefinitions == null) return
+//        println("$TAG::setMerriamWebster - LAST: ${currentWordValue.mwWord} | NEW: $mwWord")
+        println("$TAG::setMerriamWebster - LAST: ${currentWordValue.mwEntry} | NEW: $entry")
 
-        if (mwWord != currentWordValue.mwWord) {
-            println("$TAG::setMerriamWebster - word is different. LAST: ${currentWordValue.mwWord} | NEW: $mwWord")
-            currentWordValue.mwWord = mwWord
-            view?.merriamDefinitionsLinearLayout?.setWord(mwWord)
-        }
+        view?.merriamDefinitionsLinearLayout?.setWordAndDefinitions(entry)
 
-        if (mwDefinitions != currentWordValue.mwDefinitions) {
-            println("$TAG::setMerriamWebster - definitions are different. LAST: ${currentWordValue.mwDefinitions} | NEW $mwDefinitions")
-            currentWordValue.mwDefinitions = mwDefinitions
-            view?.merriamDefinitionsLinearLayout?.setDefinitions(mwDefinitions)
-        }
+        currentWordValue.mwEntry = entry  ?: emptyList()
 
+//        currentWordValue.mwDefinitions = mwDefinitions ?: emptyList()
     }
 
 

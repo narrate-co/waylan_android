@@ -24,7 +24,7 @@ class MerriamWebsterStore(
         private const val DEV_KEY = "d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2"
     }
 
-    fun getWord(word: String): LiveData<WordAndDefinitions> {
+    fun getWord(word: String): LiveData<List<WordAndDefinitions>> {
         //asynchronously get the word from the mw service
         launch { merriamWebsterService.getWord(word, DEV_KEY).enqueue(mwApiWordCallback) }
 
@@ -49,17 +49,13 @@ class MerriamWebsterStore(
                         Log.d(TAG, "Deleting all definitions with parent word: ${it.word}")
                         mwDao.deleteDefinitions(it.word)
 
-
-                        Log.d(TAG, "Deleting entry word: ${it.word}")
-                        mwDao.deleteWord(it.word)
-
                     }
 
 
                     entryList.entries.forEach {
                         val word = it.toDbMwWord
 
-                        Log.d(TAG, "Adding entry word: ${word.word}")
+                        Log.d(TAG, "Replacing entry word: ${word.word}")
                         mwDao.insert(word)
                     }
 

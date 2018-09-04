@@ -28,8 +28,8 @@ class MainViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
     fun getList(type: ListFragment.ListType): LiveData<List<Word>> {
         return when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getFavorites()
-            ListFragment.ListType.RECENT -> wordRepository.getRecents()
+            ListFragment.ListType.TRENDING -> wordRepository.getFavorites(20L)
+            ListFragment.ListType.RECENT -> wordRepository.getRecents(75L)
             ListFragment.ListType.FAVORITE -> wordRepository.getFavorites()
         }
     }

@@ -43,10 +43,11 @@ class WordRepository(
             mediatorLiveData.value = word
         }
         mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            println("WordRepo - mediatorLiveData merriamWebsterWord = ${it?.word?.word}. DEFINITIONS: ${it?.definitions}")
+            println("WordRepo - mediatorLiveData merriamWebsterWordAndDefintions = $it")
             val word = mediatorLiveData.value ?: Word()
-            word.mwWord = it?.word
-            word.mwDefinitions = it?.definitions ?: emptyList()
+            word.mwEntry = it ?: emptyList()
+//            word.mwWord = it?.word
+//            word.mwDefinitions = it?.definitions ?: emptyList()
             mediatorLiveData.value = word
         }
 
@@ -60,16 +61,16 @@ class WordRepository(
         return firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty()
     }
 
-    private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<WordAndDefinitions> {
+    private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<List<WordAndDefinitions>> {
         //TODO save mw words to local db!
         return merriamWebsterStore?.getWord(id) ?: LiveDataHelper.empty()
     }
 
-    fun getFavorites(): LiveData<List<Word>> {
+    fun getFavorites(limit: Long? = null): LiveData<List<Word>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
 
         val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.addSource(firestoreStore.getFavorites()) {
+        mediatorLiveData.addSource(firestoreStore.getFavorites(limit)) {
             mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
         }
 
@@ -82,11 +83,11 @@ class WordRepository(
         }
     }
 
-    fun getRecents(): LiveData<List<Word>> {
+    fun getRecents(limit: Long? = null): LiveData<List<Word>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
 
         val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.addSource(firestoreStore.getRecents()) {
+        mediatorLiveData.addSource(firestoreStore.getRecents(limit)) {
             mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
         }
 
