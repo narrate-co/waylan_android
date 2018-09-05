@@ -15,6 +15,7 @@
     <color name="colorWordsErrorText">#35ff0000</color>
 
     <color name="colorWordsDarkSolidExtraLight">#10000000</color>
+    <color name="colorWordsErrorSolid">#edd1d1</color>
 
     <color name="colorWordsDarkStrokeExtraLight">#10000000</color>
     <color name="colorWordsDarkStrokeLight">#25000000</color>

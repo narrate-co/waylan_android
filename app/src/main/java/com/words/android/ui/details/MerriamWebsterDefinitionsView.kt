@@ -12,6 +12,7 @@ import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.util.contentEquals
 import com.words.android.util.fromHtml
+import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_source_card_layout.view.*
 
 class MerriamWebsterDefinitionsView @JvmOverloads constructor(
@@ -64,6 +65,22 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
         sb.append("  |  ${word.phonetic.replace("*", " • ")}")
         if (partOfSpeech.text != sb.toString()) {
             partOfSpeech.text = sb.toString()
+        }
+
+        //TODO make this diffing smarter
+        if (word.relatedWords.isNotEmpty()) {
+            relatedWordsChipGroup.removeAllViews()
+            word.relatedWords.forEach {
+                relatedWordsChipGroup?.addView(it.toChip(context, relatedWordsChipGroup) {
+                    //TODO add chip onClick listener callback invocation
+                })
+            }
+            relatedWordsHeader.visibility = View.VISIBLE
+            relatedWordsChipGroup.visibility = View.VISIBLE
+        } else {
+            relatedWordsChipGroup.removeAllViews()
+            relatedWordsHeader.visibility = View.GONE
+            relatedWordsChipGroup.visibility = View.GONE
         }
     }
 

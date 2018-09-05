@@ -309,8 +309,9 @@ class FormattedStringConverter: Converter<FormattedString> {
     }
 }
 
-val Entry.toDbMwWord: Word
-    get()  = Word(
+fun Entry.toDbMwWord(parentEntryList: EntryList): Word {
+    val relatedWords = parentEntryList.entries.map { it.word }.filterNot { it != this.word }
+    return Word(
             this.id,
             this.word,
             this.subj,
@@ -319,7 +320,10 @@ val Entry.toDbMwWord: Word
             this.pronunciation.value,
             this.partOfSpeech,
             this.etymology.value,
+            relatedWords,
             com.words.android.data.disk.mw.Uro(this.uro.firstOrNull()?.ure ?: "", this.uro.firstOrNull()?.fl ?: ""))
+}
+
 
 val Entry.toDbMwDefinitions: List<com.words.android.data.disk.mw.Definition>
     get() {

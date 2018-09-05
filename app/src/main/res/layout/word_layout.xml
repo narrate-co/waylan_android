@@ -8,6 +8,9 @@
             name="word"
             type="com.words.android.data.disk.wordset.Word"/>
         <variable
+            name="userWord"
+            type="com.words.android.data.firestore.UserWord"/>
+        <variable
             name="clickListener"
             type="android.view.View.OnClickListener"/>
     </data>
@@ -29,7 +32,7 @@
         android:layout_marginLeft="@dimen/keyline_3"
         android:layout_marginRight="@dimen/keyline_3"
         android:alpha=".5"
-        app:srcCompat="@drawable/ic_round_access_time_black_24px"/>
+        app:srcCompat='@{userWord != null ? "@drawable/ic_round_access_time_black_24px" : "@drawable/ic_round_search_24px"}'/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/wordText"
@@ -40,7 +43,7 @@
         android:gravity="center_vertical"
         style="@style/Words.Widget.TextView.ListItem"
         tools:text="quiescent"
-        android:text="@{word.word}"
+        android:text="@{word.word ?? userWord.word}"
         />
 
 </LinearLayout>

@@ -85,7 +85,30 @@
         android:paddingBottom="@dimen/keyline_3"
         android:orientation="vertical"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/relatedWordsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            tools:text="Also see:"
+            style="@style/Words.Widget.TextView.PartOfSpeech"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/relatedWordsChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="true"
+            android:scrollbars="none"
+            android:paddingBottom="@dimen/keyline_3"
+            android:visibility="gone"/>
+
     </LinearLayout>
+
+
 
 
 

@@ -22,6 +22,15 @@ fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: 
     return chip
 }
 
+fun String.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((word: String) -> Unit)? = null): Chip {
+    val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip
+    chip.chipText = this
+    chip.setOnClickListener {
+        if (onClick != null) onClick(this)
+    }
+    return chip
+}
+
 fun Activity.hideSoftKeyboard() {
     val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     val view = currentFocus ?: View(this)

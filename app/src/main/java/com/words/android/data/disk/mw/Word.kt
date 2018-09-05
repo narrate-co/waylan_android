@@ -15,6 +15,7 @@ data class Word(
         val pronunciation: String,
         val partOfSpeech: String,
         val etymology: String,
+        val relatedWords: List<String>,
         val uro: Uro
 ) {
         override fun equals(other: Any?): Boolean {

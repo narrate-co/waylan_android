@@ -51,9 +51,8 @@ class MerriamWebsterStore(
 
                     }
 
-
                     entryList.entries.forEach {
-                        val word = it.toDbMwWord
+                        val word = it.toDbMwWord(entryList)
 
                         Log.d(TAG, "Replacing entry word: ${word.word}")
                         mwDao.insert(word)

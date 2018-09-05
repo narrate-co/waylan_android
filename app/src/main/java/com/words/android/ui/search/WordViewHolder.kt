@@ -14,12 +14,14 @@ class WordViewHolder(private val binding: WordLayoutBinding, private val handler
 
     fun bind(word: Word) {
         binding.word = word.dbWord ?: Word().dbWord
+        binding.userWord = word.userWord
         binding.clickListener = this
         binding.executePendingBindings()
     }
 
     fun clear() {
         binding.word = null
+        binding.userWord = null
         binding.executePendingBindings()
     }
 

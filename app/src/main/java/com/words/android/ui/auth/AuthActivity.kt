@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.drawable.TransitionDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -169,6 +170,9 @@ class AuthActivity : AppCompatActivity() {
                             setTarget(error)
                             start()
                         }
+                val bgTransition = editTextContainer.background as TransitionDrawable
+                bgTransition.isCrossFadeEnabled = true
+                bgTransition.startTransition(200)
                 lastErrorStateIsShown = true
             }
         }
@@ -185,6 +189,9 @@ class AuthActivity : AppCompatActivity() {
                             setTarget(error)
                             start()
                         }
+                val bgTransition = editTextContainer.background as TransitionDrawable
+                bgTransition.isCrossFadeEnabled = true
+                bgTransition.resetTransition()
             }
         }
     }

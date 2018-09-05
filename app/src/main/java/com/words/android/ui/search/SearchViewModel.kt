@@ -18,7 +18,11 @@ class SearchViewModel(val wordRepository: WordRepository): ViewModel() {
         }
     private val searchInputData: MutableLiveData<String> = MutableLiveData()
     val searchResults: LiveData<List<Word>> = Transformations.switchMap(searchInputData) {
-        wordRepository.filterWords(it)
+        if (it.isEmpty()) {
+            wordRepository.getRecents(25L)
+        } else {
+            wordRepository.filterWords(it)
+        }
     }
 
 }

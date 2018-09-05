@@ -13,6 +13,4 @@ data class Word(
         var dbMeanings: List<Meaning> = emptyList(),
         var fsMeanings: List<com.words.android.data.firestore.Meaning>? = emptyList(),
         var mwEntry: List<WordAndDefinitions> = emptyList()
-//        var mwWord: List<com.words.android.data.disk.mw.Word> = emptyList(),
-//        var mwDefinitions: List<Definition> = emptyList()
 )
