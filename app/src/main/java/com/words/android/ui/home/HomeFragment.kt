@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.home_fragment.view.*
 class HomeFragment: Fragment() {
 
     companion object {
+        const val FRAGMENT_TAG = "home_fragment_tag"
         fun newInstance() = HomeFragment()
     }
 

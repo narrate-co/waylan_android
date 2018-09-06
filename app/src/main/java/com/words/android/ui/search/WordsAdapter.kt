@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.words.android.R
 import com.words.android.data.repository.Word
-import com.words.android.databinding.WordLayoutBinding
+import com.words.android.databinding.SearchWordLayoutBinding
 
 class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<Word, WordViewHolder>(diffCallback), WordViewHolder.WordViewHolderHandlers {
 
@@ -26,9 +26,9 @@ class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<Word,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-        val binding: WordLayoutBinding = DataBindingUtil.inflate(
+        val binding: SearchWordLayoutBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.word_layout, parent,
+                R.layout.search_word_layout, parent,
                 false)
         return WordViewHolder(binding, this)
     }

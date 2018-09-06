@@ -65,10 +65,24 @@
 
 
     <!--Shared-->
+    <style name="Words.Widget.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/Words.TextAppearance.Chip</item>
+        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
+    </style>
     <style name="Words.TextAppearance.Chip" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textColor">@color/colorWordsDarkTextLight</item>
         <item name="android:fontFamily">@font/source_code_pro</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Words.Widget.Chip.Related" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/Words.TextAppearance.RelatedChip</item>
+        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
+    </style>
+    <style name="Words.TextAppearance.RelatedChip" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
+        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Words.Widget.TextView.PartOfSpeech" parent="AppTheme">

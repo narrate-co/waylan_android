@@ -13,6 +13,7 @@ import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.util.contentEquals
 import com.words.android.util.fromHtml
 import com.words.android.util.toChip
+import com.words.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.details_source_card_layout.view.*
 
 class MerriamWebsterDefinitionsView @JvmOverloads constructor(
@@ -40,6 +41,8 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
     }
 
     fun setWordAndDefinitions(entries: List<WordAndDefinitions>?) {
+        //TODO show card with relevant words even if definitions are null
+        println("$TAG::setWordAndDefinitions - ${entries?.map { it.word }}")
         //TODO add ability to show all entries
         entries?.firstOrNull()?.let {
             if (it.word == null && (it.definitions == null || it.definitions.isEmpty())) {
@@ -71,7 +74,7 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
         if (word.relatedWords.isNotEmpty()) {
             relatedWordsChipGroup.removeAllViews()
             word.relatedWords.forEach {
-                relatedWordsChipGroup?.addView(it.toChip(context, relatedWordsChipGroup) {
+                relatedWordsChipGroup?.addView(it.toRelatedChip(context, relatedWordsChipGroup) {
                     //TODO add chip onClick listener callback invocation
                 })
             }

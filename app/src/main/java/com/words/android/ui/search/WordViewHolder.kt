@@ -3,9 +3,9 @@ package com.words.android.ui.search
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.data.repository.Word
-import com.words.android.databinding.WordLayoutBinding
+import com.words.android.databinding.SearchWordLayoutBinding
 
-class WordViewHolder(private val binding: WordLayoutBinding, private val handlers: WordViewHolderHandlers):
+class WordViewHolder(private val binding: SearchWordLayoutBinding, private val handlers: WordViewHolderHandlers):
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
     interface WordViewHolderHandlers {

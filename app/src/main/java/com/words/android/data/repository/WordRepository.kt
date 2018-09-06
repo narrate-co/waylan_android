@@ -10,6 +10,7 @@ import com.words.android.data.firestore.UserWord
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.util.LiveDataHelper
 import kotlinx.coroutines.experimental.launch
+import org.threeten.bp.OffsetDateTime
 
 class WordRepository(
         private val db: AppDatabase,
@@ -46,8 +47,6 @@ class WordRepository(
             println("WordRepo - mediatorLiveData merriamWebsterWordAndDefintions = $it")
             val word = mediatorLiveData.value ?: Word()
             word.mwEntry = it ?: emptyList()
-//            word.mwWord = it?.word
-//            word.mwDefinitions = it?.definitions ?: emptyList()
             mediatorLiveData.value = word
         }
 

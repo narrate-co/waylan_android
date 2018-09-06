@@ -16,12 +16,6 @@ import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-                .of(this, (application as App).viewModelFactory)
-                .get(MainViewModel::class.java)
-    }
-
     private val homeFragment by lazy { HomeFragment.newInstance() }
     private val detailsFragment by lazy { DetailsFragment.newInstance() }
     private val favoriteFragment by lazy { ListFragment.newInstance(ListFragment.ListType.FAVORITE) }
@@ -47,32 +41,35 @@ class MainActivity : AppCompatActivity() {
         bottomSheet.setBottomSheetCallback(bottomSheetSkrimCallback)
     }
 
-    fun showDetails() {
-        if (!detailsFragment.isAdded) {
-            //replace
-            supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                    .replace(R.id.fragmentContainer, detailsFragment)
-                    .addToBackStack(DetailsFragment.FRAGMENT_TAG)
-                    .commit()
+    override fun onBackPressed() {
+        if (handleFragmentOnBackPressed()) return
+
+        super.onBackPressed()
+    }
+
+    private fun handleFragmentOnBackPressed(): Boolean {
+        if (bottomSheet.state != BottomSheetBehavior.STATE_HIDDEN && bottomSheet.state != BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
+            return true
         }
+
+        return false
+    }
+
+    fun showDetails() {
+        Navigator.showDetails(this, detailsFragment)
     }
 
     fun showListFragment(type: ListFragment.ListType) {
-        supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                .replace(R.id.fragmentContainer, when (type) {
-                    ListFragment.ListType.TRENDING -> trendingFragment
-                    ListFragment.ListType.RECENT -> recentFragment
-                    ListFragment.ListType.FAVORITE -> favoriteFragment
-                })
-                .addToBackStack(type.fragmentTag)
-                .commit()
+        Navigator.showListFragment(this, type, when (type) {
+            ListFragment.ListType.TRENDING -> trendingFragment
+            ListFragment.ListType.RECENT -> recentFragment
+            ListFragment.ListType.FAVORITE -> favoriteFragment
+        })
     }
 
     fun launchSettings() {
+        //TODO move into Navigator
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 

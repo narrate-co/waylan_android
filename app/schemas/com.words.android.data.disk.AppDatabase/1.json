@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "792a9196c88bb7e3ae608198415dc9b3",
+    "identityHash": "e0e439914694baf510011d2adc1df38d",
     "entities": [
       {
         "tableName": "words",
@@ -121,7 +121,7 @@
       },
       {
         "tableName": "mw_words",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `word` TEXT NOT NULL, `subj` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `sound` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `word` TEXT NOT NULL, `subj` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `sound` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `relatedWords` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -168,6 +168,12 @@
           {
             "fieldPath": "etymology",
             "columnName": "etymology",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "relatedWords",
+            "columnName": "relatedWords",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -256,7 +262,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"792a9196c88bb7e3ae608198415dc9b3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e0e439914694baf510011d2adc1df38d\")"
     ]
   }
 }

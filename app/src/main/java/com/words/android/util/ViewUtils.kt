@@ -2,6 +2,8 @@ package com.words.android.util
 
 import android.app.Activity
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +24,12 @@ fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: 
     return chip
 }
 
-fun String.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((word: String) -> Unit)? = null): Chip {
-    val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip
-    chip.chipText = this
+fun String.toRelatedChip(context: Context, chipGroup: ChipGroup?, onClick: ((word: String) -> Unit)? = null): Chip {
+    val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_related_chip_layout, chipGroup, false) as Chip
+    val underlinedString = SpannableString(this)
+    underlinedString.setSpan(UnderlineSpan(),0,this.length,0)
+//    chip.chipText = underlinedString
+    chip.text = underlinedString
     chip.setOnClickListener {
         if (onClick != null) onClick(this)
     }

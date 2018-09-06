@@ -1,7 +1,6 @@
 package com.words.android.ui.details
 
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.disk.mw.Definition
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
@@ -21,7 +19,6 @@ import com.words.android.databinding.DetailsFragmentBinding
 import com.words.android.data.firestore.UserWord
 import com.words.android.data.firestore.UserWordType
 import com.words.android.data.repository.Word
-import com.words.android.util.fromHtml
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
@@ -68,6 +65,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         currentWordValue = Word()
         view?.merriamDefinitionsLinearLayout?.clear()
     }
+
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         return when (item?.itemId) {

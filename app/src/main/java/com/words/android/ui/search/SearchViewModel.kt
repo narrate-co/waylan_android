@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
 
-class SearchViewModel(val wordRepository: WordRepository): ViewModel() {
+class SearchViewModel(private val wordRepository: WordRepository): ViewModel() {
 
     var searchInput: String = ""
         set(value) {
@@ -23,6 +23,10 @@ class SearchViewModel(val wordRepository: WordRepository): ViewModel() {
         } else {
             wordRepository.filterWords(it)
         }
+    }
+
+    init {
+        searchInputData.value = ""
     }
 
 }

@@ -191,7 +191,7 @@ class AuthActivity : AppCompatActivity() {
                         }
                 val bgTransition = editTextContainer.background as TransitionDrawable
                 bgTransition.isCrossFadeEnabled = true
-                bgTransition.resetTransition()
+                bgTransition.reverseTransition(200)
             }
         }
     }

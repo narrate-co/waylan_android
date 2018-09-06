@@ -76,8 +76,8 @@ class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
     }
 
     override fun onWordClicked(word: Word) {
-        println("SearchFragment::onWordClicked")
-        sharedViewHolder.setCurrentWordId(word.dbWord?.word ?: "")
+        println("SearchFragment::onWordClicked dbWord: ${word.dbWord?.word}, userWord: ${word.userWord?.word}")
+        sharedViewHolder.setCurrentWordId(word.dbWord?.word ?: word.userWord?.word ?: "")
         hideKeyboard = true
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         activity?.hideSoftKeyboard()
