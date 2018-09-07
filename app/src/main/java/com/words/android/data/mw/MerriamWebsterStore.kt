@@ -51,8 +51,10 @@ class MerriamWebsterStore(
 
                     }
 
+                    //TODO group words by unique word? ie. 'empty' has an entry for adj., verb & noun. How do we handle this?
+                    val relatedWords = entryList.entries.map { it.word }
                     entryList.entries.forEach {
-                        val word = it.toDbMwWord(entryList)
+                        val word = it.toDbMwWord(relatedWords)
 
                         Log.d(TAG, "Replacing entry word: ${word.word}")
                         mwDao.insert(word)
