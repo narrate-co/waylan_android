@@ -11,10 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.words.android.App
-import com.words.android.MainActivity
-import com.words.android.MainViewModel
-import com.words.android.R
+import com.words.android.*
 import com.words.android.databinding.SearchFragmentBinding
 import com.words.android.data.repository.Word
 import com.words.android.util.hideSoftKeyboard
@@ -23,7 +20,7 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 
-class SearchFragment : Fragment(), WordsAdapter.WordAdapterHandlers {
+class SearchFragment : WFragment(), WordsAdapter.WordAdapterHandlers {
 
     companion object {
         fun newInstance() = SearchFragment()

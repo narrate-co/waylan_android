@@ -13,13 +13,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.words.android.App
-import com.words.android.MainActivity
-import com.words.android.MainViewModel
-import com.words.android.R
+import com.words.android.*
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
-class ListFragment: Fragment(), ListTypeAdapter.ListTypeListener {
+class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
 
 
     enum class ListType(val fragmentTag: String, val title: String) {
@@ -27,6 +24,10 @@ class ListFragment: Fragment(), ListTypeAdapter.ListTypeListener {
     }
 
     companion object {
+        fun newTrendingInstance(): ListFragment = newInstance(ListType.TRENDING)
+        fun newRecentInstance(): ListFragment = newInstance(ListType.RECENT)
+        fun newFavoriteInstance(): ListFragment = newInstance(ListType.FAVORITE)
+
         fun newInstance(type: ListType): ListFragment {
             val listFrag = ListFragment()
             val args = Bundle()

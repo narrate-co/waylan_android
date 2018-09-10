@@ -1,7 +1,12 @@
 package com.words.android.ui.details
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -12,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.words.android.App
 import com.words.android.MainViewModel
 import com.words.android.R
+import com.words.android.WFragment
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
@@ -23,7 +29,7 @@ import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
+class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener {
 
     companion object {
         private const val TAG = "DetailsFragment"
@@ -38,6 +44,7 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
     }
 
     private var currentWordValue: Word = Word()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.details_fragment, container, false)
@@ -59,11 +66,12 @@ class DetailsFragment: Fragment(), Toolbar.OnMenuItemClickListener {
         return binding.root
     }
 
+
     override fun onStop() {
         super.onStop()
         println("$TAG::onStop")
         currentWordValue = Word()
-        view?.merriamDefinitionsLinearLayout?.clear()
+//        view?.merriamDefinitionsLinearLayout?.clear()
     }
 
 

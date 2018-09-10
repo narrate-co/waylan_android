@@ -16,11 +16,10 @@ import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val homeFragment by lazy { HomeFragment.newInstance() }
-    private val detailsFragment by lazy { DetailsFragment.newInstance() }
-    private val favoriteFragment by lazy { ListFragment.newInstance(ListFragment.ListType.FAVORITE) }
-    private val recentFragment by lazy { ListFragment.newInstance(ListFragment.ListType.RECENT) }
-    private val trendingFragment by lazy { ListFragment.newInstance(ListFragment.ListType.TRENDING) }
+//    private val detailsFragment by lazy { DetailsFragment.newInstance() }
+//    private val favoriteFragment by lazy { ListFragment.newInstance(ListFragment.ListType.FAVORITE) }
+//    private val recentFragment by lazy { ListFragment.newInstance(ListFragment.ListType.RECENT) }
+//    private val trendingFragment by lazy { ListFragment.newInstance(ListFragment.ListType.TRENDING) }
 
     private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
 
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
-                    .replace(R.id.fragmentContainer, homeFragment)
+                    .replace(R.id.fragmentContainer, HomeFragment.newInstance())
                     .commit()
         }
 
@@ -57,14 +56,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showDetails() {
-        Navigator.showDetails(this, detailsFragment)
+        Navigator.showDetails(this, DetailsFragment.newInstance())
     }
 
     fun showListFragment(type: ListFragment.ListType) {
         Navigator.showListFragment(this, type, when (type) {
-            ListFragment.ListType.TRENDING -> trendingFragment
-            ListFragment.ListType.RECENT -> recentFragment
-            ListFragment.ListType.FAVORITE -> favoriteFragment
+            ListFragment.ListType.TRENDING -> ListFragment.newTrendingInstance()
+            ListFragment.ListType.RECENT -> ListFragment.newRecentInstance()
+            ListFragment.ListType.FAVORITE -> ListFragment.newFavoriteInstance()
         })
     }
 
