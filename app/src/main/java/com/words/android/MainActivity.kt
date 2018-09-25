@@ -16,11 +16,6 @@ import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
 
-//    private val detailsFragment by lazy { DetailsFragment.newInstance() }
-//    private val favoriteFragment by lazy { ListFragment.newInstance(ListFragment.ListType.FAVORITE) }
-//    private val recentFragment by lazy { ListFragment.newInstance(ListFragment.ListType.RECENT) }
-//    private val trendingFragment by lazy { ListFragment.newInstance(ListFragment.ListType.TRENDING) }
-
     private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
-                    .replace(R.id.fragmentContainer, HomeFragment.newInstance())
+                    .replace(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.FRAGMENT_TAG)
                     .commit()
         }
 
@@ -68,8 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun launchSettings() {
-        //TODO move into Navigator
-        startActivity(Intent(this, SettingsActivity::class.java))
+        Navigator.launchSettings(this)
     }
 
 

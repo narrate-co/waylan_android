@@ -60,17 +60,20 @@ class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
-        setUpList(view)
 
         return view
     }
 
+    override fun onEnterTransactionEnded() {
+        setUpList()
+    }
 
-    private fun setUpList(view: View) {
-        view.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        view.recyclerView.adapter = adapter
+
+    private fun setUpList() {
+        view?.recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        view?.recyclerView?.adapter = adapter
         val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.list_item_divider))
-        view.recyclerView.addItemDecoration(itemDivider)
+        view?.recyclerView?.addItemDecoration(itemDivider)
 
         sharedViewModel.getList(type).observe(this, Observer {
             adapter.submitList(it)

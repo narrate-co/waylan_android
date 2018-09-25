@@ -19,15 +19,21 @@ open class WFragment: Fragment() {
 
                 override fun onAnimationEnd(p0: Animation?) {
                     view?.setLayerType(View.LAYER_TYPE_NONE, null)
+                    onEnterTransactionEnded()
                 }
 
                 override fun onAnimationStart(p0: Animation?) {
                 }
             })
+        } else {
+            onEnterTransactionEnded()
         }
 
         return animation
     }
 
     //TODO add methods to override behavior when transition starts/ends
+
+    open fun onEnterTransactionEnded() { }
+
 }

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.os.Build
 import android.os.Bundle
+import android.text.Layout
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -29,7 +30,7 @@ import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener {
+class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener, MerriamWebsterDefinitionsView.MerriamWebsterViewListener {
 
     companion object {
         private const val TAG = "DetailsFragment"
@@ -56,21 +57,23 @@ class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
+        return binding.root
+    }
+
+    // defer load intensive work until after the fragment transaction has ended
+    override fun onEnterTransactionEnded() {
         sharedViewModel.currentWord.observe(this, Observer {
             sharedViewModel.setCurrentWordRecented()
             setMeanings(it?.dbMeanings)
             setMerriamWebster(it?.mwEntry)
             setUserWord(it?.userWord)
         })
-
-        return binding.root
     }
-
 
     override fun onStop() {
         super.onStop()
-        println("$TAG::onStop")
-        currentWordValue = Word()
+//        println("$TAG::onStop")
+//        currentWordValue = Word()
 //        view?.merriamDefinitionsLinearLayout?.clear()
     }
 
@@ -86,18 +89,25 @@ class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener {
         }
     }
 
+    override fun onRelatedWordClicked(word: String) {
+        sharedViewModel.setCurrentWordId(word)
+    }
+
     private fun setMerriamWebster(entry: List<WordAndDefinitions>?) {
         //TODO handle words w/o MW Entries!
-//        println("$TAG::setMerriamWebster - LAST: ${currentWordValue.mwWord} | NEW: $mwWord")
         println("$TAG::setMerriamWebster - LAST: ${currentWordValue.mwEntry} | NEW: $entry")
 
         view?.merriamDefinitionsLinearLayout?.setWordAndDefinitions(entry)
 
         currentWordValue.mwEntry = entry  ?: emptyList()
 
-//        currentWordValue.mwDefinitions = mwDefinitions ?: emptyList()
     }
 
+    private fun createPartOfSpeechView(pos: String): AppCompatTextView {
+        val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_part_of_speech_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
+        textView.text = pos
+        return textView
+    }
 
     private fun createDefinitionView(def: String): AppCompatTextView {
         val textView: AppCompatTextView = LayoutInflater.from(context).inflate(R.layout.details_definition_layout, view?.definitionsLinearLayout, false) as AppCompatTextView
@@ -120,15 +130,12 @@ class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener {
         view?.chipGroup?.removeAllViews()
         view?.examplesLinearLayout?.removeAllViews()
 
-        //set part of speech
-        val posMap = meanings.map { it.partOfSpeech }.distinct()
-        if (posMap.isNotEmpty()) {
-            view?.partOfSpeechTextView?.text = posMap.reduce { acc, s -> "$acc | $s" }
-        }
-
-        //add definitions
-        meanings.forEach {
-            view?.definitionsLinearLayout?.addView(createDefinitionView(it.def))
+        //add definition groups for each partOfSpeech
+        meanings.groupBy { it.partOfSpeech }.entries.forEach {
+            view?.definitionsLinearLayout?.addView(createPartOfSpeechView(it.key))
+            it.value.forEach {
+                view?.definitionsLinearLayout?.addView(createDefinitionView(it.def))
+            }
         }
 
         //add synonyms

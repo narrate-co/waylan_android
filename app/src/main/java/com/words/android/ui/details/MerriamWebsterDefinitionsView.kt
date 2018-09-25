@@ -24,15 +24,22 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
 
     init {
         View.inflate(context, R.layout.details_source_card_layout, this)
+        visibility = View.GONE
     }
 
     companion object {
         private const val TAG = "MerriamWebsterDefinitionView"
     }
 
+    interface MerriamWebsterViewListener {
+        fun onRelatedWordClicked(word: String)
+    }
+
     data class DefinitionGroup(var word: Word, var definitions: List<Definition>, var viewGroup: LinearLayout)
 
     private var definitionGroups: MutableList<DefinitionGroup> = mutableListOf()
+
+    private var listener: MerriamWebsterViewListener? = null
 
     fun clear() {
         println("$TAG::clear")
@@ -68,15 +75,15 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
             relatedWordsChipGroup.removeAllViews()
             word.relatedWords.forEach {
                 relatedWordsChipGroup?.addView(it.toRelatedChip(context, relatedWordsChipGroup) {
-                    //TODO add chip onClick listener callback invocation
+                    listener?.onRelatedWordClicked(it)
                 })
             }
             relatedWordsHeader.visibility = View.VISIBLE
-            relatedWordsChipGroup.visibility = View.VISIBLE
+            relatedWordsHorizontalScrollView.visibility = View.VISIBLE
         } else {
             relatedWordsChipGroup.removeAllViews()
             relatedWordsHeader.visibility = View.GONE
-            relatedWordsChipGroup.visibility = View.GONE
+            relatedWordsHorizontalScrollView.visibility = View.GONE
         }
     }
 
@@ -111,26 +118,18 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
 
         visibility = View.VISIBLE
 
-//        if (word != null && definitions != null && definitions.isNotEmpty() && !lastDefinitionList.contentEquals(definitions)) {
-//
-//            //we've got new definitions!
-//            lastDefinitionList = definitions
-//
-//            definitionsContainer.addView(createPartOfSpeechView(word))
-//
-//            definitions.flatMap { it.definitions }.forEachIndexed { i, it ->
-//                definitionsContainer.addView(createMwDefinitionView(it.def))
-//            }
-//
-//            visibility = View.VISIBLE
-//        } else {
-//            //definitions is either null or the same as what's already added
-//        }
-
 
         //TODO add examples
 
         //TODO add synonyms
+    }
+
+    fun addListener(listener: MerriamWebsterViewListener) {
+        this.listener = listener
+    }
+
+    fun removeListener() {
+        this.listener = null
     }
 
     private fun createDefinitionGroup(word: Word, definitions: List<Definition>): DefinitionGroup {
