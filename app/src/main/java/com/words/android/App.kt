@@ -12,6 +12,7 @@ import com.words.android.data.repository.WordRepository
 
 class App: Application() {
 
+
     private val appDatabase: AppDatabase by lazy { AppDatabase.getInstance(this) }
 
     lateinit var wordRepository: WordRepository

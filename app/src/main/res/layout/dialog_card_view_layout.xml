@@ -13,7 +13,7 @@
     android:layout_marginBottom="24dp"
     app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/colorWordsWindowBackgroundLight"
+    app:cardBackgroundColor="@color/light_colorTan25"
     tools:showIn="@layout/activity_settings">
 
     <LinearLayout
@@ -30,9 +30,10 @@
             android:layout_height="wrap_content"
             android:text="Want to save your recent and favorite words? Create an account and keep building your vocabulary or log in to restore your history."
             android:textSize="14sp"
-            android:textColor="@color/colorWordsDarkTextLight" />
+            android:textColor="@color/light_colorTextDarkLowEmphasis" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextButton"
             android:id="@+id/topButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,13 +42,12 @@
             android:paddingBottom="12dp"
             android:paddingRight="@dimen/keyline_3"
             android:text="Create Account"
-            style="@style/Words.Widget.TextView.MenuTitle"
-            android:textSize="18sp"
             android:gravity="right"
             android:layout_gravity="right"
-            android:background="?selectableItemBackground" />
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextButton"
             android:id="@+id/bottomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,11 +55,10 @@
             android:paddingBottom="12dp"
             android:paddingRight="@dimen/keyline_3"
             android:text="Log in"
-            style="@style/Words.Widget.TextView.MenuTitle"
             android:textSize="18sp"
             android:gravity="right"
             android:layout_gravity="right"
-            android:background="?selectableItemBackground" />
+            />
 
 
     </LinearLayout>

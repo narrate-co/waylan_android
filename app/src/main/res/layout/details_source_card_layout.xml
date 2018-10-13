@@ -16,7 +16,7 @@
     android:paddingBottom="@dimen/keyline_3"
     app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/colorWordsWindowBackgroundLight"
+    app:cardBackgroundColor="@color/light_colorTan25"
     android:clipToPadding="false"
     >
 
@@ -38,10 +38,10 @@
             >
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextSubtitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
-            style="@style/Words.Widget.TextView.Caption"
             android:text="Merriam-Webster"
             />
 
@@ -74,6 +74,7 @@
         android:orientation="vertical"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextCaption"
             android:id="@+id/relatedWordsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +82,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="Also see:"
-            style="@style/Words.Widget.TextView.PartOfSpeech"
             android:visibility="gone"
             />
 

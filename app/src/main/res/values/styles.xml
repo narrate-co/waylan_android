@@ -1,145 +1,166 @@
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base"/>
+    <style name="Theme.Words.Light" parent="Base.Theme.Words.Light"/>
 
-    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash"/>
+    <style name="Theme.Words.Light.Splash" parent="Base.Theme.Words.Light.Splash"/>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorWordsDarkTextMedium</item>
+    <style name="Base.Theme.Words.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!--Colors-->
+        <item name="colorPrimary">@color/light_colorTan50</item>
+        <item name="colorPrimaryDark">@color/light_colorTan50</item>
+        <item name="colorAccent">@color/light_colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/colorWordsWindowBackground</item>
+        <item name="android:windowBackground">@color/light_colorTan50</item>
+
+
+        <!--Words Attrs-->
+        <item name="styleTextHeadline2">@style/Widget.Words.Light.TextView.Headline2</item>
+        <item name="styleTextHeadline4">@style/Widget.Words.Light.TextView.Headline4</item>
+        <item name="styleTextHeadline5">@style/Widget.Words.Light.TextView.Headline5</item>
+        <item name="styleTextSubtitle1">@style/Widget.Words.Light.TextView.Subtitle1</item>
+        <item name="styleTextBody1">@style/Widget.Words.Light.TextView.Body1</item>
+        <item name="styleTextBody2">@style/Widget.Words.Light.TextView.Body2</item>
+        <item name="styleTextCaption">@style/Widget.Words.Light.TextView.Caption</item>
+        <item name="styleTextOverline">@style/Widget.Words.Light.TextView.Overline</item>
+        <item name="styleTextButton">@style/Widget.Words.Light.TextView.Button</item>
+
+
+        <item name="styleChipOutlined">@style/Widget.Words.Light.Chip.Outlined</item>
+        <item name="styleChipOpen">@style/Widget.Words.Light.Chip.Open</item>
+
+
+        <item name="styleEditTextArea">@style/Widget.Words.Light.EditText.Area</item>
     </style>
 
-    <style name="AppTheme.Base.Splash" parent="AppTheme.Base"/>
+    <style name="Base.Theme.Words.Light.Splash" parent="Base.Theme.Words.Light"/>
 
 
 
 
-
-    <!--Search Bar Edit Text-->
-    <style name="Words.Widget.EditText" parent="AppTheme">
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColorHint">@color/colorWordsDarkTextLight</item>
-        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
-    </style>
-
-
-    <!--Details Screen-->
-    <style name="Words.Widget.TextView.WordTitle" parent="AppTheme">
+    <!--Typescale-->
+    <style name="Widget.Words.Light.TextView.Headline2" parent="Theme.Words.Light">
         <item name="android:fontFamily">@font/source_serif_pro</item>
-        <item name="android:textAppearance">@style/Words.TextAppearance.WordTitle</item>
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline2</item>
     </style>
-    <style name="Words.TextAppearance.WordTitle" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
+    <style name="TextAppearance.Words.Light.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
         <item name="android:textSize">66sp</item>
         <item name="android:letterSpacing">.05</item>
     </style>
 
-    <style name="Words.Widget.TextView.Caption" parent="AppTheme">
-        <item name="android:textAppearance">@style/Words.TextAppearance.Caption</item>
-        <item name="android:fontFamily">@font/source_code_pro_bold</item>
-    </style>
-    <style name="Words.TextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textColor">@color/colorWordsDarkTextMedium</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-
-
-    <!--Search Results List-->
-    <style name="Words.Widget.TextView.ListItem" parent="AppTheme">
-        <item name="android:textAppearance">@style/Words.TextAppearance.ListItem</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-    </style>
-
-    <style name="Words.TextAppearance.ListItem" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/colorWordsDarkTextMedium</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-
-    <!--Shared-->
-    <style name="Words.Widget.Chip" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">@style/Words.TextAppearance.Chip</item>
-        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
-    </style>
-    <style name="Words.TextAppearance.Chip" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Words.Widget.Chip.Related" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">@style/Words.TextAppearance.RelatedChip</item>
-        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
-    </style>
-    <style name="Words.TextAppearance.RelatedChip" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="Words.Widget.TextView.PartOfSpeech" parent="AppTheme">
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:textAppearance">@style/Words.TextAppearance.PartOfSpeech</item>
-    </style>
-    <style name="Words.TextAppearance.PartOfSpeech" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textColor">@color/colorWordsDarkTextLight</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Words.Widget.TextView.Definition" parent="AppTheme">
-        <item name="android:textAppearance">@style/Words.TextAppearance.Definition</item>
-        <item name="android:fontFamily">@font/source_sans_pro</item>
-    </style>
-    <style name="Words.TextAppearance.Definition" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="Words.TextAppearance.MenuHeader" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:textSize">25sp</item>
-    </style>
-
-
-    <!--Home Screen-->
-    <style name="Words.Widget.TextView.MenuSubtitle" parent="AppTheme">
-        <item name="android:textAppearance">@style/Words.TextAppearance.MenuSubtitle</item>
+    <style name="Widget.Words.Light.TextView.Headline4" parent="Theme.Words.Light">
         <item name="android:fontFamily">@font/source_serif_pro</item>
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline4</item>
     </style>
-
-    <style name="Words.TextAppearance.MenuSubtitle" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorWordsDarkTextMedium</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-
-    <!--List Screen-->
-    <style name="Words.Widget.TextView.MenuTitle" parent="AppTheme">
-        <item name="android:textAppearance">@style/Words.TextAppearance.MenuHeader</item>
-        <item name="android:fontFamily">@font/source_code_pro_medium</item>
-    </style>
-
-
-    <style name="Words.Widget.TextView.ListWord" parent="AppTheme">
-        <item name="android:fontFamily">@font/source_serif_pro</item>
-        <item name="android:textAppearance">@style/Words.TextAppearance.ListWord</item>
-    </style>
-    <style name="Words.TextAppearance.ListWord" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">@color/colorWordsDarkTextDark</item>
+    <style name="TextAppearance.Words.Light.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
         <item name="android:textSize">28sp</item>
         <item name="android:letterSpacing">.05</item>
     </style>
 
+    <style name="Widget.Words.Light.TextView.Headline5" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline5</item>
+        <item name="android:fontFamily">@font/source_code_pro_medium</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Subtitle1" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Subtitle1</item>
+        <item name="android:fontFamily">@font/source_sans_pro_semibold</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/light_colorTextDarkMediumEmphasis</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Body1" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body1</item>
+        <item name="android:fontFamily">@font/source_sans_pro</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Body2" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
+        <item name="android:fontFamily">@font/source_code_pro</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Body2" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Caption" parent="Theme.Words.Light">
+        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Caption</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Overline" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Overline</item>
+        <item name="android:fontFamily">@font/source_sans_pro</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textColor">@color/light_colorTextDarkMediumEmphasis</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Button" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Button</item>
+        <item name="android:fontFamily">@font/source_code_pro_medium</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
+
+
+
+
+    <!--Chips-->
+    <style name="Widget.Words.Light.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
+        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="chipBackgroundColor">?android:windowBackground</item>
+        <item name="chipStrokeColor">@color/light_colorBlack25a</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.Words.Light.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
+        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="chipBackgroundColor">@color/light_colorTan25</item>
+        <item name="chipStrokeColor">@android:color/transparent</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="chipCornerRadius">2dp</item>
+    </style>
+
+
+
+
+
+
+    <!--Edit Text-->
+    <style name="Widget.Words.Light.EditText.Area" parent="Theme.Words.Light">
+        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+    </style>
 
 </resources>

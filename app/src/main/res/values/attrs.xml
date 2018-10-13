@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="styleTextHeadline2" format="reference"/>
+    <attr name="styleTextHeadline4" format="reference"/>
+    <attr name="styleTextHeadline5" format="reference"/>
+    <attr name="styleTextSubtitle1" format="reference"/>
+    <attr name="styleTextBody1" format="reference"/>
+    <attr name="styleTextBody2" format="reference"/>
+    <attr name="styleTextCaption" format="reference"/>
+    <attr name="styleTextOverline" format="reference"/>
+    <attr name="styleTextButton" format="reference"/>
+
+    <attr name="styleChipOutlined" format="reference"/>
+    <attr name="styleChipOpen" format="reference"/>
+
+    <attr name="styleEditTextArea" format="reference"/>
+</resources>

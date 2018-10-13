@@ -11,8 +11,8 @@
     android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextHeadline4"
             android:id="@+id/word"
-            style="@style/Words.Widget.TextView.ListWord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/keyline_3"
@@ -22,18 +22,18 @@
             tools:text="quiescent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextCaption"
             android:id="@+id/partOfSpeech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/keyline_3"
             android:paddingEnd="@dimen/keyline_3"
             tools:text="noun"
-            style="@style/Words.Widget.TextView.PartOfSpeech"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody1"
             android:id="@+id/definition"
-            style="@style/Words.Widget.TextView.Definition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/keyline_3"

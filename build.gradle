@@ -2,20 +2,21 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.2.60'
-        lifecycle_version = '2.0.0-rc01'
-        room_version = '2.0.0-rc01'
+        kotlin_version = '1.2.71'
+        lifecycle_version = '2.0.0'
+        room_version = '2.0.0'
         paging_version = '1.0.0'
-        nav_version = '1.0.0-alpha05'
-        androidx_version = '1.0.0-rc01'
+        nav_version = '1.0.0-alpha06'
+        androidx_version = '1.0.0'
         gradletools_version = '3.2.0-alpha14'
-        material_version = '1.0.0-beta01'
-        firebase_core = '16.0.3'
-        firebase_auth = '16.0.3'
-        firebase_firestore_version = '17.1.0'
+        material_version = '1.0.0'
+        firebase_core = '16.0.4'
+        firebase_auth = '16.0.4'
+        firebase_firestore_version = '17.1.1'
         gson_version = '2.8.4'
         retrofit_version = '2.4.0'
         okhttp3_version = '3.10.0'
+        daggerVersion = '2.15'
         espresso_version = '3.1.0-alpha4'
     }
 

@@ -15,7 +15,7 @@ object Navigator {
             activity.supportFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                    .replace(R.id.fragmentContainer, detailsFragment, DetailsFragment.FRAGMENT_TAG)
+                    .add(R.id.fragmentContainer, detailsFragment, DetailsFragment.FRAGMENT_TAG)
                     .addToBackStack(DetailsFragment.FRAGMENT_TAG)
                     .commit()
         }
@@ -25,7 +25,7 @@ object Navigator {
         activity.supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                .replace(R.id.fragmentContainer, listFragment, type.fragmentTag)
+                .add(R.id.fragmentContainer, listFragment, type.fragmentTag)
                 .addToBackStack(type.fragmentTag)
                 .commit()
     }

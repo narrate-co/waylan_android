@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.chip.Chip
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/styleChipOpen"
     android:id="@+id/chip"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
-    style="@style/Words.Widget.Chip.Related"
-    app:chipBackgroundColor="@color/colorWordsWindowBackgroundLight"
-    app:chipStrokeColor="@android:color/transparent"
-    app:chipStrokeWidth="0dp"
-    app:chipCornerRadius="2dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="AppTheme.Base">
+    <style name="Theme.Words.Light" parent="Base.Theme.Words.Light">
         <item name="android:windowLightStatusBar">true</item>
     </style>
     
-    <style name="AppTheme.Splash" parent="AppTheme.Base.Splash">
+    <style name="Theme.Words.Light.Splash" parent="Base.Theme.Words.Light.Splash">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">?android:windowBackground</item>
     </style>

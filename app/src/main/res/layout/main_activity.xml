@@ -32,7 +32,7 @@
         android:alpha="0"
         android:visibility="gone"
         android:fitsSystemWindows="true"
-        android:background="@color/colorWordsDarkStrokeLight"/>
+        android:background="@color/light_colorBlack25a"/>
 
     <fragment
         android:id="@+id/searchFragment"

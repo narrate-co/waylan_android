@@ -19,19 +19,21 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextHeadline5"
             android:id="@+id/trending"
-            style="@style/Words.Widget.TextView.MenuTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Trending"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody2"
             android:id="@+id/trendingPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="pluralism, calm, compeer, equal"
-            style="@style/Words.Widget.TextView.MenuSubtitle"
             />
 
     </LinearLayout>
@@ -49,19 +51,21 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextHeadline5"
             android:id="@+id/recent"
-            style="@style/Words.Widget.TextView.MenuTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Recent"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody2"
             android:id="@+id/recentPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="quiescent, apathy, epigram"
-            style="@style/Words.Widget.TextView.MenuSubtitle"
             />
 
     </LinearLayout>
@@ -79,19 +83,21 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextHeadline5"
             android:id="@+id/favorite"
-            style="@style/Words.Widget.TextView.MenuTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Favorite"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody2"
             android:id="@+id/favoritePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="egalitarianism, equanimity, solicitude, quint..."
-            style="@style/Words.Widget.TextView.MenuSubtitle"
             />
 
     </LinearLayout>
@@ -106,10 +112,10 @@
 
 
     <androidx.appcompat.widget.AppCompatTextView
+        style="?attr/styleTextHeadline5"
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Words.Widget.TextView.MenuTitle"
         android:background="?selectableItemBackground"
         android:paddingLeft="@dimen/keyline_3"
         android:paddingRight="@dimen/keyline_3"

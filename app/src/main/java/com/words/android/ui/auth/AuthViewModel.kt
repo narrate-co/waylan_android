@@ -19,8 +19,12 @@ class AuthViewModel: ViewModel() {
         val auth = FirebaseAuth.getInstance()
         auth.currentUser?.linkWithCredential(credentials)?.addOnCompleteListener {
             if (it.isSuccessful) {
-                val user = it.result.user
-                cont.resume(user)
+                val user = it.result?.user
+                if (user != null) {
+                    cont.resume(user)
+                } else {
+                    cont.resumeWithException(FirebaseAuthWordException(null, FirebaseAuthErrorType.SIGN_UP_FAILED))
+                }
             } else {
                 cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.SIGN_UP_FAILED))
             }

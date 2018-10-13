@@ -12,6 +12,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     >
 
     <androidx.core.widget.NestedScrollView
@@ -26,6 +27,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextHeadline2"
                 android:id="@+id/wordTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -33,7 +35,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@{sharedViewModel.currentWord.dbWord.word}"
-                style="@style/Words.Widget.TextView.WordTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,8 +52,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/wordTextView" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextSubtitle1"
                 android:id="@+id/wordSetHeader"
-                style="@style/Words.Widget.TextView.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -93,8 +94,8 @@
             </HorizontalScrollView>
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextSubtitle1"
                 android:id="@+id/examplesTitleTextView"
-                style="@style/Words.Widget.TextView.Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

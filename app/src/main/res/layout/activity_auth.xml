@@ -44,6 +44,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    style="?attr/styleEditTextArea"
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,9 +53,10 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
-                    style="@style/Words.Widget.EditText"/>
+                    />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    style="?attr/styleEditTextArea"
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,9 +65,10 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    style="@style/Words.Widget.EditText"/>
+                    />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    style="?attr/styleEditTextArea"
                     android:id="@+id/confirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,7 +77,7 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    style="@style/Words.Widget.EditText"/>
+                    />
 
             </LinearLayout>
 
@@ -88,7 +91,7 @@
                 android:layout_marginBottom="@dimen/keyline_2"
                 android:text="Password must contain at least one number or symbol."
                 android:alpha="0"
-                android:textColor="@color/colorWordsErrorText"
+                android:textColor="@color/light_colorTextError"
                 android:textSize="12sp"
                 android:fontFamily="@font/source_sans_pro"
                 />
@@ -100,6 +103,7 @@
                 >
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextButton"
                 android:id="@+id/alternateCredentialType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,14 +112,14 @@
                 android:paddingRight="@dimen/keyline_3"
                 android:paddingLeft="@dimen/keyline_3"
                 android:text="Log in"
-                style="@style/Words.Widget.TextView.MenuTitle"
                 android:textSize="14sp"
-                android:textColor="@color/colorWordsDarkTextMedium"
+                android:textColor="@color/light_colorTextDarkMediumEmphasis"
                 android:gravity="left"
                 android:layout_gravity="left|center_vertical"
                 android:background="?selectableItemBackground"
                 />
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextButton"
                 android:id="@+id/done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +127,6 @@
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
                 android:text="Sign up"
-                style="@style/Words.Widget.TextView.MenuTitle"
                 android:textSize="18sp"
                 android:gravity="right|center_vertical"
                 android:layout_gravity="right|center_vertical"
@@ -133,6 +136,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextButton"
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,7 +144,6 @@
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
                 android:text="Cancel"
-                style="@style/Words.Widget.TextView.MenuTitle"
                 android:textSize="18sp"
                 android:gravity="right"
                 android:layout_gravity="right"
