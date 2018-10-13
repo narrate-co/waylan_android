@@ -48,7 +48,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private val authViewModel by lazy {
-        ViewModelProviders.of(this, (application as App).viewModelFactory).get(AuthViewModel::class.java)
+        ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -199,7 +199,7 @@ class AuthActivity : AppCompatActivity() {
     private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
         //TODO use showErrorMessage() to show any validation errors
-        (application as App).user = User(user, Config.DEBUG_USER_IS_PREMIUM)
+        (application as App).setUser(User(user, Config.DEBUG_USER_IS_PREMIUM))
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 

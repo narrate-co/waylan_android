@@ -26,11 +26,12 @@ import com.words.android.databinding.DetailsFragmentBinding
 import com.words.android.data.firestore.UserWord
 import com.words.android.data.firestore.UserWordType
 import com.words.android.data.repository.Word
+import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener, MerriamWebsterDefinitionsView.MerriamWebsterViewListener {
+class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, MerriamWebsterDefinitionsView.MerriamWebsterViewListener {
 
     companion object {
         private const val TAG = "DetailsFragment"
@@ -40,7 +41,7 @@ class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener, MerriamWebs
 
     private val sharedViewModel by lazy {
         ViewModelProviders
-                .of(activity!!, (activity!!.application as App).viewModelFactory)
+                .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
     }
 
@@ -72,9 +73,6 @@ class DetailsFragment: WFragment(), Toolbar.OnMenuItemClickListener, MerriamWebs
 
     override fun onStop() {
         super.onStop()
-//        println("$TAG::onStop")
-//        currentWordValue = Word()
-//        view?.merriamDefinitionsLinearLayout?.clear()
     }
 
 

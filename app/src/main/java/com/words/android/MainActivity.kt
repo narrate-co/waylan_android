@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
@@ -14,7 +15,9 @@ import com.words.android.util.displayHeightDp
 import com.words.android.util.displayHeightPx
 import kotlinx.android.synthetic.main.main_activity.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseUserActivity() {
+
+    private val mainViewModel: MainViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java) }
 
     private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
 

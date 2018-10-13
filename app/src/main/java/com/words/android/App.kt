@@ -1,57 +1,102 @@
 package com.words.android
 
+import android.app.Activity
 import android.app.Application
+import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import com.words.android.data.disk.AppDatabase
-import com.words.android.data.firestore.FirestoreStore
 import com.words.android.data.firestore.User
-import com.words.android.data.mw.MerriamWebsterStore
-import com.words.android.data.mw.RetrofitService
-import com.words.android.data.repository.WordRepository
+import com.words.android.di.AppInjector
+import com.words.android.di.UserComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
-class App: Application() {
+class App: Application(), HasActivityInjector {
 
 
-    private val appDatabase: AppDatabase by lazy { AppDatabase.getInstance(this) }
+    companion object {
+        const val REINJECT_USER_BROADCAST_ACTION = "reinject_user_broadcast_action"
+    }
 
-    lateinit var wordRepository: WordRepository
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
-    val viewModelFactory: ViewModelFactory by lazy { ViewModelFactory(this) }
+    @Inject
+    lateinit var userComponentBuilder: UserComponent.Builder
 
-    /**
-     * user is set from AuthActivity.
-     * if user is null, we're operating in 'guest' mode and all firebase enabled functionality
-     * should be disallowed. This would only occur if the user doesn't have internet to
-     * sign in anonymously and should rarely be the case.
-     */
-    var user: User? = null
-        set(value) {
-            field = value
+    private var user: FirebaseUser? = null
 
-            if (value?.firebaseUser != null) {
-                firestoreStore = FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, value.firebaseUser)
-            } else {
-                firestoreStore = null
-            }
+    fun setUser(user: User?) {
+        userComponentBuilder
+                .user(user)
+                .build()
+                .inject(this)
+        dispatchReinjectUserBroadcast()
+    }
 
-            if (value?.isMerriamWebsterSubscriber == true) {
-                merriamWebsterStore = MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
-            } else {
-                merriamWebsterStore = null
-            }
+    fun clearUser() {
+        user = null
+        AppInjector.init(this)
+        dispatchReinjectUserBroadcast()
+    }
 
-            wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
-        }
+    private fun dispatchReinjectUserBroadcast() {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(REINJECT_USER_BROADCAST_ACTION))
+    }
 
-    var firestoreStore: FirestoreStore? = null
+    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
 
-    var merriamWebsterStore: MerriamWebsterStore? = null
+
+
+
+
+
+
+
+
+//
+//    private val appDatabase: AppDatabase by lazy { AppDatabase.getInstance(this) }
+//
+//    lateinit var wordRepository: WordRepository
+//
+//    val viewModelFactory: ViewModelFactory by lazy { ViewModelFactory(this) }
+//
+//    /**
+//     * user is set from AuthActivity.
+//     * if user is null, we're operating in 'guest' mode and all firebase enabled functionality
+//     * should be disallowed. This would only occur if the user doesn't have internet to
+//     * sign in anonymously and should rarely be the case.
+//     */
+//    var user: User? = null
+//        set(value) {
+//            field = value
+//
+//            if (value?.user != null) {
+//                firestoreStore = FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, value.user)
+//            } else {
+//                firestoreStore = null
+//            }
+//
+//            if (value?.isMerriamWebsterSubscriber == true) {
+//                merriamWebsterStore = MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
+//            } else {
+//                merriamWebsterStore = null
+//            }
+//
+//            wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
+//        }
+//
+//    var firestoreStore: FirestoreStore? = null
+//
+//    var merriamWebsterStore: MerriamWebsterStore? = null
 
     override fun onCreate() {
         super.onCreate()
-        appDatabase.init()
-        wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
+        AppInjector.init(this)
+//        appDatabase.init()
+//        wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
     }
 
 

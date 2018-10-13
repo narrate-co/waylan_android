@@ -7,9 +7,10 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.util.FirebaseAuthErrorType
 import com.words.android.util.FirebaseAuthWordException
+import javax.inject.Inject
 import kotlin.coroutines.experimental.suspendCoroutine
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel @Inject constructor(): ViewModel() {
 
 
     suspend fun signUp(email: String, password: String, confirmPassword: String): FirebaseUser = suspendCoroutine { cont ->

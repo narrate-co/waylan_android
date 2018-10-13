@@ -7,16 +7,19 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.words.android.R
 import com.words.android.ui.auth.AuthActivity
+import com.words.android.ui.common.BaseUserActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.dialog_card_view_layout.*
 import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseUserActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        //TODO use DI to get current user
 
         //TODO dynamically add settings
         //TODO create custom setting item view

@@ -1,26 +1,25 @@
 package com.words.android.ui.list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.*
+import com.words.android.ui.common.BaseUserFragment
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
-class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
+class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
 
 
     enum class ListType(val fragmentTag: String, val title: String) {
-        TRENDING("trending_fragment_tag", "Trending"), RECENT("recent_fragment_tag", "Recent"), FAVORITE("favorite_fragment_tag", "Favorite")
+        TRENDING("trending_fragment_tag", "Trending"),
+        RECENT("recent_fragment_tag", "Recent"),
+        FAVORITE("favorite_fragment_tag", "Favorite")
     }
 
     companion object {
@@ -28,7 +27,7 @@ class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
         fun newRecentInstance(): ListFragment = newInstance(ListType.RECENT)
         fun newFavoriteInstance(): ListFragment = newInstance(ListType.FAVORITE)
 
-        fun newInstance(type: ListType): ListFragment {
+        private fun newInstance(type: ListType): ListFragment {
             val listFrag = ListFragment()
             val args = Bundle()
             args.putString("type", type.name)
@@ -39,7 +38,7 @@ class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
 
     private val sharedViewModel by lazy {
         ViewModelProviders
-                .of(activity!!, (activity!!.application as App).viewModelFactory)
+                .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
     }
 
@@ -60,14 +59,12 @@ class ListFragment: WFragment(), ListTypeAdapter.ListTypeListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
-
         return view
     }
 
     override fun onEnterTransactionEnded() {
         setUpList()
     }
-
 
     private fun setUpList() {
         view?.recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

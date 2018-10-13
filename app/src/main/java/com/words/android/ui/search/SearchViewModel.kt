@@ -6,8 +6,11 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
+import com.words.android.di.UserScope
+import javax.inject.Inject
 
-class SearchViewModel(private val wordRepository: WordRepository): ViewModel() {
+@UserScope
+class SearchViewModel @Inject constructor(private val wordRepository: WordRepository): ViewModel() {
 
     var searchInput: String = ""
         set(value) {

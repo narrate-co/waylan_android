@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import com.words.android.MainActivity
 import com.words.android.R
 import com.words.android.WFragment
+import com.words.android.ui.common.BaseUserFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
 
-class HomeFragment: WFragment() {
+class HomeFragment: BaseUserFragment() {
 
     companion object {
         const val FRAGMENT_TAG = "home_fragment_tag"

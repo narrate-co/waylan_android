@@ -14,13 +14,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.*
 import com.words.android.databinding.SearchFragmentBinding
 import com.words.android.data.repository.Word
+import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.hideSoftKeyboard
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 
-class SearchFragment : WFragment(), WordsAdapter.WordAdapterHandlers {
+class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -28,13 +29,13 @@ class SearchFragment : WFragment(), WordsAdapter.WordAdapterHandlers {
 
     private val viewModel by lazy {
         ViewModelProviders
-                .of(this, (activity?.application as App).viewModelFactory)
+                .of(this, viewModelFactory)
                 .get(SearchViewModel::class.java)
     }
 
     private val sharedViewHolder by lazy {
         ViewModelProviders
-                .of(activity!!, (activity?.application as App).viewModelFactory)
+                .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
     }
 
