@@ -38,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_input_background_transitionable"
-                android:padding="@dimen/keyline_3"
+                android:paddingTop="@dimen/keyline_3"
+                android:paddingBottom="@dimen/keyline_3"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
@@ -51,6 +52,8 @@
                     android:minHeight="48dp"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:layout_marginBottom="@dimen/keyline_2"
+                    android:paddingLeft="@dimen/keyline_3"
+                    android:paddingRight="@dimen/keyline_3"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     />
@@ -63,6 +66,8 @@
                     android:minHeight="48dp"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:layout_marginBottom="@dimen/keyline_2"
+                    android:paddingLeft="@dimen/keyline_3"
+                    android:paddingRight="@dimen/keyline_3"
                     android:hint="Password"
                     android:inputType="textPassword"
                     />
@@ -75,6 +80,8 @@
                     android:minHeight="48dp"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:layout_marginBottom="@dimen/keyline_2"
+                    android:paddingLeft="@dimen/keyline_3"
+                    android:paddingRight="@dimen/keyline_3"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
                     />

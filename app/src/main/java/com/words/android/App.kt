@@ -42,63 +42,18 @@ class App: Application(), HasActivityInjector {
         dispatchReinjectUserBroadcast()
     }
 
+
+    override fun onCreate() {
+        super.onCreate()
+        AppInjector.init(this)
+    }
+
+
     private fun dispatchReinjectUserBroadcast() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(REINJECT_USER_BROADCAST_ACTION))
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
-
-
-
-
-
-
-
-
-
-//
-//    private val appDatabase: AppDatabase by lazy { AppDatabase.getInstance(this) }
-//
-//    lateinit var wordRepository: WordRepository
-//
-//    val viewModelFactory: ViewModelFactory by lazy { ViewModelFactory(this) }
-//
-//    /**
-//     * user is set from AuthActivity.
-//     * if user is null, we're operating in 'guest' mode and all firebase enabled functionality
-//     * should be disallowed. This would only occur if the user doesn't have internet to
-//     * sign in anonymously and should rarely be the case.
-//     */
-//    var user: User? = null
-//        set(value) {
-//            field = value
-//
-//            if (value?.user != null) {
-//                firestoreStore = FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, value.user)
-//            } else {
-//                firestoreStore = null
-//            }
-//
-//            if (value?.isMerriamWebsterSubscriber == true) {
-//                merriamWebsterStore = MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
-//            } else {
-//                merriamWebsterStore = null
-//            }
-//
-//            wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
-//        }
-//
-//    var firestoreStore: FirestoreStore? = null
-//
-//    var merriamWebsterStore: MerriamWebsterStore? = null
-
-    override fun onCreate() {
-        super.onCreate()
-        AppInjector.init(this)
-//        appDatabase.init()
-//        wordRepository = WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
-    }
-
 
 }
 

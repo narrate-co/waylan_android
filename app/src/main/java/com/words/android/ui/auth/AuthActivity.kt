@@ -55,8 +55,6 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-
-
         val auth = FirebaseAuth.getInstance()
         val firebaseUser: FirebaseUser? = auth.currentUser
 

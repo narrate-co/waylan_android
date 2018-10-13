@@ -9,6 +9,7 @@ enum class FirebaseAuthErrorType(val errorCode: String, val detailMessage: Strin
     LOG_IN_FAILED("lf", "Failed to log in"),
     SIGN_UP_UNKNOWN("su", "An unknown error occurred during sign up"),
     SIGN_UP_FAILED("sf", "Failed to sign up"),
+    SIGN_UP_PASSWORDS_DONT_MATCH("sm", "Passwords don't match"),
     SIGN_UP_NO_CURRNET_USER("sc", "No current user is available to create account with")
 }
 
