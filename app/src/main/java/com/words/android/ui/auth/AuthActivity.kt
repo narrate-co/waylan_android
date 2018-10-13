@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +23,7 @@ import com.words.android.Config
 import com.words.android.MainActivity
 import com.words.android.R
 import com.words.android.data.firestore.User
+import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -88,8 +90,7 @@ class AuthActivity : AppCompatActivity() {
                             val user = authViewModel.signUpAnonymously()
                             launchHome(user, true)
                         } catch (e: Exception) {
-                            showErrorMessage(e.localizedMessage)
-                            e.printStackTrace()
+                            showErrorMessage(e)
                         }
                     }
                 }
@@ -109,8 +110,7 @@ class AuthActivity : AppCompatActivity() {
                     val loggedInUser = authViewModel.logIn(email.text.toString(), password.text.toString())
                     launchHome(loggedInUser, true)
                 } catch (e: Exception) {
-                    showErrorMessage(e.localizedMessage) //TODO make sure this is a user friendly error
-                    e.printStackTrace()
+                    showErrorMessage(e) //TODO make sure this is a user friendly error
                 }
             }
         }
@@ -127,9 +127,7 @@ class AuthActivity : AppCompatActivity() {
                     val newlyLinkedUser = authViewModel.signUp(email.text.toString(), password.text.toString(), confirmPassword.text.toString())
                     launchHome(newlyLinkedUser, true)
                 } catch (e: Exception) {
-                    showErrorMessage(e.localizedMessage) //TODO make sure this is a user friendly error
-                    e.printStackTrace()
-                    println(e)
+                    showErrorMessage(e) //TODO make sure this is a user friendly error
                 }
             }
         }
@@ -157,10 +155,15 @@ class AuthActivity : AppCompatActivity() {
 
     private var lastErrorStateIsShown = false
 
-    private fun showErrorMessage(message: String) {
+    private fun showErrorMessage(e: Exception) {
+        e.printStackTrace()
+        println(e)
         synchronized(lastErrorStateIsShown) {
             if (!lastErrorStateIsShown) {
-                error.text = message
+                error.text = when (e) {
+                    is FirebaseAuthWordException -> getString(e.localizedMessageRes)
+                    else -> e.localizedMessage
+                }
                 error?.animation?.cancel()
                 AnimatorInflater.loadAnimator(this, R.animator.error_text_enter)
                         .apply {

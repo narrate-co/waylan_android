@@ -71,10 +71,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Merr
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         return when (item?.itemId) {

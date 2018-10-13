@@ -1,12 +1,9 @@
 package com.words.android.ui.auth
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseUser
-import com.words.android.util.FirebaseAuthErrorType
-import com.words.android.util.FirebaseAuthWordException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.*
+import com.words.android.util.FirebaseAuthWordErrorType
 import javax.inject.Inject
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
@@ -20,7 +17,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
         val auth = FirebaseAuth.getInstance()
         when {
-            password != confirmPassword -> cont.resumeWithException(FirebaseAuthWordException(null, FirebaseAuthErrorType.SIGN_UP_PASSWORDS_DONT_MATCH))
+            password != confirmPassword -> cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_PASSWORDS_DONT_MATCH)
             auth.currentUser?.isAnonymous == true -> signUpByLinkingCredentials(cont, email, password)
             else -> signUpByCreatingEmptyAccount(cont, email, password)
         }
@@ -35,12 +32,12 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 if (user != null) {
                     cont.resume(user)
                 } else {
-                    cont.resumeWithException(FirebaseAuthWordException(null, FirebaseAuthErrorType.SIGN_UP_FAILED))
+                    cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED, it)
                 }
             } else {
-                cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.SIGN_UP_FAILED))
+                cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED, it)
             }
-        } ?: cont.resumeWithException(FirebaseAuthWordException(null, FirebaseAuthErrorType.SIGN_UP_NO_CURRNET_USER))
+        } ?: cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_NO_CURRENT_USER)
     }
 
     private fun signUpByCreatingEmptyAccount(cont: Continuation<FirebaseUser>, email: String, password: String) {
@@ -51,10 +48,10 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 if (user != null) {
                     cont.resume(user)
                 } else {
-                    cont.resumeWithException(FirebaseAuthWordException(null, FirebaseAuthErrorType.SIGN_UP_FAILED))
+                    cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED)
                 }
             } else {
-                cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.SIGN_UP_FAILED))
+                cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED, it)
             }
         }
     }
@@ -67,10 +64,10 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 if (user != null) {
                     cont.resume(user)
                 } else {
-                    cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.ANON_UNKNOWN))
+                    cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.ANON_UNKNOWN, it)
                 }
             } else {
-                cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.ANON_SIGN_UP_FAILED))
+                cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.ANON_SIGN_UP_FAILED, it)
             }
         }
     }
@@ -82,14 +79,18 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                     if (it.isSuccessful) {
                         var user = auth.currentUser
                         if (user == null) {
-                            cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.LOG_IN_UNKNOWN))
+                            cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_UNKNOWN, it)
                         } else {
                             cont.resume(user)
                         }
                     } else {
-                        cont.resumeWithException(FirebaseAuthWordException(it.exception, FirebaseAuthErrorType.LOG_IN_FAILED))
+                        cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED, it)
                     }
                 }
+    }
+
+    private fun <T> Continuation<T>.resumeWithFirebaseAuthException(type: FirebaseAuthWordErrorType, task: Task<AuthResult>? = null) {
+        resumeWithException(task?.exception ?: type.exception)
     }
 
 }
