@@ -140,9 +140,13 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Merr
         }
 
         //add examples
-        meanings.map { it.examples }.flatten().forEach {
-            view?.examplesLinearLayout?.addView(createExampleView(it))
+        val examples = meanings.map { it.examples }
+        if (examples.isNotEmpty()) {
+            examples.flatten().forEach {
+                view?.examplesLinearLayout?.addView(createExampleView(it))
+            }
         }
+
 
     }
 
