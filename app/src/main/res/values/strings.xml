@@ -3,6 +3,11 @@
     <!--App-->
     <string name="app_name">Words</string>
 
+    <!--List Types-->
+    <string name="title_favorite">Favorite</string>
+    <string name="title_recent">Recent</string>
+    <string name="title_trending">Trending</string>
+
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
     <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
@@ -12,6 +17,8 @@
     <!--Menus-->
     <string name="menu_favorite_title">Favorite</string>
     <string name="menu_share_title">Share</string>
+
+    <!--Errors-->
     <string name="auth_error_message_unknown">An unknown error occurred during authentication</string>
     <string name="auth_error_message_anon_login_unknown">Unable to log in anonymously</string>
     <string name="auth_error_message_login_unknown">An unknown error occurred during log in</string>
@@ -20,5 +27,6 @@
     <string name="auth_error_message_signup_failed">Failed to sign up</string>
     <string name="auth_error_message_passwords_mismatch">Passwords don\'t match</string>
     <string name="auth_error_message_no_current_user_to_link">No current user is available to create account with</string>
+
 
 </resources>

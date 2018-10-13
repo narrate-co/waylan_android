@@ -31,9 +31,9 @@ class MainViewModel @Inject constructor(private val wordRepository: WordReposito
 
     fun getList(type: ListFragment.ListType): LiveData<List<Word>> {
         return when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getFavorites(20L)
-            ListFragment.ListType.RECENT -> wordRepository.getRecents(75L)
-            ListFragment.ListType.FAVORITE -> wordRepository.getFavorites()
+            ListFragment.ListType.TRENDING -> wordRepository.getFavorites(25L)
+            ListFragment.ListType.RECENT -> wordRepository.getRecents(25L)
+            ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(25L)
         }
     }
 

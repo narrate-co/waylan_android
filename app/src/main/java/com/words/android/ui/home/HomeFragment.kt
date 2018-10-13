@@ -1,17 +1,15 @@
 package com.words.android.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.words.android.MainActivity
 import com.words.android.R
-import com.words.android.WFragment
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.ui.list.ListFragment
-import com.words.android.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
 
@@ -22,17 +20,38 @@ class HomeFragment: BaseUserFragment() {
         fun newInstance() = HomeFragment()
     }
 
+    private val viewModel by lazy {
+        ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(HomeViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.home_fragment, container, false)
-        //TODO set up views
-        view.trendingContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.TRENDING) }
-        view.recentContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.RECENT) }
-        view.favoriteContainer.setOnClickListener { onMenuButtonCliked(ListFragment.ListType.FAVORITE) }
+        view.trendingContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.TRENDING) }
+        view.recentContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.RECENT) }
+        view.favoriteContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.FAVORITE) }
         view.settings.setOnClickListener { launchSettings() }
         return view
     }
 
-    private fun onMenuButtonCliked(type: ListFragment.ListType) {
+    override fun onEnterTransactionEnded() {
+        setUpListPreviews()
+    }
+
+    private fun setUpListPreviews() {
+        viewModel.getListPreview(ListFragment.ListType.FAVORITE).observe(this, Observer {
+            view?.trendingPreview?.text = it
+        })
+        viewModel.getListPreview(ListFragment.ListType.RECENT).observe(this, Observer {
+            view?.recentPreview?.text = it
+        })
+        viewModel.getListPreview(ListFragment.ListType.FAVORITE).observe(this, Observer {
+            view?.favoritePreview?.text = it
+        })
+    }
+
+    private fun onMenuButtonClicked(type: ListFragment.ListType) {
         (activity as? MainActivity)?.showListFragment(type)
     }
 

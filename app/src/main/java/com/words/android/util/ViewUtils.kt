@@ -28,7 +28,6 @@ fun String.toRelatedChip(context: Context, chipGroup: ChipGroup?, onClick: ((wor
     val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_related_chip_layout, chipGroup, false) as Chip
     val underlinedString = SpannableString(this)
     underlinedString.setSpan(UnderlineSpan(),0,this.length,0)
-//    chip.chipText = underlinedString
     chip.text = underlinedString
     chip.setOnClickListener {
         if (onClick != null) onClick(this)

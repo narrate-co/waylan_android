@@ -114,7 +114,7 @@ class FirestoreStore(
         val query = firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
-        if (limit != null) query.limit(limit)
+                .limit(limit ?: 25)
 
         return query.liveData(UserWord::class.java)
     }
@@ -139,7 +139,7 @@ class FirestoreStore(
         val query = firestore.userWords(user.uid)
                 .whereEqualTo("types.${UserWordType.RECENT.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
-        if (limit != null) query.limit(limit)
+                .limit(limit ?: 25)
 
         return query.liveData(UserWord::class.java)
     }

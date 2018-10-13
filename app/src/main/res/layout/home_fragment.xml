@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,7 @@
             android:id="@+id/trending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Trending"
+            android:text="@string/title_trending"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="pluralism, calm, compeer, equal"
+            tools:text="pluralism, calm, compeer, equal"
             />
 
     </LinearLayout>
@@ -55,7 +56,7 @@
             android:id="@+id/recent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recent"
+            android:text="@string/title_recent"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="quiescent, apathy, epigram"
+            tools:text="quiescent, apathy, epigram"
             />
 
     </LinearLayout>
@@ -87,7 +88,7 @@
             android:id="@+id/favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favorite"
+            android:text="@string/title_favorite"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -97,7 +98,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="egalitarianism, equanimity, solicitude, quint..."
+            tools:text="egalitarianism, equanimity, solicitude, quint..."
             />
 
     </LinearLayout>

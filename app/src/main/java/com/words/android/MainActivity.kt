@@ -11,13 +11,12 @@ import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.SettingsActivity
+import com.words.android.util.collapse
 import com.words.android.util.displayHeightDp
 import com.words.android.util.displayHeightPx
 import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : BaseUserActivity() {
-
-    private val mainViewModel: MainViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java) }
 
     private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
 
@@ -25,49 +24,36 @@ class MainActivity : BaseUserActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
-            supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
-                    .replace(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.FRAGMENT_TAG)
-                    .commit()
+            showHome()
         }
 
-
-
-        searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
-        bottomSheet.setBottomSheetCallback(bottomSheetSkrimCallback)
+        setUpSearchSheet()
     }
 
     override fun onBackPressed() {
         if (handleFragmentOnBackPressed()) return
-
         super.onBackPressed()
     }
 
-    private fun handleFragmentOnBackPressed(): Boolean {
-        if (bottomSheet.state != BottomSheetBehavior.STATE_HIDDEN && bottomSheet.state != BottomSheetBehavior.STATE_COLLAPSED) {
-            bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-            return true
+    private fun setUpSearchSheet() {
+        searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
+        bottomSheet.setBottomSheetCallback(bottomSheetSkrimCallback)
+        bottomSheetSkrim.setOnClickListener {
+            bottomSheet.collapse(this)
         }
-
-        return false
     }
 
-    fun showDetails() {
-        Navigator.showDetails(this, DetailsFragment.newInstance())
+    private fun handleFragmentOnBackPressed(): Boolean {
+        return bottomSheet.collapse(this)
     }
 
-    fun showListFragment(type: ListFragment.ListType) {
-        Navigator.showListFragment(this, type, when (type) {
-            ListFragment.ListType.TRENDING -> ListFragment.newTrendingInstance()
-            ListFragment.ListType.RECENT -> ListFragment.newRecentInstance()
-            ListFragment.ListType.FAVORITE -> ListFragment.newFavoriteInstance()
-        })
-    }
+    private fun showHome() = Navigator.showHome(this)
 
-    fun launchSettings() {
-        Navigator.launchSettings(this)
-    }
+    fun showDetails() = Navigator.showDetails(this)
+
+    fun showListFragment(type: ListFragment.ListType) = Navigator.showListFragment(this, type)
+
+    fun launchSettings() = Navigator.launchSettings(this)
 
 
     private val bottomSheetSkrimCallback = object : BottomSheetBehavior.BottomSheetCallback() {
