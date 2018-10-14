@@ -1,31 +1,34 @@
 package com.words.android.ui.details
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.card.MaterialCardView
 import com.words.android.R
 import com.words.android.data.disk.mw.Definition
 import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
+import com.words.android.service.AudioClipService
+import com.words.android.service.AudioController
 import com.words.android.util.contentEquals
 import com.words.android.util.fromHtml
 import com.words.android.util.toRelatedChip
-import kotlinx.android.synthetic.main.details_source_card_layout.view.*
+import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 
-class MerriamWebsterDefinitionsView @JvmOverloads constructor(
+class MerriamWebsterCard @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : MaterialCardView(context, attrs, defStyleAttr) {
-
-    init {
-        View.inflate(context, R.layout.details_source_card_layout, this)
-        visibility = View.GONE
-    }
 
     companion object {
         private const val TAG = "MerriamWebsterDefinitionView"
@@ -33,6 +36,7 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
 
     interface MerriamWebsterViewListener {
         fun onRelatedWordClicked(word: String)
+        fun onAudioClipError(message: String)
     }
 
     data class DefinitionGroup(var word: Word, var definitions: List<Definition>, var viewGroup: LinearLayout)
@@ -41,12 +45,57 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
 
     private var listener: MerriamWebsterViewListener? = null
 
+    init {
+        View.inflate(context, R.layout.merriam_webster_card_layout, this)
+        visibility = View.GONE
+    }
+
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        registerAudioStateDispatchReceiver()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        unregisterAudioStateDispatchReceiver()
+    }
+
+
     fun clear() {
         println("$TAG::clear")
         definitionGroups = mutableListOf()
         definitionsContainer.removeAllViews()
         visibility = View.GONE
     }
+
+    private val audioStateDispatchReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent == null) return
+
+            val audioStateDispatch: AudioClipService.AudioStateDispatch = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioStateDispatch
+            val url = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_URL)
+            val message = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
+
+            when (audioStateDispatch) {
+                AudioClipService.AudioStateDispatch.ERROR -> listener?.onAudioClipError(message)
+                AudioClipService.AudioStateDispatch.LOADING,
+                AudioClipService.AudioStateDispatch.STOPPED,
+                AudioClipService.AudioStateDispatch.PREPARED,
+                AudioClipService.AudioStateDispatch.PLAYING -> setAudioIcon(audioStateDispatch)
+            }
+        }
+    }
+
+    private fun registerAudioStateDispatchReceiver() {
+        LocalBroadcastManager.getInstance(context).registerReceiver(audioStateDispatchReceiver, IntentFilter(AudioClipService.BROADCAST_AUDIO_STATE_DISPATCH))
+    }
+
+    private fun unregisterAudioStateDispatchReceiver() {
+        AudioController.stop(context)
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(audioStateDispatchReceiver)
+    }
+
 
     fun setWordAndDefinitions(entries: List<WordAndDefinitions>?) {
         //TODO show card with relevant words even if definitions are null
@@ -61,14 +110,49 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
         entries.forEach {
             setWord(it.word)
             setDefinitions(it.word, it.definitions)
+            setAudio(it.word)
         }
 
+    }
+
+    private val audioStopClickListener = OnClickListener { AudioController.stop(context) }
+
+    private var audioPlayClickListener = OnClickListener {  }
+
+
+    private fun setAudio(word: Word?) {
+        audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
+
+        val url = "http://www.largesound.com/ashborytour/sound/brobob.mp3" //test url
+
+//        val url = if (word?.sound?.wav?.isNullOrEmpty() == false) "https://www.merriam-webster.com/dictionary/${word.word}?pronunciation&lang=en_us&dir=n&file=${word.sound.wav}" else ""
+        audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
+
+        audioImageView.setOnClickListener(audioPlayClickListener)
+    }
+
+
+    private fun setAudioIcon(state: AudioClipService.AudioStateDispatch) {
+        when (state) {
+            AudioClipService.AudioStateDispatch.LOADING,
+            AudioClipService.AudioStateDispatch.PREPARED,
+            AudioClipService.AudioStateDispatch.PLAYING -> {
+                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
+                audioImageView.setOnClickListener(audioStopClickListener)
+            }
+            AudioClipService.AudioStateDispatch.STOPPED -> {
+                audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
+                audioImageView.setOnClickListener(audioPlayClickListener)
+            }
+        }
     }
 
 
     private fun setWord(word: Word?) {
 
         if (word == null) return
+
+
 
         //TODO make this diffing smarter
         if (word.relatedWords.isNotEmpty()) {
@@ -78,6 +162,7 @@ class MerriamWebsterDefinitionsView @JvmOverloads constructor(
                     listener?.onRelatedWordClicked(it)
                 })
             }
+
             relatedWordsHeader.visibility = View.VISIBLE
             relatedWordsHorizontalScrollView.visibility = View.VISIBLE
         } else {

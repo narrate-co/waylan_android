@@ -26,7 +26,9 @@ class MerriamWebsterStore(
 
     fun getWord(word: String): LiveData<List<WordAndDefinitions>> {
         //asynchronously get the word from the mw service
-        launch { merriamWebsterService.getWord(word, DEV_KEY).enqueue(mwApiWordCallback) }
+        launch {
+            merriamWebsterService.getWord(word, DEV_KEY).enqueue(mwApiWordCallback)
+        }
 
         //return a live data observing the db which will update once the service returns and saved
         //the word to the db

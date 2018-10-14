@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.words.android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -30,6 +32,10 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".ui.settings.SettingsActivity"></activity>
+
+        <service
+            android:name=".service.AudioClipService"
+            android:exported="false"/>
     </application>
 
 </manifest>

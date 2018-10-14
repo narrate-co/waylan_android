@@ -28,26 +28,34 @@ class WordRepository(
     }
 
     fun getWord(id: String): LiveData<Word>  {
-        println("WordREpo - getWord $id")
         val mediatorLiveData = MediatorLiveData<Word>()
         mediatorLiveData.addSource(getWordAndMeanings(id)) {
-            println("WordRepo - mediatorLiveData word&Meaning = ${it?.word?.word}")
             val word = mediatorLiveData.value ?: Word()
-            word.dbWord = it?.word
-            word.dbMeanings = it?.meanings ?: emptyList()
-            mediatorLiveData.value = word
+
+            if (word?.dbWord != it?.word && word?.dbMeanings != it?.meanings) {
+                println("WordRepo - mediatorLiveData SETTING word&Meaning = ${it?.word?.word}")
+                word.dbWord = it?.word
+                word.dbMeanings = it?.meanings ?: emptyList()
+                mediatorLiveData.value = word
+            }
         }
         mediatorLiveData.addSource(getUserWord(id)) {
-            println("WordRepo - mediatorLiveData getUserWord = ${it?.id}")
             val word = mediatorLiveData.value ?: Word()
-            word.userWord = it
-            mediatorLiveData.value = word
+
+            if (word.userWord != it) {
+                println("WordRepo - mediatorLiveData SETTING getUserWord = ${it?.id}")
+                word.userWord = it
+                mediatorLiveData.value = word
+            }
         }
         mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            println("WordRepo - mediatorLiveData merriamWebsterWordAndDefintions = $it")
             val word = mediatorLiveData.value ?: Word()
-            word.mwEntry = it ?: emptyList()
-            mediatorLiveData.value = word
+
+            if (word.mwEntry != it && it.map { it.definitions }.flatten().toList().isNotEmpty()) {
+                println("WordRepo - mediatorLiveData SETTING merriamWebsterWordAndDefintions = $it")
+                word.mwEntry = it ?: emptyList()
+                mediatorLiveData.value = word
+            }
         }
 
         return mediatorLiveData
