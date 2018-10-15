@@ -2,7 +2,9 @@
   <dictionary name="hunterstich">
     <words>
       <w>firebase</w>
+      <w>firestore</w>
       <w>skrim</w>
+      <w>wordset</w>
     </words>
   </dictionary>
 </component>

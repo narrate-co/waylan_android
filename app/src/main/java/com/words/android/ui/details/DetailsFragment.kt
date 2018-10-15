@@ -2,7 +2,6 @@ package com.words.android.ui.details
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -10,13 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.databinding.DetailsFragmentBinding
-import com.words.android.data.firestore.UserWord
-import com.words.android.data.firestore.UserWordType
+import com.words.android.data.firestore.users.UserWord
+import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.repository.Word
+import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
+import com.words.android.util.configError
 import kotlinx.android.synthetic.main.details_fragment.*
 
 class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener {
@@ -52,11 +54,22 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     // defer load intensive work until after the fragment transaction has ended
     override fun onEnterTransactionEnded() {
         setUpRecyclerView()
-        sharedViewModel.currentWord.observe(this, Observer {
-            sharedViewModel.setCurrentWordRecented()
-            setUserWord(it?.userWord)
-            adapter.submitWord(it)
+
+        sharedViewModel.currentSources.observe(this, Observer { source ->
+            when (source) {
+                is WordSource.FirestoreUserSource -> {
+                    sharedViewModel.setCurrentWordRecented()
+                    setUserWord(source.userWord)
+                }
+            }
+            adapter.submitWordSource(source)
         })
+
+//        sharedViewModel.currentWord.observe(this, Observer {
+//            sharedViewModel.setCurrentWordRecented()
+//            setUserWord(it?.userWord)
+//            adapter.submitWord(it)
+//        })
 
     }
 
@@ -86,8 +99,9 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     }
 
     override fun onAudioClipError(message: String) {
-        //TODO show a Snackbar
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(detailsRoot, message, Snackbar.LENGTH_SHORT)
+                .configError(context!!, true)
+                .show()
     }
 
     private fun setUserWord(userWord: UserWord?) {

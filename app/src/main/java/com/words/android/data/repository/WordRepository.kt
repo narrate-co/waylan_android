@@ -2,15 +2,16 @@ package com.words.android.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Transformations
 import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.firestore.FirestoreStore
-import com.words.android.data.firestore.UserWord
+import com.words.android.data.firestore.users.UserWord
+import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.util.LiveDataHelper
 import kotlinx.coroutines.experimental.launch
-import org.threeten.bp.OffsetDateTime
 
 class WordRepository(
         private val db: AppDatabase,
@@ -18,44 +19,32 @@ class WordRepository(
         private val merriamWebsterStore: MerriamWebsterStore?
 ) {
 
-    fun filterWords(query: String): LiveData<List<Word>> {
-        val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.addSource(db.wordDao().load("$query%")) {
-            val words = it?.map { Word().apply { dbWord = it } }
-            mediatorLiveData.value = words
+    fun filterWords(query: String): LiveData<List<WordSource>> {
+        return Transformations.map(db.wordDao().load("$query%")) { word ->
+            word.map { WordSource.SimpleWordSource(it) }
         }
-        return mediatorLiveData
     }
 
-    fun getWord(id: String): LiveData<Word>  {
-        val mediatorLiveData = MediatorLiveData<Word>()
+    fun getWordSources(id: String): LiveData<WordSource> {
+        val mediatorLiveData = MediatorLiveData<WordSource>()
+
+        // Wordset
         mediatorLiveData.addSource(getWordAndMeanings(id)) {
-            val word = mediatorLiveData.value ?: Word()
-
-            if (word?.dbWord != it?.word && word?.dbMeanings != it?.meanings) {
-                println("WordRepo - mediatorLiveData SETTING word&Meaning = ${it?.word?.word}")
-                word.dbWord = it?.word
-                word.dbMeanings = it?.meanings ?: emptyList()
-                mediatorLiveData.value = word
-            }
+            mediatorLiveData.value = WordSource.WordsetSource(it)
         }
+
+        // Firestore User Word
         mediatorLiveData.addSource(getUserWord(id)) {
-            val word = mediatorLiveData.value ?: Word()
-
-            if (word.userWord != it) {
-                println("WordRepo - mediatorLiveData SETTING getUserWord = ${it?.id}")
-                word.userWord = it
-                mediatorLiveData.value = word
-            }
+            mediatorLiveData.value = WordSource.FirestoreUserSource(it)
         }
-        mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            val word = mediatorLiveData.value ?: Word()
 
-            if (word.mwEntry != it && it.map { it.definitions }.flatten().toList().isNotEmpty()) {
-                println("WordRepo - mediatorLiveData SETTING merriamWebsterWordAndDefintions = $it")
-                word.mwEntry = it ?: emptyList()
-                mediatorLiveData.value = word
-            }
+        // Firestore Global Word
+        mediatorLiveData.addSource(getGlobalWord(id)) {
+            mediatorLiveData.value = WordSource.FirestoreGlobalSource(it)
+        }
+
+        mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
+            mediatorLiveData.value = WordSource.MerriamWebsterSource(it)
         }
 
         return mediatorLiveData
@@ -68,20 +57,26 @@ class WordRepository(
         return firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty()
     }
 
+    private fun getGlobalWord(id: String): LiveData<GlobalWord> {
+        return firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty()
+    }
+
     private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<List<WordAndDefinitions>> {
-        //TODO save mw words to local db!
         return merriamWebsterStore?.getWord(id) ?: LiveDataHelper.empty()
     }
 
-    fun getFavorites(limit: Long? = null): LiveData<List<Word>> {
+    fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
-
-        val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.addSource(firestoreStore.getFavorites(limit)) {
-            mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
+        return Transformations.map(firestoreStore.getTrending(limit)) { globalWords ->
+            globalWords.map { WordSource.FirestoreGlobalSource(it) }
         }
+    }
 
-        return mediatorLiveData
+    fun getFavorites(limit: Long? = null): LiveData<List<WordSource>> {
+        if (firestoreStore == null) return LiveDataHelper.empty()
+        return Transformations.map(firestoreStore.getFavorites(limit)) { userWords ->
+            userWords.map { WordSource.FirestoreUserSource(it) }
+        }
     }
 
     fun setFavorite(id: String, favorite: Boolean) {
@@ -90,15 +85,11 @@ class WordRepository(
         }
     }
 
-    fun getRecents(limit: Long? = null): LiveData<List<Word>> {
+    fun getRecents(limit: Long? = null): LiveData<List<WordSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
-
-        val mediatorLiveData = MediatorLiveData<List<Word>>()
-        mediatorLiveData.addSource(firestoreStore.getRecents(limit)) {
-            mediatorLiveData.value = it?.map { Word().apply { userWord = it } } ?: emptyList()
+        return Transformations.map(firestoreStore.getRecents(limit)) { userWords ->
+            userWords.map { WordSource.FirestoreUserSource(it) }
         }
-
-        return mediatorLiveData
     }
 
     fun setRecent(id: String) {

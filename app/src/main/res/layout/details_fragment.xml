@@ -10,6 +10,7 @@
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/detailsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
@@ -23,32 +24,6 @@
         android:paddingBottom="200dp"
         android:clipToPadding="false"/>
 
-    <!--<androidx.core.widget.NestedScrollView-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:paddingBottom="@dimen/search_max_peek_height"-->
-        <!--android:clipToPadding="false">-->
-
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<include layout="@layout/details_component_title" />-->
-
-
-            <!--&lt;!&ndash;Definitions Container&ndash;&gt;-->
-            <!--<include layout="@layout/details_component_merriam_webster" />-->
-
-            <!--<include layout="@layout/details_component_wordset" />-->
-
-            <!--<include layout="@layout/details_component_examples" />-->
-
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-    <!--</androidx.core.widget.NestedScrollView>-->
-    
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

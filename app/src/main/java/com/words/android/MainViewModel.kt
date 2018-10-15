@@ -3,6 +3,7 @@ package com.words.android
 import androidx.lifecycle.*
 import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
+import com.words.android.data.repository.WordSource
 import com.words.android.di.UserScope
 import com.words.android.ui.details.DetailsComponent
 import com.words.android.ui.list.ListFragment
@@ -12,8 +13,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
 
     private var currentWordId = MutableLiveData<String>()
-    val currentWord: LiveData<Word> = Transformations.switchMap(currentWordId) {
-        wordRepository.getWord(it)
+    val currentSources: LiveData<WordSource> = Transformations.switchMap(currentWordId) {
+        wordRepository.getWordSources(it)
     }
 
     fun setCurrentWordId(id: String) {
@@ -30,9 +31,9 @@ class MainViewModel @Inject constructor(private val wordRepository: WordReposito
         wordRepository.setRecent(id)
     }
 
-    fun getList(type: ListFragment.ListType): LiveData<List<Word>> {
+    fun getList(type: ListFragment.ListType): LiveData<List<WordSource>> {
         return when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getFavorites(25L)
+            ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L)
             ListFragment.ListType.RECENT -> wordRepository.getRecents(25L)
             ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(25L)
         }

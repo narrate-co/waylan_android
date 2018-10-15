@@ -1,8 +1,7 @@
 package com.words.android.di
 
-import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
-import com.words.android.data.firestore.User
+import com.words.android.data.firestore.users.User
 import dagger.BindsInstance
 import dagger.Subcomponent
 

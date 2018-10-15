@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "1ba33680796a50a2765c1e554bedcfc9",
+    "identityHash": "e0e439914694baf510011d2adc1df38d",
     "entities": [
       {
         "tableName": "words",
@@ -121,11 +121,23 @@
       },
       {
         "tableName": "mw_words",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `wav` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`word`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `word` TEXT NOT NULL, `subj` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `sound` TEXT NOT NULL, `pronunciation` TEXT NOT NULL, `partOfSpeech` TEXT NOT NULL, `etymology` TEXT NOT NULL, `relatedWords` TEXT NOT NULL, `uro` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "word",
             "columnName": "word",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subj",
+            "columnName": "subj",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -136,8 +148,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "wav",
-            "columnName": "wav",
+            "fieldPath": "sound",
+            "columnName": "sound",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -160,6 +172,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "relatedWords",
+            "columnName": "relatedWords",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "uro",
             "columnName": "uro",
             "affinity": "TEXT",
@@ -168,7 +186,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "word"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -177,8 +195,20 @@
       },
       {
         "tableName": "mw_definitions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`parentWord` TEXT NOT NULL, `date` TEXT NOT NULL, `defs` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`parentWord`) REFERENCES `mw_words`(`word`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `parentId` TEXT NOT NULL, `parentWord` TEXT NOT NULL, `date` TEXT NOT NULL, `definitions` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`parentId`) REFERENCES `mw_words`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parentId",
+            "columnName": "parentId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "parentWord",
             "columnName": "parentWord",
@@ -192,15 +222,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "defs",
-            "columnName": "defs",
+            "fieldPath": "definitions",
+            "columnName": "definitions",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -208,16 +232,17 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_mw_definitions_parentWord",
+            "name": "index_mw_definitions_parentId_parentWord",
             "unique": false,
             "columnNames": [
+              "parentId",
               "parentWord"
             ],
-            "createSql": "CREATE  INDEX `index_mw_definitions_parentWord` ON `${TABLE_NAME}` (`parentWord`)"
+            "createSql": "CREATE  INDEX `index_mw_definitions_parentId_parentWord` ON `${TABLE_NAME}` (`parentId`, `parentWord`)"
           }
         ],
         "foreignKeys": [
@@ -226,10 +251,10 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "parentWord"
+              "parentId"
             ],
             "referencedColumns": [
-              "word"
+              "id"
             ]
           }
         ]
@@ -237,7 +262,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1ba33680796a50a2765c1e554bedcfc9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e0e439914694baf510011d2adc1df38d\")"
     ]
   }
 }

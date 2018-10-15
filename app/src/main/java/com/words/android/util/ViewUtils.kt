@@ -2,6 +2,7 @@ package com.words.android.util
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.core.view.get
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -63,3 +65,11 @@ val Context.displayHeightPx: Int
 
 val Activity.displayHeightDp: Float
     get() = resources.displayMetrics.heightPixels / resources.displayMetrics.density
+
+fun TextView.setTextAppearanceCompat(context: Context, resId: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        setTextAppearance(resId)
+    } else {
+        setTextAppearance(context, resId)
+    }
+}

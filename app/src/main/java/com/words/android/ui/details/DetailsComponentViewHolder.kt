@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.words.android.R
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.repository.Word
+import com.words.android.data.repository.WordSource
 import com.words.android.util.Bindable
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_component_examples.view.*
@@ -33,8 +34,9 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
     class TitleComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {
         override fun bind(t: DetailsComponent) {
-            println("TitleComponentViewHolder::bind - ${t.word.dbWord?.word}")
-            view.detailsComponentTitleText.text = t.word.dbWord?.word ?: t.word.mwEntry.firstOrNull()?.word?.word
+            (t.source as? WordSource.WordsetSource)?.let {
+                view.detailsComponentTitleText.text = it.wordAndMeaning.word?.word
+            }
         }
     }
 
@@ -45,7 +47,9 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         }
 
         override fun bind(t: DetailsComponent) {
-            view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(t.word.mwEntry)
+            (t.source as? WordSource.MerriamWebsterSource)?.let {
+                view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsAndDefs)
+            }
         }
 
         override fun onRelatedWordClicked(word: String) {
@@ -62,28 +66,31 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         private var currentWordValue: Word = Word()
 
         override fun bind(t: DetailsComponent) {
-            val meanings = t.word.dbMeanings
-            if (meanings == currentWordValue.dbMeanings) return
-            currentWordValue.dbMeanings = meanings
+            (t.source as? WordSource.WordsetSource)?.let {
+                val meanings = it.wordAndMeaning.meanings
+                if (meanings == currentWordValue.dbMeanings) return
+                currentWordValue.dbMeanings = meanings
 
-            //remove all views
-            view.detailsComponentWordsetDefinitionsContainer?.removeAllViews()
-            view.detailsComponentWordsetChipGroup?.removeAllViews()
+                //remove all views
+                view.detailsComponentWordsetDefinitionsContainer?.removeAllViews()
+                view.detailsComponentWordsetChipGroup?.removeAllViews()
 
-            //add definition groups for each partOfSpeech
-            meanings.groupBy { it.partOfSpeech }.entries.forEach {
-                view.detailsComponentWordsetDefinitionsContainer?.addView(createPartOfSpeechView(it.key))
-                it.value.forEach {
-                    view.detailsComponentWordsetDefinitionsContainer?.addView(createDefinitionView(it.def))
+                //add definition groups for each partOfSpeech
+                meanings.groupBy { it.partOfSpeech }.entries.forEach {
+                    view.detailsComponentWordsetDefinitionsContainer?.addView(createPartOfSpeechView(it.key))
+                    it.value.forEach {
+                        view.detailsComponentWordsetDefinitionsContainer?.addView(createDefinitionView(it.def))
+                    }
+                }
+
+                //add synonyms
+                meanings.map { it.synonyms }.flatten().forEach {
+                    view.detailsComponentWordsetChipGroup?.addView(it.toChip(view.context!!, view.detailsComponentWordsetChipGroup) {
+                        listener.onSynonymChipClicked(it.synonym)
+                    })
                 }
             }
 
-            //add synonyms
-            meanings.map { it.synonyms }.flatten().forEach {
-                view.detailsComponentWordsetChipGroup?.addView(it.toChip(view.context!!, view.detailsComponentWordsetChipGroup) {
-                    listener.onSynonymChipClicked(it.synonym)
-                })
-            }
 
 
 
@@ -107,21 +114,24 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         private var currentWordValue: Word = Word()
 
         override fun bind(t: DetailsComponent) {
-            val meanings = t.word.dbMeanings
-            if (meanings == currentWordValue.dbMeanings) return
+            (t.source as? WordSource.WordsetSource)?.let {
+                val meanings = it.wordAndMeaning.meanings
+                if (meanings == currentWordValue.dbMeanings) return
 
-            currentWordValue.dbMeanings = meanings
+                currentWordValue.dbMeanings = meanings
 
 
-            view.detailsComponentExamplesContainer?.removeAllViews()
+                view.detailsComponentExamplesContainer?.removeAllViews()
 
-            //add examples
-            val examples = meanings.map { it.examples }
-            if (examples.isNotEmpty()) {
-                examples.flatten().forEach {
-                    view.detailsComponentExamplesContainer?.addView(createExampleView(it))
+                //add examples
+                val examples = meanings.map { it.examples }
+                if (examples.isNotEmpty()) {
+                    examples.flatten().forEach {
+                        view.detailsComponentExamplesContainer?.addView(createExampleView(it))
+                    }
                 }
             }
+
         }
 
 

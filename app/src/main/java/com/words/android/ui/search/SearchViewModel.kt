@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
+import com.words.android.data.repository.WordSource
 import com.words.android.di.UserScope
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class SearchViewModel @Inject constructor(private val wordRepository: WordReposi
 
         }
     private val searchInputData: MutableLiveData<String> = MutableLiveData()
-    val searchResults: LiveData<List<Word>> = Transformations.switchMap(searchInputData) {
+    val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputData) {
         if (it.isEmpty()) {
             wordRepository.getRecents(25L)
         } else {

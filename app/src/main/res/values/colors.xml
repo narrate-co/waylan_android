@@ -2,12 +2,13 @@
 <resources>
 
     <!--Words Colors-->
-    <color name="light_colorTextDarkLowEmphasis">#45000000</color>
-    <color name="light_colorTextDarkMediumEmphasis">#75000000</color>
-    <color name="light_colorTextDarkHighEmphasis">#000000</color>
+    <color name="light_colorTextDarkLowEmphasis">#61000000</color>
+    <color name="light_colorTextDarkMediumEmphasis">#99000000</color>
+    <color name="light_colorTextDarkHighEmphasis">#de000000</color>
 
-    <color name="light_colorTextLightLowEmphasis">#50ffffff</color>
-    <color name="light_colorTextLightMediumEmphasis">#80ffffff</color>
+    <color name="light_colorTextLightLowEmphasis">#61f7f3ed</color>
+    <color name="light_colorTextLightMediumEmphasis">#99f7f3ed</color>
+    <color name="light_colorTextLightHighEmphasis">#def7f3ed</color>
 
     <color name="light_colorTextError">#35ff0000</color>
     
@@ -23,5 +24,7 @@
 
     <color name="light_colorBlack10a">#10000000</color>
     <color name="light_colorBlack25a">#25000000</color>
+
+    <color name="light_colorBlack800">#262626</color>
 
 </resources>

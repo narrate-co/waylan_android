@@ -41,6 +41,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
     data class DefinitionGroup(var word: Word, var definitions: List<Definition>, var viewGroup: LinearLayout)
 
+    private var currentWordId: String = ""
     private var definitionGroups: MutableList<DefinitionGroup> = mutableListOf()
 
     private var listener: MerriamWebsterViewListener? = null
@@ -58,15 +59,18 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        currentWordId = ""
         unregisterAudioStateDispatchReceiver()
     }
 
 
     fun clear() {
         println("$TAG::clear")
+        currentWordId = ""
         definitionGroups = mutableListOf()
         definitionsContainer.removeAllViews()
-        visibility = View.GONE
+        relatedWordsChipGroup.removeAllViews()
+        audioImageView.setOnClickListener {  }
     }
 
     private val audioStateDispatchReceiver = object : BroadcastReceiver() {
@@ -98,21 +102,31 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
     fun setWordAndDefinitions(entries: List<WordAndDefinitions>?) {
-        //TODO show card with relevant words even if definitions are null
-        println("$TAG::setWordAndDefinitions - ${entries?.map { it.word }}")
-        //TODO add ability to show all entries
-
         if (entries == null || entries.isEmpty()) {
             clear()
+            visibility = View.GONE
             return
         }
 
+        val newWordId = getListWordAndDefId(entries)
+        if (currentWordId != newWordId) {
+            clear()
+            currentWordId = newWordId
+        }
+
+        //set audio clip
+        setAudio(entries.firstOrNull()?.word)
+
+        //add entries
         entries.forEach {
             setWord(it.word)
             setDefinitions(it.word, it.definitions)
-            setAudio(it.word)
         }
 
+    }
+
+    private fun getListWordAndDefId(entries: List<WordAndDefinitions>): String {
+        return entries.asSequence().map { it.word?.word }.firstOrNull() ?: ""
     }
 
     private val audioStopClickListener = OnClickListener { AudioController.stop(context) }
@@ -121,11 +135,14 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
     private fun setAudio(word: Word?) {
+        if (word == null || word.sound.wav.isBlank()) return
+
         audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
 
-        val url = "http://www.largesound.com/ashborytour/sound/brobob.mp3" //test url
-
-//        val url = if (word?.sound?.wav?.isNullOrEmpty() == false) "https://www.merriam-webster.com/dictionary/${word.word}?pronunciation&lang=en_us&dir=n&file=${word.sound.wav}" else ""
+        var fileName = word.sound.wav.removeSuffix(".wav")
+        val url = if (fileName.isNotBlank()) "http://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
+//        val url = "error" //error url
+        println("$TAG::setAudio - url = $url")
         audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
 
         audioImageView.setOnClickListener(audioPlayClickListener)
@@ -149,14 +166,10 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
     private fun setWord(word: Word?) {
-
         if (word == null) return
-
-
 
         //TODO make this diffing smarter
         if (word.relatedWords.isNotEmpty()) {
-            relatedWordsChipGroup.removeAllViews()
             word.relatedWords.forEach {
                 relatedWordsChipGroup?.addView(it.toRelatedChip(context, relatedWordsChipGroup) {
                     listener?.onRelatedWordClicked(it)
@@ -173,12 +186,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
     }
 
     private fun setDefinitions(word: Word?, definitions: List<Definition>?) {
-
-        //if definitionGroups does not contain word + defs
-        //TODO add
-
-        //if definitionGroups does contain word + defs
-        //TODO remove + add
         if (word == null || definitions == null || definitions.isEmpty()) return
 
         val existingGroup = definitionGroups.firstOrNull { it.word.id == word.id }
@@ -191,7 +198,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
             definitionsContainer.addView(newGroup.viewGroup)
         } else {
             //this is an existing group. diff it
-            if (existingGroup.word != word || !existingGroup.definitions.contentEquals(definitions)) {
+            if (existingGroup.word != word || !existingGroup.definitions.containsAll(definitions)) {
                 //change part of speech
                 existingGroup.word = word
                 existingGroup.definitions = definitions

@@ -11,5 +11,9 @@ object RootCollection {
 val FirebaseFirestore.users : CollectionReference
     get() = collection(RootCollection.USERS)
 
+val FirebaseFirestore.words : CollectionReference
+    get() = collection(RootCollection.WORDS)
+
 fun FirebaseFirestore.userWords(uid: String) : CollectionReference
         = users.document(uid).collection("words")
+

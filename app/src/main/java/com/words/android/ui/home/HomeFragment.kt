@@ -40,7 +40,7 @@ class HomeFragment: BaseUserFragment() {
     }
 
     private fun setUpListPreviews() {
-        viewModel.getListPreview(ListFragment.ListType.FAVORITE).observe(this, Observer {
+        viewModel.getListPreview(ListFragment.ListType.TRENDING).observe(this, Observer {
             view?.trendingPreview?.text = it
         })
         viewModel.getListPreview(ListFragment.ListType.RECENT).observe(this, Observer {

@@ -9,6 +9,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.huma.room_for_asset.RoomAsset
 import com.words.android.data.AppTypeConverters
 import com.words.android.data.DatabaseSeedService
 import com.words.android.data.disk.mw.Definition
@@ -23,7 +24,7 @@ import com.words.android.data.disk.wordset.WordDao
     (Meaning::class),
     (com.words.android.data.disk.mw.Word::class),
     (Definition::class)
-], version = 1)
+], version = 2)
 @TypeConverters(AppTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -51,13 +52,15 @@ abstract class AppDatabase: RoomDatabase() {
                 }
 
         private fun buildDatabase(context: Context, dbName: String): AppDatabase {
-            return Room
-                    .databaseBuilder(context, AppDatabase::class.java, dbName)
+            return RoomAsset
+                    .databaseBuilder(context, AppDatabase::class.java, "word-db.db")
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             println("Creating App Database...")
-                            context.startService(Intent(context, DatabaseSeedService::class.java))
+
+                            //Use if need to seed new database if schema changes
+//                            context.startService(Intent(context, DatabaseSeedService::class.java))
                         }
                     })
                     .fallbackToDestructiveMigration()

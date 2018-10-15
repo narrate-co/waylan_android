@@ -64,18 +64,14 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
 
 
         viewModel.searchResults.observe(this, Observer {
-            if (it != null) {
-                println("SearchFragment::search results changed. size = ${it.size}")
-                adapter.submitList(it)
-            }
+            adapter.submitList(it)
         })
 
         return binding.root
     }
 
-    override fun onWordClicked(word: Word) {
-        println("SearchFragment::onWordClicked dbWord: ${word.dbWord?.word}, userWord: ${word.userWord?.word}")
-        sharedViewHolder.setCurrentWordId(word.dbWord?.word ?: word.userWord?.word ?: "")
+    override fun onWordClicked(word: String) {
+        sharedViewHolder.setCurrentWordId(word)
         hideKeyboard = true
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         activity?.hideSoftKeyboard()

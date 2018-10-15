@@ -15,6 +15,16 @@ import com.words.android.data.disk.*
 import com.words.android.data.disk.wordset.*
 import kotlinx.coroutines.experimental.launch
 import org.threeten.bp.OffsetDateTime
+import com.google.common.io.Flushables.flush
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Path
+import android.os.Environment.getExternalStorageDirectory
+import android.content.res.AssetFileDescriptor
+import android.content.res.AssetManager
+
+
+
 
 /**
  * A Service to be run on first opening which loads the entire dictionary into our SQLite db...
@@ -56,6 +66,7 @@ class DatabaseSeedService: Service() {
 
         return START_STICKY
     }
+
 
     private fun seed() {
         println("seed")

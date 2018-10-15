@@ -8,15 +8,16 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.words.android.data.DataOwners
 import com.words.android.data.disk.AppDatabase
+import com.words.android.data.firestore.users.UserWord
+import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
 import com.words.android.data.firestore.util.liveData
+import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.util.isMoreThanOneMinuteAgo
-import com.words.android.util.toDate
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.util.*
-import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirestoreStore(
@@ -27,6 +28,12 @@ class FirestoreStore(
 
     companion object {
         private const val TAG = "FirestoreStore"
+    }
+
+    fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
+        return firestore.words
+                .document(id)
+                .liveData(GlobalWord::class.java)
     }
 
     fun getUserWordLive(id: String): LiveData<UserWord> {
@@ -109,6 +116,14 @@ class FirestoreStore(
         }
     }
 
+    fun getTrending(limit: Long? = null): LiveData<List<GlobalWord>> {
+        val query = firestore.words
+                .orderBy("totalViewCount", Query.Direction.DESCENDING)
+                .limit(limit ?: 25)
+
+        return query.liveData(GlobalWord::class.java)
+    }
+
     //get all favorites for user
     fun getFavorites(limit: Long? = null): LiveData<List<UserWord>> {
         val query = firestore.userWords(user.uid)
@@ -148,7 +163,10 @@ class FirestoreStore(
         try {
             val userWord = getUserWord(id, true)
             if (!userWord.types.containsKey(UserWordType.RECENT.name) || userWord.modified.isMoreThanOneMinuteAgo) {
+                println("$TAG::setRecent - current view count = ${userWord.totalViewCount}, new view count = ${userWord.totalViewCount + 1}")
                 userWord.types[UserWordType.RECENT.name] = true
+                userWord.modified = Date()
+                userWord.totalViewCount = userWord.totalViewCount + 1
                 setUserWord(userWord)
             }
         } catch (e: Exception) {

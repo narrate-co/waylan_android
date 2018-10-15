@@ -5,7 +5,7 @@ import android.app.Application
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.auth.FirebaseUser
-import com.words.android.data.firestore.User
+import com.words.android.data.firestore.users.User
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
 import dagger.android.AndroidInjector

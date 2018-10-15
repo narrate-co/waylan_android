@@ -12,7 +12,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.ViewModelProviders
@@ -22,7 +21,7 @@ import com.words.android.App
 import com.words.android.Config
 import com.words.android.MainActivity
 import com.words.android.R
-import com.words.android.data.firestore.User
+import com.words.android.data.firestore.users.User
 import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.experimental.android.UI

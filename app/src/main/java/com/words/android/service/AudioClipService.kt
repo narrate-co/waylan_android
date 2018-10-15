@@ -110,7 +110,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
             mediaPlayer?.prepareAsync()
         } catch (e: IOException) {
             e.printStackTrace()
-            dispatchError(url, e.localizedMessage)
+            dispatchError(url, "No pronunciation available")
             stop()
             destroy()
         }
