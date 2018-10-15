@@ -22,16 +22,20 @@
                 layout="@layout/dialog_card_view_layout" />
 
             <include
-                android:id="@+id/developerModeSettings"
-                layout="@layout/settings_item_layout" />
-
-            <include
-                android:id="@+id/pushNotificationsSetting"
+                android:id="@+id/darkModeSettings"
                 layout="@layout/settings_item_layout" />
 
             <include
                 android:id="@+id/signOutSetting"
                 android:visibility="gone"
+                layout="@layout/settings_item_layout" />
+
+            <include
+                android:id="@+id/aboutSetting"
+                layout="@layout/settings_item_layout" />
+
+            <include
+                android:id="@+id/contactSetting"
                 layout="@layout/settings_item_layout" />
 
         </LinearLayout>

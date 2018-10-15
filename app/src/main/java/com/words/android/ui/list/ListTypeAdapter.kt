@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.words.android.R
-import com.words.android.data.firestore.users.UserWord
-import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordSource
 
 class ListTypeAdapter(private val listener: ListTypeAdapter.ListTypeListener): ListAdapter<WordSource, ListTypeViewHolder>(diffCallback), ListTypeViewHolder.ListTypeViewHolderListener {

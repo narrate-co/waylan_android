@@ -3,7 +3,6 @@ package com.words.android.ui.list
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.data.disk.wordset.Synonym
-import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordSource
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.list_item_layout.view.*

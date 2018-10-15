@@ -11,6 +11,7 @@
         android:id="@+id/settingsItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
         android:padding="@dimen/keyline_3">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -23,7 +24,7 @@
             android:textSize="18sp"
             android:fontFamily="@font/source_code_pro"
             android:textColor="@color/light_colorTextDarkHighEmphasis"
-            android:text="Developer mode" />
+            android:text="Dark mode" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/settingsDescription"
@@ -36,7 +37,7 @@
             android:textSize="14sp"
             android:fontFamily="@font/source_sans_pro"
             android:textColor="@color/light_colorTextDarkLowEmphasis"
-            android:text="Enable hidden settings to help debug and give feedback" />
+            android:text="Reading late at night? Keep looking up words and give your eyes a break." />
 
 
         <androidx.appcompat.widget.AppCompatImageButton

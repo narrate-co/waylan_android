@@ -1,9 +1,7 @@
 package com.words.android.ui.details
 
-import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordSource
 import com.words.android.util.Diffable
-import java.lang.RuntimeException
 
 sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<DetailsComponent> {
 

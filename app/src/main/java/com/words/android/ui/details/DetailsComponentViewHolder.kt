@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.R
 import com.words.android.data.disk.wordset.Example
-import com.words.android.data.repository.Word
+import com.words.android.data.disk.wordset.Meaning
 import com.words.android.data.repository.WordSource
 import com.words.android.util.Bindable
 import com.words.android.util.toChip
@@ -63,13 +63,14 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
     class WordsetComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {
 
-        private var currentWordValue: Word = Word()
+        private var currentMeanings: List<Meaning> = emptyList()
 
         override fun bind(t: DetailsComponent) {
             (t.source as? WordSource.WordsetSource)?.let {
                 val meanings = it.wordAndMeaning.meanings
-                if (meanings == currentWordValue.dbMeanings) return
-                currentWordValue.dbMeanings = meanings
+                if (currentMeanings.containsAll(meanings)) return
+
+                currentMeanings = meanings
 
                 //remove all views
                 view.detailsComponentWordsetDefinitionsContainer?.removeAllViews()
@@ -111,14 +112,14 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
     class ExamplesComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {
 
-        private var currentWordValue: Word = Word()
+        private var currentMeanings: List<Meaning> = emptyList()
 
         override fun bind(t: DetailsComponent) {
             (t.source as? WordSource.WordsetSource)?.let {
                 val meanings = it.wordAndMeaning.meanings
-                if (meanings == currentWordValue.dbMeanings) return
+                if (currentMeanings.containsAll(meanings)) return
 
-                currentWordValue.dbMeanings = meanings
+                currentMeanings = meanings
 
 
                 view.detailsComponentExamplesContainer?.removeAllViews()

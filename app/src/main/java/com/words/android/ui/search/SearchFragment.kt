@@ -13,13 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.*
 import com.words.android.databinding.SearchFragmentBinding
-import com.words.android.data.repository.Word
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.hideSoftKeyboard
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-
 
 class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
 

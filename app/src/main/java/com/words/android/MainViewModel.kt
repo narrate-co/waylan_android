@@ -1,11 +1,9 @@
 package com.words.android
 
 import androidx.lifecycle.*
-import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
 import com.words.android.di.UserScope
-import com.words.android.ui.details.DetailsComponent
 import com.words.android.ui.list.ListFragment
 import javax.inject.Inject
 

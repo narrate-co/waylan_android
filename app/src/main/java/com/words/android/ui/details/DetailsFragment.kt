@@ -15,7 +15,6 @@ import com.words.android.R
 import com.words.android.databinding.DetailsFragmentBinding
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
-import com.words.android.data.repository.Word
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.configError
@@ -34,7 +33,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
                 .get(MainViewModel::class.java)
     }
 
-    private var currentWordValue: Word = Word()
 
     private val adapter: DetailsAdapter by lazy { DetailsAdapter(this) }
 
@@ -105,10 +103,8 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     }
 
     private fun setUserWord(userWord: UserWord?) {
-        if (userWord == null || currentWordValue.userWord == userWord) return
-        currentWordValue.userWord = userWord
+        if (userWord == null)  return
 
-        println("setUserWord - userWord = $userWord")
         val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
         favoriteMenuItem?.isChecked = isFavorited

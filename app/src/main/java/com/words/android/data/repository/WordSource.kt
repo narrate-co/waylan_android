@@ -1,6 +1,5 @@
 package com.words.android.data.repository
 
-import androidx.recyclerview.widget.DiffUtil
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.disk.wordset.Word
 import com.words.android.data.disk.wordset.WordAndMeanings
