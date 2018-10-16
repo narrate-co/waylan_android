@@ -54,7 +54,7 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:paddingLeft="@dimen/keyline_3"
                     android:paddingRight="@dimen/keyline_3"
-                    android:hint="Email"
+                    android:hint="@string/auth_email_hint"
                     android:inputType="textEmailAddress"
                     />
 
@@ -68,7 +68,7 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:paddingLeft="@dimen/keyline_3"
                     android:paddingRight="@dimen/keyline_3"
-                    android:hint="Password"
+                    android:hint="@string/auth_password_hint"
                     android:inputType="textPassword"
                     />
 
@@ -82,13 +82,14 @@
                     android:layout_marginBottom="@dimen/keyline_2"
                     android:paddingLeft="@dimen/keyline_3"
                     android:paddingRight="@dimen/keyline_3"
-                    android:hint="Confirm Password"
+                    android:hint="@string/auth_confirm_passsword_hint"
                     android:inputType="textPassword"
                     />
 
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextCaption"
                 android:id="@+id/error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,11 +97,9 @@
                 android:paddingRight="@dimen/keyline_3"
                 android:layout_marginTop="@dimen/keyline_2"
                 android:layout_marginBottom="@dimen/keyline_2"
-                android:text="Password must contain at least one number or symbol."
+                tools:text="Password must contain at least one number or symbol."
                 android:alpha="0"
                 android:textColor="@color/light_colorTextError"
-                android:textSize="12sp"
-                android:fontFamily="@font/source_sans_pro"
                 />
 
             <FrameLayout
@@ -118,7 +117,7 @@
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
                 android:paddingLeft="@dimen/keyline_3"
-                android:text="Log in"
+                android:text="@string/auth_log_in_button"
                 android:textSize="14sp"
                 android:textColor="@color/light_colorTextDarkMediumEmphasis"
                 android:gravity="left"
@@ -133,7 +132,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
-                android:text="Sign up"
+                android:text="@string/auth_sign_up_button"
                 android:textSize="18sp"
                 android:gravity="right|center_vertical"
                 android:layout_gravity="right|center_vertical"
@@ -150,7 +149,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
-                android:text="Cancel"
+                android:text="@string/auth_cancel_button"
                 android:textSize="18sp"
                 android:gravity="right"
                 android:layout_gravity="right"

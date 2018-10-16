@@ -28,5 +28,13 @@
     <string name="auth_error_message_passwords_mismatch">Passwords don\'t match</string>
     <string name="auth_error_message_no_current_user_to_link">No current user is available to create account with</string>
 
+    <!--Auth Screen-->
+    <string name="auth_email_hint">Email</string>
+    <string name="auth_password_hint">Password</string>
+    <string name="auth_confirm_passsword_hint">Confirm Password</string>
+    <string name="auth_log_in_button">Log in</string>
+    <string name="auth_sign_up_button">Sign up</string>
+    <string name="auth_cancel_button">Cancel</string>
+
 
 </resources>

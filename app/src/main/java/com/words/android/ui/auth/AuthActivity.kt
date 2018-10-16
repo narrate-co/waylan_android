@@ -18,9 +18,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
+import com.words.android.R
 import com.words.android.Config
 import com.words.android.MainActivity
-import com.words.android.R
 import com.words.android.data.firestore.users.User
 import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.activity_auth.*

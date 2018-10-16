@@ -11,6 +11,7 @@ import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.SettingsActivity
+import com.words.android.R
 import com.words.android.util.collapse
 import com.words.android.util.displayHeightDp
 import com.words.android.util.displayHeightPx
