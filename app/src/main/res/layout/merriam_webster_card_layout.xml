@@ -37,7 +37,7 @@
             >
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextSubtitle1"
+            style="?attr/styleTextSubtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"

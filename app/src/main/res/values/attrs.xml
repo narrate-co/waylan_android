@@ -7,6 +7,7 @@
     <attr name="styleTextHeadline4" format="reference"/>
     <attr name="styleTextHeadline5" format="reference"/>
     <attr name="styleTextSubtitle1" format="reference"/>
+    <attr name="styleTextSubtitle2" format="reference"/>
     <attr name="styleTextBody1" format="reference"/>
     <attr name="textAppearanceBody1" format="reference"/>
     <attr name="textAppearanceBody1Inverse" format="reference"/>

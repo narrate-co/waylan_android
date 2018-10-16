@@ -7,6 +7,7 @@ import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 
 sealed class WordSource {
+    class WordProperties(val props: com.words.android.data.repository.WordProperties): WordSource()
     class SimpleWordSource(val word: Word): WordSource()
     class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()
     class FirestoreUserSource(val userWord: UserWord): WordSource()

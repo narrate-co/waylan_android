@@ -20,6 +20,7 @@
         <item name="styleTextHeadline4">@style/Widget.Words.Light.TextView.Headline4</item>
         <item name="styleTextHeadline5">@style/Widget.Words.Light.TextView.Headline5</item>
         <item name="styleTextSubtitle1">@style/Widget.Words.Light.TextView.Subtitle1</item>
+        <item name="styleTextSubtitle2">@style/Widget.Words.Light.TextView.Subtitle2</item>
         <item name="styleTextBody1">@style/Widget.Words.Light.TextView.Body1</item>
         <item name="textAppearanceBody1">@style/TextAppearance.Words.Light.Body1</item>
         <item name="textAppearanceBody1Inverse">@style/TextAppearance.Words.Light.Body1.Inverse</item>
@@ -76,12 +77,20 @@
         <item name="android:fontFamily">@font/source_code_pro</item>
         <item name="android:textSize">24sp</item>
     </style>
-
     <style name="Widget.Words.Light.TextView.Subtitle1" parent="Theme.Words.Light">
         <item name="android:textAppearance">@style/TextAppearance.Words.Light.Subtitle1</item>
-        <item name="android:fontFamily">@font/source_sans_pro_semibold</item>
+        <item name="android:fontFamily">@font/source_code_pro</item>
     </style>
     <style name="TextAppearance.Words.Light.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Widget.Words.Light.TextView.Subtitle2" parent="Theme.Words.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Subtitle2</item>
+        <item name="android:fontFamily">@font/source_sans_pro_semibold</item>
+    </style>
+    <style name="TextAppearance.Words.Light.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textColor">@color/light_colorTextDarkMediumEmphasis</item>
         <item name="android:textSize">16sp</item>
     </style>

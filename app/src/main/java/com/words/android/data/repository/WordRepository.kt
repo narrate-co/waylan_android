@@ -2,6 +2,7 @@ package com.words.android.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
@@ -28,41 +29,52 @@ class WordRepository(
     fun getWordSources(id: String): LiveData<WordSource> {
         val mediatorLiveData = MediatorLiveData<WordSource>()
 
+        // Word Properties
+        mediatorLiveData.addSource(getWordProperties(id)) {
+            if (it != null) mediatorLiveData.value = WordSource.WordProperties(it)
+        }
+
         // Wordset
         mediatorLiveData.addSource(getWordAndMeanings(id)) {
-            mediatorLiveData.value = WordSource.WordsetSource(it)
+            if (it != null) mediatorLiveData.value = WordSource.WordsetSource(it)
         }
 
         // Firestore User Word
         mediatorLiveData.addSource(getUserWord(id)) {
-            mediatorLiveData.value = WordSource.FirestoreUserSource(it)
+            if (it != null) mediatorLiveData.value = WordSource.FirestoreUserSource(it)
         }
 
         // Firestore Global Word
         mediatorLiveData.addSource(getGlobalWord(id)) {
-            mediatorLiveData.value = WordSource.FirestoreGlobalSource(it)
+            if (it != null) mediatorLiveData.value = WordSource.FirestoreGlobalSource(it)
         }
 
         mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            mediatorLiveData.value = WordSource.MerriamWebsterSource(it)
+            if (it != null) mediatorLiveData.value = WordSource.MerriamWebsterSource(it)
         }
 
         return mediatorLiveData
     }
 
+    private fun getWordProperties(word: String): LiveData<WordProperties> {
+        val data = MutableLiveData<WordProperties>()
+        data.value = WordProperties(word, word)
+        return data
+    }
+
     private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
-            db.wordDao().getWordAndMeanings(word)
+            if (word.isNotBlank()) db.wordDao().getWordAndMeanings(word) else LiveDataHelper.empty()
 
     private fun getUserWord(id: String): LiveData<UserWord> {
-        return firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty()
+        return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     private fun getGlobalWord(id: String): LiveData<GlobalWord> {
-        return firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty()
+        return if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<List<WordAndDefinitions>> {
-        return merriamWebsterStore?.getWord(id) ?: LiveDataHelper.empty()
+        return if (id.isNotBlank()) merriamWebsterStore?.getWord(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {
@@ -80,6 +92,8 @@ class WordRepository(
     }
 
     fun setFavorite(id: String, favorite: Boolean) {
+        if (id.isBlank()) return
+
         launch {
             firestoreStore?.setFavorite(id, favorite)
         }
@@ -93,6 +107,8 @@ class WordRepository(
     }
 
     fun setRecent(id: String) {
+        if (id.isBlank()) return
+
         launch {
             firestoreStore?.setRecent(id)
         }

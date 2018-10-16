@@ -34,8 +34,8 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
     class TitleComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {
         override fun bind(t: DetailsComponent) {
-            (t.source as? WordSource.WordsetSource)?.let {
-                view.detailsComponentTitleText.text = it.wordAndMeaning.word?.word
+            (t.source as? WordSource.WordProperties)?.let {
+                view.detailsComponentTitleText.text = it.props.word
             }
         }
     }

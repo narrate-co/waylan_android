@@ -15,18 +15,17 @@
         android:padding="@dimen/keyline_3">
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextSubtitle2"
             android:id="@+id/settingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="56dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/source_code_pro"
-            android:textColor="@color/light_colorTextDarkHighEmphasis"
             android:text="Dark mode" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody2"
             android:id="@+id/settingsDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +33,6 @@
             android:layout_marginRight="56dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:textSize="14sp"
-            android:fontFamily="@font/source_sans_pro"
-            android:textColor="@color/light_colorTextDarkLowEmphasis"
             android:text="Reading late at night? Keep looking up words and give your eyes a break." />
 
 

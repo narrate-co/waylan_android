@@ -9,7 +9,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
         TITLE(1), MERRIAM_WEBSTER(2), WORDSET(3), EXAMPLE(4)
     }
 
-    class TitleComponent(source: WordSource.WordsetSource): DetailsComponent(source, Type.TITLE) {
+    class TitleComponent(source: WordSource.WordProperties): DetailsComponent(source, Type.TITLE) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is TitleComponent) return false
 
@@ -18,9 +18,9 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
 
         override fun contentsSameAs(newOther: DetailsComponent): Boolean {
             if (this == newOther) return true
-            if (source !is WordSource.WordsetSource || newOther.source !is WordSource.WordsetSource) return false
+            if (source !is WordSource.WordProperties || newOther.source !is WordSource.WordProperties) return false
 
-            return source.wordAndMeaning.word?.word == newOther.source.wordAndMeaning.word?.word
+            return source.props.word == newOther.source.props.word
         }
 
         override fun getChangePayload(newOther: DetailsComponent): Any? {

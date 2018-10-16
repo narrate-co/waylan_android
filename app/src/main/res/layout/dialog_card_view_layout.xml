@@ -23,14 +23,13 @@
         android:padding="@dimen/keyline_3"
         android:orientation="vertical">
 
-
         <androidx.appcompat.widget.AppCompatTextView
+            style="?attr/styleTextBody1"
             android:id="@+id/messageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Want to save your recent and favorite words? Create an account and keep building your vocabulary or log in to restore your history."
-            android:textSize="14sp"
-            android:textColor="@color/light_colorTextDarkLowEmphasis" />
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="?attr/styleTextButton"

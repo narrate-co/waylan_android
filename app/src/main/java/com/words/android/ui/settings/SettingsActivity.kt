@@ -114,6 +114,9 @@ class SettingsActivity : BaseUserActivity() {
     private fun setRegisteredUserCommonSettings(user: User) {
         signOutSetting.settingsTitle.text = "Sign out"
         signOutSetting.settingsDescription.text = user.firebaseUser?.email ?: "Sign out and log in with a different account."
+        signOutSetting.settingsItem.setOnClickListener {
+            launchAuth(AuthActivity.AuthRoute.LOG_IN)
+        }
 
         signOutSetting.checkbox.visibility = View.INVISIBLE
         signOutSetting.visibility = View.VISIBLE
