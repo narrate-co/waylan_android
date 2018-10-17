@@ -17,7 +17,6 @@ object Navigator {
     fun showHome(activity: FragmentActivity) {
         activity.supportFragmentManager
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
                 .replace(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.FRAGMENT_TAG)
                 .commit()
     }
@@ -51,13 +50,11 @@ object Navigator {
     fun showSettings(activity: FragmentActivity) {
         activity.supportFragmentManager
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
                 .replace(R.id.fragmentContainer, SettingsFragment.newInstance(), SettingsFragment.FRAGMENT_TAG)
                 .commit()
     }
 
     fun showAbout(activity: FragmentActivity) {
-        //replace
         activity.supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)

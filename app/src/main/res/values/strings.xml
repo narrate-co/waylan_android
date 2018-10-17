@@ -54,7 +54,7 @@
     <string name="settings_sign_out_title">Sign out</string>
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
 
-    <string name="about_header_body">Words was created late one night when reading in bed. There are so many rich words in the English language, but looking them up while holding a book in one hand and a phone in the other was tough with the dictionaries available. \n\n Words hopes to be the most ergonomic dictionary for Android. Making it easy enough to look things up and keep adding to your vocabulary.</string>
+    <string name="about_header_body">Words was created late one night when reading in bed. There are so many rich words in the English language, but looking them up while holding a book in one hand and a phone in the other was tough with the dictionaries available. \n\nWords hopes to be the most ergonomic dictionary for Android. Making it easy enough to look things up and keep adding to your vocabulary.</string>
 
 
 </resources>

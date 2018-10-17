@@ -17,8 +17,6 @@ class SettingsActivity : BaseUserActivity() {
 
     private fun showSettings() = Navigator.showSettings(this)
 
-    fun showAbout() {
-        Navigator.showAbout(this)
-    }
+    fun showAbout() = Navigator.showAbout(this)
 
 }
