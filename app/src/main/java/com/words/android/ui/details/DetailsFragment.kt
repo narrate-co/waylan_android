@@ -62,13 +62,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
             }
             adapter.submitWordSource(source)
         })
-
-//        sharedViewModel.currentWord.observe(this, Observer {
-//            sharedViewModel.setCurrentWordRecented()
-//            setUserWord(it?.userWord)
-//            adapter.submitWord(it)
-//        })
-
     }
 
     private fun setUpRecyclerView() {

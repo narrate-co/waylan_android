@@ -1,11 +1,16 @@
 package com.words.android
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.FragmentActivity
+import com.words.android.ui.about.AboutFragment
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.SettingsActivity
+import com.words.android.ui.settings.SettingsFragment
 
 object Navigator {
 
@@ -43,10 +48,42 @@ object Navigator {
                 .commit()
     }
 
+    fun showSettings(activity: FragmentActivity) {
+        activity.supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit)
+                .replace(R.id.fragmentContainer, SettingsFragment.newInstance(), SettingsFragment.FRAGMENT_TAG)
+                .commit()
+    }
+
+    fun showAbout(activity: FragmentActivity) {
+        //replace
+        activity.supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                .add(R.id.fragmentContainer, AboutFragment.newInstance(), AboutFragment.FRAGMENT_TAG)
+                .addToBackStack(AboutFragment.FRAGMENT_TAG)
+                .commit()
+    }
+
     fun launchSettings(activity: FragmentActivity) {
         activity.startActivity(Intent(activity, SettingsActivity::class.java))
     }
 
+    /**
+     * @param toEmail The addressee's email address
+     * @param subject The email title
+     * @param body The email's content
+     * @param shareTitle The title of the share picker sheet the client will be offered to choose their desired email client
+     * @throws ActivityNotFoundException If the user doesn't have an email client installed, this method will throw an ActivityNotFound exception
+     */
+    @Throws(ActivityNotFoundException::class)
+    fun launchEmail(context: Context, toEmail: String, subject: String = "", body: String = "") {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        val mailTo = "mailto:$toEmail?subject=${Uri.encode(subject)}&body=${Uri.encode(body)}"
+        intent.data = Uri.parse(mailTo)
+        context.startActivity(intent)
+    }
 
 }
 

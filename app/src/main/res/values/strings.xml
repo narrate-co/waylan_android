@@ -36,5 +36,25 @@
     <string name="auth_sign_up_button">Sign up</string>
     <string name="auth_cancel_button">Cancel</string>
 
+    <!--Settings Screen-->
+    <string name="settings_dark_mode_title">Dark mode</string>
+    <string name="settings_dark_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_desc">Curious about where Words came from?</string>
+    <string name="settings_contact_title">Contact</string>
+    <string name="settings_contact_desc">Get in touch.</string>
+    <string name="settings_email_compose_subject">Getting in touch</string>
+    <string name="settings_email_compose_no_client_error">Looks like you don\'t have an email app installed</string>
+    <string name="settings_header_create_account_body">Want to save your recent and favorite words? Create an account and keep building your vocabulary or log in to restore your history.</string>
+    <string name="settings_header_create_account_create_account_button">Create Account</string>
+    <string name="settings_header_create_account_log_in_button">Log in</string>
+    <string name="settings_header_purchase_merriam_webster_body">Merriam-Webster’s dictionary, Words community dictionary and multi-device login are available via a Words subscription.</string>
+    <string name="settings_header_purchase_merriam_webster_add_button">Add</string>
+    <string name="settings_header_added_merriam_webster_body">Merriam-Webster and their extensive collection of entries now appear in your Words entries! Thanks for the support.</string>
+    <string name="settings_sign_out_title">Sign out</string>
+    <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
+
+    <string name="about_header_body">Words was created late one night when reading in bed. There are so many rich words in the English language, but looking them up while holding a book in one hand and a phone in the other was tough with the dictionaries available. \n\n Words hopes to be the most ergonomic dictionary for Android. Making it easy enough to look things up and keep adding to your vocabulary.</string>
+
 
 </resources>

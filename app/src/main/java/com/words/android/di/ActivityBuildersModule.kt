@@ -13,7 +13,7 @@ abstract class ActivityBuildersModule {
     abstract fun contributeMainActivity(): MainActivity
 
     @ActivityScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SettingsFragmentBuildersModule::class])
     abstract fun contributeSettingsActivity(): SettingsActivity
 
 }
