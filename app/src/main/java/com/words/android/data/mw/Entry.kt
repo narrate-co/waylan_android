@@ -247,7 +247,6 @@ class FormattedStringConverter: Converter<FormattedString> {
         flatten(node, node?.next, builder)
 
         val formattedString = FormattedString(builder.toString())
-        println("FormattedStringConverter:: returning = ${formattedString.value}")
         return formattedString
     }
 
@@ -329,7 +328,6 @@ val Entry.toDbMwDefinitions: List<com.words.android.data.disk.mw.Definition>
     get() {
         val orderedDefs = this.def.dts.mapIndexed { index, formattedString ->
             val sn = this.def.sn.getOrNull(index) ?: (index + 1).toString()
-            println("Entry::creating ordered DefItem: $sn - $formattedString")
             OrderedDefinitionItem(sn, formattedString.value)
         }
         return listOf(

@@ -35,6 +35,7 @@
     <string name="auth_log_in_button">Log in</string>
     <string name="auth_sign_up_button">Sign up</string>
     <string name="auth_cancel_button">Cancel</string>
+    <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
 
     <!--Settings Screen-->
     <string name="settings_dark_mode_title">Dark mode</string>

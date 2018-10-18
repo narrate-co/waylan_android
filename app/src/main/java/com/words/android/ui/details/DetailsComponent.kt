@@ -42,14 +42,13 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
             val defsSize = newOther.source.wordsAndDefs.map { it.definitions }.flatten().map { it.id }.size
 
             if (wordsSize != 0 && defsSize == 0) {
-                println("DetailsComponent::MW wordsSize: $wordsSize, defsSize: $defsSize")
                 return true
             }
 
-            val sameWords = source.wordsAndDefs.map { it.word?.word }.filterNotNull().toList().containsAll(newOther.source.wordsAndDefs.map { it.word?.word }.filterNotNull().toList())
-            val sameDefinitions = source.wordsAndDefs.map { it.definitions }.flatten().map { it.id }.toList().containsAll(newOther.source.wordsAndDefs.map { it.definitions }.flatten().map { it.id }.toList())
+            val sameDefinitions = source.wordsAndDefs.toTypedArray().contentDeepEquals(newOther.source.wordsAndDefs.toTypedArray())
 
-            return sameWords && sameDefinitions
+
+            return sameDefinitions
         }
 
         override fun getChangePayload(newOther: DetailsComponent): Any? {
@@ -60,7 +59,6 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
     class WordsetComponent(source: WordSource.WordsetSource): DetailsComponent(source, Type.WORDSET) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is WordsetComponent) return false
-            //TODO make newOther comparisons
 
             return true
         }
@@ -70,7 +68,10 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
             if (source !is WordSource.WordsetSource || newOther.source !is WordSource.WordsetSource) return false
             //TODO make full checks
 
-            return false
+            val isTheSame = source.wordAndMeaning.meanings.map { it.def }.toTypedArray().contentDeepEquals(newOther.source.wordAndMeaning.meanings.map { it.def }.toTypedArray())
+
+
+            return isTheSame
         }
 
         override fun getChangePayload(newOther: DetailsComponent): Any? {
@@ -81,7 +82,6 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
     class ExamplesComponent(source: WordSource.WordsetSource): DetailsComponent(source,Type.EXAMPLE) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is ExamplesComponent) return false
-            //TODO make newOther comparisons
 
             return true
         }
@@ -90,7 +90,11 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
             if (this == newOther) return true
             if (source !is WordSource.WordsetSource || newOther.source !is WordSource.WordsetSource) return false
             //TODO make full checks
-            return false
+
+            val isTheSame = source.wordAndMeaning.meanings.map { it.examples }.toTypedArray().contentDeepEquals(newOther.source.wordAndMeaning.meanings.map { it.examples }.toTypedArray())
+
+
+            return isTheSame
         }
 
         override fun getChangePayload(newOther: DetailsComponent): Any? {

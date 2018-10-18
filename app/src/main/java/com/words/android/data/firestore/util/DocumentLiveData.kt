@@ -23,11 +23,9 @@ class FirestoreDocumentLiveData<T>(private val documentReference: DocumentRefere
             if (firebaseFirestoreException == null) {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     value = documentSnapshot.toObject(clazz)
-                } else {
-                    Log.d(TAG, "Document does not exist")
                 }
             } else {
-                Log.d(TAG, "Unable to add snapshot listener: $firebaseFirestoreException")
+                firebaseFirestoreException.printStackTrace()
             }
         }
     }

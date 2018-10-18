@@ -28,10 +28,6 @@ import com.words.android.data.disk.wordset.WordDao
 @TypeConverters(AppTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
 
-    fun init() {
-        Log.d("AppDatabase", "Initializing...")
-    }
-
     abstract fun wordDao(): WordDao
     abstract fun meaningDao(): MeaningDao
     abstract fun mwDao(): MwDao
@@ -57,7 +53,6 @@ abstract class AppDatabase: RoomDatabase() {
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-                            println("Creating App Database...")
 
                             //Use if need to seed new database if schema changes
 //                            context.startService(Intent(context, DatabaseSeedService::class.java))

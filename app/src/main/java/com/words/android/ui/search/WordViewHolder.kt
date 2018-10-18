@@ -15,7 +15,7 @@ class WordViewHolder(private val view: View, private val handlers: WordViewHolde
 
     fun bind(word: WordSource) {
         when (word) {
-            is WordSource.SimpleWordSource -> bindSource(word.word.word, R.drawable.ic_round_search_24px)
+            is WordSource.SimpleWordSource -> bindSource(word.word.word, R.drawable.ic_round_search_black_24px)
             is WordSource.FirestoreUserSource -> bindSource(word.userWord.word, R.drawable.ic_round_access_time_black_24px)
             else -> clear()
         }

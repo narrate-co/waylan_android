@@ -69,7 +69,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
     private fun setUpList() {
         view?.recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view?.recyclerView?.adapter = adapter
-        val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.list_item_divider))
+        val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.light_list_item_divider))
         view?.recyclerView?.addItemDecoration(itemDivider)
 
         sharedViewModel.getList(type).observe(this, Observer {

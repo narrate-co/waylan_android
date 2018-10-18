@@ -14,12 +14,12 @@ class SearchViewModel @Inject constructor(private val wordRepository: WordReposi
 
     var searchInput: String = ""
         set(value) {
-            //TODO sanitize input and check for equality with current field value
-                field = value
-                searchInputData.value = value
+            if (value == field) return
+            field = value
+            searchInputData.value = value
 
         }
-    private val searchInputData: MutableLiveData<String> = MutableLiveData()
+    val searchInputData: MutableLiveData<String> = MutableLiveData()
     val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputData) {
         if (it.isEmpty()) {
             wordRepository.getRecents(25L)

@@ -3,7 +3,7 @@
     <style name="Theme.Words.Light" parent="Base.Theme.Words.Light">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">@color/light_colorBlack10a</item>
+        <item name="android:navigationBarColor">@color/light_colorTan100</item>
     </style>
 
     <style name="Theme.Words.Light.Splash" parent="Base.Theme.Words.Light.Splash">

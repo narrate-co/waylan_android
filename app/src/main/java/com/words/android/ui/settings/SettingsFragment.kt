@@ -151,14 +151,14 @@ class SettingsFragment : BaseUserFragment() {
      */
     private fun toggleCheckbox(imageButtom: AppCompatImageButton): Boolean {
         val currentDrawable = imageButtom.drawable.constantState
-        val checkedDrawable = resources.getDrawable(R.drawable.ic_round_check_circle_24px).constantState
+        val checkedDrawable = resources.getDrawable(R.drawable.ic_round_check_circle_black_24px).constantState
 
         val isChecked = currentDrawable == checkedDrawable
 
         if (isChecked) {
-            imageButtom.setImageResource(R.drawable.ic_round_check_circle_outline_24px)
+            imageButtom.setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
         } else {
-            imageButtom.setImageResource(R.drawable.ic_round_check_circle_24px)
+            imageButtom.setImageResource(R.drawable.ic_round_check_circle_black_24px)
         }
 
         return !isChecked

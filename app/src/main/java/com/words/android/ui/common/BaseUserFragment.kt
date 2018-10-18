@@ -38,8 +38,6 @@ abstract class BaseUserFragment: Fragment(), Injectable {
         return animation
     }
 
-    //TODO add methods to override behavior when transition starts/ends
-
     open fun onEnterTransactionEnded() { }
 }
 

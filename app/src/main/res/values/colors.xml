@@ -10,15 +10,13 @@
     <color name="light_colorTextLightMediumEmphasis">#99f7f3ed</color>
     <color name="light_colorTextLightHighEmphasis">#def7f3ed</color>
 
-    <color name="light_colorTextError">#59ff0000</color>
+    <color name="light_colorTextError">#99ff0000</color>
     
-    <color name="colorWordsErrorSolid">#edd1d1</color>
-
     <color name="light_colorMauve50">#edd1d1</color>
 
     <color name="light_colorTan25">#fcf8f2</color>
     <color name="light_colorTan50">#f7f3ed</color>
-    <color name="light_colorTan100">#e7e0d7</color>
+    <color name="light_colorTan100">#EFE9E0</color>
 
     <color name="light_colorPink50">#fce2eb</color>
     <color name="light_colorPink400">#da3a78</color>

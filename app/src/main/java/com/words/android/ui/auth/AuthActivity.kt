@@ -91,7 +91,6 @@ class AuthActivity : AppCompatActivity() {
             }
             else -> {
                 if (firebaseUser != null ) {
-                    Log.d(TAG, "User already signed in. Entering with user uid ${firebaseUser.uid}")
                     launch(UI) {
                         delay(1500)
                         launchHome(firebaseUser, true)
@@ -120,7 +119,7 @@ class AuthActivity : AppCompatActivity() {
                     val loggedInUser = authViewModel.logIn(email.text.toString(), password.text.toString())
                     launchHome(loggedInUser, true)
                 } catch (e: Exception) {
-                    showErrorMessage(e) //TODO make sure this is a user friendly error
+                    showErrorMessage(e)
                 }
             }
         }
@@ -167,7 +166,6 @@ class AuthActivity : AppCompatActivity() {
 
     private fun showErrorMessage(e: Exception) {
         e.printStackTrace()
-        println(e)
         synchronized(lastErrorStateIsShown) {
             if (!lastErrorStateIsShown) {
                 error.text = when (e) {
@@ -209,7 +207,6 @@ class AuthActivity : AppCompatActivity() {
 
     private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
-        //TODO use showErrorMessage() to show any validation errors
         (application as App).setUser(User(user, Config.DEBUG_USER_IS_PREMIUM))
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)

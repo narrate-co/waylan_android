@@ -44,23 +44,20 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
             when (source) {
                 is WordSource.WordProperties -> {
-                    println("SourceHolder::adding word properties source ${source.props}")
                     properties = source
                 }
                 is WordSource.WordsetSource -> {
-                    println("SourceHolder::adding wordset source ${source.wordAndMeaning}")
                     wordset = source
                 }
                 is WordSource.MerriamWebsterSource -> {
-                    println("SourceHolder::adding mw source ${source.wordsAndDefs}")
-                    merriamWebster = source
+                    if (merriamWebster == null || source.wordsAndDefs.map { it.definitions }.flatten().isNotEmpty()) {
+                        merriamWebster = source
+                    }
                 }
                 is WordSource.FirestoreUserSource -> {
-                    println("SourceHolder::adding firestore user source ${source.userWord}")
                     firestoreUser = source
                 }
                 is WordSource.FirestoreGlobalSource -> {
-                    println("SourceHolder::adding firestore global source ${source.globalWord}")
                     firestoreGlobal = source
                 }
             }
@@ -84,7 +81,6 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
                 else -> return false
             }
 
-            println("SourceHolder::clearIfNewWordSource - wordId = $wordId, newWordId = $newWordId")
 
             if (newWordId != null && newWordId.isNotBlank() && newWordId != wordId) {
                 //new word coming in
@@ -110,7 +106,6 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         submitList(sourceHolder.getComponentsList())
     }
 
-
     override fun getItemViewType(position: Int): Int = getItem(position).type.number
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsComponentViewHolder {
@@ -120,8 +115,6 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
     override fun onBindViewHolder(holder: DetailsComponentViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
-    //TODO override onBindViewHolder w/ payload
 
     override fun onSynonymChipClicked(synonym: String) {
         listener.onSynonymChipClicked(synonym)

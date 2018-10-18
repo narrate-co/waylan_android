@@ -51,7 +51,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="4dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_round_play_arrow_24px"/>
+                android:src="@drawable/ic_round_play_arrow_black_24px"/>
 
         </FrameLayout>
 
@@ -82,7 +82,7 @@
                 android:id="@+id/underline"
                 android:layout_width="72dp"
                 android:layout_height="2dp"
-                android:background="@drawable/title_underline_background"
+                android:background="@drawable/light_title_underline_background"
                 android:layout_gravity="center_vertical"
                 />
 

@@ -34,7 +34,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     }
 
 
-    private val adapter: DetailsAdapter by lazy { DetailsAdapter(this) }
+    private val adapter: DetailsAdapter = DetailsAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: DetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.details_fragment, container, false)
@@ -63,6 +63,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
             adapter.submitWordSource(source)
         })
     }
+
 
     private fun setUpRecyclerView() {
         recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -101,7 +102,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
         favoriteMenuItem?.isChecked = isFavorited
-        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
+        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_black_24px else R.drawable.ic_round_favorite_border_black_24px)
 
     }
 

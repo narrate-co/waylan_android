@@ -18,7 +18,6 @@ class UserModule {
     @Provides
     fun provideWordRepository(application: Application, user: User?): WordRepository {
         val appDatabase = AppDatabase.getInstance(application)
-        println("Database absolutePath = ${application.getDatabasePath("word-db").absolutePath}")
         val firestoreStore: FirestoreStore? = if (user?.firebaseUser != null) FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, user.firebaseUser) else null
         val merriamWebsterStore: MerriamWebsterStore? = if (user?.isMerriamWebsterSubscriber == true) MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao()) else null
         return WordRepository(appDatabase, firestoreStore, merriamWebsterStore)

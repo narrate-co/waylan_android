@@ -15,3 +15,5 @@ data class UserWord(
     var totalViewCount: Long = 1
 )
 
+
+

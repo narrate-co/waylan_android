@@ -48,27 +48,20 @@ class MerriamWebsterStore(
                     //Delete all definitions and words if they exist - keep data fresh
                     entryList.entries.forEach {
 
-                        Log.d(TAG, "Deleting all definitions with parent word: ${it.word}")
                         mwDao.deleteDefinitions(it.word)
 
                     }
 
-                    //TODO group words by unique word? ie. 'empty' has an entry for adj., verb & noun. How do we handle this?
                     val relatedWords = entryList.entries.map { it.word }
                     entryList.entries.forEach {
                         val word = it.toDbMwWord(relatedWords)
 
-                        Log.d(TAG, "Replacing entry word: ${word.word}")
                         mwDao.insert(word)
                     }
 
                     entryList.entries.forEach {
 
                         val definitions = it.toDbMwDefinitions
-                        definitions.forEach {
-                            Log.d(TAG, "Adding entry definitions: id=${it.id}, word=${it.parentWord} - ${it.definitions}")
-                        }
-
                         mwDao.insertAll(*definitions.toTypedArray())
                     }
                 }

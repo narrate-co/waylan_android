@@ -38,8 +38,8 @@
 
 
         <!--Implementation Specific Attrs-->
-        <item name="drawableSnackbarErrorBackground">@drawable/snackbar_background_error</item>
-        <item name="drawableSnackbarInformativeBackground">@drawable/snackbar_background_informative</item>
+        <item name="drawableSnackbarErrorBackground">@drawable/light_snackbar_background_error</item>
+        <item name="drawableSnackbarInformativeBackground">@drawable/light_snackbar_background_informative</item>
     </style>
 
     <style name="Base.Theme.Words.Light.Splash" parent="Base.Theme.Words.Light"/>

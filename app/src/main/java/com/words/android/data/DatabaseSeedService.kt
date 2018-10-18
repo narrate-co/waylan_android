@@ -43,7 +43,6 @@ class DatabaseSeedService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        println("onStartCommand")
 
         //Set up notification
         createDataNotificationChannel()
@@ -69,7 +68,6 @@ class DatabaseSeedService: Service() {
 
 
     private fun seed() {
-        println("seed")
         //Get db instance
         val db = AppDatabase.getInstance(applicationContext)
 
@@ -98,14 +96,10 @@ class DatabaseSeedService: Service() {
                             OffsetDateTime.now()
                     )
                     //insert word
-                    //TODO
                     words.add(word)
-//                    db.wordDao().insert(word)
 
 
-                    println("inserted word. meanings size: ${value.meanings?.size}")
                     for (m in value.meanings ?: emptyList()) {
-                        println("creating meaning")
                         val meaning = Meaning(
                                 value.word,
                                 m.def ?: "",
@@ -120,7 +114,6 @@ class DatabaseSeedService: Service() {
                                 } ?: emptyList()
                         )
                         //insert meaning
-                        println("inserting meaning")
                         //TODO
                         meanings.add(meaning)
                     }
@@ -132,7 +125,6 @@ class DatabaseSeedService: Service() {
                 e.printStackTrace()
             }
         }
-        println("stopSeed")
         stopForeground(true)
         stopSelf()
     }
@@ -146,7 +138,6 @@ class DatabaseSeedService: Service() {
     }
 
     private fun createDataNotificationChannel() {
-        println("createDataNotificationChannel")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Create notification channel
             val name = getString(R.string.data_notification_channel_name)

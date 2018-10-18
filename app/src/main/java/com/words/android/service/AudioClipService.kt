@@ -54,7 +54,6 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        println("AudioClipService::onStartCommand")
         val command = Command.valueOf(intent?.getStringExtra(INTENT_KEY_COMMAND) ?: Command.NONE.name)
         when (command) {
             Command.PLAY -> play(intent?.getStringExtra(INTENT_KEY_URL))
@@ -130,7 +129,6 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     }
 
     override fun onPrepared(player: MediaPlayer?) {
-        println("$TAG::onPrepared")
         val result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             dispatchPrepared(currentUrl)
@@ -151,7 +149,6 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
-        println("$TAG::onError")
         dispatchError(currentUrl, "An error occurred playing pronunciation")
         stop()
         destroy()
@@ -171,30 +168,25 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     }
 
     private fun dispatchLoading(url: String?) {
-        println("$TAG::dispatchLoading")
         isPreparing = true
         dispatch(AudioStateDispatch.LOADING, url)
     }
 
     private fun dispatchStopped(url: String?) {
-        println("$TAG::dispatchStopped")
         isPreparing = false
         dispatch(AudioStateDispatch.STOPPED, url)
     }
 
     private fun dispatchError(url: String?, message: String) {
-        println("$TAG::dispatchError")
         dispatch(AudioStateDispatch.ERROR, url, message)
     }
 
     private fun dispatchPrepared(url: String?) {
-        println("$TAG::dispatchPrepared")
         isPreparing = false
         dispatch(AudioStateDispatch.PREPARED, url)
     }
 
     private fun dispatchPlaying(url: String?) {
-        println("$TAG::dispatchPlaying")
         isPreparing = false
         dispatch(AudioStateDispatch.PLAYING, url)
     }

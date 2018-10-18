@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.words.android.util.FirebaseAuthWordErrorType
+import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 import javax.inject.Inject
 import kotlin.coroutines.experimental.Continuation
@@ -23,9 +24,6 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
 
     suspend fun signUp(email: String, password: String, confirmPassword: String): FirebaseUser = suspendCoroutine { cont ->
-        //TODO password and confirm password check, etc.
-        //TODO use showErrorMessage() to show any validation errors
-
         val auth = FirebaseAuth.getInstance()
         isLoading.value = true
         when {
@@ -93,20 +91,24 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     suspend fun logIn(email: String, password: String): FirebaseUser = suspendCoroutine {cont ->
         val auth = FirebaseAuth.getInstance()
         isLoading.value = true
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        var user = auth.currentUser
-                        if (user == null) {
-                            cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_UNKNOWN, it)
+        if (email.isNotBlank() && password.isNotBlank()) {
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            var user = auth.currentUser
+                            if (user == null) {
+                                cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_UNKNOWN, it)
+                            } else {
+                                cont.resume(user)
+                                isLoading.value = false
+                            }
                         } else {
-                            cont.resume(user)
-                            isLoading.value = false
+                            cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED, it)
                         }
-                    } else {
-                        cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED, it)
                     }
-                }
+        } else {
+            cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED)
+        }
     }
 
     private fun <T> Continuation<T>.resumeWithFirebaseAuthException(type: FirebaseAuthWordErrorType, task: Task<AuthResult>? = null) {

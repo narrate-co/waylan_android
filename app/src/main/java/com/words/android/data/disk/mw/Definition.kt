@@ -30,8 +30,6 @@ data class Definition(
         if (other !is Definition) return false
         if (this === other) return true
 
-        println("mw.Definition::comparing THIS: $this | OTHER: $other")
-
         return id == other.id &&
                 parentId == other.parentId &&
                 parentWord == other.parentWord &&

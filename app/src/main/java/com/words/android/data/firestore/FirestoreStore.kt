@@ -45,7 +45,6 @@ class FirestoreStore(
     private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord = suspendCoroutine { cont ->
         firestore.userWords(user.uid).document(id).get()
                 .addOnFailureListener {
-                    Log.d(TAG, "getUserWord onFailureListner = $it. Code = ${(it as FirebaseFirestoreException).code}")
                     when ((it as FirebaseFirestoreException).code) {
                         FirebaseFirestoreException.Code.UNAVAILABLE -> {
                             if (createIfDoesNotExist) {
@@ -78,7 +77,6 @@ class FirestoreStore(
                                 }
                             }
                         } else {
-                            Log.d(TAG, "getUserWord !createIfDoesNotExist. Does not exist: $id")
                             cont.resumeWithException(FirebaseFirestoreNotFoundException(id))
                         }
                     }
@@ -146,7 +144,7 @@ class FirestoreStore(
             userWord.types[UserWordType.RECENT.name] = true
             setUserWord(userWord)
         } catch (e: Exception) {
-            Log.d(TAG, "Unable to ${if (favorite) "favorite" else "unfavorite"} UserWord: $e")
+            e.printStackTrace()
         }
     }
 
@@ -163,21 +161,25 @@ class FirestoreStore(
         try {
             val userWord = getUserWord(id, true)
             if (!userWord.types.containsKey(UserWordType.RECENT.name) || userWord.modified.isMoreThanOneMinuteAgo) {
-                println("$TAG::setRecent - current view count = ${userWord.totalViewCount}, new view count = ${userWord.totalViewCount + 1}")
                 userWord.types[UserWordType.RECENT.name] = true
                 userWord.modified = Date()
                 userWord.totalViewCount = userWord.totalViewCount + 1
                 setUserWord(userWord)
             }
         } catch (e: Exception) {
-            Log.d(TAG, "Unable to set recent UserWord: $e")
+            e.printStackTrace()
         }
     }
 
     private fun setUserWord(userWord: UserWord) {
         firestore.userWords(user.uid).document(userWord.id).set(userWord)
-                .addOnFailureListener { Log.d(TAG, "Unable to set UserWord ${userWord.id}: $it") }
-                .addOnSuccessListener { Log.d(TAG, "Successfully set UserWord ${userWord.id}") }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    //TODO report error?
+                }
+                .addOnSuccessListener {
+                    //TODO show success?
+                }
     }
 
 

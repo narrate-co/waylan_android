@@ -106,7 +106,7 @@
     <View
         android:layout_width="72dp"
         android:layout_height="2dp"
-        android:background="@drawable/title_underline_background"
+        android:background="@drawable/light_title_underline_background"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="@dimen/keyline_3"
         android:layout_marginBottom="32dp"/>

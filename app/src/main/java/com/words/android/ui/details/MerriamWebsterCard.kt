@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.media.AudioManager
-import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,6 @@ import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.service.AudioClipService
 import com.words.android.service.AudioController
-import com.words.android.util.contentEquals
 import com.words.android.util.fromHtml
 import com.words.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
@@ -66,7 +63,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
     fun clear() {
-        println("$TAG::clear")
         currentWordId = ""
         definitionGroups = mutableListOf()
         definitionsContainer.removeAllViews()
@@ -117,6 +113,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
             currentWordId = newWordId
         }
 
+
         //set audio clip
         setAudio(entries.firstOrNull()?.word)
 
@@ -140,12 +137,11 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setAudio(word: Word?) {
         if (word == null || word.sound.wav.isBlank()) return
 
-        audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
+        audioImageView.setImageResource(R.drawable.ic_round_play_arrow_black_24px)
 
         var fileName = word.sound.wav.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "http://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
 //        val url = "error" //error url
-        println("$TAG::setAudio - url = $url")
         audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
 
         audioImageView.setOnClickListener(audioPlayClickListener)
@@ -155,20 +151,20 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setAudioIcon(state: AudioClipService.AudioStateDispatch) {
         when (state) {
             AudioClipService.AudioStateDispatch.LOADING -> {
-                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_stop_black_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.VISIBLE
                 underline.visibility = View.INVISIBLE
             }
             AudioClipService.AudioStateDispatch.PREPARED,
             AudioClipService.AudioStateDispatch.PLAYING -> {
-                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_stop_black_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE
             }
             AudioClipService.AudioStateDispatch.STOPPED -> {
-                audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_play_arrow_black_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE
@@ -182,7 +178,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
         //TODO make this diffing smarter
         if (word.relatedWords.isNotEmpty()) {
-            word.relatedWords.forEach {
+            word.relatedWords.distinct().forEach {
                 relatedWordsChipGroup?.addView(it.toRelatedChip(context, relatedWordsChipGroup) {
                     listener?.onRelatedWordClicked(it)
                 })

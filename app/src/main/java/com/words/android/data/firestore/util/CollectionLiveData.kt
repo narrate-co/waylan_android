@@ -20,9 +20,8 @@ class FirestoreCollectionLiveData<T>(private val query: Query, private val clazz
 
     private val eventListener = EventListener<QuerySnapshot> { querySnapshot, firebaseFirestoreException ->
         val source = if (querySnapshot != null && querySnapshot.metadata.hasPendingWrites()) "Local" else "Server"
-        Log.d(TAG, "Retrieving data from $source")
         if (firebaseFirestoreException != null) {
-            Log.e("FirestoreCollLiveData",  "CollectionListener error: $firebaseFirestoreException")
+            firebaseFirestoreException.printStackTrace()
         } else {
             launch(UI) {
                 value = querySnapshot?.documents?.map { it.toObject(clazz)!! }
