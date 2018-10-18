@@ -12,8 +12,7 @@ import dagger.android.support.AndroidSupportInjectionModule
             AndroidInjectionModule::class,
             AndroidSupportInjectionModule::class,
             AppModule::class,
-            AuthModule::class,
-            SettingsModule::class
+            AuthModule::class
         ]
 )
 @ApplicationScope

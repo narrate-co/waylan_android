@@ -57,7 +57,6 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
             }
         }
 
-
         viewModel.searchResults.observe(this, Observer {
             adapter.submitList(it)
         })

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.disk.mw.WordAndDefinitions
