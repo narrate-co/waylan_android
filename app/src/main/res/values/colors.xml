@@ -10,7 +10,7 @@
     <color name="light_colorTextLightMediumEmphasis">#99f7f3ed</color>
     <color name="light_colorTextLightHighEmphasis">#def7f3ed</color>
 
-    <color name="light_colorTextError">#35ff0000</color>
+    <color name="light_colorTextError">#59ff0000</color>
     
     <color name="colorWordsErrorSolid">#edd1d1</color>
 
@@ -20,6 +20,7 @@
     <color name="light_colorTan50">#f7f3ed</color>
     <color name="light_colorTan100">#e7e0d7</color>
 
+    <color name="light_colorPink50">#fce2eb</color>
     <color name="light_colorPink400">#da3a78</color>
 
     <color name="light_colorBlack10a">#10000000</color>

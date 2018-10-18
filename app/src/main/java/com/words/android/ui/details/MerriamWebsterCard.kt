@@ -49,6 +49,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     init {
         View.inflate(context, R.layout.merriam_webster_card_layout, this)
         visibility = View.GONE
+        progressBar.visibility = View.INVISIBLE
     }
 
 
@@ -80,6 +81,8 @@ class MerriamWebsterCard @JvmOverloads constructor(
             val audioStateDispatch: AudioClipService.AudioStateDispatch = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioStateDispatch
             val url = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_URL)
             val message = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
+
+            setAudioIcon(audioStateDispatch)
 
             when (audioStateDispatch) {
                 AudioClipService.AudioStateDispatch.ERROR -> listener?.onAudioClipError(message)
@@ -151,15 +154,24 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
     private fun setAudioIcon(state: AudioClipService.AudioStateDispatch) {
         when (state) {
-            AudioClipService.AudioStateDispatch.LOADING,
+            AudioClipService.AudioStateDispatch.LOADING -> {
+                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
+                audioImageView.setOnClickListener(audioStopClickListener)
+                progressBar.visibility = View.VISIBLE
+                underline.visibility = View.INVISIBLE
+            }
             AudioClipService.AudioStateDispatch.PREPARED,
             AudioClipService.AudioStateDispatch.PLAYING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
+                progressBar.visibility = View.INVISIBLE
+                underline.visibility = View.VISIBLE
             }
             AudioClipService.AudioStateDispatch.STOPPED -> {
                 audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
+                progressBar.visibility = View.INVISIBLE
+                underline.visibility = View.VISIBLE
             }
         }
     }

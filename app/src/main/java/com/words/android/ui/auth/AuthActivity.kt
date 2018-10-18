@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -67,6 +68,18 @@ class AuthActivity : AppCompatActivity() {
         password.addTextChangedListener(errorMessageTextWatcher)
         confirmPassword.addTextChangedListener(errorMessageTextWatcher)
 
+        authViewModel.getIsLoading().observe(this, Observer {
+            progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+
+            alternateCredentialType.isEnabled = !it
+            done.isEnabled = !it
+            cancel.isEnabled = !it
+
+            alternateCredentialType.isClickable = !it
+            done.isClickable = !it
+            cancel.isClickable = !it
+        })
+
         val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
         when (authRoute) {
             AuthRoute.SIGN_UP.name, AuthRoute.LOG_IN.name -> {
@@ -95,8 +108,6 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
     private fun setToLoginUi() {
