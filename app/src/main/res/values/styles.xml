@@ -1,35 +1,79 @@
 <resources>
 
-    <style name="Theme.Words.Light" parent="Base.Theme.Words.Light"/>
+    <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark"/>
 
-    <style name="Theme.Words.Light.Splash" parent="Base.Theme.Words.Light.Splash"/>
+    <style name="Base.Theme.Words.Dark" parent="Base.Theme.Words.Light">
+        <item name="colorPrimary">@color/colorBlack800</item>
+        <item name="colorPrimaryDark">@color/colorBlack900</item>
+        <item name="colorAccent">@color/colorTextLightMediumEmphasis</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/colorBlack800</item>
+
+
+        <item name="android:textColorPrimary">@color/colorTextLightHighEmphasis</item>
+        <item name="android:textColorSecondary">@color/colorTextLightMediumEmphasis</item>
+        <item name="android:textColorTertiary">@color/colorTextLightLowEmphasis</item>
+
+        <item name="android:textColorPrimaryInverse">@color/colorTextDarkHighEmphasis</item>
+        <item name="android:textColorSecondaryInverse">@color/colorTextDarkMediumEmphasis</item>
+        <item name="android:textColorTertiaryInverse">@color/colorTextDarkLowEmphasis</item>
+
+        <item name="colorAccentDark">#F2ffffff</item>
+        <item name="colorPrimaryLight">@color/colorBlack700</item>
+        <item name="colorHairline">@color/dark_colorWhite25a</item>
+        <item name="colorDivider">@color/dark_colorWhite02a</item>
+        <item name="colorScrim">@color/light_colorBlack25a</item>
+        <item name="colorError">@color/colorMauve200</item>
+        <item name="colorInformative">@color/colorBlack300</item>
+        <item name="colorBrand">@color/colorPink200</item>
+        <item name="colorBrandSecondary">@color/colorBlue500</item>
+        <item name="textColorError">@color/dark_colorTextError</item>
+    </style>
+
+    <!--Light Theme-->
+    <style name="Theme.Words.Light" parent="Base.Theme.Words.Light"/>
 
     <style name="Base.Theme.Words.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-        <!--Colors-->
-        <item name="colorPrimary">@color/light_colorTan50</item>
-        <item name="colorPrimaryDark">@color/light_colorTan50</item>
-        <item name="colorAccent">@color/light_colorTextDarkMediumEmphasis</item>
+        <item name="colorPrimary">@color/colorTan50</item>
+        <item name="colorPrimaryDark">@color/colorTan100</item>
+        <item name="colorAccent">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/light_colorTan50</item>
+        <item name="android:windowBackground">@color/colorTan50</item>
 
-        <item name="colorTextDarkHighEmphasis">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:textColorPrimary">@color/colorTextDarkHighEmphasis</item>
+        <item name="android:textColorSecondary">@color/colorTextDarkMediumEmphasis</item>
+        <item name="android:textColorTertiary">@color/colorTextDarkLowEmphasis</item>
 
-        <!--Words Attrs-->
-        <item name="styleTextHeadline2">@style/Widget.Words.Light.TextView.Headline2</item>
-        <item name="styleTextHeadline4">@style/Widget.Words.Light.TextView.Headline4</item>
-        <item name="styleTextHeadline5">@style/Widget.Words.Light.TextView.Headline5</item>
-        <item name="styleTextSubtitle1">@style/Widget.Words.Light.TextView.Subtitle1</item>
-        <item name="styleTextSubtitle2">@style/Widget.Words.Light.TextView.Subtitle2</item>
-        <item name="styleTextBody1">@style/Widget.Words.Light.TextView.Body1</item>
+        <item name="android:textColorPrimaryInverse">@color/colorTextLightHighEmphasis</item>
+        <item name="android:textColorSecondaryInverse">@color/colorTextLightMediumEmphasis</item>
+        <item name="android:textColorTertiaryInverse">@color/colorTextLightLowEmphasis</item>
+
+        <item name="colorAccentDark">@color/colorBlack900</item>
+        <item name="colorPrimaryLight">@color/colorTan25</item>
+        <item name="colorHairline">@color/light_colorBlack25a</item>
+        <item name="colorDivider">@color/light_colorBlack02a</item>
+        <item name="colorScrim">@color/light_colorBlack25a</item>
+        <item name="colorError">@color/colorMauve50</item>
+        <item name="colorInformative">@color/colorBlack300</item>
+        <item name="colorBrand">@color/colorPink400</item>
+        <item name="colorBrandSecondary">@color/colorBlue800</item>
+        <item name="textColorError">@color/light_colorTextError</item>
+
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Words.Light.Headline2</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Words.Light.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Words.Light.Headline5</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Words.Light.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Words.Light.Subtitle2</item>
         <item name="textAppearanceBody1">@style/TextAppearance.Words.Light.Body1</item>
         <item name="textAppearanceBody1Inverse">@style/TextAppearance.Words.Light.Body1.Inverse</item>
-        <item name="styleTextBody2">@style/Widget.Words.Light.TextView.Body2</item>
-        <item name="styleTextCaption">@style/Widget.Words.Light.TextView.Caption</item>
-        <item name="styleTextOverline">@style/Widget.Words.Light.TextView.Overline</item>
-        <item name="styleTextButton">@style/Widget.Words.Light.TextView.Button</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Words.Light.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Words.Light.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Words.Light.Overline</item>
         <item name="textAppearanceButton">@style/TextAppearance.Words.Light.Button</item>
         <item name="textAppearanceButtonInverse">@style/TextAppearance.Words.Light.Button.Inverse</item>
+
+        <item name="styleTextButton">@style/Widget.Words.Light.TextView.Button</item>
 
         <item name="styleChipOutlined">@style/Widget.Words.Light.Chip.Outlined</item>
         <item name="styleChipOpen">@style/Widget.Words.Light.Chip.Open</item>
@@ -42,98 +86,69 @@
         <item name="drawableSnackbarInformativeBackground">@drawable/light_snackbar_background_informative</item>
     </style>
 
-    <style name="Base.Theme.Words.Light.Splash" parent="Base.Theme.Words.Light"/>
-
 
 
 
     <!--Typescale-->
-    <style name="Widget.Words.Light.TextView.Headline2" parent="Theme.Words.Light">
-        <item name="android:fontFamily">@font/source_serif_pro</item>
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline2</item>
-    </style>
     <style name="TextAppearance.Words.Light.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="fontFamily">@font/source_serif_pro</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">66sp</item>
         <item name="android:letterSpacing">.05</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Headline4" parent="Theme.Words.Light">
-        <item name="android:fontFamily">@font/source_serif_pro</item>
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline4</item>
-    </style>
     <style name="TextAppearance.Words.Light.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="fontFamily">@font/source_serif_pro</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">28sp</item>
         <item name="android:letterSpacing">.05</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Headline5" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Headline5</item>
-        <item name="android:fontFamily">@font/source_code_pro_medium</item>
-    </style>
     <style name="TextAppearance.Words.Light.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="fontFamily">@font/source_code_pro_medium</item>
         <item name="android:textSize">24sp</item>
     </style>
-    <style name="Widget.Words.Light.TextView.Subtitle1" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Subtitle1</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-    </style>
+    
     <style name="TextAppearance.Words.Light.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="fontFamily">@font/source_code_pro</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Subtitle2" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Subtitle2</item>
-        <item name="android:fontFamily">@font/source_sans_pro_semibold</item>
-    </style>
     <style name="TextAppearance.Words.Light.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/light_colorTextDarkMediumEmphasis</item>
+        <item name="fontFamily">@font/source_sans_pro_semibold</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Body1" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body1</item>
-        <item name="android:fontFamily">@font/source_sans_pro</item>
-    </style>
     <style name="TextAppearance.Words.Light.Body1" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">16sp</item>
     </style>
     <style name="TextAppearance.Words.Light.Body1.Inverse" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="android:textColor">@color/light_colorTextLightHighEmphasis</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Body2" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
-    </style>
     <style name="TextAppearance.Words.Light.Body2" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
-        <item name="android:fontFamily">@font/source_code_pro</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
+        <item name="fontFamily">@font/source_code_pro</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Caption" parent="Theme.Words.Light">
-        <item name="android:fontFamily">@font/source_code_pro</item>
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Caption</item>
-    </style>
     <style name="TextAppearance.Words.Light.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="fontFamily">@font/source_code_pro</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="Widget.Words.Light.TextView.Overline" parent="Theme.Words.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Overline</item>
-        <item name="android:fontFamily">@font/source_sans_pro</item>
-    </style>
     <style name="TextAppearance.Words.Light.Overline" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="android:textColor">@color/light_colorTextDarkMediumEmphasis</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
     <style name="Widget.Words.Light.TextView.Button" parent="Theme.Words.Light">
@@ -142,39 +157,37 @@
         <item name="android:background">?selectableItemBackground</item>
     </style>
     <style name="TextAppearance.Words.Light.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="fontFamily">@font/source_code_pro_medium</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
     <style name="TextAppearance.Words.Light.Button.Inverse" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textColor">@color/light_colorTextLightHighEmphasis</item>
+        <item name="fontFamily">@font/source_code_pro_medium</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
-
-
 
 
 
     <!--Chips-->
     <style name="Widget.Words.Light.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
-        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
         <item name="chipBackgroundColor">?android:windowBackground</item>
-        <item name="chipStrokeColor">@color/light_colorBlack25a</item>
+        <item name="chipStrokeColor">?colorHairline</item>
         <item name="chipStrokeWidth">1dp</item>
     </style>
 
     <style name="Widget.Words.Light.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
-        <item name="android:textColor">@color/light_colorTextDarkLowEmphasis</item>
-        <item name="chipBackgroundColor">@color/light_colorTan25</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
+        <item name="chipBackgroundColor">?colorPrimaryLight</item>
         <item name="chipStrokeColor">@android:color/transparent</item>
         <item name="chipStrokeWidth">0dp</item>
         <item name="chipCornerRadius">2dp</item>
     </style>
-
-
 
 
 
@@ -184,8 +197,8 @@
         <item name="android:fontFamily">@font/source_code_pro</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColorHint">@color/light_colorTextDarkLowEmphasis</item>
-        <item name="android:textColor">@color/light_colorTextDarkHighEmphasis</item>
+        <item name="android:textColorHint">?android:textColorTertiary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
 </resources>

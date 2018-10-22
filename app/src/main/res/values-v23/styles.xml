@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Dark-->
+     <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!--Light-->
     <style name="Theme.Words.Light" parent="Base.Theme.Words.Light">
         <item name="android:windowLightStatusBar">true</item>
-    </style>
-    
-    <style name="Theme.Words.Light.Splash" parent="Base.Theme.Words.Light.Splash">
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">?android:windowBackground</item>
     </style>
 
 </resources>

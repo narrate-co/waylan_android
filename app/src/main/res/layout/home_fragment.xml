@@ -20,7 +20,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextHeadline5"
+            android:textAppearance="?textAppearanceHeadline5"
             android:id="@+id/trending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody2"
+            android:textAppearance="?textAppearanceBody2"
             android:id="@+id/trendingPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextHeadline5"
+            android:textAppearance="?textAppearanceHeadline5"
             android:id="@+id/recent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody2"
+            android:textAppearance="?textAppearanceBody2"
             android:id="@+id/recentPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextHeadline5"
+            android:textAppearance="?textAppearanceHeadline5"
             android:id="@+id/favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody2"
+            android:textAppearance="?textAppearanceBody2"
             android:id="@+id/favoritePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="?attr/styleTextHeadline5"
+        android:textAppearance="?textAppearanceHeadline5"
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

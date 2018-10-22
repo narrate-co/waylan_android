@@ -15,7 +15,7 @@
         android:padding="@dimen/keyline_3">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextSubtitle2"
+            android:textAppearance="?textAppearanceSubtitle2"
             android:id="@+id/settingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:text="Dark mode" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody2"
+            android:textAppearance="?textAppearanceBody2"
             android:id="@+id/settingsDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_marginBottom="@dimen/keyline_2"
         android:layout_marginLeft="@dimen/keyline_3"
-        android:background="@color/light_colorBlack10a" />
+        android:background="@drawable/light_list_item_divider" />
 
 
 </LinearLayout>

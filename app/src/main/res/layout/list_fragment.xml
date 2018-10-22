@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/ic_round_arrow_back_24px"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="?attr/styleTextHeadline5"
+                android:textAppearance="?textAppearanceHeadline5"
                 android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

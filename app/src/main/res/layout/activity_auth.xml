@@ -104,7 +104,7 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:indeterminate="true"
                     android:indeterminateOnly="false"
-                    android:indeterminateTint="@color/light_colorPink400"
+                    android:indeterminateTint="?colorBrand"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginBottom="-4dp"
@@ -115,7 +115,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="?attr/styleTextCaption"
+                android:textAppearance="?textAppearanceCaption"
                 android:id="@+id/error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                 android:layout_marginBottom="@dimen/keyline_2"
                 tools:text="Password must contain at least one number or symbol."
                 android:alpha="0"
-                android:textColor="@color/light_colorTextError"
+                android:textColor="?textColorError"
                 />
 
             <FrameLayout
@@ -145,7 +145,7 @@
                     android:paddingLeft="@dimen/keyline_3"
                     android:text="@string/auth_log_in_button"
                     android:textSize="14sp"
-                    android:textColor="@color/light_colorTextDarkMediumEmphasis"
+                    android:textColor="?android:textColorSecondary"
                     android:gravity="left"
                     android:layout_gravity="left|center_vertical"
                     android:background="?selectableItemBackground"

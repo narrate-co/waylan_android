@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Words Colors-->
-    <color name="light_colorTextDarkLowEmphasis">#61000000</color>
-    <color name="light_colorTextDarkMediumEmphasis">#99000000</color>
-    <color name="light_colorTextDarkHighEmphasis">#de000000</color>
+    <!--Words Common Colors-->
+    <color name="colorTextDarkLowEmphasis">#61000000</color>
+    <color name="colorTextDarkMediumEmphasis">#99000000</color>
+    <color name="colorTextDarkHighEmphasis">#de000000</color>
 
-    <color name="light_colorTextLightLowEmphasis">#61f7f3ed</color>
-    <color name="light_colorTextLightMediumEmphasis">#99f7f3ed</color>
-    <color name="light_colorTextLightHighEmphasis">#def7f3ed</color>
+    <color name="colorTextLightLowEmphasis">#61f7f3ed</color>
+    <color name="colorTextLightMediumEmphasis">#99f7f3ed</color>
+    <color name="colorTextLightHighEmphasis">#def7f3ed</color>
 
+    <color name="colorPink50">#fce2eb</color>
+    <color name="colorPink100">#f7b5ce</color>
+    <color name="colorPink200">#f387b0</color>
+    <color name="colorPink300">#ef5291</color>
+    <color name="colorPink400">#da3a78</color>
+
+    <color name="colorBlue500">#5f8093</color>
+    <color name="colorBlue800">#354a56</color>
+
+    <color name="colorTan25">#fcf8f2</color>
+    <color name="colorTan50">#f7f3ed</color>
+    <color name="colorTan100">#EFE9E0</color>
+    <color name="colorTan200">#e8dfd1</color>
+
+    <color name="colorBlack900">#131313</color>
+    <color name="colorBlack800">#202124</color>
+    <color name="colorBlack700">#292a2c</color>
+    <color name="colorBlack600">#2e2e30</color>
+    <color name="colorBlack500">#313235</color>
+    <color name="colorBlack400">#353639</color>
+    <color name="colorBlack300">#3a3b3d</color>
+
+    <color name="colorMauve50">#edd1d1</color>
+    <color name="colorMauve100">#eac6cb</color>
+    <color name="colorMauve200">#ce8e8f</color>
+    <color name="colorMauve300">#bb6366</color>
+
+
+    <!--Words Light Colors-->
     <color name="light_colorTextError">#99ff0000</color>
-    
-    <color name="light_colorMauve50">#edd1d1</color>
 
-    <color name="light_colorTan25">#fcf8f2</color>
-    <color name="light_colorTan50">#f7f3ed</color>
-    <color name="light_colorTan100">#EFE9E0</color>
+    <color name="light_colorBlack02a">#05000000</color>
+    <color name="light_colorBlack25a">#40000000</color>
 
-    <color name="light_colorPink50">#fce2eb</color>
-    <color name="light_colorPink400">#da3a78</color>
 
-    <color name="light_colorBlack10a">#10000000</color>
-    <color name="light_colorBlack25a">#25000000</color>
+    <!--Words Dark Colors-->
+    <color name="dark_colorTextError">#e57373</color>
 
-    <color name="light_colorBlack800">#262626</color>
+    <color name="dark_colorWhite02a">#05ffffff</color>
+    <color name="dark_colorWhite25a">#40ffffff</color>
 
 </resources>

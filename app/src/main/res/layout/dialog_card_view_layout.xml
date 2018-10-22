@@ -13,7 +13,7 @@
     android:layout_marginBottom="24dp"
     app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/light_colorTan25"
+    app:cardBackgroundColor="?colorPrimaryLight"
     tools:showIn="@layout/activity_settings">
 
     <LinearLayout
@@ -24,7 +24,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody1"
+            android:textAppearance="?textAppearanceBody1"
             android:id="@+id/messageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

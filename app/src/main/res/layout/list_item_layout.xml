@@ -11,7 +11,7 @@
     android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextHeadline4"
+            android:textAppearance="?textAppearanceHeadline4"
             android:id="@+id/word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             tools:text="quiescent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextCaption"
+            android:textAppearance="?textAppearanceCaption"
             android:id="@+id/partOfSpeech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="?attr/styleTextBody1"
+            android:textAppearance="?textAppearanceBody1"
             android:id="@+id/definition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
