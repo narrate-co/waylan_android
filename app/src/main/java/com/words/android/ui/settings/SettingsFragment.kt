@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.words.android.App
 import com.words.android.Config
 import com.words.android.Navigator
 import com.words.android.R
@@ -19,6 +20,11 @@ import com.words.android.util.configError
 import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
+import androidx.core.content.IntentCompat
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import androidx.core.app.TaskStackBuilder
+
 
 class SettingsFragment : BaseUserFragment() {
 
@@ -32,6 +38,8 @@ class SettingsFragment : BaseUserFragment() {
                 .of(this, viewModelFactory)
                 .get(SettingsViewModel::class.java)
     }
+
+    private val preferenceRepository by lazy { (activity?.application as? App)?.preferenceRepository }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.settings_fragment, container, false)
@@ -60,12 +68,15 @@ class SettingsFragment : BaseUserFragment() {
 
 
         //set common settings
-        view.darkModeSettings.visibility = View.GONE
         view.darkModeSettings.settingsTitle.text = getString(R.string.settings_dark_mode_title)
         view.darkModeSettings.settingsDescription.text = getString(R.string.settings_dark_mode_desc)
+        val usesDarkMode = preferenceRepository?.usesDarkMode ?: false
+        setCheckbox(usesDarkMode, view.darkModeSettings.checkbox)
         view.darkModeSettings.settingsItem.setOnClickListener {
-            toggleCheckbox(view.darkModeSettings.checkbox)
-            //TODO toggle theme
+            val currentValue = preferenceRepository?.usesDarkMode ?: false
+            setCheckbox(!currentValue, view.darkModeSettings.checkbox)
+            preferenceRepository?.usesDarkMode = !currentValue
+            (activity as? SettingsActivity)?.restartWithReconstructedStack()
         }
 
         view.aboutSetting.settingsTitle.text = getString(R.string.settings_about_title)
@@ -145,23 +156,12 @@ class SettingsFragment : BaseUserFragment() {
         startActivity(intent)
     }
 
-    /**
-     * @return the post toggle state of the checkbox. If the checkbox was NOT checked before calling
-     * toggleCheckbox, this method will return TRUE
-     */
-    private fun toggleCheckbox(imageButtom: AppCompatImageButton): Boolean {
-        val currentDrawable = imageButtom.drawable.constantState
-        val checkedDrawable = resources.getDrawable(R.drawable.ic_round_check_circle_black_24px).constantState
-
-        val isChecked = currentDrawable == checkedDrawable
-
-        if (isChecked) {
-            imageButtom.setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
+    private fun setCheckbox(value: Boolean, imageButton: AppCompatImageButton) {
+        if (value) {
+            imageButton.setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
         } else {
-            imageButtom.setImageResource(R.drawable.ic_round_check_circle_black_24px)
+            imageButton.setImageResource(R.drawable.ic_round_check_circle_black_24px)
         }
-
-        return !isChecked
     }
 
 }

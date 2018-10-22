@@ -6,6 +6,9 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.data.firestore.users.User
+import com.words.android.data.prefs.OnValueChangedListener
+import com.words.android.data.prefs.PreferenceRepository
+import com.words.android.data.prefs.Preferences
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
 import dagger.android.AndroidInjector
@@ -13,7 +16,8 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
-class App: Application(), HasActivityInjector {
+class App: Application(), HasActivityInjector{
+
 
 
     companion object {
@@ -27,6 +31,8 @@ class App: Application(), HasActivityInjector {
     lateinit var userComponentBuilder: UserComponent.Builder
 
     private var user: FirebaseUser? = null
+
+    val preferenceRepository by lazy { PreferenceRepository(this) }
 
     fun setUser(user: User?) {
         userComponentBuilder
@@ -47,7 +53,6 @@ class App: Application(), HasActivityInjector {
         super.onCreate()
         AppInjector.init(this)
     }
-
 
     private fun dispatchReinjectUserBroadcast() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(REINJECT_USER_BROADCAST_ACTION))

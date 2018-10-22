@@ -23,6 +23,7 @@ import com.words.android.R
 import com.words.android.Config
 import com.words.android.MainActivity
 import com.words.android.data.firestore.users.User
+import com.words.android.ui.common.BaseActivity
 import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.experimental.android.UI
@@ -30,7 +31,7 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
 
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity() {
 
     companion object {
         const val TAG = "AuthActivity"

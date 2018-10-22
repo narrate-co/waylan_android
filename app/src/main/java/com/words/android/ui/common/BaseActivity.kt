@@ -12,14 +12,15 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-abstract class BaseUserActivity: BaseActivity(), HasSupportFragmentInjector {
+abstract class BaseActivity: AppCompatActivity() {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val usesDarkMode = (application as? App)?.preferenceRepository?.usesDarkMode ?: false
+        println("BaseActivity::usesDarkMode - $usesDarkMode")
+        setTheme(if (usesDarkMode) R.style.Theme_Words_Dark else R.style.Theme_Words_Light)
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+        super.onCreate(savedInstanceState)
+    }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }
 

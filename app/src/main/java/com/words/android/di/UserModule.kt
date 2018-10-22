@@ -7,6 +7,7 @@ import com.words.android.data.firestore.FirestoreStore
 import com.words.android.data.firestore.users.User
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.data.mw.RetrofitService
+import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.repository.WordRepository
 import dagger.Module
 import dagger.Provides
