@@ -54,9 +54,9 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         setUpRecyclerView()
 
         sharedViewModel.currentSources.observe(this, Observer { source ->
+            sharedViewModel.setCurrentWordRecented()
             when (source) {
                 is WordSource.FirestoreUserSource -> {
-                    sharedViewModel.setCurrentWordRecented()
                     setUserWord(source.userWord)
                 }
             }

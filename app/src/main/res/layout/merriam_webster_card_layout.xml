@@ -31,6 +31,7 @@
 
         <com.google.android.material.chip.Chip
             style="?styleTextLabel"
+            android:id="@+id/textLabel"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="@dimen/keyline_3"

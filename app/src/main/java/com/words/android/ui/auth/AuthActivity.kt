@@ -6,11 +6,9 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.drawable.TransitionDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -22,6 +20,7 @@ import com.words.android.App
 import com.words.android.R
 import com.words.android.Config
 import com.words.android.MainActivity
+import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
 import com.words.android.ui.common.BaseActivity
 import com.words.android.util.FirebaseAuthWordException
@@ -62,7 +61,9 @@ class AuthActivity : BaseActivity() {
         val firebaseUser: FirebaseUser? = auth.currentUser
 
         if (firebaseUser != null) {
-            cancel.setOnClickListener { launchHome(firebaseUser, true) }
+            cancel.setOnClickListener {
+                returnHome(firebaseUser)
+            }
         }
 
         email.addTextChangedListener(errorMessageTextWatcher)
@@ -92,10 +93,7 @@ class AuthActivity : BaseActivity() {
             }
             else -> {
                 if (firebaseUser != null ) {
-                    launch(UI) {
-                        delay(1500)
-                        launchHome(firebaseUser, true)
-                    }
+                    returnHome(firebaseUser)
                 } else {
                     launch(UI) {
                         try {
@@ -106,6 +104,17 @@ class AuthActivity : BaseActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun returnHome(firebaseUser: FirebaseUser) {
+        launch(UI) {
+            try {
+                val auth = authViewModel.getCurrentAuth(firebaseUser)
+                launchHome(auth, true)
+            } catch (e: Exception) {
+                showErrorMessage(e)
             }
         }
     }
@@ -167,6 +176,7 @@ class AuthActivity : BaseActivity() {
 
     private fun showErrorMessage(e: Exception) {
         e.printStackTrace()
+        //TODO clean this up?
         synchronized(lastErrorStateIsShown) {
             if (!lastErrorStateIsShown) {
                 error.text = when (e) {
@@ -206,9 +216,9 @@ class AuthActivity : BaseActivity() {
         }
     }
 
-    private fun launchHome(user: FirebaseUser?, clearStack: Boolean, delayMillis: Long = 0L) {
+    private fun launchHome(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
-        (application as App).setUser(User(user, Config.DEBUG_USER_IS_PREMIUM))
+        (application as App).setUser(auth)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 

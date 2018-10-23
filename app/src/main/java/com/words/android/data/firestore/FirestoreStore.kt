@@ -1,13 +1,15 @@
 package com.words.android.data.firestore
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.words.android.data.DataOwners
 import com.words.android.data.disk.AppDatabase
+import com.words.android.data.firestore.users.PluginState
+import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
@@ -23,12 +25,14 @@ import kotlin.coroutines.experimental.suspendCoroutine
 class FirestoreStore(
         private val firestore: FirebaseFirestore,
         private val db: AppDatabase,
-        private val user: FirebaseUser
+        private val firestoreUser: FirebaseUser
 ) {
 
     companion object {
         private const val TAG = "FirestoreStore"
     }
+
+
 
     fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
         return firestore.words
@@ -37,13 +41,33 @@ class FirestoreStore(
     }
 
     fun getUserWordLive(id: String): LiveData<UserWord> {
-        return firestore.userWords(user.uid)
+        return firestore.userWords(firestoreUser.uid)
                 .document(id)
                 .liveData(UserWord::class.java)
     }
 
+    fun getUserLive(uid: String): LiveData<User> {
+        return firestore.users
+                .document(uid)
+                .liveData(User::class.java)
+    }
+
+    suspend fun getUser(): User = suspendCoroutine { cont ->
+        firestore.users.document(firestoreUser.uid).get()
+                .addOnFailureListener {
+                    cont.resumeWithException(it)
+                }
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        cont.resume(it.toObject(User::class.java)!!)
+                    } else {
+                        cont.resumeWithException(FirebaseFirestoreNotFoundException(firestoreUser.uid))
+                    }
+                }
+    }
+
     private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord = suspendCoroutine { cont ->
-        firestore.userWords(user.uid).document(id).get()
+        firestore.userWords(firestoreUser.uid).document(id).get()
                 .addOnFailureListener {
                     when ((it as FirebaseFirestoreException).code) {
                         FirebaseFirestoreException.Code.UNAVAILABLE -> {
@@ -82,6 +106,7 @@ class FirestoreStore(
                     }
                 }
     }
+
 
     private fun newUserWord(id: String): Deferred<UserWord?> = async {
         //get word from db.
@@ -122,9 +147,9 @@ class FirestoreStore(
         return query.liveData(GlobalWord::class.java)
     }
 
-    //get all favorites for user
+    //get all favorites for firestoreUser
     fun getFavorites(limit: Long? = null): LiveData<List<UserWord>> {
-        val query = firestore.userWords(user.uid)
+        val query = firestore.userWords(firestoreUser.uid)
                 .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
                 .limit(limit ?: 25)
@@ -132,7 +157,7 @@ class FirestoreStore(
         return query.liveData(UserWord::class.java)
     }
 
-    //favorite a word for user
+    //favorite a word for firestoreUser
     suspend fun setFavorite(id: String, favorite: Boolean) {
         try {
             val userWord = getUserWord(id, favorite)
@@ -149,7 +174,7 @@ class FirestoreStore(
     }
 
     fun getRecents(limit: Long? = null): LiveData<List<UserWord>> {
-        val query = firestore.userWords(user.uid)
+        val query = firestore.userWords(firestoreUser.uid)
                 .whereEqualTo("types.${UserWordType.RECENT.name}", true)
                 .orderBy("modified", Query.Direction.DESCENDING)
                 .limit(limit ?: 25)
@@ -172,10 +197,30 @@ class FirestoreStore(
     }
 
     private fun setUserWord(userWord: UserWord) {
-        firestore.userWords(user.uid).document(userWord.id).set(userWord)
+        firestore.userWords(firestoreUser.uid).document(userWord.id).set(userWord)
                 .addOnFailureListener {
                     it.printStackTrace()
                     //TODO report error?
+                }
+                .addOnSuccessListener {
+                    //TODO show success?
+                }
+    }
+
+    suspend fun setUserMerriamWebsterState(state: PluginState) {
+        try {
+            val user = getUser()
+            user.merriamWebsterState = state
+            setUser(user)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setUser(user: User) {
+        firestore.users.document(user.uid).set(user)
+                .addOnFailureListener {
+                    it.printStackTrace()
                 }
                 .addOnSuccessListener {
                     //TODO show success?

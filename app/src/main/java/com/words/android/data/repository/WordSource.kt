@@ -1,5 +1,6 @@
 package com.words.android.data.repository
 
+import com.words.android.data.disk.mw.PermissiveWordsDefinitions
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.disk.wordset.Word
 import com.words.android.data.disk.wordset.WordAndMeanings
@@ -12,6 +13,6 @@ sealed class WordSource {
     class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()
     class FirestoreUserSource(val userWord: UserWord): WordSource()
     class FirestoreGlobalSource(val globalWord: GlobalWord): WordSource()
-    class MerriamWebsterSource(val wordsAndDefs: List<WordAndDefinitions>): WordSource()
+    class MerriamWebsterSource(val wordsDefinitions: PermissiveWordsDefinitions): WordSource()
 }
 

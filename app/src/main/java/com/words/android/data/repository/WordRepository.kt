@@ -1,5 +1,6 @@
 package com.words.android.data.repository
 
+import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,8 +8,11 @@ import androidx.lifecycle.Transformations
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
+import com.words.android.data.disk.mw.PermissiveWordsDefinitions
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.firestore.FirestoreStore
+import com.words.android.data.firestore.users.PluginState
+import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.mw.MerriamWebsterStore
@@ -18,7 +22,8 @@ import kotlinx.coroutines.experimental.launch
 class WordRepository(
         private val db: AppDatabase,
         private val firestoreStore: FirestoreStore?,
-        private val merriamWebsterStore: MerriamWebsterStore?
+        private val merriamWebsterStore: MerriamWebsterStore?,
+        private val user: User?
 ) {
 
     fun filterWords(query: String): LiveData<List<WordSource>> {
@@ -74,8 +79,10 @@ class WordRepository(
         return if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
-    private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<List<WordAndDefinitions>> {
-        return if (id.isNotBlank()) merriamWebsterStore?.getWord(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+    private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<PermissiveWordsDefinitions> {
+        return if (id.isNotBlank() && merriamWebsterStore != null) Transformations.map(merriamWebsterStore.getWord(id)) {
+            PermissiveWordsDefinitions(user, it)
+        } ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {

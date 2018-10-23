@@ -48,7 +48,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
         override fun bind(t: DetailsComponent) {
             (t.source as? WordSource.MerriamWebsterSource)?.let {
-                view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsAndDefs)
+                view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsDefinitions)
             }
         }
 

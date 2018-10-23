@@ -20,10 +20,7 @@ import com.words.android.util.configError
 import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
-import androidx.core.content.IntentCompat
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
-import androidx.core.app.TaskStackBuilder
+import com.words.android.data.firestore.users.PluginState
 
 
 class SettingsFragment : BaseUserFragment() {
@@ -48,24 +45,13 @@ class SettingsFragment : BaseUserFragment() {
         return view
     }
 
-    override fun onEnterTransactionEnded() {
-    }
-
     private fun setSettings(view: View, user: User?) {
         //set state specific settings
-        if (user == null || user.firebaseUser?.isAnonymous == true) {
-            //set to anonymous settings
-            setAsAnonymous(view)
-        } else if (!user.isMerriamWebsterSubscriber) {
-            //set to registered mw offer settings
-            setAsCanPurchaseMerriamWebster(view, user)
-            setRegisteredUserCommonSettings(view, user)
-        } else {
-            //set to registered mw purchased settings
-            setAsHasPurchasedMerriamWebster(view, user)
-            setRegisteredUserCommonSettings(view, user)
+        when {
+            user == null -> setAsAnonymous(view, PluginState.NONE)
+            user.isAnonymous -> setAsAnonymous(view, user.merriamWebsterState)
+            else -> setAsRegistered(view, user)
         }
-
 
         //set common settings
         view.darkModeSettings.settingsTitle.text = getString(R.string.settings_dark_mode_title)
@@ -100,10 +86,20 @@ class SettingsFragment : BaseUserFragment() {
         }
     }
 
-    private fun setAsAnonymous(view: View) {
-        view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_create_account_body)
-        view.accountDialogCard.topButton.text = getString(R.string.settings_header_create_account_create_account_button)
-        view.accountDialogCard.bottomButton.text = getString(R.string.settings_header_create_account_log_in_button)
+    private fun setAsAnonymous(view: View, merriamWebsterState: PluginState) {
+        when (merriamWebsterState) {
+            PluginState.FREE_TRIAL -> {
+                view.accountDialogCard.textLabel.text = "Free trial: 7d"
+                view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_free_trial_body)
+            }
+            else -> {
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
+                view.accountDialogCard.textLabel.visibility = View.GONE
+            }
+        }
+        view.accountDialogCard.topButton.text = getString(R.string.settings_header_anonymous_create_account_button)
+        view.accountDialogCard.bottomButton.text = getString(R.string.settings_header_anonymous_log_in_button)
         view.accountDialogCard.topButton.setOnClickListener {
             launchAuth(AuthActivity.AuthRoute.SIGN_UP)
         }
@@ -116,31 +112,35 @@ class SettingsFragment : BaseUserFragment() {
         view.accountDialogCard.visibility = View.VISIBLE
     }
 
-    private fun setAsCanPurchaseMerriamWebster(view: View, user: User) {
-
-        //set account dialog card to purchase merriam webseter mode
-        view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_purchase_merriam_webster_body)
-        view.accountDialogCard.topButton.text = getString(R.string.settings_header_purchase_merriam_webster_add_button)
-        view.accountDialogCard.topButton.setOnClickListener {
-            //TODO launch Google Play billing flow
+    private fun setAsRegistered(view: View, user: User) {
+        when (user.merriamWebsterState) {
+            PluginState.NONE -> {
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_none_body)
+                view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
+                view.accountDialogCard.topButton.visibility = View.VISIBLE
+                view.accountDialogCard.textLabel.visibility = View.GONE
+            }
+            PluginState.FREE_TRIAL -> {
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_body)
+                view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
+                view.accountDialogCard.topButton.visibility = View.VISIBLE
+                view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                view.accountDialogCard.textLabel.text = "Free trial: 30d"
+            }
+            PluginState.PURCHASED -> {
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_purchased_body)
+                view.accountDialogCard.topButton.visibility = View.GONE
+                view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                view.accountDialogCard.textLabel.text = "Added"
+            }
         }
 
-        view.accountDialogCard.topButton.visibility = View.VISIBLE
         view.accountDialogCard.bottomButton.visibility = View.GONE
         view.accountDialogCard.visibility = View.VISIBLE
-    }
 
-    private fun setAsHasPurchasedMerriamWebster(view: View, user: User) {
-        view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_added_merriam_webster_body)
-
-        view.accountDialogCard.topButton.visibility = View.GONE
-        view.accountDialogCard.bottomButton.visibility = View.GONE
-        view.accountDialogCard.visibility = View.VISIBLE
-    }
-
-    private fun setRegisteredUserCommonSettings(view: View, user: User) {
+        // Common settings
         view.signOutSetting.settingsTitle.text = getString(R.string.settings_sign_out_title)
-        view.signOutSetting.settingsDescription.text = user.firebaseUser?.email ?: getString(R.string.settings_sign_out_default_desc)
+        view.signOutSetting.settingsDescription.text = if (user.email.isNotBlank()) user.email else getString(R.string.settings_sign_out_default_desc)
         view.signOutSetting.settingsItem.setOnClickListener {
             launchAuth(AuthActivity.AuthRoute.LOG_IN)
         }

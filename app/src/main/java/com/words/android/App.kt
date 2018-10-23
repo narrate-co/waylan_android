@@ -11,6 +11,7 @@ import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.prefs.Preferences
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
+import com.words.android.ui.auth.Auth
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -30,20 +31,19 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
-    private var user: FirebaseUser? = null
-
     val preferenceRepository by lazy { PreferenceRepository(this) }
 
-    fun setUser(user: User?) {
+    fun setUser(auth: Auth?) {
         userComponentBuilder
-                .user(user)
+                .user(auth?.user)
+                .firebaseUser(auth?.firebaseUser)
                 .build()
                 .inject(this)
         dispatchReinjectUserBroadcast()
     }
 
     fun clearUser() {
-        user = null
+        setUser(null)
         AppInjector.init(this)
         dispatchReinjectUserBroadcast()
     }

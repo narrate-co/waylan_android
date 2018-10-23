@@ -50,7 +50,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
                     wordset = source
                 }
                 is WordSource.MerriamWebsterSource -> {
-                    if (merriamWebster == null || source.wordsAndDefs.map { it.definitions }.flatten().isNotEmpty()) {
+                    if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty()) {
                         merriamWebster = source
                     }
                 }
@@ -66,7 +66,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         fun getComponentsList(): List<DetailsComponent> {
             val list = mutableListOf<DetailsComponent>()
             properties?.let { list.add(DetailsComponent.TitleComponent(it)) }
-            merriamWebster?.let { if (it.wordsAndDefs.isNotEmpty()) list.add(DetailsComponent.MerriamWebsterComponent(it)) }
+            merriamWebster?.let { if (it.wordsDefinitions.entries.isNotEmpty()) list.add(DetailsComponent.MerriamWebsterComponent(it)) }
             wordset?.let { list.add(DetailsComponent.WordsetComponent(it)) }
             wordset?.let { list.add(DetailsComponent.ExamplesComponent(it)) }
             return list
@@ -75,7 +75,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         private fun clearIfNewWordSource(source: WordSource): Boolean {
             val newWordId: String? = when (source) {
                 is WordSource.WordsetSource -> source.wordAndMeaning.word?.word
-                is WordSource.MerriamWebsterSource -> source.wordsAndDefs?.firstOrNull()?.word?.word
+                is WordSource.MerriamWebsterSource -> source.wordsDefinitions?.entries.firstOrNull()?.word?.word
                 is WordSource.FirestoreUserSource -> source.userWord.word
                 is WordSource.FirestoreGlobalSource -> source.globalWord.word
                 else -> return false

@@ -38,14 +38,14 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
             if (this == newOther) return true
             if (source !is WordSource.MerriamWebsterSource || newOther.source !is WordSource.MerriamWebsterSource) return false
 
-            val wordsSize = newOther.source.wordsAndDefs.map { it.word?.word }.filterNotNull().size
-            val defsSize = newOther.source.wordsAndDefs.map { it.definitions }.flatten().map { it.id }.size
+            val wordsSize = newOther.source.wordsDefinitions.entries.map { it.word?.word }.filterNotNull().size
+            val defsSize = newOther.source.wordsDefinitions.entries.map { it.definitions }.flatten().map { it.id }.size
 
             if (wordsSize != 0 && defsSize == 0) {
                 return true
             }
 
-            val sameDefinitions = source.wordsAndDefs.toTypedArray().contentDeepEquals(newOther.source.wordsAndDefs.toTypedArray())
+            val sameDefinitions = source.wordsDefinitions.entries.toTypedArray().contentDeepEquals(newOther.source.wordsDefinitions.entries.toTypedArray())
 
 
             return sameDefinitions

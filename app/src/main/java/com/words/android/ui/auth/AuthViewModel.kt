@@ -5,14 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.words.android.data.firestore.users
+import com.words.android.data.firestore.users.User
 import com.words.android.util.FirebaseAuthWordErrorType
 import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
+import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class AuthViewModel @Inject constructor(): ViewModel() {
+
 
     private val isLoading: MutableLiveData<Boolean> by lazy {
         val ld = MutableLiveData<Boolean>()
@@ -22,8 +28,11 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     fun getIsLoading(): LiveData<Boolean> = isLoading
 
+    suspend fun getCurrentAuth(firebaseUser: FirebaseUser): Auth = suspendCoroutine { cont ->
+        attachUser(cont, firebaseUser)
+    }
 
-    suspend fun signUp(email: String, password: String, confirmPassword: String): FirebaseUser = suspendCoroutine { cont ->
+    suspend fun signUp(email: String, password: String, confirmPassword: String): Auth = suspendCoroutine { cont ->
         val auth = FirebaseAuth.getInstance()
         isLoading.value = true
         when {
@@ -35,15 +44,14 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    private fun signUpByLinkingCredentials(cont: Continuation<FirebaseUser>, email: String, password: String) {
+    private fun signUpByLinkingCredentials(cont: Continuation<Auth>, email: String, password: String) {
         val credentials = EmailAuthProvider.getCredential(email, password)
         val auth = FirebaseAuth.getInstance()
         auth.currentUser?.linkWithCredential(credentials)?.addOnCompleteListener {
             if (it.isSuccessful) {
-                val user = it.result?.user
-                if (user != null) {
-                    cont.resume(user)
-                    isLoading.value = false
+                val firebaseUser = it.result?.user
+                if (firebaseUser != null) {
+                    attachUser(cont, firebaseUser)
                 } else {
                     cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED, it)
                 }
@@ -53,14 +61,13 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         } ?: cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_NO_CURRENT_USER)
     }
 
-    private fun signUpByCreatingEmptyAccount(cont: Continuation<FirebaseUser>, email: String, password: String) {
+    private fun signUpByCreatingEmptyAccount(cont: Continuation<Auth>, email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
-                val user = it.result?.user
-                if (user != null) {
-                    cont.resume(user)
-                    isLoading.value = false
+                val firebaseUser = it.result?.user
+                if (firebaseUser != null) {
+                    attachUser(cont, firebaseUser)
                 } else {
                     cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.SIGN_UP_FAILED)
                 }
@@ -70,15 +77,14 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    suspend fun signUpAnonymously(): FirebaseUser = suspendCoroutine { cont ->
+    suspend fun signUpAnonymously(): Auth = suspendCoroutine { cont ->
         val auth = FirebaseAuth.getInstance()
         isLoading.value = true
         auth.signInAnonymously().addOnCompleteListener {
             if (it.isSuccessful) {
-                val user = auth.currentUser
-                if (user != null) {
-                    cont.resume(user)
-                    isLoading.value = false
+                val firebaseUser = auth.currentUser
+                if (firebaseUser != null) {
+                    attachUser(cont, firebaseUser)
                 } else {
                     cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.ANON_UNKNOWN, it)
                 }
@@ -88,19 +94,18 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    suspend fun logIn(email: String, password: String): FirebaseUser = suspendCoroutine {cont ->
+    suspend fun logIn(email: String, password: String): Auth = suspendCoroutine {cont ->
         val auth = FirebaseAuth.getInstance()
         isLoading.value = true
         if (email.isNotBlank() && password.isNotBlank()) {
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            var user = auth.currentUser
-                            if (user == null) {
+                            var firebaseUser = auth.currentUser
+                            if (firebaseUser == null) {
                                 cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_UNKNOWN, it)
                             } else {
-                                cont.resume(user)
-                                isLoading.value = false
+                                attachUser(cont, firebaseUser)
                             }
                         } else {
                             cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED, it)
@@ -109,6 +114,48 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         } else {
             cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.LOG_IN_FAILED)
         }
+    }
+
+    private fun attachUser(cont: Continuation<Auth>, firebaseUser: FirebaseUser) {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.users.document(firebaseUser.uid).get()
+                .addOnFailureListener {
+                    when ((it as FirebaseFirestoreException).code) {
+                        FirebaseFirestoreException.Code.UNAVAILABLE -> newUser(firestore, cont, firebaseUser)
+                        else -> {
+                            cont.resumeWithException(it)
+                            isLoading.value = false
+                        }
+                    }
+                }
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        val user = it.toObject(User::class.java)
+                        cont.resume(Auth(firebaseUser, user!!))
+                        isLoading.value = false
+                    } else {
+                        newUser(firestore, cont, firebaseUser)
+                    }
+                }
+    }
+
+    private fun newUser(firestore: FirebaseFirestore, cont: Continuation<Auth>, firebaseUser: FirebaseUser) {
+        val newUser = User(
+                firebaseUser.uid,
+                firebaseUser.isAnonymous,
+                firebaseUser.displayName ?: "",
+                firebaseUser.email ?: ""
+        )
+
+        firestore.users.document(newUser.uid).set(newUser)
+                .addOnSuccessListener {
+                    cont.resume(Auth(firebaseUser, newUser))
+                    isLoading.value = false
+                }
+                .addOnFailureListener {
+                    cont.resumeWithException(it)
+                    isLoading.value = false
+                }
     }
 
     private fun <T> Continuation<T>.resumeWithFirebaseAuthException(type: FirebaseAuthWordErrorType, task: Task<AuthResult>? = null) {

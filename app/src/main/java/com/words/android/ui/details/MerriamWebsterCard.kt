@@ -11,10 +11,14 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.card.MaterialCardView
+import com.words.android.Navigator
 import com.words.android.R
 import com.words.android.data.disk.mw.Definition
+import com.words.android.data.disk.mw.PermissiveWordsDefinitions
 import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
+import com.words.android.data.firestore.users.PluginState
+import com.words.android.data.firestore.users.User
 import com.words.android.service.AudioClipService
 import com.words.android.service.AudioController
 import com.words.android.util.fromHtml
@@ -47,6 +51,9 @@ class MerriamWebsterCard @JvmOverloads constructor(
         View.inflate(context, R.layout.merriam_webster_card_layout, this)
         visibility = View.GONE
         progressBar.visibility = View.INVISIBLE
+        textLabel.setOnClickListener {
+            Navigator.launchSettings(context)
+        }
     }
 
 
@@ -99,15 +106,14 @@ class MerriamWebsterCard @JvmOverloads constructor(
         LocalBroadcastManager.getInstance(context).unregisterReceiver(audioStateDispatchReceiver)
     }
 
-
-    fun setWordAndDefinitions(entries: List<WordAndDefinitions>?) {
-        if (entries == null || entries.isEmpty()) {
+    fun setWordAndDefinitions(wordsAndDefinitions: PermissiveWordsDefinitions?) {
+        if (wordsAndDefinitions?.entries == null || wordsAndDefinitions.entries.isEmpty()) {
             clear()
             visibility = View.GONE
             return
         }
 
-        val newWordId = getListWordAndDefId(entries)
+        val newWordId = getListWordAndDefId(wordsAndDefinitions.entries)
         if (currentWordId != newWordId) {
             clear()
             currentWordId = newWordId
@@ -115,10 +121,12 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
         //set audio clip
-        setAudio(entries.firstOrNull()?.word)
+        setAudio(wordsAndDefinitions.entries.firstOrNull()?.word)
+
+        setTextLabel(wordsAndDefinitions.user)
 
         //add entries
-        entries.forEach {
+        wordsAndDefinitions.entries.forEach {
             setWord(it.word)
             setDefinitions(it.word, it.definitions)
         }
@@ -169,6 +177,16 @@ class MerriamWebsterCard @JvmOverloads constructor(
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun setTextLabel(user: User?) {
+        when (user?.merriamWebsterState) {
+            PluginState.FREE_TRIAL -> {
+                textLabel.text = "Free trial: ${if (user.isAnonymous) 7 else 30}d"
+                textLabel.visibility = View.VISIBLE
+            }
+            else -> textLabel.visibility = View.GONE
         }
     }
 

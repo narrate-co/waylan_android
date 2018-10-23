@@ -63,8 +63,8 @@ object Navigator {
                 .commit()
     }
 
-    fun launchSettings(activity: FragmentActivity) {
-        activity.startActivity(Intent(activity, SettingsActivity::class.java))
+    fun launchSettings(context: Context) {
+        context.startActivity(Intent(context, SettingsActivity::class.java))
     }
 
     /**
