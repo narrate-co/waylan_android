@@ -14,10 +14,23 @@
     <color name="colorPink100">#f7b5ce</color>
     <color name="colorPink200">#f387b0</color>
     <color name="colorPink300">#ef5291</color>
-    <color name="colorPink400">#da3a78</color>
+    <color name="colorPink400">#ed1f78</color>
+    <color name="colorPink500">#e91460</color>
+    <color name="colorPink600">#d91a5f</color>
+    <color name="colorPink700">#c41e5b</color>
+    <color name="colorPink800">#af1e58</color>
+    <color name="colorPink900">#891a51</color>
 
+    <color name="colorBlue50">#e9f0f7</color>
+    <color name="colorBlue100">#cbdae2</color>
+    <color name="colorBlue200">#adc0cc</color>
+    <color name="colorBlue300">#8da6b5</color>
+    <color name="colorBlue400">#7693a4</color>
     <color name="colorBlue500">#5f8093</color>
+    <color name="colorBlue600">#537282</color>
+    <color name="colorBlue700">#445e6c</color>
     <color name="colorBlue800">#354a56</color>
+    <color name="colorBlue900">#24353e</color>
 
     <color name="colorTan25">#fcf8f2</color>
     <color name="colorTan50">#f7f3ed</color>
@@ -31,6 +44,8 @@
     <color name="colorBlack500">#313235</color>
     <color name="colorBlack400">#353639</color>
     <color name="colorBlack300">#3a3b3d</color>
+
+    <color name="colorWhite900">#F2FFFFFF</color>
 
     <color name="colorMauve50">#edd1d1</color>
     <color name="colorMauve100">#eac6cb</color>

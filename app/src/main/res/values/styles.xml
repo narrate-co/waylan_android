@@ -18,7 +18,7 @@
         <item name="android:textColorSecondaryInverse">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:textColorTertiaryInverse">@color/colorTextDarkLowEmphasis</item>
 
-        <item name="colorAccentDark">#F2ffffff</item>
+        <item name="colorAccentDark">@color/colorWhite900</item>
         <item name="colorPrimaryLight">@color/colorBlack700</item>
         <item name="colorHairline">@color/dark_colorWhite25a</item>
         <item name="colorDivider">@color/dark_colorWhite02a</item>
@@ -28,6 +28,10 @@
         <item name="colorBrand">@color/colorPink200</item>
         <item name="colorBrandSecondary">@color/colorBlue500</item>
         <item name="textColorError">@color/dark_colorTextError</item>
+
+
+        <item name="textLabelBackgroundColor">@color/colorPink900</item>
+        <item name="textLabelTextColor">@color/colorPink200</item>
     </style>
 
     <!--Light Theme-->
@@ -60,6 +64,9 @@
         <item name="colorBrandSecondary">@color/colorBlue800</item>
         <item name="textColorError">@color/light_colorTextError</item>
 
+        <item name="textLabelBackgroundColor">@color/colorPink50</item>
+        <item name="textLabelTextColor">@color/colorPink800</item>
+
         <item name="textAppearanceHeadline2">@style/TextAppearance.Words.Light.Headline2</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.Words.Light.Headline4</item>
         <item name="textAppearanceHeadline5">@style/TextAppearance.Words.Light.Headline5</item>
@@ -74,11 +81,10 @@
         <item name="textAppearanceButtonInverse">@style/TextAppearance.Words.Light.Button.Inverse</item>
 
         <item name="styleTextButton">@style/Widget.Words.Light.TextView.Button</item>
-
         <item name="styleChipOutlined">@style/Widget.Words.Light.Chip.Outlined</item>
         <item name="styleChipOpen">@style/Widget.Words.Light.Chip.Open</item>
-
         <item name="styleEditTextArea">@style/Widget.Words.Light.EditText.Area</item>
+        <item name="styleTextLabel">@style/Widget.Words.Light.TextLabel</item>
 
 
         <!--Implementation Specific Attrs-->
@@ -189,7 +195,14 @@
         <item name="chipCornerRadius">2dp</item>
     </style>
 
-
+    <!--Text Labels-->
+    <style name="Widget.Words.Light.TextLabel" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
+        <item name="android:textColor">?textLabelTextColor</item>
+        <item name="android:textSize">12sp</item>
+        <item name="chipBackgroundColor">?textLabelBackgroundColor</item>
+        <item name="chipCornerRadius">10dp</item>
+    </style>
 
 
     <!--Edit Text-->

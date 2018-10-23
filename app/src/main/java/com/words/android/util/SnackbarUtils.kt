@@ -2,16 +2,12 @@ package com.words.android.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.R
-import androidx.core.content.res.getDrawableOrThrow
-import androidx.core.content.res.getResourceIdOrThrow
 
 fun Snackbar.configInformative(context: Context, abovePeekedSheet: Boolean): Snackbar {
     return config(SnackbarType.INFORMATIVE, context, abovePeekedSheet)

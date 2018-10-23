@@ -16,11 +16,15 @@
     <attr name="colorBrandSecondary" format="color"/>
     <attr name="textColorError" format="color"/>
 
+    <attr name="textLabelBackgroundColor" format="color"/>
+    <attr name="textLabelTextColor" format="color"/>
+
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>
     <attr name="styleChipOutlined" format="reference"/>
     <attr name="styleChipOpen" format="reference"/>
     <attr name="styleEditTextArea" format="reference"/>
+    <attr name="styleTextLabel" format="reference"/>
 
     <!--Shape Drawables-->
     <attr name="drawableSnackbarErrorBackground" format="reference"/>

@@ -16,9 +16,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val usesDarkMode = (application as? App)?.preferenceRepository?.usesDarkMode ?: false
-        println("BaseActivity::usesDarkMode - $usesDarkMode")
         setTheme(if (usesDarkMode) R.style.Theme_Words_Dark else R.style.Theme_Words_Light)
-
         super.onCreate(savedInstanceState)
     }
 

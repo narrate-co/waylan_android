@@ -5,14 +5,14 @@
     <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:navigationBarColor">?colorPrimaryDark</item>
+        <item name="android:navigationBarColor">?colorPrimaryLight</item>
     </style>
 
     <!--Light-->
     <style name="Theme.Words.Light" parent="Base.Theme.Words.Light">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">?colorPrimaryDark</item>
+        <item name="android:navigationBarColor">?colorPrimaryLight</item>
     </style>
 
 </resources>
