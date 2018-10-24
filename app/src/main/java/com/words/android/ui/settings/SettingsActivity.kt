@@ -23,6 +23,8 @@ class SettingsActivity : BaseUserActivity() {
 
     fun showAbout() = Navigator.showAbout(this)
 
+    fun showDeveloperSettings() = Navigator.showDeveloperSettings(this)
+
     fun restartWithReconstructedStack() {
         val mainIntent = Intent(this, MainActivity::class.java)
         val taskBuilder = TaskStackBuilder.create(this)

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
@@ -18,19 +19,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
 import com.words.android.R
-import com.words.android.Config
 import com.words.android.MainActivity
-import com.words.android.data.firestore.users.PluginState
-import com.words.android.data.firestore.users.User
-import com.words.android.ui.common.BaseActivity
 import com.words.android.util.FirebaseAuthWordException
+import com.words.android.util.configTheme
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.util.concurrent.TimeUnit
 
-class AuthActivity : BaseActivity() {
+class AuthActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "AuthActivity"
@@ -54,6 +52,7 @@ class AuthActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        configTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 

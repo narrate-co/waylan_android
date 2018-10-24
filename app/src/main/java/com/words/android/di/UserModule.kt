@@ -9,7 +9,7 @@ import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.data.mw.RetrofitService
-import com.words.android.data.prefs.PreferenceRepository
+import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.data.repository.WordRepository
 import dagger.Module
 import dagger.Provides
@@ -28,6 +28,12 @@ class UserModule {
             else -> null
         }
         return WordRepository(appDatabase, firestoreStore, merriamWebsterStore, user)
+    }
+
+    @UserScope
+    @Provides
+    fun provideUserPreferenceRepository(application: Application, user: User?): UserPreferenceRepository {
+        return UserPreferenceRepository(application, user?.uid)
     }
 
 }

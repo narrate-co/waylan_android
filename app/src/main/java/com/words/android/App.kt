@@ -4,11 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.firebase.auth.FirebaseUser
-import com.words.android.data.firestore.users.User
-import com.words.android.data.prefs.OnValueChangedListener
-import com.words.android.data.prefs.PreferenceRepository
-import com.words.android.data.prefs.Preferences
+import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
 import com.words.android.ui.auth.Auth
@@ -31,8 +27,6 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
-    val preferenceRepository by lazy { PreferenceRepository(this) }
-
     fun setUser(auth: Auth?) {
         userComponentBuilder
                 .user(auth?.user)
@@ -47,7 +41,6 @@ class App: Application(), HasActivityInjector{
         AppInjector.init(this)
         dispatchReinjectUserBroadcast()
     }
-
 
     override fun onCreate() {
         super.onCreate()

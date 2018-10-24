@@ -5,6 +5,7 @@ import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.search.SearchFragment
+import com.words.android.ui.settings.DeveloperSettingsFragment
 import com.words.android.ui.settings.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -19,6 +20,10 @@ abstract class SettingsFragmentBuildersModule {
     @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeAboutFragment(): AboutFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun contributeDeveloperSettingsFragment(): DeveloperSettingsFragment
 
 }
 

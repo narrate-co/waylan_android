@@ -2,7 +2,9 @@ package com.words.android.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
+import android.preference.PreferenceManager
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
@@ -11,11 +13,14 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.get
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.words.android.R
 import com.words.android.data.disk.wordset.Synonym
+import com.words.android.data.prefs.Preferences
 
 fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: Synonym) -> Unit)? = null): Chip {
     val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip
@@ -66,10 +71,16 @@ val Context.displayHeightPx: Int
 val Activity.displayHeightDp: Float
     get() = resources.displayMetrics.heightPixels / resources.displayMetrics.density
 
-fun TextView.setTextAppearanceCompat(context: Context, resId: Int) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        setTextAppearance(resId)
+
+fun AppCompatActivity.configTheme() {
+    val usesDarkMode = PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(Preferences.USES_DARK_MODE, false)
+    setTheme(if (usesDarkMode) R.style.Theme_Words_Dark else R.style.Theme_Words_Light)
+}
+
+fun AppCompatImageButton.setChecked(value: Boolean) {
+    if (value) {
+        setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
     } else {
-        setTextAppearance(context, resId)
+        setImageResource(R.drawable.ic_round_check_circle_black_24px)
     }
 }

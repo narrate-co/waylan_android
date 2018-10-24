@@ -9,6 +9,7 @@ import com.words.android.ui.about.AboutFragment
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
+import com.words.android.ui.settings.DeveloperSettingsFragment
 import com.words.android.ui.settings.SettingsActivity
 import com.words.android.ui.settings.SettingsFragment
 
@@ -60,6 +61,15 @@ object Navigator {
                 .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
                 .add(R.id.fragmentContainer, AboutFragment.newInstance(), AboutFragment.FRAGMENT_TAG)
                 .addToBackStack(AboutFragment.FRAGMENT_TAG)
+                .commit()
+    }
+
+    fun showDeveloperSettings(activity: FragmentActivity) {
+        activity.supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                .add(R.id.fragmentContainer, DeveloperSettingsFragment.newInstance(), DeveloperSettingsFragment.FRAGMENT_TAG)
+                .addToBackStack(DeveloperSettingsFragment.FRAGMENT_TAG)
                 .commit()
     }
 

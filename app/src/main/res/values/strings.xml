@@ -57,8 +57,21 @@
     <string name="settings_header_registered_add_button">Add</string>
     <string name="settings_sign_out_title">Sign out</string>
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
+    <string name="settings_developer_title">Developer Settings</string>
+    <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
 
+    <!--About-->
     <string name="about_header_body">Words was created late one night when reading in bed. There are so many rich words in the English language, but looking them up while holding a book in one hand and a phone in the other was tough with the dictionaries available. \n\nWords hopes to be the most ergonomic dictionary for Android. Making it easy enough to look things up and keep adding to your vocabulary.</string>
+
+    <!--List-->
+    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched within the past 24 hours.</string>
+    <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
+    <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
+
+    <!--Developer Settings-->
+    <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
+    <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
+
 
 
 </resources>

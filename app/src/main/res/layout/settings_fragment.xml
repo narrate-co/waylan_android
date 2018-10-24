@@ -41,6 +41,9 @@
                 android:id="@+id/contactSetting"
                 layout="@layout/settings_item_layout" />
 
+            <include
+                android:id="@+id/developerSettings"
+                layout="@layout/settings_item_layout" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

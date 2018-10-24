@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import com.words.android.R
 import com.words.android.data.repository.WordSource
 
-class ListTypeAdapter(private val listener: ListTypeAdapter.ListTypeListener): ListAdapter<WordSource, ListTypeViewHolder>(diffCallback), ListTypeViewHolder.ListTypeViewHolderListener {
+class ListTypeAdapter(
+        private val listener: ListTypeAdapter.ListTypeListener
+):
+        ListAdapter<WordSource, ListTypeViewHolder>(diffCallback),
+        ListTypeViewHolder.ListTypeViewHolderListener {
 
     interface ListTypeListener {
         fun onWordClicked(word: String)

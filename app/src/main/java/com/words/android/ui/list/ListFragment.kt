@@ -1,16 +1,22 @@
 package com.words.android.ui.list
 
+import android.animation.AnimatorInflater
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
+import kotlinx.android.synthetic.main.banner_layout.view.*
+import kotlinx.android.synthetic.main.list_fragment.*
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
 class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
@@ -42,6 +48,12 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
                 .get(MainViewModel::class.java)
     }
 
+    private val viewModel by lazy {
+        ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(ListViewModel::class.java)
+    }
+
     var type: ListType = ListType.TRENDING
 
     private val adapter by lazy { ListTypeAdapter(this) }
@@ -59,11 +71,28 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
+        setUpBanner(view, type)
+
         return view
     }
 
     override fun onEnterTransactionEnded() {
         setUpList()
+    }
+
+    private fun setUpBanner(view: View, type: ListType) {
+        view.bannerLayout.body.text = when (type) {
+            ListType.TRENDING -> getString(R.string.list_banner_trending_body)
+            ListType.RECENT -> getString(R.string.list_banner_recents_body)
+            ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
+        }
+        view.bannerLayout.topButton.setOnClickListener {
+            viewModel.setHasSeenBanner(type, true)
+        }
+
+        viewModel.getHasSeenBanner(type).observe(this, Observer {
+            view.bannerLayout.visibility = if (it) View.GONE else View.VISIBLE
+        })
     }
 
     private fun setUpList() {
@@ -72,7 +101,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
         val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.light_list_item_divider))
         view?.recyclerView?.addItemDecoration(itemDivider)
 
-        sharedViewModel.getList(type).observe(this, Observer {
+        viewModel.getList(type).observe(this, Observer {
             adapter.submitList(it)
         })
     }

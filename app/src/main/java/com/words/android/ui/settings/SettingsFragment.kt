@@ -9,10 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.words.android.App
-import com.words.android.Config
-import com.words.android.Navigator
-import com.words.android.R
+import com.words.android.*
 import com.words.android.data.firestore.users.User
 import com.words.android.ui.auth.AuthActivity
 import com.words.android.ui.common.BaseUserFragment
@@ -21,6 +18,7 @@ import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
+import com.words.android.util.setChecked
 
 
 class SettingsFragment : BaseUserFragment() {
@@ -35,8 +33,6 @@ class SettingsFragment : BaseUserFragment() {
                 .of(this, viewModelFactory)
                 .get(SettingsViewModel::class.java)
     }
-
-    private val preferenceRepository by lazy { (activity?.application as? App)?.preferenceRepository }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.settings_fragment, container, false)
@@ -56,12 +52,12 @@ class SettingsFragment : BaseUserFragment() {
         //set common settings
         view.darkModeSettings.settingsTitle.text = getString(R.string.settings_dark_mode_title)
         view.darkModeSettings.settingsDescription.text = getString(R.string.settings_dark_mode_desc)
-        val usesDarkMode = preferenceRepository?.usesDarkMode ?: false
-        setCheckbox(usesDarkMode, view.darkModeSettings.checkbox)
+        val usesDarkMode = viewModel.usesDarkMode ?: false
+        view.darkModeSettings.checkbox.setChecked(usesDarkMode)
         view.darkModeSettings.settingsItem.setOnClickListener {
-            val currentValue = preferenceRepository?.usesDarkMode ?: false
-            setCheckbox(!currentValue, view.darkModeSettings.checkbox)
-            preferenceRepository?.usesDarkMode = !currentValue
+            val currentValue = viewModel.usesDarkMode
+            view.darkModeSettings.checkbox.setChecked(!currentValue)
+            viewModel.usesDarkMode = !currentValue
             (activity as? SettingsActivity)?.restartWithReconstructedStack()
         }
 
@@ -83,6 +79,14 @@ class SettingsFragment : BaseUserFragment() {
                         .configError(context!!, false)
                         .show()
             }
+        }
+
+        view.developerSettings.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        view.developerSettings.checkbox.visibility = View.INVISIBLE
+        view.developerSettings.settingsTitle.text = getString(R.string.settings_developer_title)
+        view.developerSettings.settingsDescription.text = getString(R.string.settings_developer_desc)
+        view.developerSettings.setOnClickListener {
+            (activity as? SettingsActivity)?.showDeveloperSettings()
         }
     }
 
@@ -155,13 +159,4 @@ class SettingsFragment : BaseUserFragment() {
         intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
         startActivity(intent)
     }
-
-    private fun setCheckbox(value: Boolean, imageButton: AppCompatImageButton) {
-        if (value) {
-            imageButton.setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
-        } else {
-            imageButton.setImageResource(R.drawable.ic_round_check_circle_black_24px)
-        }
-    }
-
 }

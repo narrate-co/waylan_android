@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
+import com.words.android.di.FragmentScope
 import com.words.android.di.UserScope
 import com.words.android.ui.list.ListFragment
 import javax.inject.Inject
