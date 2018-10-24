@@ -46,9 +46,9 @@ class FirestoreStore(
                 .liveData(UserWord::class.java)
     }
 
-    fun getUserLive(uid: String): LiveData<User> {
+    fun getUserLive(): LiveData<User> {
         return firestore.users
-                .document(uid)
+                .document(firestoreUser.uid)
                 .liveData(User::class.java)
     }
 

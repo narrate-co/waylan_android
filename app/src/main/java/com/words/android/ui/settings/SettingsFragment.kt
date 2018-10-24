@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.*
@@ -18,7 +19,9 @@ import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
+import com.words.android.data.firestore.users.remainingTrialDays
 import com.words.android.util.setChecked
+import java.lang.StringBuilder
 
 
 class SettingsFragment : BaseUserFragment() {
@@ -37,15 +40,16 @@ class SettingsFragment : BaseUserFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.settings_fragment, container, false)
         view.navigationIcon.setOnClickListener { activity?.onBackPressed() }
-        setSettings(view, viewModel.getUser())
+        viewModel.getUserLive().observe(this, Observer {
+            setSettings(view, it)
+        })
         return view
     }
 
     private fun setSettings(view: View, user: User?) {
         //set state specific settings
         when {
-            user == null -> setAsAnonymous(view, PluginState.NONE)
-            user.isAnonymous -> setAsAnonymous(view, user.merriamWebsterState)
+            user == null || user.isAnonymous -> setAsAnonymous(view, user)
             else -> setAsRegistered(view, user)
         }
 
@@ -90,10 +94,13 @@ class SettingsFragment : BaseUserFragment() {
         }
     }
 
-    private fun setAsAnonymous(view: View, merriamWebsterState: PluginState) {
-        when (merriamWebsterState) {
+    private fun setAsAnonymous(view: View, user: User?) {
+        when (user?.merriamWebsterState ?: PluginState.NONE) {
             PluginState.FREE_TRIAL -> {
-                view.accountDialogCard.textLabel.text = "Free trial: 7d"
+                val sb = StringBuilder()
+                sb.append("Free trial")
+                if (user != null) sb.append(": ${user.remainingTrialDays}d")
+                view.accountDialogCard.textLabel.text = sb.toString()
                 view.accountDialogCard.textLabel.visibility = View.VISIBLE
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_free_trial_body)
             }
@@ -129,7 +136,7 @@ class SettingsFragment : BaseUserFragment() {
                 view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
                 view.accountDialogCard.topButton.visibility = View.VISIBLE
                 view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                view.accountDialogCard.textLabel.text = "Free trial: 30d"
+                view.accountDialogCard.textLabel.text = "Free trial: ${user.remainingTrialDays}d"
             }
             PluginState.PURCHASED -> {
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_purchased_body)

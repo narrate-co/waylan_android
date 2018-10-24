@@ -19,6 +19,7 @@ import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
+import com.words.android.data.firestore.users.remainingTrialDays
 import com.words.android.service.AudioClipService
 import com.words.android.service.AudioController
 import com.words.android.util.fromHtml
@@ -67,7 +68,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         currentWordId = ""
         unregisterAudioStateDispatchReceiver()
     }
-
 
     fun clear() {
         currentWordId = ""
@@ -183,7 +183,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setTextLabel(user: User?) {
         when (user?.merriamWebsterState) {
             PluginState.FREE_TRIAL -> {
-                textLabel.text = "Free trial: ${if (user.isAnonymous) 7 else 30}d"
+                textLabel.text = "Free trial: ${user.remainingTrialDays}d"
                 textLabel.visibility = View.VISIBLE
             }
             else -> textLabel.visibility = View.GONE

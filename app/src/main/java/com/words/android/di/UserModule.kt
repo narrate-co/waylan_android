@@ -9,7 +9,9 @@ import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.data.mw.RetrofitService
+import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.prefs.UserPreferenceRepository
+import com.words.android.data.repository.UserRepository
 import com.words.android.data.repository.WordRepository
 import dagger.Module
 import dagger.Provides
@@ -19,21 +21,35 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideWordRepository(application: Application, user: User?, firebaseUser: FirebaseUser?): WordRepository {
-        val appDatabase = AppDatabase.getInstance(application)
-        val firestoreStore: FirestoreStore? = if (firebaseUser != null) FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, firebaseUser) else null
-        val merriamWebsterStore = when (user?.merriamWebsterState) {
-            PluginState.FREE_TRIAL,
-            PluginState.PURCHASED -> MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
-            else -> null
-        }
-        return WordRepository(appDatabase, firestoreStore, merriamWebsterStore, user)
+    fun provideFirestoreStore(appDatabase: AppDatabase, firebaseUser: FirebaseUser?): FirestoreStore? {
+        return if (firebaseUser != null) FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, firebaseUser) else null
+    }
+
+    @UserScope
+    @Provides
+    fun provideMerriamWebsterStore(appDatabase: AppDatabase): MerriamWebsterStore {
+        return MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
+    }
+
+    @UserScope
+    @Provides
+    fun provideWordRepository(appDatabase: AppDatabase, firestoreStore: FirestoreStore?, merriamWebsterStore: MerriamWebsterStore): WordRepository {
+
+        return WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
     }
 
     @UserScope
     @Provides
     fun provideUserPreferenceRepository(application: Application, user: User?): UserPreferenceRepository {
         return UserPreferenceRepository(application, user?.uid)
+    }
+
+    @UserScope
+    @Provides
+    fun provideUserRepository(
+            firestoreStore: FirestoreStore?,
+            userPreferenceRepository: UserPreferenceRepository): UserRepository {
+        return UserRepository(firestoreStore, userPreferenceRepository)
     }
 
 }

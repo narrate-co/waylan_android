@@ -1,29 +1,25 @@
 package com.words.android.data.repository
 
-import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.disk.mw.PermissiveWordsDefinitions
-import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.firestore.FirestoreStore
-import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.mw.MerriamWebsterStore
 import com.words.android.util.LiveDataHelper
+import com.words.android.util.MergedLiveData
 import kotlinx.coroutines.experimental.launch
 
 class WordRepository(
         private val db: AppDatabase,
         private val firestoreStore: FirestoreStore?,
-        private val merriamWebsterStore: MerriamWebsterStore?,
-        private val user: User?
+        private val merriamWebsterStore: MerriamWebsterStore?
 ) {
 
     fun filterWords(query: String): LiveData<List<WordSource>> {
@@ -80,9 +76,17 @@ class WordRepository(
     }
 
     private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<PermissiveWordsDefinitions> {
-        return if (id.isNotBlank() && merriamWebsterStore != null) Transformations.map(merriamWebsterStore.getWord(id)) {
-            PermissiveWordsDefinitions(user, it)
-        } ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+        if (id.isBlank() || merriamWebsterStore == null || firestoreStore == null) return LiveDataHelper.empty()
+
+        return MergedLiveData(
+                merriamWebsterStore.getWord(id),
+                firestoreStore.getUserLive()) { d1, d2 ->
+            PermissiveWordsDefinitions(d2, d1)
+        }
+
+//        return if (id.isNotBlank() && merriamWebsterStore != null) Transformations.map(merriamWebsterStore.getWord(id)) {
+//            PermissiveWordsDefinitions(user, it)
+//        } ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {

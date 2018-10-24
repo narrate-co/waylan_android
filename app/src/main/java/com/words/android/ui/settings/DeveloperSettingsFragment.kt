@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.R
+import com.words.android.data.firestore.users.PluginState
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.configError
 import com.words.android.util.configInformative
@@ -47,6 +49,24 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                     .configInformative(context!!, false)
                     .show()
         }
+
+        view.merriamWebsterPreference.settingsTitle.text = "Toggle Merriam-Wesbter state"
+        view.merriamWebsterPreference.checkbox.visibility = View.INVISIBLE
+        viewModel.getUserLive().observe(this, Observer { user ->
+            view.merriamWebsterPreference.settingsDescription.text = when (user.merriamWebsterState) {
+                PluginState.NONE -> "None"
+                PluginState.FREE_TRIAL -> "Free trial"
+                PluginState.PURCHASED -> "Purchased"
+            }
+            view.merriamWebsterPreference.setOnClickListener {
+                viewModel.setMerriamWebsterState(
+                when (user.merriamWebsterState) {
+                    PluginState.NONE -> PluginState.FREE_TRIAL
+                    PluginState.FREE_TRIAL -> PluginState.PURCHASED
+                    PluginState.PURCHASED -> PluginState.NONE
+                })
+            }
+        })
     }
 
 }
