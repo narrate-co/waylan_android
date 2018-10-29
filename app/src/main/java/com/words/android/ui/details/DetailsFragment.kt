@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.databinding.DetailsFragmentBinding
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.configError
 import kotlinx.android.synthetic.main.details_fragment.*
+import kotlinx.android.synthetic.main.details_fragment.view.*
 
 class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener {
 
@@ -37,16 +36,14 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     private val adapter: DetailsAdapter = DetailsAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: DetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.details_fragment, container, false)
-        binding.setLifecycleOwner(this)
-        binding.sharedViewModel = sharedViewModel
-        binding.toolbar.inflateMenu(R.menu.details_menu)
-        binding.toolbar.setOnMenuItemClickListener(this)
-        binding.toolbar.setNavigationOnClickListener {
+        val view = inflater.inflate(R.layout.details_fragment, container, false)
+        view.toolbar.inflateMenu(R.menu.details_menu)
+        view.toolbar.setOnMenuItemClickListener(this)
+        view.toolbar.setNavigationOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
-        return binding.root
+        return view
     }
 
     // defer load intensive work until after the fragment transaction has ended

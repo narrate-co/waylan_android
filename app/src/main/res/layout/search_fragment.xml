@@ -1,75 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/light_search_background"
+    android:elevation="16dp"
+    >
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.words.android.ui.search.SearchViewModel"/>
-    </data>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="match_parent"
+    <FrameLayout
+        android:id="@+id/search"
         android:layout_width="match_parent"
-        android:background="@drawable/light_search_background"
-        android:elevation="16dp"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center_vertical"
+        android:minHeight="52dp"
+        android:background="@drawable/light_search_input_background"
+        android:padding="@dimen/keyline_2"
+        android:layout_marginTop="@dimen/keyline_3"
+        android:layout_marginStart="@dimen/keyline_2"
+        android:layout_marginEnd="@dimen/keyline_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
 
-        <FrameLayout
-            android:id="@+id/search"
+        <androidx.appcompat.widget.AppCompatEditText
+            style="?attr/styleEditTextArea"
+            android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foregroundGravity="center_vertical"
-            android:minHeight="52dp"
-            android:background="@drawable/light_search_input_background"
-            android:padding="@dimen/keyline_2"
-            android:layout_marginTop="@dimen/keyline_3"
             android:layout_marginStart="@dimen/keyline_2"
-            android:layout_marginEnd="@dimen/keyline_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            android:layout_marginEnd="48dp"
+            android:hint="Search Words"
+            android:paddingStart="8dp"
+            android:focusable="true"
+            android:layout_gravity="left|center_vertical"
+            android:maxLines="1"
+            />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                style="?attr/styleEditTextArea"
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_2"
-                android:layout_marginEnd="48dp"
-                android:hint="Search Words"
-                android:text="@={viewModel.searchInput}"
-                android:paddingStart="8dp"
-                android:layout_gravity="left|center_vertical"
-                android:maxLines="1"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/mic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                app:srcCompat="@drawable/ic_round_mic_black_24px"
-                android:alpha=".5"
-                android:layout_marginRight="@dimen/keyline_3"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            app:srcCompat="@drawable/ic_round_mic_black_24px"
+            android:alpha=".5"
+            android:layout_marginRight="@dimen/keyline_3"/>
 
 
-        </FrameLayout>
+    </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-</layout>

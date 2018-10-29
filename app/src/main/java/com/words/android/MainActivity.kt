@@ -1,19 +1,11 @@
 package com.words.android
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.common.BaseUserActivity
-import com.words.android.ui.details.DetailsFragment
-import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
-import com.words.android.ui.settings.SettingsActivity
-import com.words.android.R
 import com.words.android.util.collapse
-import com.words.android.util.displayHeightDp
 import com.words.android.util.displayHeightPx
 import kotlinx.android.synthetic.main.main_activity.*
 

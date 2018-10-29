@@ -80,7 +80,13 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
             properties?.let { list.add(DetailsComponent.TitleComponent(it)) }
             merriamWebster?.let { if (it.wordsDefinitions.entries.isNotEmpty()) list.add(DetailsComponent.MerriamWebsterComponent(it)) }
             wordset?.let { list.add(DetailsComponent.WordsetComponent(it)) }
-            wordset?.let { list.add(DetailsComponent.ExamplesComponent(it)) }
+
+            // Only add examples if there are any
+            // TODO change this to always show if allowing users to add their own
+            val examples = (wordset?.wordAndMeaning?.meanings?.map { it.examples } ?: emptyList()).flatten()
+            if (examples.isNotEmpty()) {
+                wordset?.let { list.add(DetailsComponent.ExamplesComponent(it)) }
+            }
             return list
         }
 

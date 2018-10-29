@@ -2,28 +2,27 @@ package com.words.android.ui.search
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.textservice.*
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.*
-import com.words.android.databinding.SearchFragmentBinding
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.hideSoftKeyboard
-import android.view.textservice.SentenceSuggestionsInfo
 import android.view.textservice.SuggestionsInfo
 import kotlinx.android.synthetic.main.search_fragment.*
 import kotlinx.android.synthetic.main.search_fragment.view.*
 
 
-class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
+class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, TextWatcher {
+
 
 
     companion object {
@@ -55,15 +54,23 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
     private var hideKeyboard = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: SearchFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.search_fragment, container, false)
-        binding.setLifecycleOwner(this)
-        binding.viewModel = viewModel
+        val view = inflater.inflate(R.layout.search_fragment, container, false)
 
         //set up recycler view
-        binding.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.recycler.adapter = adapter
+        view.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        view.recycler.adapter = adapter
 
-        binding.searchEditText.setOnClickListener {
+        view.searchEditText.addTextChangedListener(this)
+
+        view.searchEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+        }
+
+        view.searchEditText.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
@@ -74,7 +81,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
         })
 
 
-        return binding.root
+        return view
     }
 
     override fun onStop() {
@@ -110,5 +117,12 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers {
 
     }
 
+    override fun afterTextChanged(s: Editable?) {}
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        viewModel.searchInput = s?.toString() ?: ""
+    }
 }
 
