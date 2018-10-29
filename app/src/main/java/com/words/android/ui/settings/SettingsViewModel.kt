@@ -10,6 +10,7 @@ import com.words.android.data.repository.UserRepository
 import com.words.android.data.repository.WordRepository
 import com.words.android.di.FragmentScope
 import com.words.android.di.UserScope
+import com.words.android.util.daysElapsed
 import javax.inject.Inject
 
 @UserScope

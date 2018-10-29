@@ -61,7 +61,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         }
 
         override fun onDismissCardClicked() {
-            //TODO
+            listener.onMerriamWebsterDismissClicked()
         }
     }
 

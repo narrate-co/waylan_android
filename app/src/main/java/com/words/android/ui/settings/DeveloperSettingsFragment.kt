@@ -10,11 +10,15 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.R
 import com.words.android.data.firestore.users.PluginState
+import com.words.android.data.firestore.users.User
+import com.words.android.data.firestore.users.merriamWebsterState
+import com.words.android.data.firestore.users.oneDayPastExpiration
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.configError
 import com.words.android.util.configInformative
 import kotlinx.android.synthetic.main.developer_settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
+import java.util.*
 
 
 class DeveloperSettingsFragment : BaseUserFragment() {
@@ -53,20 +57,44 @@ class DeveloperSettingsFragment : BaseUserFragment() {
         view.merriamWebsterPreference.settingsTitle.text = "Toggle Merriam-Wesbter state"
         view.merriamWebsterPreference.checkbox.visibility = View.INVISIBLE
         viewModel.getUserLive().observe(this, Observer { user ->
-            view.merriamWebsterPreference.settingsDescription.text = when (user.merriamWebsterState) {
-                PluginState.NONE -> "None"
-                PluginState.FREE_TRIAL -> "Free trial"
-                PluginState.PURCHASED -> "Purchased"
+            val state = user.merriamWebsterState
+            view.merriamWebsterPreference.settingsDescription.text = when (state) {
+                is PluginState.None -> "None"
+                is PluginState.FreeTrial -> "Free trial (${if (state.isValid) "valid" else "expired"})"
+                is PluginState.Subscribed -> "Subscribed (${if (state.isValid) "valid" else "expired"})"
             }
             view.merriamWebsterPreference.setOnClickListener {
-                viewModel.setMerriamWebsterState(
-                when (user.merriamWebsterState) {
-                    PluginState.NONE -> PluginState.FREE_TRIAL
-                    PluginState.FREE_TRIAL -> PluginState.PURCHASED
-                    PluginState.PURCHASED -> PluginState.NONE
-                })
+                cycleState(user)
             }
         })
+    }
+
+    /**
+     * Should cycle through:
+     *
+     * NONE
+     * FREE_TRIAL (valid)
+     * FREE_TRIAL (expired)
+     * SUBSCRIBED (valid)
+     * SUBSCRIBED (expired)
+     */
+    private fun cycleState(user: User) {
+        val state = user.merriamWebsterState
+        viewModel.setMerriamWebsterState(
+                when {
+                    //None -> Free Trial (valid)
+                    state is PluginState.None -> PluginState.FreeTrial(user.isAnonymous)
+                    //FreeTrial (valid) -> FreeTrial (expired)
+                    state is PluginState.FreeTrial && state.isValid -> PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
+                    //FreeTrial (expired) -> Subscribed (valid)
+                    state is PluginState.FreeTrial && !state.isValid -> PluginState.Subscribed()
+                    //Subscribed (valid) -> Subscribed (expired)
+                    state is PluginState.Subscribed && state.isValid -> PluginState.Subscribed(user.oneDayPastExpiration)
+                    //Subscribed (expired) -> FreeTrial (valid)
+                    state is PluginState.Subscribed && !state.isValid -> PluginState.FreeTrial(user.isAnonymous)
+                    //Default
+                    else -> PluginState.None()
+                })
     }
 
 }

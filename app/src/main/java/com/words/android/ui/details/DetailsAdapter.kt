@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.words.android.data.repository.WordSource
+import kotlin.reflect.KClass
 
 class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter<DetailsComponent, DetailsComponentViewHolder>(diffCallback), DetailsComponentListener {
 
@@ -11,6 +12,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         fun onRelatedWordClicked(relatedWord: String)
         fun onSynonymChipClicked(synonym: String)
         fun onAudioClipError(message: String)
+        fun onMerriamWebsterDismissClicked()
     }
 
     companion object {
@@ -63,6 +65,16 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
             }
         }
 
+        fun removeSource(type: KClass<out WordSource>) {
+            when (type) {
+                WordSource.WordProperties::class -> properties = null
+                WordSource.WordsetSource::class -> wordset = null
+                WordSource.MerriamWebsterSource::class -> merriamWebster = null
+                WordSource.FirestoreUserSource::class -> firestoreUser = null
+                WordSource.FirestoreGlobalSource::class -> firestoreGlobal = null
+            }
+        }
+
         fun getComponentsList(): List<DetailsComponent> {
             val list = mutableListOf<DetailsComponent>()
             properties?.let { list.add(DetailsComponent.TitleComponent(it)) }
@@ -106,6 +118,11 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         submitList(sourceHolder.getComponentsList())
     }
 
+    fun removeWordSource(type: KClass<out WordSource>) {
+        sourceHolder.removeSource(type)
+        submitList(sourceHolder.getComponentsList())
+    }
+
     override fun getItemViewType(position: Int): Int = getItem(position).type.number
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsComponentViewHolder {
@@ -128,4 +145,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
         listener.onAudioClipError(message)
     }
 
+    override fun onMerriamWebsterDismissClicked() {
+        listener.onMerriamWebsterDismissClicked()
+    }
 }

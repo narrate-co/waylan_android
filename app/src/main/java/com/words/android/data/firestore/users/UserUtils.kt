@@ -1,11 +1,25 @@
 package com.words.android.data.firestore.users
 
-import com.words.android.util.daysElapsed
+import java.util.*
 
+private val User.totalStateDuration: Long
+    get() = when {
+        isMerriamWebsterSubscriber -> 365L
+        isAnonymous -> 7L
+        else -> 30L
+    }
 
-val User.remainingTrialDays: Long
+val User.merriamWebsterState: PluginState
     get() {
-        val totalTrialLength = if (isAnonymous) 7L else 30L
-        val daysElapsed = merriamWebsterFreeTrialCreated.daysElapsed
-        return Math.max(0, totalTrialLength - daysElapsed)
+        return when {
+            isMerriamWebsterSubscriber -> PluginState.Subscribed(merriamWebsterStarted)
+            else -> PluginState.FreeTrial(isAnonymous, merriamWebsterStarted)
+        }
+    }
+
+val User.oneDayPastExpiration: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_YEAR, -(totalStateDuration + 1).toInt())
+        return cal.time
     }

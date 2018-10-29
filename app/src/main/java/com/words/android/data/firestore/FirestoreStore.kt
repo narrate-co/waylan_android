@@ -5,13 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
 import com.words.android.data.DataOwners
 import com.words.android.data.disk.AppDatabase
-import com.words.android.data.firestore.users.PluginState
-import com.words.android.data.firestore.users.User
-import com.words.android.data.firestore.users.UserWord
-import com.words.android.data.firestore.users.UserWordType
+import com.words.android.data.firestore.users.*
 import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
 import com.words.android.data.firestore.util.liveData
 import com.words.android.data.firestore.words.GlobalWord
@@ -210,7 +206,8 @@ class FirestoreStore(
     suspend fun setUserMerriamWebsterState(state: PluginState) {
         try {
             val user = getUser()
-            user.merriamWebsterState = state
+            user.merriamWebsterStarted = state.started
+            user.isMerriamWebsterSubscriber = state is PluginState.Subscribed
             setUser(user)
         } catch (e: Exception) {
             e.printStackTrace()

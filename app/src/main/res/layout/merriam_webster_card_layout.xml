@@ -110,6 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/keyline_3"
             android:layout_marginRight="@dimen/keyline_3"
+            android:layout_marginTop="@dimen/keyline_2"
+            android:layout_marginBottom="@dimen/keyline_2"
             android:orientation="vertical"
             tools:visibility="visible"
             android:visibility="gone">
@@ -117,7 +119,7 @@
             <View
                 android:layout_width="100dp"
                 android:layout_height="28dp"
-                android:layout_marginTop="@dimen/keyline_1"
+                android:layout_marginTop="@dimen/keyline_2"
                 android:layout_marginBottom="@dimen/keyline_1"
                 android:background="@drawable/permission_pane_background"/>
             
@@ -125,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="@dimen/keyline_1"
-                android:layout_marginBottom="@dimen/keyline_1"
+                android:layout_marginBottom="@dimen/keyline_2"
                 android:background="@drawable/permission_pane_background"/>
 
 
@@ -138,6 +140,8 @@
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
                 android:paddingLeft="@dimen/keyline_3"
+                android:layout_marginTop="@dimen/keyline_1"
+                android:layout_marginBottom="@dimen/keyline_1"
                 android:text="@string/details_merriam_webster_card_details_button"
                 android:textSize="18sp"
                 android:gravity="right"
@@ -151,6 +155,8 @@
                 android:id="@+id/bottomButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_1"
+                android:layout_marginBottom="@dimen/keyline_1"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"

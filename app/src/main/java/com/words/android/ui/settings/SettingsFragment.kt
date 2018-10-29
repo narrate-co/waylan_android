@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -19,9 +18,8 @@ import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
-import com.words.android.data.firestore.users.remainingTrialDays
+import com.words.android.data.firestore.users.merriamWebsterState
 import com.words.android.util.setChecked
-import java.lang.StringBuilder
 
 
 class SettingsFragment : BaseUserFragment() {
@@ -95,20 +93,26 @@ class SettingsFragment : BaseUserFragment() {
     }
 
     private fun setAsAnonymous(view: View, user: User?) {
-        when (user?.merriamWebsterState ?: PluginState.NONE) {
-            PluginState.FREE_TRIAL -> {
-                val sb = StringBuilder()
-                sb.append("Free trial")
-                if (user != null) sb.append(": ${user.remainingTrialDays}d")
-                view.accountDialogCard.textLabel.text = sb.toString()
+        val state = user?.merriamWebsterState ?: PluginState.None()
+        when (state) {
+            is PluginState.None -> {
+                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
+                view.accountDialogCard.textLabel.visibility = View.GONE
+            }
+            is PluginState.FreeTrial -> {
+                val label = if (state.isValid) "Free Trial: ${state.remainingDays}d" else "Free trial expired"
+                view.accountDialogCard.textLabel.text = label
                 view.accountDialogCard.textLabel.visibility = View.VISIBLE
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_free_trial_body)
             }
-            else -> {
+            is PluginState.Subscribed -> {
+                //This should never happen
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
                 view.accountDialogCard.textLabel.visibility = View.GONE
             }
         }
+
+
         view.accountDialogCard.topButton.text = getString(R.string.settings_header_anonymous_create_account_button)
         view.accountDialogCard.bottomButton.text = getString(R.string.settings_header_anonymous_log_in_button)
         view.accountDialogCard.topButton.setOnClickListener {
@@ -124,25 +128,52 @@ class SettingsFragment : BaseUserFragment() {
     }
 
     private fun setAsRegistered(view: View, user: User) {
-        when (user.merriamWebsterState) {
-            PluginState.NONE -> {
+        val state = user.merriamWebsterState
+        when (state) {
+            is PluginState.None -> {
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_none_body)
                 view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
                 view.accountDialogCard.topButton.visibility = View.VISIBLE
                 view.accountDialogCard.textLabel.visibility = View.GONE
             }
-            PluginState.FREE_TRIAL -> {
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_body)
-                view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
-                view.accountDialogCard.topButton.visibility = View.VISIBLE
-                view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                view.accountDialogCard.textLabel.text = "Free trial: ${user.remainingTrialDays}d"
+            is PluginState.FreeTrial -> {
+                if (state.isValid) {
+                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_body)
+                    view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
+                    view.accountDialogCard.topButton.visibility = View.VISIBLE
+                    view.accountDialogCard.topButton.setOnClickListener {
+                        //TODO take to Google Play Billing add flow
+                    }
+                    view.accountDialogCard.textLabel.text = "Free trial: ${state.remainingDays}d"
+                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                } else {
+                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_expired_body)
+                    view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
+                    view.accountDialogCard.topButton.visibility = View.VISIBLE
+                    view.accountDialogCard.topButton.setOnClickListener {
+                        //TODO take to Google Play Billing add flow
+                    }
+                    view.accountDialogCard.textLabel.text = "Free trial expired"
+                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                }
             }
-            PluginState.PURCHASED -> {
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_purchased_body)
-                view.accountDialogCard.topButton.visibility = View.GONE
-                view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                view.accountDialogCard.textLabel.text = "Added"
+            is PluginState.Subscribed -> {
+                if (state.isValid) {
+                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_subscribed_body)
+                    view.accountDialogCard.topButton.visibility = View.GONE
+                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                    view.accountDialogCard.textLabel.text = "Added"
+                } else {
+                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_subscribed_expired_body)
+                    view.accountDialogCard.topButton.visibility = View.VISIBLE
+                    view.accountDialogCard.topButton.text = "Renew"
+                    view.accountDialogCard.topButton.setOnClickListener {
+                        //TODO take to Google Play Billing renewal flow
+                    }
+                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                    view.accountDialogCard.textLabel.text = "Subscription expired"
+                }
+
             }
         }
 

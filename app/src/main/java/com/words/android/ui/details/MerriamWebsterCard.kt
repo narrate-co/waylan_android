@@ -19,7 +19,7 @@ import com.words.android.data.disk.mw.Word
 import com.words.android.data.disk.mw.WordAndDefinitions
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
-import com.words.android.data.firestore.users.remainingTrialDays
+import com.words.android.data.firestore.users.merriamWebsterState
 import com.words.android.service.AudioClipService
 import com.words.android.service.AudioController
 import com.words.android.util.fromHtml
@@ -120,17 +120,11 @@ class MerriamWebsterCard @JvmOverloads constructor(
             currentWordId = newWordId
         }
 
-        when (wordsAndDefinitions.user?.merriamWebsterState) {
-            PluginState.NONE -> {
-                setFieldsDenied()
-            }
-            PluginState.FREE_TRIAL,
-            PluginState.PURCHASED -> {
-                setFieldsGranted(wordsAndDefinitions)
-            }
+        if (wordsAndDefinitions.user?.merriamWebsterState?.isValid == true) {
+            setFieldsGranted(wordsAndDefinitions)
+        } else {
+            setFieldsDenied(wordsAndDefinitions.user)
         }
-
-
     }
 
     private fun setFieldsGranted(wordsAndDefinitions: PermissiveWordsDefinitions) {
@@ -149,14 +143,20 @@ class MerriamWebsterCard @JvmOverloads constructor(
         }
     }
 
-    private fun setFieldsDenied() {
+    private fun setFieldsDenied(user: User?) {
         audioImageView.visibility = View.GONE
         undlerlineContainer.visibility = View.GONE
         definitionsContainer.visibility = View.GONE
         relatedWordsHeader.visibility = View.GONE
         relatedWordsHorizontalScrollView.visibility = View.GONE
 
-        textLabel.text = "Free trial: Expired"
+        val state = user?.merriamWebsterState ?: PluginState.None()
+        when (state) {
+            is PluginState.None -> textLabel.text = "Plugin available"
+            is PluginState.FreeTrial -> textLabel.text = "Free trial expired"
+            is PluginState.Subscribed -> textLabel.text = "Subscription expired"
+
+        }
         textLabel.visibility = View.VISIBLE
 
         permissionContainer.visibility = View.VISIBLE
@@ -166,6 +166,8 @@ class MerriamWebsterCard @JvmOverloads constructor(
         permissionContainer.bottomButton.setOnClickListener {
             listener?.onDismissCardClicked()
         }
+
+        visibility = View.VISIBLE
     }
 
     private fun getListWordAndDefId(entries: List<WordAndDefinitions>): String {
@@ -218,10 +220,28 @@ class MerriamWebsterCard @JvmOverloads constructor(
     }
 
     private fun setTextLabel(user: User?) {
-        when (user?.merriamWebsterState) {
-            PluginState.FREE_TRIAL -> {
-                textLabel.text = "Free trial: ${user.remainingTrialDays}d"
+        val state = user?.merriamWebsterState
+        when (state) {
+            is PluginState.FreeTrial -> {
+                if (state.isValid) {
+                    textLabel.text = "Free trial: ${state.remainingDays}d"
+                } else {
+                    textLabel.text = "Free trial expired"
+                }
                 textLabel.visibility = View.VISIBLE
+            }
+            is PluginState.Subscribed -> {
+                if (!state.isValid) {
+                    // show label
+                    textLabel.text = "Subscription expired"
+                    textLabel.visibility = View.VISIBLE
+                } else if (state.remainingDays <= 7L) {
+                    // hide label
+                    textLabel.text = "Renew: ${state.remainingDays}d remaining"
+                    textLabel.visibility = View.VISIBLE
+                } else {
+                    textLabel.visibility = View.GONE
+                }
             }
             else -> textLabel.visibility = View.GONE
         }

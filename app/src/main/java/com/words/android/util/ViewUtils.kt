@@ -59,7 +59,6 @@ class ViewGroupChildIterator(private val viewGroup: ViewGroup): Iterator<View> {
         current++
         return viewGroup.getChildAt(i)
     }
-
 }
 
 val ViewGroup.children: Iterator<View>

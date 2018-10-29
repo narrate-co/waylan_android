@@ -22,7 +22,6 @@ class ListViewModel @Inject constructor(
             }
 
     fun setHasSeenBanner(type: ListFragment.ListType, value: Boolean) {
-        println("ListViewModel::setHasSeenBanner = $value")
         when (type) {
             ListFragment.ListType.TRENDING -> userPreferenceRepository.hasSeenTrendingBanner = value
             ListFragment.ListType.RECENT -> userPreferenceRepository.hasSeenRecentsBanner = value

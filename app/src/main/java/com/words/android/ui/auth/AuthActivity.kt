@@ -51,6 +51,7 @@ class AuthActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
 
+    //TODO clean up
     override fun onCreate(savedInstanceState: Bundle?) {
         configTheme()
         super.onCreate(savedInstanceState)

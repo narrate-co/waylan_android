@@ -96,6 +96,11 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
                 .show()
     }
 
+    override fun onMerriamWebsterDismissClicked() {
+        //TODO set user setting
+        adapter.removeWordSource(WordSource.MerriamWebsterSource::class)
+    }
+
     private fun setUserWord(userWord: UserWord?) {
         if (userWord == null)  return
 

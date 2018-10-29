@@ -51,9 +51,11 @@
     <string name="settings_header_anonymous_none_body">Want to save your recents and favorites across devices? Want access to Merriam-Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
     <string name="settings_header_anonymous_create_account_button">Create Account</string>
     <string name="settings_header_anonymous_log_in_button">Log in</string>
-    <string name="settings_header_registered_none_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words with a one time fee for unlimited access.</string>
+    <string name="settings_header_registered_none_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words with a one time fee for unlimited access.</string>
+    <string name="settings_header_registered_free_trial_expired_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words with a one time fee for unlimited access.</string>
     <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Words. Help support Merriam-Webster and Words with a one time fee for unlimited access.</string>
-    <string name="settings_header_registered_purchased_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. You have unlimited access. Thank you for your support.</string>
+    <string name="settings_header_registered_subscribed_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. You have unlimited access. Thank you for your support.</string>
+    <string name="settings_header_registered_subscribed_expired_body">Looks like your subscription expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Renew for a whole year of access.</string>
     <string name="settings_header_registered_add_button">Add</string>
     <string name="settings_sign_out_title">Sign out</string>
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
