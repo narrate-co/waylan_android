@@ -21,7 +21,7 @@
         <item name="colorAccentDark">@color/colorWhite900</item>
         <item name="colorPrimaryLight">@color/colorBlack700</item>
         <item name="colorHairline">@color/dark_colorWhite25a</item>
-        <item name="colorDivider">@color/dark_colorWhite02a</item>
+        <item name="colorDivider">@color/dark_colorWhite05a</item>
         <item name="colorScrim">@color/light_colorBlack25a</item>
         <item name="colorError">@color/colorMauve200</item>
         <item name="colorInformative">@color/colorBlack300</item>
@@ -56,7 +56,7 @@
         <item name="colorAccentDark">@color/colorBlack900</item>
         <item name="colorPrimaryLight">@color/colorTan25</item>
         <item name="colorHairline">@color/light_colorBlack25a</item>
-        <item name="colorDivider">@color/light_colorBlack02a</item>
+        <item name="colorDivider">@color/light_colorBlack05a</item>
         <item name="colorScrim">@color/light_colorBlack25a</item>
         <item name="colorError">@color/colorMauve50</item>
         <item name="colorInformative">@color/colorBlack300</item>

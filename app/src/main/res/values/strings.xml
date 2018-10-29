@@ -71,7 +71,8 @@
     <!--Developer Settings-->
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
-
+    <string name="details_merriam_webster_card_details_button">Details</string>
+    <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
 
 
 </resources>

@@ -59,6 +59,10 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         override fun onAudioClipError(message: String) {
             listener.onAudioClipError(message)
         }
+
+        override fun onDismissCardClicked() {
+            //TODO
+        }
     }
 
     class WordsetComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {

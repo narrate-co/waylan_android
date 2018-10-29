@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<com.google.android.material.card.MaterialCardView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sourceCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,8 +15,7 @@
     app:cardElevation="2dp"
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="?colorPrimaryLight"
-    android:clipToPadding="false"
-    >
+    android:clipToPadding="false">
 
 
 
@@ -66,6 +64,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/undlerlineContainer"
             android:layout_width="72dp"
             android:layout_height="10dp"
             android:layout_marginTop="@dimen/keyline_2"
@@ -104,6 +103,66 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/keyline_3"
         android:orientation="vertical"/>
+        
+        <LinearLayout
+            android:id="@+id/permissionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline_3"
+            android:layout_marginRight="@dimen/keyline_3"
+            android:orientation="vertical"
+            tools:visibility="visible"
+            android:visibility="gone">
+            
+            <View
+                android:layout_width="100dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="@dimen/keyline_1"
+                android:layout_marginBottom="@dimen/keyline_1"
+                android:background="@drawable/permission_pane_background"/>
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/keyline_1"
+                android:layout_marginBottom="@dimen/keyline_1"
+                android:background="@drawable/permission_pane_background"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextButton"
+                android:id="@+id/topButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="@dimen/keyline_3"
+                android:paddingLeft="@dimen/keyline_3"
+                android:text="@string/details_merriam_webster_card_details_button"
+                android:textSize="18sp"
+                android:gravity="right"
+                android:layout_gravity="right"
+                android:background="?selectableItemBackground"
+                />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="?attr/styleTextButton"
+                android:id="@+id/bottomButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="@dimen/keyline_3"
+                android:paddingLeft="@dimen/keyline_3"
+                android:text="@string/details_merriam_webster_card_dismiss_button"
+                android:textSize="18sp"
+                android:gravity="right"
+                android:layout_gravity="right"
+                android:background="?selectableItemBackground"
+                />
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:textAppearance="?textAppearanceCaption"

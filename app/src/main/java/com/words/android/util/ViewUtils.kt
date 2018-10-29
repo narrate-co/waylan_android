@@ -79,8 +79,8 @@ fun AppCompatActivity.configTheme() {
 
 fun AppCompatImageButton.setChecked(value: Boolean) {
     if (value) {
-        setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
-    } else {
         setImageResource(R.drawable.ic_round_check_circle_black_24px)
+    } else {
+        setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
     }
 }

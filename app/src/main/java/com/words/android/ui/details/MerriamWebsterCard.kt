@@ -39,6 +39,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     interface MerriamWebsterViewListener {
         fun onRelatedWordClicked(word: String)
         fun onAudioClipError(message: String)
+        fun onDismissCardClicked()
     }
 
     data class DefinitionGroup(var word: Word, var definitions: List<Definition>, var viewGroup: LinearLayout)
@@ -119,9 +120,25 @@ class MerriamWebsterCard @JvmOverloads constructor(
             currentWordId = newWordId
         }
 
+        when (wordsAndDefinitions.user?.merriamWebsterState) {
+            PluginState.NONE -> {
+                setFieldsDenied()
+            }
+            PluginState.FREE_TRIAL,
+            PluginState.PURCHASED -> {
+                setFieldsGranted(wordsAndDefinitions)
+            }
+        }
 
+
+    }
+
+    private fun setFieldsGranted(wordsAndDefinitions: PermissiveWordsDefinitions) {
         //set audio clip
+        permissionContainer.visibility = View.GONE
+
         setAudio(wordsAndDefinitions.entries.firstOrNull()?.word)
+
 
         setTextLabel(wordsAndDefinitions.user)
 
@@ -130,7 +147,25 @@ class MerriamWebsterCard @JvmOverloads constructor(
             setWord(it.word)
             setDefinitions(it.word, it.definitions)
         }
+    }
 
+    private fun setFieldsDenied() {
+        audioImageView.visibility = View.GONE
+        undlerlineContainer.visibility = View.GONE
+        definitionsContainer.visibility = View.GONE
+        relatedWordsHeader.visibility = View.GONE
+        relatedWordsHorizontalScrollView.visibility = View.GONE
+
+        textLabel.text = "Free trial: Expired"
+        textLabel.visibility = View.VISIBLE
+
+        permissionContainer.visibility = View.VISIBLE
+        permissionContainer.topButton.setOnClickListener {
+            Navigator.launchSettings(context)
+        }
+        permissionContainer.bottomButton.setOnClickListener {
+            listener?.onDismissCardClicked()
+        }
     }
 
     private fun getListWordAndDefId(entries: List<WordAndDefinitions>): String {
@@ -153,6 +188,8 @@ class MerriamWebsterCard @JvmOverloads constructor(
         audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
 
         audioImageView.setOnClickListener(audioPlayClickListener)
+        audioImageView.visibility = View.VISIBLE
+        undlerlineContainer.visibility = View.VISIBLE
     }
 
 
@@ -234,6 +271,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
             }
         }
 
+        definitionsContainer.visibility = View.VISIBLE
         visibility = View.VISIBLE
 
 
