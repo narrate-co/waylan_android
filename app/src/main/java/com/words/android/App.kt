@@ -8,6 +8,7 @@ import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
 import com.words.android.ui.auth.Auth
+import com.words.android.util.configTheme
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -27,7 +28,6 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
-    var isAuthenticated: Boolean = false
 
     fun setUser(auth: Auth?) {
         userComponentBuilder
@@ -35,12 +35,10 @@ class App: Application(), HasActivityInjector{
                 .firebaseUser(auth?.firebaseUser)
                 .build()
                 .inject(this)
-        isAuthenticated = true
         dispatchReinjectUserBroadcast()
     }
 
     fun clearUser() {
-        isAuthenticated = false
         setUser(null)
         AppInjector.init(this)
         dispatchReinjectUserBroadcast()

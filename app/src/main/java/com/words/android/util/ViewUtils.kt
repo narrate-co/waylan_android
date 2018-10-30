@@ -1,6 +1,7 @@
 package com.words.android.util
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
@@ -70,9 +71,10 @@ val Context.displayHeightPx: Int
 val Activity.displayHeightDp: Float
     get() = resources.displayMetrics.heightPixels / resources.displayMetrics.density
 
+private val Context.usesDarkMode: Boolean
+    get() = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Preferences.USES_DARK_MODE, false)
 
 fun AppCompatActivity.configTheme() {
-    val usesDarkMode = PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(Preferences.USES_DARK_MODE, false)
     setTheme(if (usesDarkMode) R.style.Theme_Words_Dark else R.style.Theme_Words_Light)
 }
 
