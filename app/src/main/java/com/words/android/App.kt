@@ -27,16 +27,20 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
+    var isAuthenticated: Boolean = false
+
     fun setUser(auth: Auth?) {
         userComponentBuilder
                 .user(auth?.user)
                 .firebaseUser(auth?.firebaseUser)
                 .build()
                 .inject(this)
+        isAuthenticated = true
         dispatchReinjectUserBroadcast()
     }
 
     fun clearUser() {
+        isAuthenticated = false
         setUser(null)
         AppInjector.init(this)
         dispatchReinjectUserBroadcast()

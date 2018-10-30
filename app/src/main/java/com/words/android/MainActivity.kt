@@ -1,17 +1,29 @@
 package com.words.android
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.list.ListFragment
 import com.words.android.util.collapse
 import com.words.android.util.displayHeightPx
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 
 class MainActivity : BaseUserActivity() {
 
     private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
+
+    private val viewModel by lazy {
+        ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +32,23 @@ class MainActivity : BaseUserActivity() {
             showHome()
         }
 
+        processText(intent)
+
         setUpSearchSheet()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        processText(intent)
+    }
+
+    private fun processText(intent: Intent?) {
+        val textToProcess = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+        println("MainActivity::textToProcess = $textToProcess")
+        if (!textToProcess.isNullOrBlank()) {
+            viewModel.setCurrentWordId(textToProcess.toString())
+            showDetails()
+        }
     }
 
     override fun onBackPressed() {

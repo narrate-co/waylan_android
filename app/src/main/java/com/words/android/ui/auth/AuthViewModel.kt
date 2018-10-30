@@ -10,15 +10,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.words.android.data.firestore.users
 import com.words.android.data.firestore.users.User
 import com.words.android.util.FirebaseAuthWordErrorType
-import com.words.android.util.FirebaseAuthWordException
-import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
-import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class AuthViewModel @Inject constructor(): ViewModel() {
 
+    var processText: CharSequence? = null
 
     private val isLoading: MutableLiveData<Boolean> by lazy {
         val ld = MutableLiveData<Boolean>()

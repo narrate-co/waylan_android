@@ -56,13 +56,14 @@ class AuthActivity : AppCompatActivity() {
         configTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
+        handleIntent(intent)
 
         val auth = FirebaseAuth.getInstance()
         val firebaseUser: FirebaseUser? = auth.currentUser
 
         if (firebaseUser != null) {
             cancel.setOnClickListener {
-                returnHome(firebaseUser)
+                returnMain(firebaseUser)
             }
         }
 
@@ -93,12 +94,12 @@ class AuthActivity : AppCompatActivity() {
             }
             else -> {
                 if (firebaseUser != null ) {
-                    returnHome(firebaseUser)
+                    returnMain(firebaseUser)
                 } else {
                     launch(UI) {
                         try {
                             val user = authViewModel.signUpAnonymously()
-                            launchHome(user, true)
+                            launchMain(user, true)
                         } catch (e: Exception) {
                             showErrorMessage(e)
                         }
@@ -108,11 +109,20 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun returnHome(firebaseUser: FirebaseUser) {
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        authViewModel.processText = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+    }
+
+    private fun returnMain(firebaseUser: FirebaseUser) {
         launch(UI) {
             try {
                 val auth = authViewModel.getCurrentAuth(firebaseUser)
-                launchHome(auth, true)
+                launchMain(auth, true)
             } catch (e: Exception) {
                 showErrorMessage(e)
             }
@@ -127,7 +137,7 @@ class AuthActivity : AppCompatActivity() {
             launch(UI) {
                 try {
                     val loggedInUser = authViewModel.logIn(email.text.toString(), password.text.toString())
-                    launchHome(loggedInUser, true)
+                    launchMain(loggedInUser, true)
                 } catch (e: Exception) {
                     showErrorMessage(e)
                 }
@@ -144,7 +154,7 @@ class AuthActivity : AppCompatActivity() {
             launch(UI) {
                 try {
                     val newlyLinkedUser = authViewModel.signUp(email.text.toString(), password.text.toString(), confirmPassword.text.toString())
-                    launchHome(newlyLinkedUser, true)
+                    launchMain(newlyLinkedUser, true)
                 } catch (e: Exception) {
                     showErrorMessage(e) //TODO make sure this is a user friendly error
                 }
@@ -216,17 +226,23 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchHome(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
+    private fun launchMain(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
         //TODO set isMerriamWebsterSubscriber properly
         (application as App).setUser(auth)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 
+
             val intent = Intent(this@AuthActivity, MainActivity::class.java)
             if (clearStack) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             }
+            val bundle = Bundle()
+            bundle.putCharSequence(Intent.EXTRA_PROCESS_TEXT, authViewModel.processText)
+            intent.putExtras(bundle)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            if (authViewModel.processText != null) finish()
         }
     }
 }

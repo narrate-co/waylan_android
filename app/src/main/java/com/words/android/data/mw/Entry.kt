@@ -208,8 +208,10 @@ class Uro {
     @field:Element(name = "sound", required = false)
     var sound: Sound = Sound()
 
+
     @field:Element(name = "pr", required = false)
-    var pr: String = ""
+    @field:Convert(FormattedStringConverter::class)
+    var pr: FormattedString = FormattedString()
 
     @field:Element(name = "vr", required = false)
     var vr: Vr = Vr()
