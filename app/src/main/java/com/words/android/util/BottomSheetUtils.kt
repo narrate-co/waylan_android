@@ -12,3 +12,11 @@ fun <V: View?> BottomSheetBehavior<V>.collapse(activity: Activity? = null): Bool
     }
     return false
 }
+
+fun <V: View?> BottomSheetBehavior<V>.expand(): Boolean {
+    if (state == BottomSheetBehavior.STATE_HIDDEN || state == BottomSheetBehavior.STATE_COLLAPSED) {
+        state = BottomSheetBehavior.STATE_EXPANDED
+        return true
+    }
+    return false
+}

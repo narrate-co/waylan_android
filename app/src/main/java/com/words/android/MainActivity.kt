@@ -10,6 +10,8 @@ import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.list.ListFragment
 import com.words.android.util.collapse
 import com.words.android.util.displayHeightPx
+import com.words.android.util.gone
+import com.words.android.util.visible
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
@@ -83,10 +85,11 @@ class MainActivity : BaseUserActivity() {
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if ((newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) && bottomSheetSkrim.visibility != View.GONE) {
-                bottomSheetSkrim.visibility = View.GONE
-            } else {
-                bottomSheetSkrim.visibility = View.VISIBLE
+            when (newState) {
+                BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
+                    bottomSheetSkrim.gone()
+                }
+                else -> bottomSheetSkrim.visible()
             }
         }
     }

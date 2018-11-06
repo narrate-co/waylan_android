@@ -85,3 +85,15 @@ fun AppCompatImageButton.setChecked(value: Boolean) {
         setImageResource(R.drawable.ic_round_check_circle_outline_black_24px)
     }
 }
+
+fun View.gone() {
+    if (visibility != View.GONE) visibility = View.GONE
+}
+
+fun View.invisible() {
+    if (visibility != View.INVISIBLE) visibility = View.INVISIBLE
+}
+
+fun View.visible() {
+    if (visibility != View.VISIBLE) visibility = View.VISIBLE
+}

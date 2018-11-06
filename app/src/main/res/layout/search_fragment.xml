@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@drawable/light_search_background"
+    android:clickable="true"
+    android:focusable="true"
     android:elevation="16dp"
     >
 

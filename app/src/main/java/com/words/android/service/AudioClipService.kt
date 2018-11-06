@@ -13,6 +13,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java.io.IOException
+import java.util.*
+import kotlin.concurrent.schedule
 
 
 class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
@@ -29,6 +31,8 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
         const val BROADCAST_AUDIO_STATE_EXTRA_URL = "audio_state_extra_url"
         const val BROADCAST_AUDIO_STATE_EXTRA_MESSAGE = "audio_state_extra_message"
 
+        // Milliseconds to wait for audio to load
+        const val MEDIA_PREPARE_TIMEOUT = 8000L // 8 seconds
 
         const val TAG = "AudioClipService"
     }
@@ -86,6 +90,8 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
             return
         }
 
+        timer?.cancel()
+
         //handle no network by stopping and dispatching an error, destory
         if (!networkIsAvailable) {
             stop()
@@ -107,6 +113,11 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
             mediaPlayer?.setOnCompletionListener(this)
             mediaPlayer?.setOnErrorListener(this)
             mediaPlayer?.prepareAsync()
+            timer = Timer("media_prepare_timer", false).schedule(MEDIA_PREPARE_TIMEOUT) {
+                dispatchError(currentUrl, "Unable to play audio")
+                stop()
+                destroy()
+            }
         } catch (e: IOException) {
             e.printStackTrace()
             dispatchError(url, "No pronunciation available")
@@ -116,7 +127,10 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
 
     }
 
+    var timer: TimerTask? = null
+
     private fun stop() {
+        timer?.cancel()
         audioManager.abandonAudioFocus(this)
         mediaPlayer?.release()
         mediaPlayer = null
@@ -129,6 +143,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     }
 
     override fun onPrepared(player: MediaPlayer?) {
+        timer?.cancel()
         val result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             dispatchPrepared(currentUrl)

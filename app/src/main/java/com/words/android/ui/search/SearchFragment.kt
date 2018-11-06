@@ -18,6 +18,8 @@ import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.hideSoftKeyboard
 import android.view.textservice.SuggestionsInfo
+import com.words.android.util.collapse
+import com.words.android.util.expand
 import kotlinx.android.synthetic.main.search_fragment.*
 import kotlinx.android.synthetic.main.search_fragment.view.*
 import java.util.*
@@ -49,7 +51,6 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
 
     private val adapter by lazy { WordsAdapter(this) }
 
-    private var hideKeyboard = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
@@ -60,39 +61,31 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
 
         view.searchEditText.addTextChangedListener(this)
 
-        view.searchEditText.setOnFocusChangeListener { v, hasFocus ->
+        view.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                }
+                bottomSheetBehavior.expand()
+            } else {
+                bottomSheetBehavior.collapse(activity)
             }
         }
 
         view.searchEditText.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            if (searchEditText.hasFocus()) {
+                bottomSheetBehavior.expand()
             }
         }
-
 
         viewModel.searchResults.observe(this, Observer {
             adapter.submitList(it)
         })
-
-//        viewModel.searchSuggestions.observe(this, Observer {
-//            println("$TAG::searchSuggestions - $it")
-//        })
-
 
         return view
     }
 
 
     override fun onWordClicked(word: String) {
+        bottomSheetBehavior.collapse(activity)
         sharedViewHolder.setCurrentWordId(word)
-        hideKeyboard = true
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        activity?.hideSoftKeyboard()
         (activity as MainActivity).showDetails()
     }
 
