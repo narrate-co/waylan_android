@@ -1,5 +1,6 @@
 <resources>
 
+
     <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark"/>
 
     <style name="Base.Theme.Words.Dark" parent="Base.Theme.Words.Light">

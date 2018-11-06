@@ -21,7 +21,6 @@ import com.words.android.App
 import com.words.android.R
 import com.words.android.MainActivity
 import com.words.android.util.FirebaseAuthWordException
-import com.words.android.util.configTheme
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
@@ -53,7 +52,6 @@ class AuthActivity : AppCompatActivity() {
 
     //TODO clean up
     override fun onCreate(savedInstanceState: Bundle?) {
-        configTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
         handleIntent(intent)

@@ -3,20 +3,19 @@ package com.words.android
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.words.android.data.prefs.UserPreferenceRepository
+import com.words.android.data.prefs.Preferences
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
 import com.words.android.ui.auth.Auth
-import com.words.android.util.configTheme
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
 class App: Application(), HasActivityInjector{
-
-
 
     companion object {
         const val REINJECT_USER_BROADCAST_ACTION = "reinject_user_broadcast_action"
@@ -44,7 +43,15 @@ class App: Application(), HasActivityInjector{
         dispatchReinjectUserBroadcast()
     }
 
+    fun updateDefaultNightMode() {
+        val nightMode = PreferenceManager.getDefaultSharedPreferences(this).getInt(Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        if (AppCompatDelegate.getDefaultNightMode() != nightMode) {
+            AppCompatDelegate.setDefaultNightMode(nightMode)
+        }
+    }
+
     override fun onCreate() {
+        updateDefaultNightMode()
         super.onCreate()
         AppInjector.init(this)
     }

@@ -33,6 +33,7 @@ class PreferenceLiveData<T>(
             is Boolean -> sharedPrefs.getBoolean(key, default) as T
             is String -> sharedPrefs.getString(key, default) as T
             is Long -> sharedPrefs.getLong(key, default) as T
+            is Int -> sharedPrefs.getInt(key, default) as T
             else -> throw RuntimeException("Unsupported preference type")
         }
     }

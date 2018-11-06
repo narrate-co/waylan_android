@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.merriamWebsterState
-import com.words.android.util.setChecked
+import com.words.android.util.invisible
 
 
 class SettingsFragment : BaseUserFragment() {
@@ -52,15 +53,31 @@ class SettingsFragment : BaseUserFragment() {
         }
 
         //set common settings
-        view.darkModeSettings.settingsTitle.text = getString(R.string.settings_dark_mode_title)
-        view.darkModeSettings.settingsDescription.text = getString(R.string.settings_dark_mode_desc)
-        val usesDarkMode = viewModel.usesDarkMode ?: false
-        view.darkModeSettings.checkbox.setChecked(usesDarkMode)
+        view.darkModeSettings.settingsTitle.text = getString(R.string.settings_night_mode_title)
+        viewModel.darkModeLive.observe(this, Observer {
+            val desc = when (it) {
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> "Follows system"
+                AppCompatDelegate.MODE_NIGHT_AUTO -> "Auto"
+                AppCompatDelegate.MODE_NIGHT_YES -> "Yes"
+                AppCompatDelegate.MODE_NIGHT_NO -> "No"
+                else -> "Follows system"
+            }
+
+            view.darkModeSettings.settingsDescription.text = desc
+
+        })
+
+        view.darkModeSettings.checkbox.invisible()
         view.darkModeSettings.settingsItem.setOnClickListener {
-            val currentValue = viewModel.usesDarkMode
-            view.darkModeSettings.checkbox.setChecked(!currentValue)
-            viewModel.usesDarkMode = !currentValue
-            (activity as? SettingsActivity)?.restartWithReconstructedStack()
+            val newValue = when (viewModel.darkMode) {
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_AUTO
+                AppCompatDelegate.MODE_NIGHT_AUTO -> AppCompatDelegate.MODE_NIGHT_YES
+                AppCompatDelegate.MODE_NIGHT_YES -> AppCompatDelegate.MODE_NIGHT_NO
+                AppCompatDelegate.MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+            viewModel.darkMode = newValue
+            (activity as? SettingsActivity)?.updateNightMode(newValue)
         }
 
         view.aboutSetting.settingsTitle.text = getString(R.string.settings_about_title)

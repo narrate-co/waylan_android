@@ -3,6 +3,8 @@ package com.words.android.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.LiveData
 
 class PreferenceRepository(
         private val applicationContext: Context
@@ -13,11 +15,14 @@ class PreferenceRepository(
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
-    var usesDarkMode: Boolean by PreferenceDelegate(
+    var nightMode: Int by PreferenceDelegate(
             defaultPrefs,
-            Preferences.USES_DARK_MODE,
-            false
+            Preferences.NIGHT_MODE,
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     )
+
+    var nightModeLive: LiveData<Int> =
+            PreferenceLiveData(defaultPrefs, Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
 }
 

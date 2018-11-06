@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.get
 import com.google.android.material.chip.Chip
@@ -70,13 +71,6 @@ val Context.displayHeightPx: Int
 
 val Activity.displayHeightDp: Float
     get() = resources.displayMetrics.heightPixels / resources.displayMetrics.density
-
-private val Context.usesDarkMode: Boolean
-    get() = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Preferences.USES_DARK_MODE, false)
-
-fun AppCompatActivity.configTheme() {
-    setTheme(if (usesDarkMode) R.style.Theme_Words_Dark else R.style.Theme_Words_Light)
-}
 
 fun AppCompatImageButton.setChecked(value: Boolean) {
     if (value) {

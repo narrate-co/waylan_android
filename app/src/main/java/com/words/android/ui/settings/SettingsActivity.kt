@@ -2,6 +2,7 @@ package com.words.android.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.TaskStackBuilder
 import com.words.android.App
 import com.words.android.MainActivity
@@ -36,6 +37,11 @@ class SettingsActivity : BaseUserActivity() {
 
         taskBuilder.startActivities()
 
+    }
+
+    fun updateNightMode(mode: Int) {
+        delegate.setLocalNightMode(mode)
+        (application as App).updateDefaultNightMode()
     }
 
 }

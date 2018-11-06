@@ -8,6 +8,6 @@ package com.words.android.data.prefs
  * These are globally set for all users
  */
 object Preferences {
-    const val USES_DARK_MODE = "uses_dark_mode"
+    const val NIGHT_MODE = "uses_night_mode"
 }
 

@@ -38,8 +38,8 @@
     <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
 
     <!--Settings Screen-->
-    <string name="settings_dark_mode_title">Dark mode</string>
-    <string name="settings_dark_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>
+    <string name="settings_night_mode_title">Night mode</string>
+    <string name="settings_night_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>
     <string name="settings_about_title">About</string>
     <string name="settings_about_desc">Curious about where Words came from?</string>
     <string name="settings_contact_title">Contact</string>

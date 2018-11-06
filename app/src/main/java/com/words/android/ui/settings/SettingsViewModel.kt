@@ -7,10 +7,7 @@ import com.words.android.data.firestore.users.User
 import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.data.repository.UserRepository
-import com.words.android.data.repository.WordRepository
-import com.words.android.di.FragmentScope
 import com.words.android.di.UserScope
-import com.words.android.util.daysElapsed
 import javax.inject.Inject
 
 @UserScope
@@ -21,11 +18,13 @@ class SettingsViewModel @Inject constructor(
 
     fun getUserLive(): LiveData<User> = userRepository.getUser()
 
-    var usesDarkMode: Boolean
-        get() = preferenceRepository.usesDarkMode
+    var darkMode: Int
+        get() = preferenceRepository.nightMode
         set(value) {
-            preferenceRepository.usesDarkMode = value
+            preferenceRepository.nightMode = value
         }
+
+    var darkModeLive: LiveData<Int> = preferenceRepository.nightModeLive
 
     fun clearUserPreferences() = userPreferenceRepository.resetAll()
 

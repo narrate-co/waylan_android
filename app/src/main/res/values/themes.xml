@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Words.DayNight" parent="Theme.Words.Light"/>
+</resources>
