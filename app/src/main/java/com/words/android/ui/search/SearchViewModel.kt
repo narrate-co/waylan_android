@@ -1,17 +1,17 @@
 package com.words.android.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
-import com.words.android.di.FragmentScope
+import com.words.android.data.spell.SuggestItem
 import com.words.android.di.UserScope
+import com.words.android.util.LiveDataHelper
 import javax.inject.Inject
 
 @UserScope
-class SearchViewModel @Inject constructor(private val wordRepository: WordRepository): ViewModel() {
+class SearchViewModel @Inject constructor(
+        private val wordRepository: WordRepository
+): ViewModel() {
 
     var searchInput: String = ""
         set(value) {
@@ -20,14 +20,15 @@ class SearchViewModel @Inject constructor(private val wordRepository: WordReposi
             searchInputData.value = value
 
         }
-    val searchInputData: MutableLiveData<String> = MutableLiveData()
+    private val searchInputData: MutableLiveData<String> = MutableLiveData()
     val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputData) {
         if (it.isEmpty()) {
             wordRepository.getRecents(25L)
         } else {
-            wordRepository.filterWords(it)
+            wordRepository.lookup(it)
         }
     }
+
 
     init {
         searchInputData.value = ""

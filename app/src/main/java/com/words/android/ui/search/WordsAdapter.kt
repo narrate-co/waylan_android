@@ -18,6 +18,7 @@ class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordS
             override fun areContentsTheSame(oldItem: WordSource, newItem: WordSource): Boolean {
                 if (oldItem is WordSource.SimpleWordSource && newItem is WordSource.SimpleWordSource) return areSimpleWordSourceContentsTheSame(oldItem, newItem)
                 if (oldItem is WordSource.FirestoreUserSource && newItem is WordSource.FirestoreUserSource) return areFirestoreUserSourceContentsTheSame(oldItem, newItem)
+                if (oldItem is WordSource.SuggestSource && newItem is WordSource.SuggestSource) return areSuggestSourceContentsTheSame(oldItem, newItem)
                 return false
             }
 
@@ -27,6 +28,12 @@ class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordS
 
             private fun areFirestoreUserSourceContentsTheSame(oldItem: WordSource.FirestoreUserSource, newItem: WordSource.FirestoreUserSource): Boolean {
                 return oldItem.userWord.word == newItem.userWord.word
+            }
+
+            private fun areSuggestSourceContentsTheSame(oldItem: WordSource.SuggestSource, newItem: WordSource.SuggestSource): Boolean {
+                return oldItem.item.term == newItem.item.term
+                        && oldItem.item.distance == newItem.item.distance
+                        && oldItem.item.count == newItem.item.count
             }
         }
     }

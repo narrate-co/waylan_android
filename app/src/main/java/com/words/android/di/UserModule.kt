@@ -13,6 +13,7 @@ import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.data.repository.UserRepository
 import com.words.android.data.repository.WordRepository
+import com.words.android.data.spell.SymSpellStore
 import dagger.Module
 import dagger.Provides
 
@@ -33,9 +34,14 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideWordRepository(appDatabase: AppDatabase, firestoreStore: FirestoreStore?, merriamWebsterStore: MerriamWebsterStore): WordRepository {
+    fun provideWordRepository(
+            appDatabase: AppDatabase,
+            firestoreStore: FirestoreStore?,
+            merriamWebsterStore: MerriamWebsterStore,
+            symSpellStore: SymSpellStore
+    ): WordRepository {
 
-        return WordRepository(appDatabase, firestoreStore, merriamWebsterStore)
+        return WordRepository(appDatabase, firestoreStore, merriamWebsterStore, symSpellStore)
     }
 
     @UserScope

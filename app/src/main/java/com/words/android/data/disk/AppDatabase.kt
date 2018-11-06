@@ -2,14 +2,12 @@ package com.words.android.data.disk
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.huma.room_for_asset.RoomAsset
 import com.words.android.data.AppTypeConverters
 import com.words.android.data.DatabaseSeedService
 import com.words.android.data.disk.mw.Definition
@@ -18,6 +16,7 @@ import com.words.android.data.disk.wordset.Meaning
 import com.words.android.data.disk.wordset.MeaningDao
 import com.words.android.data.disk.wordset.Word
 import com.words.android.data.disk.wordset.WordDao
+import com.words.android.util.RoomAsset
 
 @Database(entities = [
     (Word::class),
@@ -47,18 +46,21 @@ abstract class AppDatabase: RoomDatabase() {
                     }
                 }
 
-        private fun buildDatabase(context: Context, dbName: String): AppDatabase {
-            return RoomAsset
-                    .databaseBuilder(context, AppDatabase::class.java, "word-db.db")
+        private fun seedAndBuildDatabase(context: Context, dbName: String): AppDatabase {
+            return Room
+                    .databaseBuilder(context, AppDatabase::class.java, "words-db")
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-
-                            //Use if need to seed new database if schema changes
-//                            context.startService(Intent(context, DatabaseSeedService::class.java))
+                            context.startService(Intent(context, DatabaseSeedService::class.java))
                         }
                     })
-                    .fallbackToDestructiveMigration()
+                    .build()
+        }
+
+        private fun buildDatabase(context: Context, dbName: String): AppDatabase {
+            return RoomAsset
+                    .databaseBuilder(context, AppDatabase::class.java, "word-db.db")
                     .build()
         }
 

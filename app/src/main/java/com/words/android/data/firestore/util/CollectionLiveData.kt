@@ -3,8 +3,8 @@ package com.words.android.data.firestore.util
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.launch
 
 
 fun <T> Query.liveData(clazz: Class<T>): LiveData<List<T>> {

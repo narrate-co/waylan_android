@@ -11,9 +11,9 @@ import com.words.android.ui.list.ListFragment
 import com.words.android.util.collapse
 import com.words.android.util.displayHeightPx
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : BaseUserActivity() {
 

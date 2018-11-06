@@ -7,7 +7,7 @@ import com.words.android.data.firestore.users.User
 import com.words.android.data.prefs.PreferenceRepository
 import com.words.android.data.prefs.UserPreferenceRepository
 import com.words.android.util.LiveDataHelper
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 
 class UserRepository(
         private val firestoreStore: FirestoreStore?,

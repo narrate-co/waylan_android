@@ -11,8 +11,10 @@ import com.words.android.data.firestore.users
 import com.words.android.data.firestore.users.User
 import com.words.android.util.FirebaseAuthWordErrorType
 import javax.inject.Inject
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class AuthViewModel @Inject constructor(): ViewModel() {
 

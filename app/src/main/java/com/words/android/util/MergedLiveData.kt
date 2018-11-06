@@ -5,6 +5,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import java.lang.UnsupportedOperationException
 
+/**
+ * A live data class that waits for both sources to be fullfilled before setting [LiveData.value]
+ */
 class MergedLiveData<T, K, S>(source1: LiveData<T>, source2: LiveData<K>, private val merge: (data1: T, data2: K) -> S): MediatorLiveData<S>() {
 
     private var data1: T? = null

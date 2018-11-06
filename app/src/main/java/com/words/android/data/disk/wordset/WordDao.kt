@@ -1,9 +1,8 @@
 package com.words.android.data.disk.wordset
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.sqlite.db.SimpleSQLiteQuery
-import org.threeten.bp.OffsetDateTime
 
 @Dao
 interface WordDao {

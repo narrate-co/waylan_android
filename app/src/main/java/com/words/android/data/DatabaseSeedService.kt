@@ -13,18 +13,8 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.words.android.data.disk.*
 import com.words.android.data.disk.wordset.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
-import com.google.common.io.Flushables.flush
-import java.io.*
-import java.nio.file.Files
-import java.nio.file.Path
-import android.os.Environment.getExternalStorageDirectory
-import android.content.res.AssetFileDescriptor
-import android.content.res.AssetManager
-
-
-
 
 /**
  * A Service to be run on first opening which loads the entire dictionary into our SQLite db...
@@ -34,6 +24,8 @@ class DatabaseSeedService: Service() {
     companion object {
         const val DATA_SEED_NOTIFICATION_ID = 12345
         const val DATA_NOTIFICATION_CHANNEL_ID = "data_channel_id"
+
+        const val TAG = "DatabaseSeedService"
     }
 
 
@@ -58,7 +50,7 @@ class DatabaseSeedService: Service() {
         startForeground(DATA_SEED_NOTIFICATION_ID, notification)
 
 
-        //Begin work in a coroutine
+
         launch {
             seed()
         }
@@ -96,8 +88,8 @@ class DatabaseSeedService: Service() {
                             OffsetDateTime.now()
                     )
                     //insert word
+                    println("$TAG::addingWord $word")
                     words.add(word)
-
 
                     for (m in value.meanings ?: emptyList()) {
                         val meaning = Meaning(
@@ -114,7 +106,6 @@ class DatabaseSeedService: Service() {
                                 } ?: emptyList()
                         )
                         //insert meaning
-                        //TODO
                         meanings.add(meaning)
                     }
                 }
@@ -125,6 +116,11 @@ class DatabaseSeedService: Service() {
                 e.printStackTrace()
             }
         }
+
+
+
+
+
         stopForeground(true)
         stopSelf()
     }

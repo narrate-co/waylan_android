@@ -22,18 +22,12 @@ import kotlinx.android.synthetic.main.search_fragment.*
 import kotlinx.android.synthetic.main.search_fragment.view.*
 import java.util.*
 
-
-
-
-
-
 class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, TextWatcher{
 
 
 
     companion object {
         fun newInstance() = SearchFragment()
-        const val NOT_A_LENGTH = -1
         const val TAG = "SearchFragment"
     }
 
@@ -84,6 +78,10 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         viewModel.searchResults.observe(this, Observer {
             adapter.submitList(it)
         })
+
+//        viewModel.searchSuggestions.observe(this, Observer {
+//            println("$TAG::searchSuggestions - $it")
+//        })
 
 
         return view

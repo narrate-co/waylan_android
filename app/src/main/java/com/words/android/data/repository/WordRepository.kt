@@ -8,23 +8,35 @@ import com.words.android.data.disk.wordset.WordAndMeanings
 import com.words.android.data.disk.AppDatabase
 import com.words.android.data.disk.mw.PermissiveWordsDefinitions
 import com.words.android.data.firestore.FirestoreStore
-import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.mw.MerriamWebsterStore
+import com.words.android.data.spell.SymSpellStore
 import com.words.android.util.LiveDataHelper
 import com.words.android.util.MergedLiveData
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 
 class WordRepository(
         private val db: AppDatabase,
         private val firestoreStore: FirestoreStore?,
-        private val merriamWebsterStore: MerriamWebsterStore?
+        private val merriamWebsterStore: MerriamWebsterStore?,
+        private val symSpellStore: SymSpellStore
 ) {
 
-    fun filterWords(query: String): LiveData<List<WordSource>> {
-        return Transformations.map(db.wordDao().load("$query%")) { word ->
+    fun filterWords(input: String): LiveData<List<WordSource>> {
+        return Transformations.map(db.wordDao().load("$input%")) { word ->
             word.map { WordSource.SimpleWordSource(it) }
+        }
+    }
+
+    fun lookup(input: String): LiveData<List<WordSource>> {
+        val suggSource = Transformations.map(symSpellStore.lookupLive(input)) { list ->
+            list.map { WordSource.SuggestSource(it) }
+        }
+
+        return MergedLiveData(filterWords(input), suggSource) { d1, d2 ->
+            //TODO deduplicate/sort smartly. Make WordSource comparable?
+            (d1 + d2)
         }
     }
 
@@ -83,10 +95,6 @@ class WordRepository(
                 firestoreStore.getUserLive()) { d1, d2 ->
             PermissiveWordsDefinitions(d2, d1)
         }
-
-//        return if (id.isNotBlank() && merriamWebsterStore != null) Transformations.map(merriamWebsterStore.getWord(id)) {
-//            PermissiveWordsDefinitions(user, it)
-//        } ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
     fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {

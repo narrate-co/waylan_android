@@ -58,7 +58,20 @@ object AppTypeConverters {
 
     @TypeConverter
     @JvmStatic
-    fun toLableList(value: String): List<Label> {
+    fun toStringHashSet(value: String): HashSet<String> {
+        val type = object : TypeToken<HashSet<String>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromStringHashSet(value: HashSet<String>): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toLabelList(value: String): List<Label> {
         val type = object : TypeToken<List<Label>>() {}.type
         return gson.fromJson(value, type)
     }

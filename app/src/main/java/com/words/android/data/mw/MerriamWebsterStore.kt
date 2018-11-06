@@ -7,7 +7,7 @@ import com.words.android.data.disk.AppDatabase
 import com.words.android.data.disk.mw.Definition
 import com.words.android.data.disk.mw.MwDao
 import com.words.android.data.disk.mw.WordAndDefinitions
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +45,7 @@ class MerriamWebsterStore(
                 launch {
 
 
-                    //Delete all definitions and words if they exist - keep data fresh
+                    //Input all definitions and words if they exist - keep data fresh
                     entryList.entries.forEach {
 
                         mwDao.deleteDefinitions(it.word)

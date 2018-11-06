@@ -23,9 +23,9 @@ import com.words.android.MainActivity
 import com.words.android.util.FirebaseAuthWordException
 import com.words.android.util.configTheme
 import kotlinx.android.synthetic.main.activity_auth.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class AuthActivity : AppCompatActivity() {

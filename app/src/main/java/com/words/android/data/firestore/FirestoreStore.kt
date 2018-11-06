@@ -12,11 +12,13 @@ import com.words.android.data.firestore.util.FirebaseFirestoreNotFoundException
 import com.words.android.data.firestore.util.liveData
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.util.isMoreThanOneMinuteAgo
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class FirestoreStore(
         private val firestore: FirebaseFirestore,
