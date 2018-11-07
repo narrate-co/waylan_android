@@ -70,6 +70,7 @@ class WordRepository(
         return mediatorLiveData
     }
 
+
     private fun getWordProperties(word: String): LiveData<WordProperties> {
         val data = MutableLiveData<WordProperties>()
         data.value = WordProperties(word, word)
@@ -81,6 +82,12 @@ class WordRepository(
 
     private fun getUserWord(id: String): LiveData<UserWord> {
         return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+    }
+
+    fun getFirestoreUserSource(id: String): LiveData<WordSource.FirestoreUserSource> {
+        return Transformations.map(getUserWord(id)) {
+            WordSource.FirestoreUserSource(it)
+        }
     }
 
     private fun getGlobalWord(id: String): LiveData<GlobalWord> {

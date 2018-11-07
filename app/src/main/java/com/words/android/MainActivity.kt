@@ -3,23 +3,26 @@ package com.words.android
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.list.ListFragment
+import com.words.android.ui.search.SearchSheetCallback
 import com.words.android.util.collapse
 import com.words.android.util.displayHeightPx
 import com.words.android.util.gone
 import com.words.android.util.visible
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.coroutines.android.UI
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.search_fragment.*
 
 class MainActivity : BaseUserActivity() {
 
-    private val bottomSheet by lazy { BottomSheetBehavior.from(searchFragment.view) }
+
+    val searchSheetCallback = SearchSheetCallback()
+
+    private val bottomSheet by lazy {
+        BottomSheetBehavior.from(searchFragment.view)
+    }
 
     private val viewModel by lazy {
         ViewModelProviders
@@ -37,6 +40,7 @@ class MainActivity : BaseUserActivity() {
         processText(intent)
 
         setUpSearchSheet()
+
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -54,13 +58,24 @@ class MainActivity : BaseUserActivity() {
     }
 
     override fun onBackPressed() {
+        println("MainActivity::onBackPressed")
         if (handleFragmentOnBackPressed()) return
+        viewModel.popBackStack()
         super.onBackPressed()
     }
 
     private fun setUpSearchSheet() {
         searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
-        bottomSheet.setBottomSheetCallback(bottomSheetSkrimCallback)
+        searchSheetCallback.addOnSlideAction { _, fl -> bottomSheetSkrim.alpha = fl }
+        searchSheetCallback.addOnStateChangedAction { _, newState ->
+            when (newState) {
+                BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
+                    bottomSheetSkrim.gone()
+                }
+                else -> bottomSheetSkrim.visible()
+            }
+        }
+        bottomSheet.setBottomSheetCallback(searchSheetCallback)
         bottomSheetSkrim.setOnClickListener {
             bottomSheet.collapse(this)
         }
@@ -70,28 +85,26 @@ class MainActivity : BaseUserActivity() {
         return bottomSheet.collapse(this)
     }
 
-    private fun showHome() = Navigator.showHome(this)
+    private fun showHome() {
+        if (Navigator.showHome(this)) {
+            viewModel.pushToBackStack(Navigator.HomeDestination.HOME)
+        }
+    }
 
-    fun showDetails() = Navigator.showDetails(this)
+    fun showDetails() {
+        if (Navigator.showDetails(this)) {
+            viewModel.pushToBackStack(Navigator.HomeDestination.DETAILS)
+        }
+    }
 
-    fun showListFragment(type: ListFragment.ListType) = Navigator.showListFragment(this, type)
+    fun showListFragment(type: ListFragment.ListType) {
+        if (Navigator.showListFragment(this, type)) {
+            viewModel.pushToBackStack(Navigator.HomeDestination.LIST)
+        }
+    }
 
     fun launchSettings() = Navigator.launchSettings(this)
 
 
-    private val bottomSheetSkrimCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onSlide(bottomSheet: View, offset: Float) {
-            bottomSheetSkrim.alpha = offset
-        }
-
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            when (newState) {
-                BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
-                    bottomSheetSkrim.gone()
-                }
-                else -> bottomSheetSkrim.visible()
-            }
-        }
-    }
 
 }
