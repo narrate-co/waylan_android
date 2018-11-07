@@ -37,8 +37,8 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.details_fragment, container, false)
-        view.toolbar.inflateMenu(R.menu.details_menu)
-        view.toolbar.setOnMenuItemClickListener(this)
+//        view.toolbar.inflateMenu(R.menu.details_menu)
+//        view.toolbar.setOnMenuItemClickListener(this)
         view.toolbar.setNavigationOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
@@ -52,11 +52,11 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 
         sharedViewModel.currentSources.observe(this, Observer { source ->
             sharedViewModel.setCurrentWordRecented()
-            when (source) {
-                is WordSource.FirestoreUserSource -> {
-                    setUserWord(source.userWord)
-                }
-            }
+//            when (source) {
+//                is WordSource.FirestoreUserSource -> {
+//                    setUserWord(source.userWord)
+//                }
+//            }
             adapter.submitWordSource(source)
         })
     }

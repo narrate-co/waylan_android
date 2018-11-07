@@ -18,6 +18,10 @@ class MainViewModel @Inject constructor(private val wordRepository: WordReposito
         wordRepository.getWordSources(it)
     }
 
+    val currentFirestoreUserWord: LiveData<WordSource.FirestoreUserSource> = Transformations.switchMap(currentWordId) {
+        wordRepository.getFirestoreUserSource(it)
+    }
+
     fun setCurrentWordId(id: String) {
         currentWordId.value = id
     }

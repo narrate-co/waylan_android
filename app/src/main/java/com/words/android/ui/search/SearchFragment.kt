@@ -17,6 +17,9 @@ import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.words.android.data.firestore.users.UserWord
+import com.words.android.data.firestore.users.UserWordType
+import com.words.android.data.repository.WordSource
 import com.words.android.util.collapse
 import com.words.android.util.expand
 import kotlinx.android.synthetic.main.search_fragment.*
@@ -35,7 +38,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
                 .get(SearchViewModel::class.java)
     }
 
-    private val sharedViewHolder by lazy {
+    private val sharedViewModel by lazy {
         ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
@@ -75,7 +78,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
             adapter.submitList(it)
         })
 
-        sharedViewHolder.getBackStack().observe(this, Observer {
+        sharedViewModel.getBackStack().observe(this, Observer {
             println("$TAG::getHomeDestination - $it")
             when (it.peek()) {
                 Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
@@ -84,7 +87,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         })
 
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
-            val currentDest = sharedViewHolder.getBackStack().value?.peek()
+            val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
             if (currentDest == Navigator.HomeDestination.DETAILS) {
                 val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
@@ -97,12 +100,16 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
             }
         }
 
+        sharedViewModel.currentFirestoreUserWord.observe(this, Observer { source ->
+            setUserWord(source.userWord)
+        })
+
         return view
     }
 
     override fun onWordClicked(word: String) {
         bottomSheetBehavior.collapse(activity)
-        sharedViewHolder.setCurrentWordId(word)
+        sharedViewModel.setCurrentWordId(word)
         (activity as MainActivity).showDetails()
     }
 
@@ -126,6 +133,18 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         animation.duration = 200
         animation.interpolator = FastOutSlowInInterpolator()
         search.startAnimation(animation)
+    }
+
+    private fun setUserWord(userWord: UserWord?) {
+        if (userWord == null)  return
+
+        val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
+
+        favorite.setOnClickListener {
+            sharedViewModel.setCurrentWordFavorited(!isFavorited)
+        }
+
+        favorite?.setImageResource(if (isFavorited) R.drawable.ic_round_favorite_black_24px else R.drawable.ic_round_favorite_border_black_24px)
     }
 
     override fun afterTextChanged(s: Editable?) {}
