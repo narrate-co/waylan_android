@@ -68,7 +68,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
         }
         view.toolbarTitle.text = type.title
         view.navigationIcon.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
 
         setUpBanner(view, type)

@@ -40,7 +40,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 //        view.toolbar.inflateMenu(R.menu.details_menu)
 //        view.toolbar.setOnMenuItemClickListener(this)
         view.toolbar.setNavigationOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
 
         return view
