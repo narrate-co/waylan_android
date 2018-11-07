@@ -22,7 +22,7 @@
         android:foregroundGravity="center_vertical"
         android:minHeight="52dp"
         android:padding="@dimen/keyline_2"
-        app:layout_constraintEnd_toStartOf="@+id/actions"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -55,10 +55,10 @@
         android:id="@+id/actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:paddingRight="@dimen/keyline_2"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/search"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search"
         app:layout_constraintTop_toTopOf="@+id/search">
 
         <androidx.appcompat.widget.AppCompatImageView

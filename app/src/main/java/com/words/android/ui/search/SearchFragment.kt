@@ -1,14 +1,13 @@
 package com.words.android.ui.search
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.style.SuggestionSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.textservice.*
+import android.view.animation.Animation
+import android.view.animation.Transformation
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,17 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
-import com.words.android.util.hideSoftKeyboard
-import android.view.textservice.SuggestionsInfo
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.words.android.util.collapse
 import com.words.android.util.expand
 import kotlinx.android.synthetic.main.search_fragment.*
 import kotlinx.android.synthetic.main.search_fragment.view.*
-import java.util.*
 
 class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, TextWatcher{
-
-
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -79,14 +75,57 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
             adapter.submitList(it)
         })
 
+        sharedViewHolder.getBackStack().observe(this, Observer {
+            println("$TAG::getHomeDestination - $it")
+            when (it.peek()) {
+                Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
+                Navigator.HomeDestination.DETAILS -> runActionsAnimation(true)
+            }
+        })
+
+        (activity as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+            val currentDest = sharedViewHolder.getBackStack().value?.peek()
+                    ?: Navigator.HomeDestination.HOME
+            if (currentDest == Navigator.HomeDestination.DETAILS) {
+                val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
+                val hideMargin = keyline2
+                val showMargin = actions.width + keyline2
+                val params = search.layoutParams as ConstraintLayout.LayoutParams
+                val adjustedInterpolatedTime = 1.0F - offset
+                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
+                search.layoutParams = params
+            }
+        }
+
         return view
     }
-
 
     override fun onWordClicked(word: String) {
         bottomSheetBehavior.collapse(activity)
         sharedViewHolder.setCurrentWordId(word)
         (activity as MainActivity).showDetails()
+    }
+
+    private fun runActionsAnimation(show: Boolean) {
+        val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
+        val hideMargin = keyline2
+        val showMargin = actions.width + keyline2
+        val currentMargin = (search.layoutParams as ConstraintLayout.LayoutParams).rightMargin
+
+        // don't animate if already shown or hidden
+        if ((show && currentMargin == showMargin) || (!show && currentMargin == hideMargin)) return
+
+        val animation = object : Animation() {
+            override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+                val params = search.layoutParams as ConstraintLayout.LayoutParams
+                val adjustedInterpolatedTime: Float = if (show) interpolatedTime else (1.0F - interpolatedTime)
+                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
+                search.layoutParams = params
+            }
+        }
+        animation.duration = 200
+        animation.interpolator = FastOutSlowInInterpolator()
+        search.startAnimation(animation)
     }
 
     override fun afterTextChanged(s: Editable?) {}
