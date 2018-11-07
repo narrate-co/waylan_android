@@ -80,9 +80,13 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
 
         sharedViewModel.getBackStack().observe(this, Observer {
             println("$TAG::getHomeDestination - $it")
-            when (it.peek()) {
-                Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
-                Navigator.HomeDestination.DETAILS -> runActionsAnimation(true)
+            val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
+            // wait for the next layout step to grantee the actions.width is correctly captured
+            view.post {
+                when (dest) {
+                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
+                    Navigator.HomeDestination.DETAILS -> runActionsAnimation(true)
+                }
             }
         })
 

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
 import com.words.android.R
 import com.words.android.MainActivity
+import com.words.android.Navigator
 import com.words.android.util.FirebaseAuthWordException
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.android.UI
@@ -49,6 +50,8 @@ class AuthActivity : AppCompatActivity() {
     private val authViewModel by lazy {
         ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
+
+    var filterIntent: Intent? = null
 
     //TODO clean up
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +116,9 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        authViewModel.processText = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+        if (intent != null && filterIntent == null) {
+            filterIntent = intent
+        }
     }
 
     private fun returnMain(firebaseUser: FirebaseUser) {
@@ -225,22 +230,14 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun launchMain(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
-        //TODO set isMerriamWebsterSubscriber properly
         (application as App).setUser(auth)
         launch(UI) {
             delay(delayMillis, TimeUnit.MILLISECONDS)
 
+            Navigator.launchMain(this@AuthActivity, clearStack, filterIntent)
 
-            val intent = Intent(this@AuthActivity, MainActivity::class.java)
-            if (clearStack) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            val bundle = Bundle()
-            bundle.putCharSequence(Intent.EXTRA_PROCESS_TEXT, authViewModel.processText)
-            intent.putExtras(bundle)
-            startActivity(intent)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            if (authViewModel.processText != null) finish()
+            finish()
         }
     }
 }

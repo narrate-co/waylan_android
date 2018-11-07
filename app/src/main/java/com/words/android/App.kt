@@ -27,6 +27,7 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
+    var hasUser: Boolean = false
 
     fun setUser(auth: Auth?) {
         userComponentBuilder
@@ -34,13 +35,15 @@ class App: Application(), HasActivityInjector{
                 .firebaseUser(auth?.firebaseUser)
                 .build()
                 .inject(this)
+        hasUser = true
         dispatchReinjectUserBroadcast()
     }
 
     fun clearUser() {
         setUser(null)
-        AppInjector.init(this)
+        AppInjector.init(this) //TODO should this be here?
         dispatchReinjectUserBroadcast()
+        hasUser = false
     }
 
     fun updateDefaultNightMode() {

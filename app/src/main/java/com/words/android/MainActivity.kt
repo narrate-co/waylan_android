@@ -2,7 +2,6 @@ package com.words.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.common.BaseUserActivity
@@ -13,7 +12,6 @@ import com.words.android.util.displayHeightPx
 import com.words.android.util.gone
 import com.words.android.util.visible
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.search_fragment.*
 
 class MainActivity : BaseUserActivity() {
 
@@ -31,6 +29,11 @@ class MainActivity : BaseUserActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (!(application as App).hasUser) {
+            Navigator.launchAuth(this, null, intent)
+            finish()
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
@@ -50,7 +53,6 @@ class MainActivity : BaseUserActivity() {
 
     private fun processText(intent: Intent?) {
         val textToProcess = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        println("MainActivity::textToProcess = $textToProcess")
         if (!textToProcess.isNullOrBlank()) {
             viewModel.setCurrentWordId(textToProcess.toString())
             showDetails()
@@ -58,7 +60,6 @@ class MainActivity : BaseUserActivity() {
     }
 
     override fun onBackPressed() {
-        println("MainActivity::onBackPressed")
         if (handleFragmentOnBackPressed()) return
         viewModel.popBackStack()
         super.onBackPressed()

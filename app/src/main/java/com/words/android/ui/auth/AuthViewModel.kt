@@ -18,8 +18,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class AuthViewModel @Inject constructor(): ViewModel() {
 
-    var processText: CharSequence? = null
-
     private val isLoading: MutableLiveData<Boolean> by lazy {
         val ld = MutableLiveData<Boolean>()
         ld.value = false

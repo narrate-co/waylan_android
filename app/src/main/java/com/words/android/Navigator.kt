@@ -4,17 +4,24 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.words.android.ui.about.AboutFragment
+import com.words.android.ui.auth.Auth
+import com.words.android.ui.auth.AuthActivity
 import com.words.android.ui.details.DetailsFragment
 import com.words.android.ui.home.HomeFragment
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.DeveloperSettingsFragment
 import com.words.android.ui.settings.SettingsActivity
 import com.words.android.ui.settings.SettingsFragment
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object Navigator {
 
@@ -107,5 +114,25 @@ object Navigator {
         context.startActivity(intent)
     }
 
+    fun launchAuth(context: Context, authRoute: AuthActivity.AuthRoute? = null, filterIntent: Intent? = null) {
+        val intent = Intent(context, AuthActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (authRoute != null) intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
+        if (filterIntent != null) {
+            intent.putExtras(filterIntent)
+        }
+        context.startActivity(intent)
+    }
+
+    fun launchMain(context: Context, clearStack: Boolean, filterIntent: Intent?) {
+        val intent = Intent(context, MainActivity::class.java)
+        if (clearStack) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        if (filterIntent != null) {
+            intent.putExtras(filterIntent)
+        }
+        context.startActivity(intent)
+    }
 }
 

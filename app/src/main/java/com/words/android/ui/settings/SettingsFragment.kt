@@ -133,10 +133,10 @@ class SettingsFragment : BaseUserFragment() {
         view.accountDialogCard.topButton.text = getString(R.string.settings_header_anonymous_create_account_button)
         view.accountDialogCard.bottomButton.text = getString(R.string.settings_header_anonymous_log_in_button)
         view.accountDialogCard.topButton.setOnClickListener {
-            launchAuth(AuthActivity.AuthRoute.SIGN_UP)
+            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.SIGN_UP)
         }
         view.accountDialogCard.bottomButton.setOnClickListener {
-            launchAuth(AuthActivity.AuthRoute.LOG_IN)
+            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
         }
 
         view.accountDialogCard.topButton.visibility = View.VISIBLE
@@ -201,17 +201,11 @@ class SettingsFragment : BaseUserFragment() {
         view.signOutSetting.settingsTitle.text = getString(R.string.settings_sign_out_title)
         view.signOutSetting.settingsDescription.text = if (user.email.isNotBlank()) user.email else getString(R.string.settings_sign_out_default_desc)
         view.signOutSetting.settingsItem.setOnClickListener {
-            launchAuth(AuthActivity.AuthRoute.LOG_IN)
+            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
         }
 
         view.signOutSetting.checkbox.visibility = View.INVISIBLE
         view.signOutSetting.visibility = View.VISIBLE
     }
 
-    private fun launchAuth(authRoute: AuthActivity.AuthRoute) {
-        val intent = Intent(context, AuthActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
-        startActivity(intent)
-    }
 }
