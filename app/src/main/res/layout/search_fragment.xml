@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="@+id/search">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/share"
+            android:id="@+id/favorite"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
@@ -71,17 +71,17 @@
             android:layout_marginLeft="@dimen/keyline_1"
             android:layout_marginRight="@dimen/keyline_1"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_share_black_24px" />
+            app:srcCompat="@drawable/ic_round_favorite_border_black_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favorite"
+            android:id="@+id/share"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
             android:layout_marginLeft="@dimen/keyline_1"
             android:layout_marginRight="@dimen/keyline_1"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_favorite_border_black_24px" />
+            app:srcCompat="@drawable/ic_round_share_black_24px" />
 
     </LinearLayout>
 

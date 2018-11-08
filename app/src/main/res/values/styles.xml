@@ -87,7 +87,6 @@
         <item name="styleEditTextArea">@style/Widget.Words.Light.EditText.Area</item>
         <item name="styleTextLabel">@style/Widget.Words.Light.TextLabel</item>
 
-
         <!--Implementation Specific Attrs-->
         <item name="drawableSnackbarErrorBackground">@drawable/light_snackbar_background_error</item>
         <item name="drawableSnackbarInformativeBackground">@drawable/light_snackbar_background_informative</item>
