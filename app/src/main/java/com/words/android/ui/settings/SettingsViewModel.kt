@@ -18,13 +18,13 @@ class SettingsViewModel @Inject constructor(
 
     fun getUserLive(): LiveData<User> = userRepository.getUser()
 
-    var darkMode: Int
+    var nightMode: Int
         get() = preferenceRepository.nightMode
         set(value) {
             preferenceRepository.nightMode = value
         }
 
-    var darkModeLive: LiveData<Int> = preferenceRepository.nightModeLive
+    var nightModeLive: LiveData<Int> = preferenceRepository.nightModeLive
 
     fun clearUserPreferences() = userPreferenceRepository.resetAll()
 

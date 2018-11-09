@@ -1,7 +1,7 @@
 package com.words.android.ui.settings
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.settings_fragment.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.merriamWebsterState
+import com.words.android.ui.dialog.RoundedAlertDialog
 import com.words.android.util.invisible
 
 
@@ -54,7 +55,7 @@ class SettingsFragment : BaseUserFragment() {
 
         //set common settings
         view.darkModeSettings.settingsTitle.text = getString(R.string.settings_night_mode_title)
-        viewModel.darkModeLive.observe(this, Observer {
+        viewModel.nightModeLive.observe(this, Observer {
             val desc = when (it) {
                 AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> "Follows system"
                 AppCompatDelegate.MODE_NIGHT_AUTO -> "Auto"
@@ -67,17 +68,31 @@ class SettingsFragment : BaseUserFragment() {
 
         })
 
+        val nightModeCallback = object: RoundedAlertDialog.NightModeCallback() {
+            var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            override fun onSelected(nightMode: Int) {
+                selected = nightMode
+            }
+
+            override fun onDismissed() {
+                viewModel.nightMode = selected
+                (activity as? SettingsActivity)?.updateNightMode(selected)
+            }
+        }
+
         view.darkModeSettings.checkbox.invisible()
         view.darkModeSettings.settingsItem.setOnClickListener {
-            val newValue = when (viewModel.darkMode) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_AUTO
-                AppCompatDelegate.MODE_NIGHT_AUTO -> AppCompatDelegate.MODE_NIGHT_YES
-                AppCompatDelegate.MODE_NIGHT_YES -> AppCompatDelegate.MODE_NIGHT_NO
-                AppCompatDelegate.MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
-            viewModel.darkMode = newValue
-            (activity as? SettingsActivity)?.updateNightMode(newValue)
+            RoundedAlertDialog.newNightModeInstance(viewModel.nightMode, nightModeCallback).show(activity?.supportFragmentManager, "night_mode")
+
+//            val newValue = when (viewModel.nightMode) {
+//                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_AUTO
+//                AppCompatDelegate.MODE_NIGHT_AUTO -> AppCompatDelegate.MODE_NIGHT_YES
+//                AppCompatDelegate.MODE_NIGHT_YES -> AppCompatDelegate.MODE_NIGHT_NO
+//                AppCompatDelegate.MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+//                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+//            }
+//            viewModel.nightMode = newValue
+//            (activity as? SettingsActivity)?.updateNightMode(newValue)
         }
 
         view.aboutSetting.settingsTitle.text = getString(R.string.settings_about_title)

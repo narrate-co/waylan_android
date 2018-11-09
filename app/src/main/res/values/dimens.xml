@@ -3,6 +3,7 @@
     <dimen name="keyline_1">4dp</dimen>
     <dimen name="keyline_2">8dp</dimen>
     <dimen name="keyline_3">16dp</dimen>
+    <dimen name="keyline_4">24dp</dimen>
 
     <dimen name="search_min_peek_height">80dp</dimen>
     <dimen name="search_max_peek_height">200dp</dimen>
