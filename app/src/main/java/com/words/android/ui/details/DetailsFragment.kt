@@ -126,7 +126,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
         favoriteMenuItem?.isChecked = isFavorited
-        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_black_24px else R.drawable.ic_round_favorite_border_black_24px)
+        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
 
     }
 

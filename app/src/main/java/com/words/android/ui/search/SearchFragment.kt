@@ -19,7 +19,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
-import com.words.android.data.repository.WordSource
 import com.words.android.util.collapse
 import com.words.android.util.expand
 import kotlinx.android.synthetic.main.search_fragment.*
@@ -148,7 +147,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
             sharedViewModel.setCurrentWordFavorited(!isFavorited)
         }
 
-        favorite?.setImageResource(if (isFavorited) R.drawable.ic_round_favorite_black_24px else R.drawable.ic_round_favorite_border_black_24px)
+        favorite?.setImageResource(if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
     }
 
     override fun afterTextChanged(s: Editable?) {}

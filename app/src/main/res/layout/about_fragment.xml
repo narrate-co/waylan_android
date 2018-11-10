@@ -55,7 +55,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:background="?selectableItemBackgroundBorderless"
                 android:layout_marginBottom="7dp"
-                app:srcCompat="@drawable/ic_round_arrow_back_24px"/>
+                app:srcCompat="@drawable/ic_round_arrow_left_24px"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"
@@ -69,7 +69,7 @@
             <View
                 android:layout_width="72dp"
                 android:layout_height="2dp"
-                android:background="@drawable/light_title_underline_background"
+                android:background="@drawable/title_underline_background"
                 android:layout_marginTop="@dimen/keyline_3"/>
 
         </LinearLayout>

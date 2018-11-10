@@ -14,7 +14,7 @@
         android:id="@+id/radioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/ic_round_check_circle_outline_black_24px"
+        android:button="@drawable/ic_round_check_circle_outline_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

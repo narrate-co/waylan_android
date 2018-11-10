@@ -1,14 +1,10 @@
 package com.words.android.ui.list
 
-import android.animation.AnimatorInflater
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import kotlinx.android.synthetic.main.banner_layout.view.*
-import kotlinx.android.synthetic.main.list_fragment.*
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
 class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
@@ -98,7 +93,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
     private fun setUpList() {
         view?.recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view?.recyclerView?.adapter = adapter
-        val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.light_list_item_divider))
+        val itemDivider = ListItemDivider(ContextCompat.getDrawable(context!!, R.drawable.list_item_divider))
         view?.recyclerView?.addItemDecoration(itemDivider)
 
         viewModel.getList(type).observe(this, Observer {

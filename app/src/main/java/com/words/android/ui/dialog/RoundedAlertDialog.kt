@@ -71,8 +71,8 @@ class RoundedAlertDialog: AppCompatDialogFragment() {
             item.radioDesc.text = desc
 
 
-            val checkedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_rounded_radio_checked_24px)
-            val uncheckedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_round_check_circle_outline_black_24px)
+            val checkedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_round_radio_checked_24px)
+            val uncheckedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_round_check_circle_outline_24px)
 
             item.radioButton.buttonDrawable = if (currentNightMode == it) checkedDrawable else uncheckedDrawable
             item.setOnClickListener {clickedItem ->

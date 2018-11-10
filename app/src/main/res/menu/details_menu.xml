@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_favorite"
         android:title="@string/menu_favorite_title"
-        android:icon="@drawable/ic_round_favorite_border_black_24px"
+        android:icon="@drawable/ic_round_favorite_border_24px"
         android:checkable="true"
         android:checked="false"
         app:showAsAction="ifRoom"/>
@@ -12,7 +12,7 @@
     <item
         android:id="@+id/action_share"
         android:title="@string/menu_share_title"
-        android:icon="@drawable/ic_round_share_black_24px"
+        android:icon="@drawable/ic_round_share_24px"
         app:showAsAction="ifRoom"/>
 
 </menu>

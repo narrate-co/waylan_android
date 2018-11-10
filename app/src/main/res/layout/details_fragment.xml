@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="?android:windowBackground"
-            app:navigationIcon="@drawable/ic_round_close_black_24px"
+            app:navigationIcon="@drawable/ic_round_arrow_down_24px"
             app:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 

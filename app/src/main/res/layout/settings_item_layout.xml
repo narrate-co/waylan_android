@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_round_check_circle_outline_black_24px"
+            android:src="@drawable/ic_round_check_circle_outline_24px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
@@ -53,7 +53,7 @@
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_marginBottom="@dimen/keyline_2"
         android:layout_marginLeft="@dimen/keyline_3"
-        android:background="@drawable/light_list_item_divider" />
+        android:background="@drawable/list_item_divider" />
 
 
 </LinearLayout>

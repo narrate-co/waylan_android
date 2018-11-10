@@ -182,7 +182,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setAudio(word: Word?) {
         if (word == null || word.sound.wav.isBlank()) return
 
-        audioImageView.setImageResource(R.drawable.ic_round_play_arrow_black_24px)
+        audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
 
         var fileName = word.sound.wav.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "http://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
@@ -198,20 +198,20 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setAudioIcon(state: AudioClipService.AudioStateDispatch) {
         when (state) {
             AudioClipService.AudioStateDispatch.LOADING -> {
-                audioImageView.setImageResource(R.drawable.ic_round_stop_black_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.VISIBLE
                 underline.visibility = View.INVISIBLE
             }
             AudioClipService.AudioStateDispatch.PREPARED,
             AudioClipService.AudioStateDispatch.PLAYING -> {
-                audioImageView.setImageResource(R.drawable.ic_round_stop_black_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE
             }
             AudioClipService.AudioStateDispatch.STOPPED -> {
-                audioImageView.setImageResource(R.drawable.ic_round_play_arrow_black_24px)
+                audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE

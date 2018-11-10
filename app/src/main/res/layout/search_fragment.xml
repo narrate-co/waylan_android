@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/light_search_background"
+    android:background="@drawable/search_background"
     android:clickable="true"
     android:focusable="true"
     android:elevation="16dp"
@@ -18,7 +18,7 @@
         android:layout_marginStart="@dimen/keyline_2"
         android:layout_marginTop="@dimen/keyline_3"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/light_search_input_background"
+        android:background="@drawable/search_input_background"
         android:foregroundGravity="center_vertical"
         android:minHeight="52dp"
         android:padding="@dimen/keyline_2"
@@ -46,7 +46,7 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="@dimen/keyline_3"
             android:alpha=".5"
-            app:srcCompat="@drawable/ic_round_mic_black_24px" />
+            app:srcCompat="@drawable/ic_round_mic_24px" />
 
 
     </FrameLayout>
@@ -71,7 +71,7 @@
             android:layout_marginLeft="@dimen/keyline_1"
             android:layout_marginRight="@dimen/keyline_1"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_favorite_border_black_24px" />
+            app:srcCompat="@drawable/ic_round_favorite_border_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/share"
@@ -81,7 +81,7 @@
             android:layout_marginLeft="@dimen/keyline_1"
             android:layout_marginRight="@dimen/keyline_1"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_share_black_24px" />
+            app:srcCompat="@drawable/ic_round_share_24px" />
 
     </LinearLayout>
 

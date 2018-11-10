@@ -88,8 +88,8 @@
         <item name="styleTextLabel">@style/Widget.Words.Light.TextLabel</item>
 
         <!--Implementation Specific Attrs-->
-        <item name="drawableSnackbarErrorBackground">@drawable/light_snackbar_background_error</item>
-        <item name="drawableSnackbarInformativeBackground">@drawable/light_snackbar_background_informative</item>
+        <item name="drawableSnackbarErrorBackground">@drawable/snackbar_background_error</item>
+        <item name="drawableSnackbarInformativeBackground">@drawable/snackbar_background_informative</item>
     </style>
 
 
