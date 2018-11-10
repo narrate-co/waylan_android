@@ -134,9 +134,14 @@ class ElasticViewBehavior<V : View> @JvmOverloads constructor(
 
 
         //TODO find a way to allow custom corner and edge shapes, set through xml
-        val cornerTreatment = SquareToRoundCornerTreatment(context!!.resources.getDimension(R.dimen.drag_max_corner_radius))
+        val cornerTreatment = SquareToRoundCornerTreatment(context!!.resources.getDimension(R.dimen.elastic_view_behavior_max_corner_radius))
         materialShapeDrawable.shapedViewModel?.topRightCorner = cornerTreatment
         materialShapeDrawable.shapedViewModel?.topLeftCorner = cornerTreatment
+        //TODO update to MDC 1.1.0 and use compat shadows to get shadows on the very top of this view
+        // Shadows do not currently show due to how the Android framework handles its material light source.
+        // Shadows are only rendered on the sides and bottom of views with a light source coming from the top of the screen
+        materialShapeDrawable.isShadowEnabled = true
+        materialShapeDrawable.shadowElevation = context.resources.getDimensionPixelSize(R.dimen.elastic_view_behavior_background_elevation)
         materialShapeDrawable.paintStyle = Paint.Style.FILL
 
         //TODO allow tagging other child views with custom attr to include them in property animations?

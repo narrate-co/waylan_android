@@ -9,10 +9,14 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <!--clipChildren and clipToPadding are false to make sure -->
+    <!--we allow fragments to draw shadows -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         />
 
     <View

@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
+import com.words.android.util.getScaleBetweenRange
 import kotlinx.android.synthetic.main.banner_layout.view.*
+import kotlinx.android.synthetic.main.list_fragment.*
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
 class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
@@ -62,11 +66,14 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
             else -> ListType.TRENDING
         }
         view.toolbarTitle.text = type.title
+        view.toolbarTitleCollapsed.text = type.title
         view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()
         }
 
         setUpBanner(view, type)
+
+        setUpReachabilityAppBar(view.appBar)
 
         return view
     }
@@ -99,6 +106,26 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
         viewModel.getList(type).observe(this, Observer {
             adapter.submitList(it)
         })
+    }
+
+    private fun setUpReachabilityAppBar(appBar: AppBarLayout) {
+        appBar.doOnPreDraw {
+            val minHeight = appBar.bottom - navigationIcon.top
+            val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
+            val alphaFraction = 0.6F
+            appBar.toolbarContainer.minimumHeight = minHeight
+            appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                val totalScrollRange = appBarLayout.totalScrollRange - minHeight
+                val interpolation = Math.abs(verticalOffset.toFloat()) / totalScrollRange
+                val navIconTransY = (1 - interpolation) * toolbarTitleCollapsedHeight
+                appBarLayout.navigationIcon.translationY = navIconTransY
+                val offsetInterpolation = getScaleBetweenRange(interpolation, alphaFraction, 1F, 0F, 1F)
+                appBarLayout.toolbarTitleCollapsed.alpha = offsetInterpolation
+                println("ListFragment::onOffsetChanged - verticalOffset = $verticalOffset, totalScrollRange = ${appBarLayout.totalScrollRange}, clippedTotalScrollRange = $totalScrollRange, interpolation = $interpolation, offsetInterpolation = ${offsetInterpolation}")
+
+            })
+        }
+
     }
 
     override fun onWordClicked(word: String) {

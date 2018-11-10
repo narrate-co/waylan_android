@@ -19,3 +19,12 @@ val String.fromHtml: Spanned
 infix fun <T> Collection<T>.contentEquals(collection: Collection<T>?): Boolean
     = collection?.let { this.size == it.size && this.containsAll(collection) } ?: false
 
+fun getScaleBetweenRange(value: Float, inputMin: Float, inputMax: Float, outputMin: Float, outputMax: Float): Float {
+    if (value < inputMin) {
+        return outputMin
+    } else if (value > inputMax) {
+        return outputMax
+    }
+
+    return outputMin * (1 - (value - inputMin) / (inputMax - inputMin)) + outputMax * ((value - inputMin) / (inputMax - inputMin))
+}
