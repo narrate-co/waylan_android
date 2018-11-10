@@ -4,10 +4,10 @@
 
     <declare-styleable name="ElasticViewBehavior">
         <attr name="dragDismissDirection">
-            <flag name="up" value="1"/>
-            <flag name="down" value="2"/>
-            <flag name="right" value="3"/>
-            <flag name="left" value="4"/>
+            <flag name="up" value="0x1"/>
+            <flag name="down" value="0x2"/>
+            <flag name="right" value="0x4"/>
+            <flag name="left" value="0x8"/>
         </attr>
         <attr name="dragDismissDistance" format="dimension"/>
         <attr name="dragDismissFraction" format="float"/>
