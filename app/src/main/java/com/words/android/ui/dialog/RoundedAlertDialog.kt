@@ -83,7 +83,7 @@ class RoundedAlertDialog: AppCompatDialogFragment() {
                 nightModeCallback?.onSelected(it)
                 dismiss()
             }
-            
+
             v.container.addView(item)
         }
 
