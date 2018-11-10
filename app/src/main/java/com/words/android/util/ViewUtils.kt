@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.preference.PreferenceManager
 import android.text.SpannableString
@@ -90,4 +91,15 @@ fun View.invisible() {
 
 fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
+}
+
+fun View.runTransitionDrawable(duration: Int, reverse: Boolean = false, isCrossFadeEnabled: Boolean = true) {
+    (background as? TransitionDrawable)?.let {
+        it.isCrossFadeEnabled = isCrossFadeEnabled
+        if (!reverse) {
+            it.startTransition(duration)
+        } else {
+            it.reverseTransition(duration)
+        }
+    }
 }

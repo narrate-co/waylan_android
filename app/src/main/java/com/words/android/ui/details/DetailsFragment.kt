@@ -1,8 +1,10 @@
 package com.words.android.ui.details
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,11 +17,13 @@ import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
+import com.words.android.util.ElasticViewBehavior
 import com.words.android.util.configError
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener {
+class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener, ElasticViewBehavior.ElasticViewBehaviorCallback {
+
 
     companion object {
         const val FRAGMENT_TAG = "details_fragment_tag"
@@ -39,6 +43,8 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         val view = inflater.inflate(R.layout.details_fragment, container, false)
 //        view.toolbar.inflateMenu(R.menu.details_menu)
 //        view.toolbar.setOnMenuItemClickListener(this)
+        val elastic = (view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticViewBehavior
+        elastic.addCallback(this)
         view.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
@@ -98,6 +104,22 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         adapter.removeWordSource(WordSource.MerriamWebsterSource::class)
     }
 
+    override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {
+        //TODO change alpha and translationY of other views
+        val alpha = 1 - dragFraction
+        val cutDragTo = dragTo * .15F
+
+        view?.appBar?.translationY = cutDragTo
+
+        view?.recyclerView?.alpha = alpha
+        view?.appBar?.alpha = alpha
+    }
+
+    override fun onDragDismissed(): Boolean {
+        Handler().post { activity?.onBackPressed() }
+        return true
+    }
+
     private fun setUserWord(userWord: UserWord?) {
         if (userWord == null)  return
 
@@ -107,6 +129,8 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_black_24px else R.drawable.ic_round_favorite_border_black_24px)
 
     }
+
+
 
 }
 

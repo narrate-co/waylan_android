@@ -2,15 +2,13 @@ package com.words.android
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.search.SearchSheetCallback
-import com.words.android.util.collapse
-import com.words.android.util.displayHeightPx
-import com.words.android.util.gone
-import com.words.android.util.visible
+import com.words.android.util.*
 import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : BaseUserActivity() {
@@ -43,6 +41,7 @@ class MainActivity : BaseUserActivity() {
         processText(intent)
 
         setUpSearchSheet()
+
 
     }
 

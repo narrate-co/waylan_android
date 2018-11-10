@@ -5,7 +5,7 @@
     android:id="@+id/detailsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground"
+    android:backgroundTint="?android:windowBackground"
     >
 
     <androidx.recyclerview.widget.RecyclerView
@@ -17,9 +17,13 @@
         android:clipToPadding="false"/>
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        app:elevation="0dp"
+        app:layout_behavior="com.words.android.util.ElasticViewBehavior"
+        app:dragDismissDirection="down"
+        >
         
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

@@ -7,4 +7,6 @@
 
     <dimen name="search_min_peek_height">80dp</dimen>
     <dimen name="search_max_peek_height">200dp</dimen>
+
+    <dimen name="drag_max_corner_radius">24dp</dimen>
 </resources>
