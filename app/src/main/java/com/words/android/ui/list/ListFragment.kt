@@ -16,6 +16,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.ElasticAppBarBehavior
+import com.words.android.util.displayHeightPx
 import com.words.android.util.getScaleBetweenRange
 import kotlinx.android.synthetic.main.banner_layout.view.*
 import kotlinx.android.synthetic.main.list_fragment.*
@@ -88,18 +89,18 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     }
 
     private fun setUpBanner(view: View, type: ListType) {
-        view.bannerLayout.body.text = when (type) {
-            ListType.TRENDING -> getString(R.string.list_banner_trending_body)
-            ListType.RECENT -> getString(R.string.list_banner_recents_body)
-            ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
-        }
-        view.bannerLayout.topButton.setOnClickListener {
-            viewModel.setHasSeenBanner(type, true)
-        }
+//        view.bannerLayout.body.text = when (type) {
+//            ListType.TRENDING -> getString(R.string.list_banner_trending_body)
+//            ListType.RECENT -> getString(R.string.list_banner_recents_body)
+//            ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
+//        }
+//        view.bannerLayout.topButton.setOnClickListener {
+//            viewModel.setHasSeenBanner(type, true)
+//        }
 
-        viewModel.getHasSeenBanner(type).observe(this, Observer {
-            view.bannerLayout.visibility = if (it) View.GONE else View.VISIBLE
-        })
+//        viewModel.getHasSeenBanner(type).observe(this, Observer {
+//            view.bannerLayout.visibility = if (it) View.GONE else View.VISIBLE
+//        })
     }
 
     private fun setUpList() {
@@ -114,6 +115,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     }
 
     private fun setUpReachabilityAppBar(appBar: AppBarLayout) {
+
 
         appBar.doOnPreDraw {
             val minHeight = appBar.bottom - navigationIcon.top
