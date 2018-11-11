@@ -1,9 +1,11 @@
 package com.words.android.ui.list
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
@@ -13,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
+import com.words.android.util.ElasticAppBarBehavior
 import com.words.android.util.getScaleBetweenRange
 import kotlinx.android.synthetic.main.banner_layout.view.*
 import kotlinx.android.synthetic.main.list_fragment.*
 import kotlinx.android.synthetic.main.list_fragment.view.*
 
-class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
+class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+
 
 
     enum class ListType(val fragmentTag: String, val title: String) {
@@ -71,6 +75,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
             activity?.onBackPressed()
         }
 
+        ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         setUpBanner(view, type)
 
         setUpReachabilityAppBar(view.appBar)
@@ -109,6 +114,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
     }
 
     private fun setUpReachabilityAppBar(appBar: AppBarLayout) {
+
         appBar.doOnPreDraw {
             val minHeight = appBar.bottom - navigationIcon.top
             val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
@@ -133,5 +139,19 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener {
         (activity as? MainActivity)?.showDetails()
     }
 
+    override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {
+        val alpha = 1 - dragFraction
+        val cutDragTo = dragTo * .15F
+
+        view?.appBar?.translationY = cutDragTo
+
+        view?.recyclerView?.alpha = alpha
+        view?.appBar?.alpha = alpha
+    }
+
+    override fun onDragDismissed(): Boolean {
+        Handler().post { activity?.onBackPressed() }
+        return true
+    }
 
 }

@@ -15,10 +15,19 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <!--<View-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_behavior="com.words.android.util.ElasticViewBehavior"-->
+        <!--app:dragDismissDirection="down"/>-->
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
+        app:dragDismissDirection="up|down"
         app:elevation="0dp">
 
 
@@ -35,7 +44,6 @@
             android:animateLayoutChanges="true"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             >
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"
@@ -56,7 +64,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                app:srcCompat="@drawable/ic_round_arrow_left_24px"/>
+                app:srcCompat="@drawable/ic_round_arrow_down_24px"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"

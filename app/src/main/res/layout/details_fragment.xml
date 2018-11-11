@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp"
-        app:layout_behavior="com.words.android.util.ElasticViewBehavior"
+        app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
         app:dragDismissDirection="down"
         >
         

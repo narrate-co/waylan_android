@@ -17,12 +17,13 @@ import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
+import com.words.android.util.ElasticAppBarBehavior
 import com.words.android.util.ElasticViewBehavior
 import com.words.android.util.configError
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener, ElasticViewBehavior.ElasticViewBehaviorCallback {
+class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
 
     companion object {
@@ -43,7 +44,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         val view = inflater.inflate(R.layout.details_fragment, container, false)
 //        view.toolbar.inflateMenu(R.menu.details_menu)
 //        view.toolbar.setOnMenuItemClickListener(this)
-        val elastic = (view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticViewBehavior
+        val elastic = (view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior
         elastic.addCallback(this)
         view.toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
