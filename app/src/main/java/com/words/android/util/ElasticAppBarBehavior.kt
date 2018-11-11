@@ -102,6 +102,8 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     // Holder for total drag accumulation. Negative indicates draggingDown. Positive indicates draggingUp
     private var totalDragY = 0F
 
+    private var hasStartedVerticalDrag = false
+
     private var draggingRight = false
     private var draggingLeft = false
     private var totalDragX = 0F
@@ -187,6 +189,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         println("$TAG::onOffsetChanged verticalOffset = $verticalOffset, totalScrollRange = ${abl?.totalScrollRange}")
         appBarVerticalOffset = verticalOffset
         appBarTotalScrollRange = abl?.totalScrollRange ?: 0
+
     }
 
     override fun onLayoutChild(parent: CoordinatorLayout, abl: AppBarLayout, layoutDirection: Int): Boolean {
@@ -251,14 +254,18 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: AppBarLayout, ev: MotionEvent): Boolean {
         lastMotionEvent = ev
-        val consume = super.onInterceptTouchEvent(parent, child, ev)
-        println("$TAG::onInterceptTouchEvent - action = ${ev.action}, consume = $consume")
-        return consume
+        if (!hasStartedVerticalDrag) {
+            val consume = super.onInterceptTouchEvent(parent, child, ev)
+            println("$TAG::onInterceptTouchEvent - action = ${ev.action}, consume = $consume")
+            return consume
+        }
+
+        return false
+
     }
 
     override fun onTouchEvent(parent: CoordinatorLayout, child: AppBarLayout, ev: MotionEvent): Boolean {
-        val consume = super.onTouchEvent(parent, child, ev)
-        println("$TAG::onTouchEvent, action = ${ev.action}, consume = $consume, nestedScrolling = $nestedScrolling")
+
 
         // if this is not a touch event from a nested scrolling source, we're touching the abl
         if (!nestedScrolling) {
@@ -280,12 +287,20 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             }
         }
 
-        return consume
+        if (!hasStartedVerticalDrag) {
+            val consume = super.onTouchEvent(parent, child, ev)
+            println("$TAG::onTouchEvent, action = ${ev.action}, consume = $consume, nestedScrolling = $nestedScrolling")
+            return consume
+        }
+
+        return true
+
     }
 
 
     override fun onStartNestedScroll(parent: CoordinatorLayout, child: AppBarLayout, directTargetChild: View, target: View, axes: Int, type: Int): Boolean {
         println("$TAG::onStartNestedScroll, scroll contains vertical = ${axes.containsFlag(View.SCROLL_AXIS_VERTICAL)}, horizontal = ${axes.containsFlag(View.SCROLL_AXIS_HORIZONTAL)}")
+
         nestedScrolling = true
         if (flinging) {
             return super.onStartNestedScroll(parent, child, directTargetChild, target, axes, type)
@@ -304,6 +319,8 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
         println("$TAG::onNestedPreScroll - dy = $dy, draggingDown = $draggingDown, draggingUp = $draggingUp")
+
+
         if (draggingDown && dy > 0 || draggingUp && dy < 0) {
             dragScaleVertical(coordinatorLayout, dy)
             consumed[1] = dy
@@ -313,14 +330,19 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             consumed[0] = dx
         }
 
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
+        if (!hasStartedVerticalDrag) {
+            super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
+        }
     }
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
         println("$TAG::onNestedScroll - dyUnconsumed = $dyUnconsumed")
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
         dragScaleVertical(coordinatorLayout, dyUnconsumed)
         dragScaleHorizontal(coordinatorLayout, dxUnconsumed)
+
+        if (!hasStartedVerticalDrag) {
+            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
+        }
     }
 
     override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, velocityX: Float, velocityY: Float): Boolean {
@@ -329,14 +351,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             flinging = true
         }
         return super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY)
-    }
-
-    override fun onNestedFling(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
-        println("$TAG::onNestedFling")
-        if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) { //we are not currently dragging and should not consume this fling
-            flinging = true
-        }
-        return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed)
     }
 
     override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, abl: AppBarLayout, target: View, type: Int) {
@@ -361,12 +375,13 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             totalDragY = 0F
             draggingDown = false
             draggingUp = false
+            hasStartedVerticalDrag = false
+            flinging = false
 
             totalDragX = 0F
             draggingRight = false
             draggingLeft = false
 
-            flinging = false
 
             dispatchDragCallback(0F, 0F, 0F, 0F)
         }
@@ -412,7 +427,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         scalePropertiesY(view, dragFractionY, dragToY)
 
-        println("$TAG::dragScaleVertical scroll = $scroll, totalDragY = $totalDragY, dragDismissDistanceVertical = $dragDismissDistanceVertical, draggingDown = $draggingDown, draggingUp = $draggingUp, flinging = $flinging, appBarVerticalOffset = $appBarVerticalOffset, appBarTotalScrollRange = $appBarTotalScrollRange")
+        println("$TAG::dragScaleVertical scroll = $scroll, totalDragY = $totalDragY, dragDismissDistanceVertical = $dragDismissDistanceVertical, draggingDown = $draggingDown, draggingUp = $draggingUp, appBarVerticalOffset = $appBarVerticalOffset, appBarTotalScrollRange = $appBarTotalScrollRange")
 
         if (
                 // if dragging down, totalDragY should always be negative
@@ -434,8 +449,11 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             dragFractionY = 0F
             draggingDown = false
             draggingUp = false
+            hasStartedVerticalDrag = false
 
             resetProperties(view)
+        } else {
+            hasStartedVerticalDrag = true
         }
 
         dispatchDragCallback(dragFractionY, dragToY, Math.min(1F, Math.abs(totalDragY) / dragDismissDistanceVertical), totalDragY)
