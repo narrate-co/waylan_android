@@ -28,3 +28,5 @@ fun getScaleBetweenRange(value: Float, inputMin: Float, inputMax: Float, outputM
 
     return outputMin * (1 - (value - inputMin) / (inputMax - inputMin)) + outputMax * ((value - inputMin) / (inputMax - inputMin))
 }
+
+

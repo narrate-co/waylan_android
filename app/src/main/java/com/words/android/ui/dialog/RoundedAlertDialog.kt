@@ -65,7 +65,7 @@ class RoundedAlertDialog: AppCompatDialogFragment() {
                 AppCompatDelegate.MODE_NIGHT_AUTO -> "Night mode turns on between sunset and sunrise"
                 AppCompatDelegate.MODE_NIGHT_YES -> "Always use night mode"
                 AppCompatDelegate.MODE_NIGHT_NO -> "Never use night mode"
-                else -> "Follow System"
+                else -> "Night mode usage is determined by your global system settings"
             }
             item.radioTitle.text = title
             item.radioDesc.text = desc

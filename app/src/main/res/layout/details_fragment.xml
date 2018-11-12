@@ -25,17 +25,28 @@
         app:dragDismissDirection="down"
         >
         
-        <androidx.appcompat.widget.Toolbar
+        <FrameLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="?android:windowBackground"
-            app:navigationIcon="@drawable/ic_round_arrow_down_24px"
-            app:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="150dp"
+            android:minHeight="?actionBarSize"
+            android:paddingLeft="@dimen/keyline_3"
+            android:paddingRight="@dimen/keyline_3"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
-        </androidx.appcompat.widget.Toolbar>
-        
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/navigationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|left"
+                android:background="?selectableItemBackgroundBorderless"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                app:srcCompat="@drawable/ic_round_arrow_down_24px"
+                />
+
+        </FrameLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

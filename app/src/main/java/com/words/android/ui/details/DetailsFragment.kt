@@ -46,7 +46,8 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 //        view.toolbar.setOnMenuItemClickListener(this)
         val elastic = (view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior
         elastic.addCallback(this)
-        view.toolbar.setNavigationOnClickListener {
+//        view.toolbar.setNavigationOnClickListener {
+        view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()
         }
 
@@ -121,15 +122,15 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         return true
     }
 
-    private fun setUserWord(userWord: UserWord?) {
-        if (userWord == null)  return
-
-        val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
-        val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-        favoriteMenuItem?.isChecked = isFavorited
-        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
-
-    }
+//    private fun setUserWord(userWord: UserWord?) {
+//        if (userWord == null)  return
+//
+//        val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
+//        val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
+//        favoriteMenuItem?.isChecked = isFavorited
+//        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
+//
+//    }
 
 
 

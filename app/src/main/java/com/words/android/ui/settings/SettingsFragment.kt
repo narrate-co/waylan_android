@@ -83,16 +83,6 @@ class SettingsFragment : BaseUserFragment() {
         view.darkModeSettings.checkbox.invisible()
         view.darkModeSettings.settingsItem.setOnClickListener {
             RoundedAlertDialog.newNightModeInstance(viewModel.nightMode, nightModeCallback).show(activity?.supportFragmentManager, "night_mode")
-
-//            val newValue = when (viewModel.nightMode) {
-//                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_AUTO
-//                AppCompatDelegate.MODE_NIGHT_AUTO -> AppCompatDelegate.MODE_NIGHT_YES
-//                AppCompatDelegate.MODE_NIGHT_YES -> AppCompatDelegate.MODE_NIGHT_NO
-//                AppCompatDelegate.MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-//                else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-//            }
-//            viewModel.nightMode = newValue
-//            (activity as? SettingsActivity)?.updateNightMode(newValue)
         }
 
         view.aboutSetting.settingsTitle.text = getString(R.string.settings_about_title)

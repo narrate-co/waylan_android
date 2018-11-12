@@ -1,5 +1,6 @@
 package com.words.android.ui.list
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -7,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.alpha
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +22,7 @@ import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.ElasticAppBarBehavior
 import com.words.android.util.displayHeightPx
+import com.words.android.util.getColorFromAttr
 import com.words.android.util.getScaleBetweenRange
 import kotlinx.android.synthetic.main.banner_layout.view.*
 import kotlinx.android.synthetic.main.list_fragment.*
@@ -121,16 +127,25 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
             val minHeight = appBar.bottom - navigationIcon.top
             val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
             val alphaFraction = 0.6F
+            val minAlphaRgb = 255F * 0.94F
+            val windowBackgroundColor = activity?.getColorFromAttr(android.R.attr.windowBackground) ?: 0
             appBar.toolbarContainer.minimumHeight = minHeight
             appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val totalScrollRange = appBarLayout.totalScrollRange - minHeight
-                val interpolation = Math.abs(verticalOffset.toFloat()) / totalScrollRange
+                val interpolation = Math.abs(verticalOffset.toFloat()) / appBarLayout.totalScrollRange
+                val interpolationEarlyFinish = Math.abs(verticalOffset.toFloat()) / totalScrollRange
+
+                // translate the navIcon to make room for the collapsed toolbar title
                 val navIconTransY = (1 - interpolation) * toolbarTitleCollapsedHeight
                 appBarLayout.navigationIcon.translationY = navIconTransY
-                val offsetInterpolation = getScaleBetweenRange(interpolation, alphaFraction, 1F, 0F, 1F)
-                appBarLayout.toolbarTitleCollapsed.alpha = offsetInterpolation
-                println("ListFragment::onOffsetChanged - verticalOffset = $verticalOffset, totalScrollRange = ${appBarLayout.totalScrollRange}, clippedTotalScrollRange = $totalScrollRange, interpolation = $interpolation, offsetInterpolation = ${offsetInterpolation}")
 
+                // hide/show the collapsed toolbar title
+                val offsetInterpolation = getScaleBetweenRange(interpolationEarlyFinish, alphaFraction, 1F, 0F, 1F)
+                appBarLayout.toolbarTitleCollapsed.alpha = offsetInterpolation
+
+                // set alpha of app bar //TODO create custom ScrollingViewBehavior to support content scrolling under AppBar?
+                val backgroundWithAlpha = Color.argb(getScaleBetweenRange(interpolation, 0F, 1F, 255F, minAlphaRgb).toInt(), windowBackgroundColor.red, windowBackgroundColor.green, windowBackgroundColor.blue)
+                appBarLayout.setBackgroundColor(backgroundWithAlpha)
             })
         }
 

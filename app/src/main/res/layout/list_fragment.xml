@@ -13,7 +13,8 @@
         android:paddingTop="@dimen/keyline_2"
         android:paddingBottom="@dimen/search_min_peek_height"
         android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
         app:dragDismissDirection="down"
+        android:background="@android:color/transparent"
         app:elevation="0dp">
 
 
@@ -88,7 +90,7 @@
             <!--<include-->
             <!--android:id="@+id/bannerLayout"-->
             <!--layout="@layout/banner_layout"-->
-            <!--android:visibility="gone"/>-->
+            <!--android:visibility="visible"/>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
