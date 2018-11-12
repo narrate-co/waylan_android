@@ -63,7 +63,9 @@
     <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
 
     <!--About-->
-    <string name="about_header_body">Words was created late one night when reading in bed. There are so many rich words in the English language, but looking them up while holding a book in one hand and a phone in the other was tough with the dictionaries available. \n\nWords hopes to be the most ergonomic dictionary for Android. Making it easy enough to look things up and keep adding to your vocabulary.</string>
+    <string name="about_header_body">
+        Words is a dictionary concept, designed to be an ergonomic, one-handable experience. The idea for Words came when reading in bed, with a book in one hand and a phone in the other, trying to stretch a thumb to a far away search bar. \n\nIn addition to being a great tool to improve your vocabulary, Words experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and legibility.
+    </string>
 
     <!--List-->
     <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched by other users.</string>
