@@ -4,19 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <!--clipChildren and clipToPadding are false to make sure -->
     <!--we allow fragments to draw shadows -->
-    <FrameLayout
+    <com.words.android.util.InsetFrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:fitsSystemWindows="true"
         />
 
     <View

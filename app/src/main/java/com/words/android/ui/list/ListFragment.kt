@@ -91,6 +91,10 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     }
 
     override fun onEnterTransactionEnded() {
+//        setUpList()
+    }
+
+    override fun onEnterTransitionEnded() {
         setUpList()
     }
 
@@ -124,7 +128,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
 
 
         appBar.doOnPreDraw {
-            val minHeight = appBar.bottom - navigationIcon.top
+            val minHeight = underline.bottom - navigationIcon.top
             val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
             val alphaFraction = 0.6F
             val minAlphaRgb = 255F * 0.94F

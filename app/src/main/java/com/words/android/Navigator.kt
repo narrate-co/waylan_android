@@ -6,8 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.transition.Transition
 import com.words.android.ui.about.AboutFragment
 import com.words.android.ui.auth.Auth
 import com.words.android.ui.auth.AuthActivity
@@ -17,6 +19,7 @@ import com.words.android.ui.list.ListFragment
 import com.words.android.ui.settings.DeveloperSettingsFragment
 import com.words.android.ui.settings.SettingsActivity
 import com.words.android.ui.settings.SettingsFragment
+import com.words.android.util.ElasticTransition
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,10 +44,30 @@ object Navigator {
         //replace
         val existingDetailsFragment = activity.supportFragmentManager.findFragmentByTag(DetailsFragment.FRAGMENT_TAG)
         if (existingDetailsFragment == null || !existingDetailsFragment.isAdded) {
+
+            val detailsFragment = DetailsFragment.newInstance()
+
+            val enterTransition = ElasticTransition(true)
+            enterTransition.interpolator = FastOutSlowInInterpolator()
+            enterTransition.addListener(object : Transition.TransitionListener {
+                override fun onTransitionStart(transition: Transition) {}
+                override fun onTransitionResume(transition: Transition) {}
+                override fun onTransitionPause(transition: Transition) {}
+                override fun onTransitionCancel(transition: Transition) {}
+                override fun onTransitionEnd(transition: Transition) {
+                    detailsFragment.onEnterTransitionEnded()
+                }
+            })
+            detailsFragment.enterTransition = enterTransition
+
+            val exitTransition = ElasticTransition(false)
+            exitTransition.interpolator = FastOutSlowInInterpolator()
+            detailsFragment.exitTransition = exitTransition
+
             activity.supportFragmentManager
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                    .add(R.id.fragmentContainer, DetailsFragment.newInstance(), DetailsFragment.FRAGMENT_TAG)
+//                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                    .add(R.id.fragmentContainer, detailsFragment, DetailsFragment.FRAGMENT_TAG)
                     .addToBackStack(DetailsFragment.FRAGMENT_TAG)
                     .commit()
             return true
@@ -54,14 +77,34 @@ object Navigator {
     }
 
     fun showListFragment(activity: FragmentActivity, type: ListFragment.ListType): Boolean {
+
+        val listFragment = when (type) {
+            ListFragment.ListType.TRENDING -> ListFragment.newTrendingInstance()
+            ListFragment.ListType.RECENT -> ListFragment.newRecentInstance()
+            ListFragment.ListType.FAVORITE -> ListFragment.newFavoriteInstance()
+        }
+
+        val enterTransition = ElasticTransition(true)
+        enterTransition.interpolator = FastOutSlowInInterpolator()
+        enterTransition.addListener(object : Transition.TransitionListener {
+            override fun onTransitionStart(transition: Transition) {}
+            override fun onTransitionResume(transition: Transition) {}
+            override fun onTransitionPause(transition: Transition) {}
+            override fun onTransitionCancel(transition: Transition) {}
+            override fun onTransitionEnd(transition: Transition) {
+                listFragment.onEnterTransitionEnded()
+            }
+        })
+        listFragment.enterTransition = enterTransition
+
+        val exitTransition = ElasticTransition(false)
+        exitTransition.interpolator = FastOutSlowInInterpolator()
+        listFragment.exitTransition = exitTransition
+
         activity.supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
-                .add(R.id.fragmentContainer, when (type) {
-                    ListFragment.ListType.TRENDING -> ListFragment.newTrendingInstance()
-                    ListFragment.ListType.RECENT -> ListFragment.newRecentInstance()
-                    ListFragment.ListType.FAVORITE -> ListFragment.newFavoriteInstance()
-                }, type.fragmentTag)
+                .add(R.id.fragmentContainer, listFragment, type.fragmentTag)
                 .addToBackStack(type.fragmentTag)
                 .commit()
         return true

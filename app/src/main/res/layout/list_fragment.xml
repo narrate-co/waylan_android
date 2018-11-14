@@ -1,99 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<com.words.android.util.InsetFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="?android:windowBackground">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrimFrame"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:background="?colorScrim"
+    android:fitsSystemWindows="true"
+    >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/keyline_2"
-        android:paddingBottom="@dimen/search_min_peek_height"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator"
+        android:fitsSystemWindows="true"
+        android:backgroundTint="?android:windowBackground">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
-        app:dragDismissDirection="down"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbarContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginLeft="@dimen/keyline_3"
-            android:layout_marginRight="@dimen/keyline_3"
-            android:minHeight="86dp"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/keyline_2"
+            android:paddingBottom="@dimen/search_min_peek_height"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:textAppearance="?textAppearanceHeadline5"
-                android:textSize="44sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.35000002"
-                tools:text="Favorite" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
+            app:dragDismissDirection="down"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navigationIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:background="?selectableItemBackgroundBorderless"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/toolbarTitleCollapsed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:srcCompat="@drawable/ic_round_arrow_down_24px" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/toolbarTitleCollapsed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Favorite"
-                android:textAppearance="?textAppearanceHeadline5"
-                app:layout_constraintBottom_toTopOf="@+id/underline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/navigationIcon" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginLeft="@dimen/keyline_3"
+                android:layout_marginRight="@dimen/keyline_3"
+                android:minHeight="86dp"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
-            <View
-                android:id="@+id/underline"
-                android:layout_width="72dp"
-                android:layout_height="2dp"
-                android:layout_marginTop="@dimen/keyline_3"
-                android:background="@drawable/title_underline_background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarTitleCollapsed" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="?textAppearanceHeadline5"
+                    android:textSize="44sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.35000002"
+                    tools:text="Favorite" />
 
-            <!--<include-->
-            <!--android:id="@+id/bannerLayout"-->
-            <!--layout="@layout/banner_layout"-->
-            <!--android:visibility="visible"/>-->
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/navigationIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?actionBarSize"
+                    android:layout_gravity="left|center_vertical"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    app:layout_constraintBottom_toTopOf="@+id/toolbarTitleCollapsed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:srcCompat="@drawable/ic_round_arrow_down_24px" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/toolbarTitleCollapsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Favorite"
+                    android:textAppearance="?textAppearanceHeadline5"
+                    app:layout_constraintBottom_toTopOf="@+id/underline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/navigationIcon" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+                <View
+                    android:id="@+id/underline"
+                    android:layout_width="72dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="@dimen/keyline_3"
+                    android:layout_marginBottom="14dp"
+                    android:background="@drawable/title_underline_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toolbarTitleCollapsed" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <!--<include-->
+                <!--android:id="@+id/bannerLayout"-->
+                <!--layout="@layout/banner_layout"-->
+                <!--android:visibility="visible"/>-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</com.words.android.util.InsetFrameLayout>

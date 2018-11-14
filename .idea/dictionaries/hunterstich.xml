@@ -2,6 +2,7 @@
   <dictionary name="hunterstich">
     <words>
       <w>firestore</w>
+      <w>propname</w>
       <w>upsert</w>
     </words>
   </dictionary>

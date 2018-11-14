@@ -11,6 +11,7 @@
         <item name="android:windowBackground">@color/colorBlack800</item>
 
 
+
         <item name="android:textColorPrimary">@color/colorTextLightHighEmphasis</item>
         <item name="android:textColorSecondary">@color/colorTextLightMediumEmphasis</item>
         <item name="android:textColorTertiary">@color/colorTextLightLowEmphasis</item>
@@ -44,7 +45,10 @@
         <item name="colorPrimaryDark">@color/colorTan100</item>
         <item name="colorAccent">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:statusBarColor">#05000000</item>-->
         <item name="android:windowBackground">@color/colorTan50</item>
+
+
 
         <item name="android:textColorPrimary">@color/colorTextDarkHighEmphasis</item>
         <item name="android:textColorSecondary">@color/colorTextDarkMediumEmphasis</item>

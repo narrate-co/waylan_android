@@ -88,7 +88,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     // The percentage of totalDragY by which view properties should be animated
     // Higher values equate to a more 1-to-1 animation/scrolling
-    private var dragElasticity = .35F
+    private var dragElasticity = .7F
 
     // How intensely to scale the parent CoordinatorLayout at the end of [dragDismissDistanceVertical]. 1F == none, 0F == completely gone
     private var dragDismissScale = 1F
@@ -511,6 +511,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         val interp = 1 - dragFraction
 
         materialShapeDrawable.interpolation = interp
+
 
         if (shouldScale) {
             view.scaleX = scale

@@ -5,7 +5,6 @@ import android.os.Handler
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
-import com.words.android.data.firestore.users.UserWord
-import com.words.android.data.firestore.users.UserWordType
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
-import com.words.android.util.ElasticAppBarBehavior
-import com.words.android.util.ElasticViewBehavior
-import com.words.android.util.configError
+import com.words.android.util.*
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
@@ -51,11 +46,19 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
             activity?.onBackPressed()
         }
 
+
+
         return view
     }
 
     // defer load intensive work until after the fragment transaction has ended
     override fun onEnterTransactionEnded() {
+        println("ElasticTransition::onEnterTransactionEnded")
+
+    }
+
+    override fun onEnterTransitionEnded() {
+
         setUpRecyclerView()
 
         sharedViewModel.currentSources.observe(this, Observer { source ->
@@ -96,7 +99,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     }
 
     override fun onAudioClipError(message: String) {
-        Snackbar.make(detailsRoot, message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinator, message, Snackbar.LENGTH_SHORT)
                 .configError(context!!, true)
                 .show()
     }
@@ -115,6 +118,7 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 
         view?.recyclerView?.alpha = alpha
         view?.appBar?.alpha = alpha
+
     }
 
     override fun onDragDismissed(): Boolean {

@@ -39,5 +39,7 @@ abstract class BaseUserFragment: Fragment(), Injectable {
     }
 
     open fun onEnterTransactionEnded() { }
+
+    open fun onEnterTransitionEnded() { }
 }
 
