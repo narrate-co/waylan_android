@@ -1,14 +1,15 @@
 package com.words.android.ui.details
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
@@ -42,7 +43,6 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
     private val adapter: DetailsAdapter = DetailsAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        println("$TAG::onCreateView. savedInstanceState = $savedInstanceState")
         val view = inflater.inflate(R.layout.details_fragment, container, false)
         ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         view.navigationIcon.setOnClickListener {
@@ -56,7 +56,6 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
 
     //defer load intensive work until after transition has ended
     override fun onEnterTransitionEnded() {
-        println("$TAG::onEnterTransitionEnded")
         setUpRecyclerView()
 
         sharedViewModel.currentWord.observe(this, Observer {

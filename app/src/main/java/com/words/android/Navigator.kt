@@ -35,6 +35,7 @@ object Navigator {
     fun showHome(activity: FragmentActivity): Boolean {
         activity.supportFragmentManager
                 .beginTransaction()
+                .setReorderingAllowed(true)
                 .replace(R.id.fragmentContainer, HomeFragment.newInstance(), HomeFragment.FRAGMENT_TAG)
                 .commit()
         return true
@@ -44,6 +45,7 @@ object Navigator {
         //replace
         val existingDetailsFragment = activity.supportFragmentManager.findFragmentByTag(DetailsFragment.FRAGMENT_TAG)
         if (existingDetailsFragment == null || !existingDetailsFragment.isAdded) {
+
 
             val detailsFragment = DetailsFragment.newInstance()
 
@@ -59,14 +61,16 @@ object Navigator {
                 }
             })
             detailsFragment.enterTransition = enterTransition
+            detailsFragment.reenterTransition = enterTransition
 
             val exitTransition = ElasticTransition(false)
             exitTransition.interpolator = FastOutSlowInInterpolator()
             detailsFragment.exitTransition = exitTransition
+            detailsFragment.returnTransition = exitTransition
 
             activity.supportFragmentManager
                     .beginTransaction()
-//                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                    .setReorderingAllowed(true)
                     .add(R.id.fragmentContainer, detailsFragment, DetailsFragment.FRAGMENT_TAG)
                     .addToBackStack(DetailsFragment.FRAGMENT_TAG)
                     .commit()
@@ -87,7 +91,8 @@ object Navigator {
         val enterTransition = ElasticTransition(true)
         enterTransition.interpolator = FastOutSlowInInterpolator()
         enterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(transition: Transition) {}
+            override fun onTransitionStart(transition: Transition) {
+            }
             override fun onTransitionResume(transition: Transition) {}
             override fun onTransitionPause(transition: Transition) {}
             override fun onTransitionCancel(transition: Transition) {}
@@ -96,14 +101,16 @@ object Navigator {
             }
         })
         listFragment.enterTransition = enterTransition
+        listFragment.reenterTransition = enterTransition
 
         val exitTransition = ElasticTransition(false)
         exitTransition.interpolator = FastOutSlowInInterpolator()
         listFragment.exitTransition = exitTransition
+        listFragment.returnTransition = exitTransition
 
         activity.supportFragmentManager
                 .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                .setReorderingAllowed(true)
                 .add(R.id.fragmentContainer, listFragment, type.fragmentTag)
                 .addToBackStack(type.fragmentTag)
                 .commit()

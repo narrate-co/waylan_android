@@ -45,21 +45,21 @@ class MainActivity : BaseUserActivity() {
             showHome()
         }
 
-
+        println("MainActivity::onCreate - savedInstanceState = $savedInstanceState")
         processText(intent)
 
         setUpSearchSheet()
-
-
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        println("MainActivity::onNewIntent")
         processText(intent)
     }
 
     private fun processText(intent: Intent?) {
         val textToProcess = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+        println("MainActivity::processText - $textToProcess")
         if (!textToProcess.isNullOrBlank()) {
             viewModel.setCurrentWordId(textToProcess.toString())
             showDetails()

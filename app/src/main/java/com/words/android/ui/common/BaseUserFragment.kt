@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
 import com.words.android.di.Injectable
 import com.words.android.util.invisible
@@ -45,10 +47,21 @@ abstract class BaseUserFragment: Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println("BaseUseFragment::onViewCreated - savedInstanceState = $savedInstanceState")
         if (savedInstanceState != null) {
             onEnterTransactionEnded()
             onEnterTransitionEnded()
+        } else {
+            // give views a chance to be laid out and drawn before trying to run a transition
+            postponeEnterTransition()
+            val parent = view.parent as? ViewGroup
+            if (parent != null) {
+                parent.doOnPreDraw {
+                    startPostponedEnterTransition()
+                }
+            } else {
+                onEnterTransactionEnded()
+                onEnterTransitionEnded()
+            }
         }
     }
 

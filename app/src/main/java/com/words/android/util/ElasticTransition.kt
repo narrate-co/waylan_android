@@ -22,14 +22,15 @@ class ElasticTransition(private val up: Boolean) : Fade() {
         private const val TRANSLATION_DISTANCE = 500F
     }
 
-
     override fun captureStartValues(transitionValues: TransitionValues) {
+        println("$TAG::captureStartValues")
         val coordinatorLayout: CoordinatorLayout? = transitionValues.view.findViewById(R.id.coordinator)
         transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
         super.captureStartValues(transitionValues)
     }
 
     override fun captureEndValues(transitionValues: TransitionValues) {
+        println("$TAG::captureEndValues")
         val coordinatorLayout: CoordinatorLayout? = transitionValues.view.findViewById(R.id.coordinator)
         transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
         super.captureEndValues(transitionValues)
