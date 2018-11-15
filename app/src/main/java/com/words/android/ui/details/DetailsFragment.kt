@@ -1,6 +1,5 @@
 package com.words.android.ui.details
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
@@ -9,15 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.*
-import kotlinx.android.synthetic.main.details_fragment.*
-import kotlinx.android.synthetic.main.details_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_details.view.*
 
 class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
@@ -43,7 +41,7 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
     private val adapter: DetailsAdapter = DetailsAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.details_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_details, container, false)
         ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()

@@ -1,6 +1,5 @@
 package com.words.android.ui.list
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -8,11 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.alpha
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
-import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,9 +16,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.words.android.*
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.*
-import kotlinx.android.synthetic.main.banner_layout.view.*
-import kotlinx.android.synthetic.main.list_fragment.*
-import kotlinx.android.synthetic.main.list_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list.view.*
 
 class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
@@ -67,7 +60,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     private val adapter by lazy { ListTypeAdapter(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.list_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
         type = when (arguments?.getString("type")) {
             ListType.TRENDING.name -> ListType.TRENDING
             ListType.RECENT.name -> ListType.RECENT

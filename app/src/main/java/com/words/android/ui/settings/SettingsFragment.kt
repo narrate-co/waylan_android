@@ -1,7 +1,6 @@
 package com.words.android.ui.settings
 
 import android.content.ActivityNotFoundException
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.words.android.ui.auth.AuthActivity
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.configError
 import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
-import kotlinx.android.synthetic.main.settings_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.merriamWebsterState
@@ -38,7 +37,7 @@ class SettingsFragment : BaseUserFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.settings_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_settings, container, false)
         view.navigationIcon.setOnClickListener { activity?.onBackPressed() }
         viewModel.getUserLive().observe(this, Observer {
             setSettings(view, it)

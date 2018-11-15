@@ -2,7 +2,6 @@ package com.words.android
 
 import androidx.lifecycle.*
 import com.words.android.data.repository.WordRepository
-import com.words.android.data.repository.WordSource
 import com.words.android.di.UserScope
 import java.util.*
 import javax.inject.Inject
@@ -17,7 +16,8 @@ class MainViewModel @Inject constructor(private val wordRepository: WordReposito
     val currentWord: LiveData<String> = currentWordId
 
     fun setCurrentWordId(id: String) {
-        currentWordId.value = id
+        val sanitizedId = id.toLowerCase()
+        currentWordId.value = sanitizedId
     }
 
     fun setCurrentWordFavorited(favorite: Boolean) {

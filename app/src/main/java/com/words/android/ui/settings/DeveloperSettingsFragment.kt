@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -14,11 +13,9 @@ import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.merriamWebsterState
 import com.words.android.data.firestore.users.oneDayPastExpiration
 import com.words.android.ui.common.BaseUserFragment
-import com.words.android.util.configError
 import com.words.android.util.configInformative
-import kotlinx.android.synthetic.main.developer_settings_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
-import java.util.*
 
 
 class DeveloperSettingsFragment : BaseUserFragment() {
@@ -35,7 +32,7 @@ class DeveloperSettingsFragment : BaseUserFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.developer_settings_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_developer_settings, container, false)
         view.navigationIcon.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }

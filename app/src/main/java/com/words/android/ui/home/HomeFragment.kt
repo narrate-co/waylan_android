@@ -10,7 +10,7 @@ import com.words.android.MainActivity
 import com.words.android.R
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.ui.list.ListFragment
-import kotlinx.android.synthetic.main.home_fragment.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
 class HomeFragment: BaseUserFragment() {
@@ -27,7 +27,7 @@ class HomeFragment: BaseUserFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.home_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
         view.trendingContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.TRENDING) }
         view.recentContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.RECENT) }
         view.favoriteContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.FAVORITE) }
