@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.words.android.BuildConfig
+import com.words.android.Config
 import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
@@ -117,7 +118,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
             mediaPlayer?.prepareAsync()
 
             // let the media player time out if debugging to catch errors
-            if (!BuildConfig.DEBUG) {
+            if (!BuildConfig.DEBUG || !Config.DEBUG_VERBOSE) {
                 timer = Timer("media_prepare_timer", false).schedule(MEDIA_PREPARE_TIMEOUT) {
                     dispatchError(currentUrl, "Unable to play audio")
                     stop()
