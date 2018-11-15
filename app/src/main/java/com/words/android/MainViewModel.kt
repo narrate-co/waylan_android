@@ -14,13 +14,7 @@ class MainViewModel @Inject constructor(private val wordRepository: WordReposito
 
     private var currentWordId = MutableLiveData<String>()
 
-    val currentSources: LiveData<WordSource> = Transformations.switchMap(currentWordId) {
-        wordRepository.getWordSources(it)
-    }
-
-    val currentFirestoreUserWord: LiveData<WordSource.FirestoreUserSource> = Transformations.switchMap(currentWordId) {
-        wordRepository.getFirestoreUserSource(it)
-    }
+    val currentWord: LiveData<String> = currentWordId
 
     fun setCurrentWordId(id: String) {
         currentWordId.value = id

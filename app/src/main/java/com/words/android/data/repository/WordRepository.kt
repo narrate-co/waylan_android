@@ -40,12 +40,16 @@ class WordRepository(
         }
     }
 
+    //TODO write a method that returns a WordSourceGroup
+    //TODO on restoreInstanceState, the last value gets passed to the observer, meaning only
+    //TODO the latest source will get passed again, leaving all else empty
     fun getWordSources(id: String): LiveData<WordSource> {
+        println("WordRepository::getWordSources - id = $id")
         val mediatorLiveData = MediatorLiveData<WordSource>()
 
         // Word Properties
         mediatorLiveData.addSource(getWordProperties(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.WordProperties(it)
+            if (it != null) mediatorLiveData.value = WordSource.WordPropertiesSource(it)
         }
 
         // Wordset
@@ -70,6 +74,11 @@ class WordRepository(
         return mediatorLiveData
     }
 
+    fun getWordPropertiesSource(id: String): LiveData<WordSource.WordPropertiesSource> {
+        return Transformations.map(getWordProperties(id)) {
+            WordSource.WordPropertiesSource(it)
+        }
+    }
 
     private fun getWordProperties(word: String): LiveData<WordProperties> {
         val data = MutableLiveData<WordProperties>()
@@ -77,21 +86,39 @@ class WordRepository(
         return data
     }
 
+    fun getWordsetSource(id: String): LiveData<WordSource.WordsetSource> {
+        return Transformations.map(getWordAndMeanings(id)) {
+            WordSource.WordsetSource(it)
+        }
+    }
+
     private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
             if (word.isNotBlank()) db.wordDao().getWordAndMeanings(word) else LiveDataHelper.empty()
 
-    private fun getUserWord(id: String): LiveData<UserWord> {
-        return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
-    }
-
-    fun getFirestoreUserSource(id: String): LiveData<WordSource.FirestoreUserSource> {
+   fun getFirestoreUserSource(id: String): LiveData<WordSource.FirestoreUserSource> {
         return Transformations.map(getUserWord(id)) {
             WordSource.FirestoreUserSource(it)
         }
     }
 
+    private fun getUserWord(id: String): LiveData<UserWord> {
+        return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+    }
+
+    fun getFirestoreGlobalSource(id: String): LiveData<WordSource.FirestoreGlobalSource> {
+        return Transformations.map(getGlobalWord(id)) {
+            WordSource.FirestoreGlobalSource(it)
+        }
+    }
+
     private fun getGlobalWord(id: String): LiveData<GlobalWord> {
         return if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+    }
+
+    fun getMerriamWebsterSource(id: String): LiveData<WordSource.MerriamWebsterSource> {
+        return Transformations.map(getMerriamWebsterWordAndDefinitions(id)) {
+            WordSource.MerriamWebsterSource(it)
+        }
     }
 
     private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<PermissiveWordsDefinitions> {

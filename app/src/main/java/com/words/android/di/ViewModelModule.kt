@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.words.android.MainViewModel
 import com.words.android.ui.auth.AuthViewModel
+import com.words.android.ui.details.DetailsViewModel
 import com.words.android.ui.home.HomeViewModel
 import com.words.android.ui.list.ListViewModel
 import com.words.android.ui.search.SearchViewModel
@@ -44,6 +45,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ListViewModel::class)
     internal abstract fun bindListViewModel(listViewModel: ListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailsViewModel::class)
+    internal abstract fun bindDetailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: WordsViewModelFactory): ViewModelProvider.Factory

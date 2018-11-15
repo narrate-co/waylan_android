@@ -29,9 +29,20 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-
     init {
         searchInputData.value = ""
+    }
+
+    private val wordId = MutableLiveData<String>()
+
+    val firestoreUserSource: LiveData<WordSource.FirestoreUserSource> = Transformations.switchMap(wordId) {
+        wordRepository.getFirestoreUserSource(it)
+    }
+
+    fun setWordId(id: String) {
+        if (wordId.value != id) {
+            wordId.value = id
+        }
     }
 
 }

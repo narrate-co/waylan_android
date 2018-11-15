@@ -9,7 +9,7 @@ import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.spell.SuggestItem
 
 sealed class WordSource {
-    class WordProperties(val props: com.words.android.data.repository.WordProperties): WordSource()
+    class WordPropertiesSource(val props: com.words.android.data.repository.WordProperties): WordSource()
     class SimpleWordSource(val word: Word): WordSource()
     class SuggestSource(val item: SuggestItem): WordSource()
     class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()

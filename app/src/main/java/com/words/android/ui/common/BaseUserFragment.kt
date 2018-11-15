@@ -1,6 +1,9 @@
 package com.words.android.ui.common
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
@@ -15,7 +18,6 @@ abstract class BaseUserFragment: Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         var animation = super.onCreateAnimation(transit, enter, nextAnim)
@@ -39,6 +41,15 @@ abstract class BaseUserFragment: Fragment(), Injectable {
         }
 
         return animation
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        println("BaseUseFragment::onViewCreated - savedInstanceState = $savedInstanceState")
+        if (savedInstanceState != null) {
+            onEnterTransactionEnded()
+            onEnterTransitionEnded()
+        }
     }
 
     open fun onEnterTransactionEnded() { }

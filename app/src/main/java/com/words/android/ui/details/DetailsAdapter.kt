@@ -34,7 +34,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         private var wordId: String = ""
 
-        private var properties: WordSource.WordProperties? = null
+        private var propertiesSource: WordSource.WordPropertiesSource? = null
         private var wordset: WordSource.WordsetSource? = null
         private var merriamWebster: WordSource.MerriamWebsterSource? = null
         private var firestoreUser: WordSource.FirestoreUserSource? = null
@@ -42,11 +42,13 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         fun addSource(source: WordSource) {
 
+            println("SourceHolder::addSource - ${source::class.java.simpleName}")
+
             clearIfNewWordSource(source)
 
             when (source) {
-                is WordSource.WordProperties -> {
-                    properties = source
+                is WordSource.WordPropertiesSource -> {
+                    propertiesSource = source
                 }
                 is WordSource.WordsetSource -> {
                     wordset = source
@@ -67,7 +69,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         fun removeSource(type: KClass<out WordSource>) {
             when (type) {
-                WordSource.WordProperties::class -> properties = null
+                WordSource.WordPropertiesSource::class -> propertiesSource = null
                 WordSource.WordsetSource::class -> wordset = null
                 WordSource.MerriamWebsterSource::class -> merriamWebster = null
                 WordSource.FirestoreUserSource::class -> firestoreUser = null
@@ -77,7 +79,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         fun getComponentsList(): List<DetailsComponent> {
             val list = mutableListOf<DetailsComponent>()
-            properties?.let { list.add(DetailsComponent.TitleComponent(it)) }
+            propertiesSource?.let { list.add(DetailsComponent.TitleComponent(it)) }
             merriamWebster?.let { if (it.wordsDefinitions.entries.isNotEmpty()) list.add(DetailsComponent.MerriamWebsterComponent(it)) }
             wordset?.let { list.add(DetailsComponent.WordsetComponent(it)) }
 

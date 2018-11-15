@@ -22,6 +22,7 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
 
 
     companion object {
+        private val TAG = DetailsFragment::class.java.simpleName
         const val FRAGMENT_TAG = "details_fragment_tag"
         fun newInstance() = DetailsFragment()
     }
@@ -32,10 +33,16 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
                 .get(MainViewModel::class.java)
     }
 
+    private val detailsViewModel by lazy {
+        ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(DetailsViewModel::class.java)
+    }
 
     private val adapter: DetailsAdapter = DetailsAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        println("$TAG::onCreateView. savedInstanceState = $savedInstanceState")
         val view = inflater.inflate(R.layout.details_fragment, container, false)
         ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         view.navigationIcon.setOnClickListener {
@@ -47,15 +54,31 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
         return view
     }
 
-
     //defer load intensive work until after transition has ended
     override fun onEnterTransitionEnded() {
-
+        println("$TAG::onEnterTransitionEnded")
         setUpRecyclerView()
 
-        sharedViewModel.currentSources.observe(this, Observer { source ->
+        sharedViewModel.currentWord.observe(this, Observer {
+            detailsViewModel.setWordId(it)
             sharedViewModel.setCurrentWordRecented()
-            adapter.submitWordSource(source)
+        })
+
+        detailsViewModel.wordPropertiesSource.observe(this, Observer {
+            adapter.submitWordSource(it)
+        })
+
+        detailsViewModel.wordsetSource.observe(this, Observer {
+            adapter.submitWordSource(it)
+        })
+        detailsViewModel.firestoreUserSource.observe(this, Observer {
+            adapter.submitWordSource(it)
+        })
+        detailsViewModel.firestoreGlobalSource.observe(this, Observer {
+            adapter.submitWordSource(it)
+        })
+        detailsViewModel.merriamWebsterSource.observe(this, Observer {
+            adapter.submitWordSource(it)
         })
     }
 

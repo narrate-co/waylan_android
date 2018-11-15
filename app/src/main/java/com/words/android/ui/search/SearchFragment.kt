@@ -103,7 +103,11 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
             }
         }
 
-        sharedViewModel.currentFirestoreUserWord.observe(this, Observer { source ->
+        sharedViewModel.currentWord.observe(this, Observer {
+            viewModel.setWordId(it)
+        })
+
+        viewModel.firestoreUserSource.observe(this, Observer { source ->
             setUserWord(source.userWord)
         })
 
