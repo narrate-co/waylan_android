@@ -43,18 +43,17 @@
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/keyline_3"
             android:layout_marginRight="@dimen/keyline_3"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
             app:layout_scrollFlags="scroll|enterAlways"
             >
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/navigationIcon"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
                 android:layout_gravity="left|center_vertical"
                 android:background="?selectableItemBackgroundBorderless"
-                android:layout_marginBottom="7dp"
                 app:srcCompat="@drawable/ic_round_arrow_left_24px"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -62,7 +61,7 @@
                 android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="@dimen/keyline_2"
                 android:text="About"
                 />
 

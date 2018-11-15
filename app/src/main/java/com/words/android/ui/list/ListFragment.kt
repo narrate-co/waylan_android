@@ -128,11 +128,10 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
             appBar.toolbarContainer.minimumHeight = minHeight
             appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val totalScrollRange = appBarLayout.totalScrollRange - minHeight
-                val interpolation = Math.abs(verticalOffset.toFloat()) / appBarLayout.totalScrollRange
                 val interpolationEarlyFinish = Math.abs(verticalOffset.toFloat()) / totalScrollRange
 
                 // translate the navIcon to make room for the collapsed toolbar title
-                val navIconTransY = (1 - interpolation) * toolbarTitleCollapsedHeight
+                val navIconTransY = (1 - interpolationEarlyFinish) * toolbarTitleCollapsedHeight
                 appBarLayout.navigationIcon.translationY = navIconTransY
 
                 // hide/show the collapsed toolbar title
