@@ -5,16 +5,20 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.words.android.App
@@ -22,6 +26,7 @@ import com.words.android.R
 import com.words.android.MainActivity
 import com.words.android.Navigator
 import com.words.android.util.FirebaseAuthWordException
+import com.words.android.util.getColorFromAttr
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
@@ -192,6 +197,8 @@ class AuthActivity : AppCompatActivity() {
         //TODO clean this up?
         synchronized(lastErrorStateIsShown) {
             if (!lastErrorStateIsShown) {
+                lastErrorStateIsShown = true
+
                 error.text = when (e) {
                     is FirebaseAuthWordException -> getString(e.localizedMessageRes)
                     else -> e.localizedMessage
@@ -206,7 +213,17 @@ class AuthActivity : AppCompatActivity() {
                 val bgTransition = editTextContainer.background as TransitionDrawable
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
-                lastErrorStateIsShown = true
+
+                val errorTextColor = getColorFromAttr(R.attr.textColorOnError)
+                val errorHintColor = getColorFromAttr(R.attr.textColorHintOnError)
+                TransitionManager.beginDelayedTransition(container)
+                email.setTextColor(errorTextColor)
+                email.setHintTextColor(errorHintColor)
+                password.setTextColor(errorTextColor)
+                password.setHintTextColor(errorHintColor)
+                confirmPassword.setTextColor(errorTextColor)
+                confirmPassword.setHintTextColor(errorHintColor)
+
             }
         }
     }
@@ -225,6 +242,16 @@ class AuthActivity : AppCompatActivity() {
                 val bgTransition = editTextContainer.background as TransitionDrawable
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
+
+                val textColor = getColorFromAttr(android.R.attr.textColorPrimary)
+                val hintColor = getColorFromAttr(android.R.attr.textColorTertiary)
+                TransitionManager.beginDelayedTransition(container)
+                email.setTextColor(textColor)
+                email.setHintTextColor(hintColor)
+                password.setTextColor(textColor)
+                password.setHintTextColor(hintColor)
+                confirmPassword.setTextColor(textColor)
+                confirmPassword.setHintTextColor(hintColor)
             }
         }
     }

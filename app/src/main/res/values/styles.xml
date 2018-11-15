@@ -30,6 +30,8 @@
         <item name="colorBrand">@color/colorPink200</item>
         <item name="colorBrandSecondary">@color/colorBlue500</item>
         <item name="textColorError">@color/dark_colorTextError</item>
+        <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
+        <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
 
 
         <item name="textLabelBackgroundColor">@color/colorPink900</item>
@@ -45,7 +47,6 @@
         <item name="colorPrimaryDark">@color/colorTan100</item>
         <item name="colorAccent">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!--<item name="android:statusBarColor">#05000000</item>-->
         <item name="android:windowBackground">@color/colorTan50</item>
 
 
@@ -68,6 +69,8 @@
         <item name="colorBrand">@color/colorPink400</item>
         <item name="colorBrandSecondary">@color/colorBlue800</item>
         <item name="textColorError">@color/light_colorTextError</item>
+        <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
+        <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
 
         <item name="textLabelBackgroundColor">@color/colorPink50</item>
         <item name="textLabelTextColor">@color/colorPink800</item>
