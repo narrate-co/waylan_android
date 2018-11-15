@@ -18,7 +18,8 @@ class ElasticTransition(private val up: Boolean) : Fade() {
 
         private const val PROPNAME_TRANSLATION_Y = "com.words.android.ExitTransition:translationY"
 
-        private const val TRANSLATION_DISTANCE = 200F
+        private const val DEFAULT_DURATION = 300L
+        private const val TRANSLATION_DISTANCE = 500F
     }
 
 
@@ -47,7 +48,7 @@ class ElasticTransition(private val up: Boolean) : Fade() {
                 TRANSLATION_DISTANCE,
                 0F
         )
-        coordinatorAnim.duration = 200
+        coordinatorAnim.duration = DEFAULT_DURATION
 
         val scrimAnim = ObjectAnimator.ofFloat(
                 view,
@@ -55,7 +56,7 @@ class ElasticTransition(private val up: Boolean) : Fade() {
                 0F,
                 1F
         )
-        scrimAnim.duration = 100
+        scrimAnim.duration = DEFAULT_DURATION
 
         set.playTogether(coordinatorAnim, scrimAnim)
         return set
@@ -76,7 +77,7 @@ class ElasticTransition(private val up: Boolean) : Fade() {
                 startY,
                 endY
         )
-        coordinatorAnim.duration = 200
+        coordinatorAnim.duration = DEFAULT_DURATION
 
         val scrimAnim = ObjectAnimator.ofFloat(
                 view,
@@ -84,7 +85,7 @@ class ElasticTransition(private val up: Boolean) : Fade() {
                 1F,
                 0F
         )
-        scrimAnim.duration = 100
+        scrimAnim.duration = DEFAULT_DURATION / 2
 
         set.playTogether(coordinatorAnim, scrimAnim)
         return set
