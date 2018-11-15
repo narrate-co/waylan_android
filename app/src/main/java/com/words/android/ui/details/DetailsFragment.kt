@@ -18,7 +18,7 @@ import com.words.android.util.*
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.details_fragment.view.*
 
-class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, DetailsAdapter.Listener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
 
     companion object {
@@ -37,37 +37,24 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.details_fragment, container, false)
-//        view.toolbar.inflateMenu(R.menu.details_menu)
-//        view.toolbar.setOnMenuItemClickListener(this)
-        val elastic = (view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior
-        elastic.addCallback(this)
-//        view.toolbar.setNavigationOnClickListener {
+        ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()
         }
 
-
+        setUpStatusBarScrim(view.statusBarScrim, view.appBar)
 
         return view
     }
 
-    // defer load intensive work until after the fragment transaction has ended
-    override fun onEnterTransactionEnded() {
-        println("ElasticTransition::onEnterTransactionEnded")
 
-    }
-
+    //defer load intensive work until after transition has ended
     override fun onEnterTransitionEnded() {
 
         setUpRecyclerView()
 
         sharedViewModel.currentSources.observe(this, Observer { source ->
             sharedViewModel.setCurrentWordRecented()
-//            when (source) {
-//                is WordSource.FirestoreUserSource -> {
-//                    setUserWord(source.userWord)
-//                }
-//            }
             adapter.submitWordSource(source)
         })
     }
@@ -76,17 +63,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     private fun setUpRecyclerView() {
         recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView?.adapter = adapter
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.action_favorite -> {
-                sharedViewModel.setCurrentWordFavorited(!item.isChecked)
-                true
-            }
-            //TODO implement share?
-            else -> false
-        }
     }
 
     override fun onRelatedWordClicked(relatedWord: String) {
@@ -110,7 +86,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
     }
 
     override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {
-        //TODO change alpha and translationY of other views
         val alpha = 1 - dragFraction
         val cutDragTo = dragTo * .15F
 
@@ -125,18 +100,6 @@ class DetailsFragment: BaseUserFragment(), Toolbar.OnMenuItemClickListener, Deta
         Handler().post { activity?.onBackPressed() }
         return true
     }
-
-//    private fun setUserWord(userWord: UserWord?) {
-//        if (userWord == null)  return
-//
-//        val favoriteMenuItem = toolbar.menu?.findItem(R.id.action_favorite)
-//        val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-//        favoriteMenuItem?.isChecked = isFavorited
-//        favoriteMenuItem?.icon = ContextCompat.getDrawable(context!!, if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
-//
-//    }
-
-
 
 }
 

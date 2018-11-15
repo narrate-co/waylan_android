@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class InsetFrameLayout @JvmOverloads constructor(
         context: Context,

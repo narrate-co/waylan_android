@@ -5,7 +5,10 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.appbar.AppBarLayout
 import com.words.android.di.Injectable
+import com.words.android.util.invisible
+import com.words.android.util.visible
 import javax.inject.Inject
 
 abstract class BaseUserFragment: Fragment(), Injectable {
@@ -41,5 +44,20 @@ abstract class BaseUserFragment: Fragment(), Injectable {
     open fun onEnterTransactionEnded() { }
 
     open fun onEnterTransitionEnded() { }
+
+    fun setUpStatusBarScrim(scrim: View, appBarLayout: AppBarLayout) {
+        scrim.setOnApplyWindowInsetsListener { v, insets ->
+            v.layoutParams.height = insets.systemWindowInsetTop
+            insets
+        }
+
+        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
+            if (verticalOffset == 0) {
+                scrim.invisible()
+            } else {
+                scrim.visible()
+            }
+        })
+    }
 }
 

@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -12,6 +13,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginTop
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -193,8 +196,8 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         printlnD("$TAG::onOffsetChanged verticalOffset = $verticalOffset, totalScrollRange = ${abl?.totalScrollRange}")
         appBarVerticalOffset = verticalOffset
         appBarTotalScrollRange = abl?.totalScrollRange ?: 0
-
     }
+
 
     override fun onLayoutChild(parent: CoordinatorLayout, abl: AppBarLayout, layoutDirection: Int): Boolean {
         // Set the CoordinatorLayout's background
@@ -218,24 +221,23 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     // GestureDetector to understand raw touch events on the AppBarLayout itself
     private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.OnGestureListener {
 
-        private val GTAG = "ElasticAppBarBehavior::GestureDetector"
 
         override fun onShowPress(e: MotionEvent?) {
-            printlnD("$GTAG::onShowPress - ${e?.action}")
+            printlnD("$TAG::gestureDetector::onShowPress - ${e?.action}")
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            printlnD("$GTAG::onSingleTapUp")
+            printlnD("$TAG::gestureDetector::onSingleTapUp")
             return true
         }
 
         override fun onDown(e: MotionEvent?): Boolean {
-            printlnD("$GTAG::onDown")
+            printlnD("$TAG::gestureDetector::onDown")
             return true
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            printlnD("$GTAG::onFling")
+            printlnD("$TAG::gestureDetector::onFling")
             if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) { //we are not currently dragging and should not consume this fling
                 flinging = true
             }
@@ -243,14 +245,14 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-            printlnD("$GTAG::onScroll distanceY = $distanceY")
+            printlnD("$TAG::gestureDetector::onScroll distanceY = $distanceY")
             dragScaleVertical(parentCoordinatorLayout, distanceY.toInt())
             //TODO add dragScaleHorizontal.... which currently breaks things
             return true
         }
 
         override fun onLongPress(e: MotionEvent?) {
-            printlnD("$GTAG::onLongPress")
+            printlnD("$TAG::gestureDetector::onLongPress")
         }
 
     })
