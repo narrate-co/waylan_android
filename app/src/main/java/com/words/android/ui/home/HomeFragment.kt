@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.words.android.MainActivity
 import com.words.android.R
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.ui.list.ListFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
@@ -32,11 +36,22 @@ class HomeFragment: BaseUserFragment() {
         view.recentContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.RECENT) }
         view.favoriteContainer.setOnClickListener { onMenuButtonClicked(ListFragment.ListType.FAVORITE) }
         view.settings.setOnClickListener { launchSettings() }
+        setUpStatusBarScrim(view.statusBarScrim)
+        setUpReachabilityParams(view)
         return view
     }
 
     override fun onEnterTransactionEnded() {
         setUpListPreviews()
+    }
+
+    private fun setUpReachabilityParams(view: View) {
+        view.doOnPreDraw {
+            val totalHeight = view.scrollContainer.height
+            val menuContainerHeight = view.constraintContainer.height
+            val topOffset = Math.max(view.statusBarScrim.height, totalHeight - menuContainerHeight - resources.getDimensionPixelSize(R.dimen.search_min_peek_height) - resources.getDimensionPixelSize(R.dimen.home_menu_bottom_offset_min))
+            view.scrollContainer.updatePadding(top = topOffset)
+        }
     }
 
     private fun setUpListPreviews() {

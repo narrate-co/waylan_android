@@ -69,13 +69,13 @@ abstract class BaseUserFragment: Fragment(), Injectable {
 
     open fun onEnterTransitionEnded() { }
 
-    fun setUpStatusBarScrim(scrim: View, appBarLayout: AppBarLayout) {
+    fun setUpStatusBarScrim(scrim: View, appBarLayout: AppBarLayout? = null) {
         scrim.setOnApplyWindowInsetsListener { v, insets ->
             v.layoutParams.height = insets.systemWindowInsetTop
             insets
         }
 
-        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
+        appBarLayout?.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
             if (verticalOffset == 0) {
                 scrim.invisible()
             } else {
