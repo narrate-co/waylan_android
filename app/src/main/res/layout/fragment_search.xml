@@ -37,6 +37,8 @@
             android:focusable="true"
             android:hint="Search Words"
             android:maxLines="1"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:paddingStart="8dp" />
 
         <androidx.appcompat.widget.AppCompatImageView
