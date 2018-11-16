@@ -12,7 +12,7 @@ private val User.totalStateDuration: Long
 val User.merriamWebsterState: PluginState
     get() {
         return when {
-            isMerriamWebsterSubscriber -> PluginState.Subscribed(merriamWebsterStarted)
+            isMerriamWebsterSubscriber -> PluginState.Purchased(merriamWebsterStarted)
             else -> PluginState.FreeTrial(isAnonymous, merriamWebsterStarted)
         }
     }

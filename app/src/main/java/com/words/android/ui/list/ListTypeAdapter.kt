@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.words.android.R
+import com.words.android.data.repository.FirestoreGlobalSource
+import com.words.android.data.repository.FirestoreUserSource
 import com.words.android.data.repository.WordSource
 
 class ListTypeAdapter(
@@ -20,26 +22,26 @@ class ListTypeAdapter(
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<WordSource>() {
             override fun areItemsTheSame(o: WordSource, n: WordSource): Boolean {
-                if (o is WordSource.FirestoreUserSource && n is WordSource.FirestoreUserSource) return o.userWord.id == n.userWord.id
-                if (o is WordSource.FirestoreGlobalSource && n is WordSource.FirestoreGlobalSource) return o.globalWord.id == n.globalWord.id
+                if (o is FirestoreUserSource && n is FirestoreUserSource) return o.userWord.id == n.userWord.id
+                if (o is FirestoreGlobalSource && n is FirestoreGlobalSource) return o.globalWord.id == n.globalWord.id
                 return false
             }
 
             override fun areContentsTheSame(oldItem: WordSource, newItem: WordSource): Boolean {
-                if (oldItem is WordSource.FirestoreUserSource && newItem is WordSource.FirestoreUserSource) return areUserWordContentsTheSame(oldItem, newItem)
-                if (oldItem is WordSource.FirestoreGlobalSource && newItem is WordSource.FirestoreGlobalSource) return areGlobalWordContentsTheSame(oldItem, newItem)
+                if (oldItem is FirestoreUserSource && newItem is FirestoreUserSource) return areUserWordContentsTheSame(oldItem, newItem)
+                if (oldItem is FirestoreGlobalSource && newItem is FirestoreGlobalSource) return areGlobalWordContentsTheSame(oldItem, newItem)
 
                 return false
             }
 
-            fun areUserWordContentsTheSame(o: WordSource.FirestoreUserSource, n: WordSource.FirestoreUserSource): Boolean {
+            fun areUserWordContentsTheSame(o: FirestoreUserSource, n: FirestoreUserSource): Boolean {
                 return o.userWord.word == n.userWord.word &&
                         o.userWord.defPreview == n.userWord.defPreview &&
                         o.userWord.synonymPreview == n.userWord.synonymPreview &&
                         o.userWord.partOfSpeechPreview == n.userWord.partOfSpeechPreview
             }
 
-            fun areGlobalWordContentsTheSame(o: WordSource.FirestoreGlobalSource, n: WordSource.FirestoreGlobalSource): Boolean {
+            fun areGlobalWordContentsTheSame(o: FirestoreGlobalSource, n: FirestoreGlobalSource): Boolean {
                 return o.globalWord.word == n.globalWord.word &&
                         o.globalWord.defPreview == n.globalWord.defPreview &&
                         o.globalWord.synonymPreview == n.globalWord.synonymPreview &&

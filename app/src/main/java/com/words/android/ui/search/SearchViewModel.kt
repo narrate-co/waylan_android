@@ -1,6 +1,7 @@
 package com.words.android.ui.search
 
 import androidx.lifecycle.*
+import com.words.android.data.repository.FirestoreUserSource
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
 import com.words.android.data.spell.SuggestItem
@@ -35,7 +36,7 @@ class SearchViewModel @Inject constructor(
 
     private val wordId = MutableLiveData<String>()
 
-    val firestoreUserSource: LiveData<WordSource.FirestoreUserSource> = Transformations.switchMap(wordId) {
+    val firestoreUserSource: LiveData<FirestoreUserSource> = Transformations.switchMap(wordId) {
         wordRepository.getFirestoreUserSource(it)
     }
 

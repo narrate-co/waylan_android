@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.words.android.R
 import com.words.android.data.disk.wordset.Example
 import com.words.android.data.disk.wordset.Meaning
+import com.words.android.data.repository.MerriamWebsterSource
+import com.words.android.data.repository.WordPropertiesSource
 import com.words.android.data.repository.WordSource
+import com.words.android.data.repository.WordsetSource
 import com.words.android.util.Bindable
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.details_component_examples.view.*
@@ -34,7 +37,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
 
     class TitleComponentViewHolder(view: View, listener: DetailsComponentListener): DetailsComponentViewHolder(view, listener) {
         override fun bind(t: DetailsComponent) {
-            (t.source as? WordSource.WordPropertiesSource)?.let {
+            (t.source as? WordPropertiesSource)?.let {
                 view.detailsComponentTitleText.text = it.props.word
             }
         }
@@ -47,7 +50,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         }
 
         override fun bind(t: DetailsComponent) {
-            (t.source as? WordSource.MerriamWebsterSource)?.let {
+            (t.source as? MerriamWebsterSource)?.let {
                 view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsDefinitions)
             }
         }
@@ -70,7 +73,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         private var currentMeanings: List<Meaning> = emptyList()
 
         override fun bind(t: DetailsComponent) {
-            (t.source as? WordSource.WordsetSource)?.let {
+            (t.source as? WordsetSource)?.let {
                 val meanings = it.wordAndMeaning.meanings
                 if (currentMeanings.containsAll(meanings)) return
 
@@ -119,7 +122,7 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
         private var currentMeanings: List<Meaning> = emptyList()
 
         override fun bind(t: DetailsComponent) {
-            (t.source as? WordSource.WordsetSource)?.let {
+            (t.source as? WordsetSource)?.let {
                 val meanings = it.wordAndMeaning.meanings
                 if (currentMeanings.containsAll(meanings)) return
 

@@ -3,6 +3,8 @@ package com.words.android.ui.list
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.words.android.data.disk.wordset.Synonym
+import com.words.android.data.repository.FirestoreGlobalSource
+import com.words.android.data.repository.FirestoreUserSource
 import com.words.android.data.repository.WordSource
 import com.words.android.util.toChip
 import kotlinx.android.synthetic.main.list_item_layout.view.*
@@ -17,13 +19,13 @@ class ListTypeViewHolder(private val view: View, private val listener: ListTypeV
     fun bind(source: WordSource) {
         //Set word
         when (source) {
-            is WordSource.FirestoreUserSource -> bindFirestoreUserSource(source)
-            is WordSource.FirestoreGlobalSource -> bindFirestoreGlobalSource(source)
+            is FirestoreUserSource -> bindFirestoreUserSource(source)
+            is FirestoreGlobalSource -> bindFirestoreGlobalSource(source)
         }
 
 
     }
-    private fun bindFirestoreUserSource(source: WordSource.FirestoreUserSource) {
+    private fun bindFirestoreUserSource(source: FirestoreUserSource) {
         bindSource(
                 source.userWord.word,
                 source.userWord.partOfSpeechPreview,
@@ -33,7 +35,7 @@ class ListTypeViewHolder(private val view: View, private val listener: ListTypeV
         )
     }
 
-    private fun bindFirestoreGlobalSource(source: WordSource.FirestoreGlobalSource) {
+    private fun bindFirestoreGlobalSource(source: FirestoreGlobalSource) {
         bindSource(
                 source.globalWord.word,
                 source.globalWord.partOfSpeechPreview,

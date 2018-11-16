@@ -21,6 +21,7 @@ import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
 import com.words.android.util.collapse
 import com.words.android.util.expand
+import com.words.android.util.hideSoftKeyboard
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -100,6 +101,13 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
                 val adjustedInterpolatedTime = 1.0F - offset
                 params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
                 search.layoutParams = params
+            }
+        }
+
+        (activity as MainActivity).searchSheetCallback.addOnStateChangedAction { view, newState ->
+            if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                //make sure keyboard is down
+                (activity as MainActivity).hideSoftKeyboard()
             }
         }
 

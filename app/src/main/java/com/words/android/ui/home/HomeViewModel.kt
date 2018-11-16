@@ -3,6 +3,8 @@ package com.words.android.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.words.android.data.repository.FirestoreGlobalSource
+import com.words.android.data.repository.FirestoreUserSource
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
 import com.words.android.di.FragmentScope
@@ -21,8 +23,8 @@ class HomeViewModel @Inject constructor(private val wordRepository: WordReposito
         }) { list ->
             val previewWords = list.mapNotNull {
                 when (it) {
-                    is WordSource.FirestoreUserSource -> it.userWord.word
-                    is WordSource.FirestoreGlobalSource -> it.globalWord.word
+                    is FirestoreUserSource -> it.userWord.word
+                    is FirestoreGlobalSource -> it.globalWord.word
                     else -> ""
                 }
             }

@@ -58,7 +58,7 @@ class DeveloperSettingsFragment : BaseUserFragment() {
             view.merriamWebsterPreference.settingsDescription.text = when (state) {
                 is PluginState.None -> "None"
                 is PluginState.FreeTrial -> "Free trial (${if (state.isValid) "valid" else "expired"})"
-                is PluginState.Subscribed -> "Subscribed (${if (state.isValid) "valid" else "expired"})"
+                is PluginState.Purchased -> "Purchased (${if (state.isValid) "valid" else "expired"})"
             }
             view.merriamWebsterPreference.setOnClickListener {
                 cycleState(user)
@@ -83,12 +83,12 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                     state is PluginState.None -> PluginState.FreeTrial(user.isAnonymous)
                     //FreeTrial (valid) -> FreeTrial (expired)
                     state is PluginState.FreeTrial && state.isValid -> PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
-                    //FreeTrial (expired) -> Subscribed (valid)
-                    state is PluginState.FreeTrial && !state.isValid -> PluginState.Subscribed()
-                    //Subscribed (valid) -> Subscribed (expired)
-                    state is PluginState.Subscribed && state.isValid -> PluginState.Subscribed(user.oneDayPastExpiration)
-                    //Subscribed (expired) -> FreeTrial (valid)
-                    state is PluginState.Subscribed && !state.isValid -> PluginState.FreeTrial(user.isAnonymous)
+                    //FreeTrial (expired) -> Purchased (valid)
+                    state is PluginState.FreeTrial && !state.isValid -> PluginState.Purchased()
+                    //Purchased (valid) -> Purchased (expired)
+                    state is PluginState.Purchased && state.isValid -> PluginState.Purchased(user.oneDayPastExpiration)
+                    //Purchased (expired) -> FreeTrial (valid)
+                    state is PluginState.Purchased && !state.isValid -> PluginState.FreeTrial(user.isAnonymous)
                     //Default
                     else -> PluginState.None()
                 })

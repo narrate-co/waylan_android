@@ -1,6 +1,9 @@
 package com.words.android.ui.details
 
+import com.words.android.data.repository.MerriamWebsterSource
+import com.words.android.data.repository.WordPropertiesSource
 import com.words.android.data.repository.WordSource
+import com.words.android.data.repository.WordsetSource
 import com.words.android.util.Diffable
 
 sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<DetailsComponent> {
@@ -9,7 +12,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
         TITLE(1), MERRIAM_WEBSTER(2), WORDSET(3), EXAMPLE(4)
     }
 
-    class TitleComponent(source: WordSource.WordPropertiesSource): DetailsComponent(source, Type.TITLE) {
+    class TitleComponent(source: WordPropertiesSource): DetailsComponent(source, Type.TITLE) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is TitleComponent) return false
 
@@ -18,7 +21,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
 
         override fun contentsSameAs(newOther: DetailsComponent): Boolean {
             if (this == newOther) return true
-            if (source !is WordSource.WordPropertiesSource || newOther.source !is WordSource.WordPropertiesSource) return false
+            if (source !is WordPropertiesSource || newOther.source !is WordPropertiesSource) return false
 
             return source.props.word == newOther.source.props.word
         }
@@ -28,7 +31,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
         }
     }
 
-    class MerriamWebsterComponent(source: WordSource.MerriamWebsterSource): DetailsComponent(source, Type.MERRIAM_WEBSTER) {
+    class MerriamWebsterComponent(source: MerriamWebsterSource): DetailsComponent(source, Type.MERRIAM_WEBSTER) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is MerriamWebsterComponent) return false
             return true
@@ -36,7 +39,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
 
         override fun contentsSameAs(newOther: DetailsComponent): Boolean {
             if (this == newOther) return true
-            if (source !is WordSource.MerriamWebsterSource || newOther.source !is WordSource.MerriamWebsterSource) return false
+            if (source !is MerriamWebsterSource || newOther.source !is MerriamWebsterSource) return false
 
             val wordsSize = newOther.source.wordsDefinitions.entries.map { it.word?.word }.filterNotNull().size
             val defsSize = newOther.source.wordsDefinitions.entries.map { it.definitions }.flatten().map { it.id }.size
@@ -56,7 +59,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
         }
     }
 
-    class WordsetComponent(source: WordSource.WordsetSource): DetailsComponent(source, Type.WORDSET) {
+    class WordsetComponent(source: WordsetSource): DetailsComponent(source, Type.WORDSET) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is WordsetComponent) return false
 
@@ -65,7 +68,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
 
         override fun contentsSameAs(newOther: DetailsComponent): Boolean {
             if (this == newOther) return true
-            if (source !is WordSource.WordsetSource || newOther.source !is WordSource.WordsetSource) return false
+            if (source !is WordsetSource || newOther.source !is WordsetSource) return false
             //TODO make full checks
 
             val isTheSame = source.wordAndMeaning.meanings.map { it.def }.toTypedArray().contentDeepEquals(newOther.source.wordAndMeaning.meanings.map { it.def }.toTypedArray())
@@ -79,7 +82,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
         }
     }
 
-    class ExamplesComponent(source: WordSource.WordsetSource): DetailsComponent(source,Type.EXAMPLE) {
+    class ExamplesComponent(source: WordsetSource): DetailsComponent(source,Type.EXAMPLE) {
         override fun equalTo(newOther: DetailsComponent): Boolean {
             if (newOther !is ExamplesComponent) return false
 
@@ -88,7 +91,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
 
         override fun contentsSameAs(newOther: DetailsComponent): Boolean {
             if (this == newOther) return true
-            if (source !is WordSource.WordsetSource || newOther.source !is WordSource.WordsetSource) return false
+            if (source !is WordsetSource || newOther.source !is WordsetSource) return false
             //TODO make full checks
 
             val isTheSame = source.wordAndMeaning.meanings.map { it.examples }.toTypedArray().contentDeepEquals(newOther.source.wordAndMeaning.meanings.map { it.examples }.toTypedArray())

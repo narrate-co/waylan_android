@@ -3,7 +3,7 @@ package com.words.android.ui.details
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.words.android.data.repository.WordSource
+import com.words.android.data.repository.*
 import kotlin.reflect.KClass
 
 class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter<DetailsComponent, DetailsComponentViewHolder>(diffCallback), DetailsComponentListener {
@@ -34,11 +34,11 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         private var wordId: String = ""
 
-        private var propertiesSource: WordSource.WordPropertiesSource? = null
-        private var wordset: WordSource.WordsetSource? = null
-        private var merriamWebster: WordSource.MerriamWebsterSource? = null
-        private var firestoreUser: WordSource.FirestoreUserSource? = null
-        private var firestoreGlobal: WordSource.FirestoreGlobalSource? = null
+        private var propertiesSource: WordPropertiesSource? = null
+        private var wordset: WordsetSource? = null
+        private var merriamWebster: MerriamWebsterSource? = null
+        private var firestoreUser: FirestoreUserSource? = null
+        private var firestoreGlobal: FirestoreGlobalSource? = null
 
         fun addSource(source: WordSource) {
 
@@ -47,21 +47,21 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
             clearIfNewWordSource(source)
 
             when (source) {
-                is WordSource.WordPropertiesSource -> {
+                is WordPropertiesSource -> {
                     propertiesSource = source
                 }
-                is WordSource.WordsetSource -> {
+                is WordsetSource -> {
                     wordset = source
                 }
-                is WordSource.MerriamWebsterSource -> {
+                is MerriamWebsterSource -> {
                     if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty()) {
                         merriamWebster = source
                     }
                 }
-                is WordSource.FirestoreUserSource -> {
+                is FirestoreUserSource -> {
                     firestoreUser = source
                 }
-                is WordSource.FirestoreGlobalSource -> {
+                is FirestoreGlobalSource -> {
                     firestoreGlobal = source
                 }
             }
@@ -69,11 +69,11 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         fun removeSource(type: KClass<out WordSource>) {
             when (type) {
-                WordSource.WordPropertiesSource::class -> propertiesSource = null
-                WordSource.WordsetSource::class -> wordset = null
-                WordSource.MerriamWebsterSource::class -> merriamWebster = null
-                WordSource.FirestoreUserSource::class -> firestoreUser = null
-                WordSource.FirestoreGlobalSource::class -> firestoreGlobal = null
+                WordPropertiesSource::class -> propertiesSource = null
+                WordsetSource::class -> wordset = null
+                MerriamWebsterSource::class -> merriamWebster = null
+                FirestoreUserSource::class -> firestoreUser = null
+                FirestoreGlobalSource::class -> firestoreGlobal = null
             }
         }
 
@@ -94,10 +94,10 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         private fun clearIfNewWordSource(source: WordSource): Boolean {
             val newWordId: String? = when (source) {
-                is WordSource.WordsetSource -> source.wordAndMeaning.word?.word
-                is WordSource.MerriamWebsterSource -> source.wordsDefinitions?.entries.firstOrNull()?.word?.word
-                is WordSource.FirestoreUserSource -> source.userWord.word
-                is WordSource.FirestoreGlobalSource -> source.globalWord.word
+                is WordsetSource -> source.wordAndMeaning.word?.word
+                is MerriamWebsterSource -> source.wordsDefinitions?.entries.firstOrNull()?.word?.word
+                is FirestoreUserSource -> source.userWord.word
+                is FirestoreGlobalSource -> source.globalWord.word
                 else -> return false
             }
 

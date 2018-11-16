@@ -25,13 +25,13 @@ class WordRepository(
 
     fun filterWords(input: String): LiveData<List<WordSource>> {
         return Transformations.map(db.wordDao().load("$input%")) { word ->
-            word.map { WordSource.SimpleWordSource(it) }
+            word.map { SimpleWordSource(it) }
         }
     }
 
     fun lookup(input: String): LiveData<List<WordSource>> {
         val suggSource = Transformations.map(symSpellStore.lookupLive(input)) { list ->
-            list.map { WordSource.SuggestSource(it) }
+            list.map { SuggestSource(it) }
         }
 
         return MergedLiveData(filterWords(input), suggSource) { d1, d2 ->
@@ -49,34 +49,34 @@ class WordRepository(
 
         // Word Properties
         mediatorLiveData.addSource(getWordProperties(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.WordPropertiesSource(it)
+            if (it != null) mediatorLiveData.value = WordPropertiesSource(it)
         }
 
         // Wordset
         mediatorLiveData.addSource(getWordAndMeanings(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.WordsetSource(it)
+            if (it != null) mediatorLiveData.value = WordsetSource(it)
         }
 
         // Firestore User Word
         mediatorLiveData.addSource(getUserWord(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.FirestoreUserSource(it)
+            if (it != null) mediatorLiveData.value = FirestoreUserSource(it)
         }
 
         // Firestore Global Word
         mediatorLiveData.addSource(getGlobalWord(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.FirestoreGlobalSource(it)
+            if (it != null) mediatorLiveData.value = FirestoreGlobalSource(it)
         }
 
         mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            if (it != null) mediatorLiveData.value = WordSource.MerriamWebsterSource(it)
+            if (it != null) mediatorLiveData.value = MerriamWebsterSource(it)
         }
 
         return mediatorLiveData
     }
 
-    fun getWordPropertiesSource(id: String): LiveData<WordSource.WordPropertiesSource> {
+    fun getWordPropertiesSource(id: String): LiveData<WordPropertiesSource> {
         return Transformations.map(getWordProperties(id)) {
-            WordSource.WordPropertiesSource(it)
+            WordPropertiesSource(it)
         }
     }
 
@@ -86,18 +86,18 @@ class WordRepository(
         return data
     }
 
-    fun getWordsetSource(id: String): LiveData<WordSource.WordsetSource> {
+    fun getWordsetSource(id: String): LiveData<WordsetSource?> {
         return Transformations.map(getWordAndMeanings(id)) {
-            WordSource.WordsetSource(it)
+            if (it != null) WordsetSource(it) else null
         }
     }
 
     private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
             if (word.isNotBlank()) db.wordDao().getWordAndMeanings(word) else LiveDataHelper.empty()
 
-   fun getFirestoreUserSource(id: String): LiveData<WordSource.FirestoreUserSource> {
+   fun getFirestoreUserSource(id: String): LiveData<FirestoreUserSource> {
         return Transformations.map(getUserWord(id)) {
-            WordSource.FirestoreUserSource(it)
+            FirestoreUserSource(it)
         }
     }
 
@@ -105,9 +105,9 @@ class WordRepository(
         return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
-    fun getFirestoreGlobalSource(id: String): LiveData<WordSource.FirestoreGlobalSource> {
+    fun getFirestoreGlobalSource(id: String): LiveData<FirestoreGlobalSource> {
         return Transformations.map(getGlobalWord(id)) {
-            WordSource.FirestoreGlobalSource(it)
+            FirestoreGlobalSource(it)
         }
     }
 
@@ -115,9 +115,9 @@ class WordRepository(
         return if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
     }
 
-    fun getMerriamWebsterSource(id: String): LiveData<WordSource.MerriamWebsterSource> {
+    fun getMerriamWebsterSource(id: String): LiveData<MerriamWebsterSource> {
         return Transformations.map(getMerriamWebsterWordAndDefinitions(id)) {
-            WordSource.MerriamWebsterSource(it)
+            MerriamWebsterSource(it)
         }
     }
 
@@ -134,14 +134,14 @@ class WordRepository(
     fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getTrending(limit)) { globalWords ->
-            globalWords.map { WordSource.FirestoreGlobalSource(it) }
+            globalWords.map { FirestoreGlobalSource(it) }
         }
     }
 
     fun getFavorites(limit: Long? = null): LiveData<List<WordSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getFavorites(limit)) { userWords ->
-            userWords.map { WordSource.FirestoreUserSource(it) }
+            userWords.map { FirestoreUserSource(it) }
         }
     }
 
@@ -156,7 +156,7 @@ class WordRepository(
     fun getRecents(limit: Long? = null): LiveData<List<WordSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getRecents(limit)) { userWords ->
-            userWords.map { WordSource.FirestoreUserSource(it) }
+            userWords.map { FirestoreUserSource(it) }
         }
     }
 

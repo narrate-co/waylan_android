@@ -209,7 +209,7 @@ class FirestoreStore(
         try {
             val user = getUser()
             user.merriamWebsterStarted = state.started
-            user.isMerriamWebsterSubscriber = state is PluginState.Subscribed
+            user.isMerriamWebsterSubscriber = state is PluginState.Purchased
             setUser(user)
         } catch (e: Exception) {
             e.printStackTrace()

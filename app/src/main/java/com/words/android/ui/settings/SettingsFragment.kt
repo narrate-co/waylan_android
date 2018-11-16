@@ -126,7 +126,7 @@ class SettingsFragment : BaseUserFragment() {
                 view.accountDialogCard.textLabel.visibility = View.VISIBLE
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_free_trial_body)
             }
-            is PluginState.Subscribed -> {
+            is PluginState.Purchased -> {
                 //This should never happen
                 view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
                 view.accountDialogCard.textLabel.visibility = View.GONE
@@ -178,7 +178,7 @@ class SettingsFragment : BaseUserFragment() {
                     view.accountDialogCard.textLabel.visibility = View.VISIBLE
                 }
             }
-            is PluginState.Subscribed -> {
+            is PluginState.Purchased -> {
                 if (state.isValid) {
                     view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_subscribed_body)
                     view.accountDialogCard.topButton.visibility = View.GONE
@@ -192,7 +192,7 @@ class SettingsFragment : BaseUserFragment() {
                         //TODO take to Google Play Billing renewal flow
                     }
                     view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                    view.accountDialogCard.textLabel.text = "Subscription expired"
+                    view.accountDialogCard.textLabel.text = "Plugin expired"
                 }
 
             }

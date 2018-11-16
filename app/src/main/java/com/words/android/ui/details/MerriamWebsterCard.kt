@@ -154,8 +154,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
         when (state) {
             is PluginState.None -> textLabel.text = "Plugin available"
             is PluginState.FreeTrial -> textLabel.text = "Free trial expired"
-            is PluginState.Subscribed -> textLabel.text = "Subscription expired"
-
+            is PluginState.Purchased -> textLabel.text = "Plugin expired"
         }
         textLabel.visibility = View.VISIBLE
 
@@ -230,10 +229,10 @@ class MerriamWebsterCard @JvmOverloads constructor(
                 }
                 textLabel.visibility = View.VISIBLE
             }
-            is PluginState.Subscribed -> {
+            is PluginState.Purchased -> {
                 if (!state.isValid) {
                     // show label
-                    textLabel.text = "Subscription expired"
+                    textLabel.text = "Plugin expired"
                     textLabel.visibility = View.VISIBLE
                 } else if (state.remainingDays <= 7L) {
                     // hide label

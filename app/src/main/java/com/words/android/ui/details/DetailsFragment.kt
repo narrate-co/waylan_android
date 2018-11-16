@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
+import com.words.android.data.repository.MerriamWebsterSource
 import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.*
@@ -66,7 +67,9 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
         })
 
         detailsViewModel.wordsetSource.observe(this, Observer {
-            adapter.submitWordSource(it)
+            if (it != null) {
+                adapter.submitWordSource(it)
+            }
         })
         detailsViewModel.firestoreUserSource.observe(this, Observer {
             adapter.submitWordSource(it)
@@ -102,7 +105,7 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
 
     override fun onMerriamWebsterDismissClicked() {
         //TODO set user setting
-        adapter.removeWordSource(WordSource.MerriamWebsterSource::class)
+        adapter.removeWordSource(MerriamWebsterSource::class)
     }
 
     override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {

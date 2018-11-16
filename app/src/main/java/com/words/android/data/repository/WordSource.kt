@@ -8,13 +8,14 @@ import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.spell.SuggestItem
 
-sealed class WordSource {
-    class WordPropertiesSource(val props: com.words.android.data.repository.WordProperties): WordSource()
-    class SimpleWordSource(val word: Word): WordSource()
-    class SuggestSource(val item: SuggestItem): WordSource()
-    class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()
-    class FirestoreUserSource(val userWord: UserWord): WordSource()
-    class FirestoreGlobalSource(val globalWord: GlobalWord): WordSource()
-    class MerriamWebsterSource(val wordsDefinitions: PermissiveWordsDefinitions): WordSource()
-}
+sealed class WordSource
 
+
+//success responses
+class WordPropertiesSource(val props: com.words.android.data.repository.WordProperties): WordSource()
+class SimpleWordSource(val word: Word): WordSource()
+class SuggestSource(val item: SuggestItem): WordSource()
+class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()
+class FirestoreUserSource(val userWord: UserWord): WordSource()
+class FirestoreGlobalSource(val globalWord: GlobalWord): WordSource()
+class MerriamWebsterSource(val wordsDefinitions: PermissiveWordsDefinitions): WordSource()
