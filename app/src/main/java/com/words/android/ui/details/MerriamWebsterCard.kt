@@ -184,7 +184,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
         audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
 
         var fileName = word.sound.wav.removeSuffix(".wav")
-        val url = if (fileName.isNotBlank()) "http://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
+        val url = if (fileName.isNotBlank()) "https://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
 //        val url = "error" //error url
         audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
 

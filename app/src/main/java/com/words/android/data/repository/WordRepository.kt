@@ -11,6 +11,7 @@ import com.words.android.data.firestore.FirestoreStore
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.words.GlobalWord
 import com.words.android.data.mw.MerriamWebsterStore
+import com.words.android.data.spell.SuggestItem
 import com.words.android.data.spell.SymSpellStore
 import com.words.android.util.LiveDataHelper
 import com.words.android.util.MergedLiveData
@@ -36,42 +37,11 @@ class WordRepository(
 
         return MergedLiveData(filterWords(input), suggSource) { d1, d2 ->
             //TODO deduplicate/sort smartly. Make WordSource comparable?
-            (d1 + d2)
+            (d1 + d2).distinctBy {
+                val t = if (it is SimpleWordSource) it.word.word else if (it is SuggestSource) it.item.term else ""
+                t
+            }
         }
-    }
-
-    //TODO write a method that returns a WordSourceGroup
-    //TODO on restoreInstanceState, the last value gets passed to the observer, meaning only
-    //TODO the latest source will get passed again, leaving all else empty
-    fun getWordSources(id: String): LiveData<WordSource> {
-        println("WordRepository::getWordSources - id = $id")
-        val mediatorLiveData = MediatorLiveData<WordSource>()
-
-        // Word Properties
-        mediatorLiveData.addSource(getWordProperties(id)) {
-            if (it != null) mediatorLiveData.value = WordPropertiesSource(it)
-        }
-
-        // Wordset
-        mediatorLiveData.addSource(getWordAndMeanings(id)) {
-            if (it != null) mediatorLiveData.value = WordsetSource(it)
-        }
-
-        // Firestore User Word
-        mediatorLiveData.addSource(getUserWord(id)) {
-            if (it != null) mediatorLiveData.value = FirestoreUserSource(it)
-        }
-
-        // Firestore Global Word
-        mediatorLiveData.addSource(getGlobalWord(id)) {
-            if (it != null) mediatorLiveData.value = FirestoreGlobalSource(it)
-        }
-
-        mediatorLiveData.addSource(getMerriamWebsterWordAndDefinitions(id)) {
-            if (it != null) mediatorLiveData.value = MerriamWebsterSource(it)
-        }
-
-        return mediatorLiveData
     }
 
     fun getWordPropertiesSource(id: String): LiveData<WordPropertiesSource> {

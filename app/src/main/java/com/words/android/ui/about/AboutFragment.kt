@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.words.android.R
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.ui.common.BaseUserFragment
 import kotlinx.android.synthetic.main.fragment_list.view.*
 
@@ -19,7 +20,7 @@ class AboutFragment: BaseUserFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_about, container, false)
         view.navigationIcon.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
         return view
     }

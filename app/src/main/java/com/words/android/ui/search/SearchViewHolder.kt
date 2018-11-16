@@ -9,24 +9,24 @@ import com.words.android.data.repository.SuggestSource
 import com.words.android.data.repository.WordSource
 import kotlinx.android.synthetic.main.search_word_layout.view.*
 
-class WordViewHolder(private val view: View, private val handlers: WordViewHolderHandlers):
+class SearchViewHolder(private val view: View, private val handlers: SearchViewHolderHandlers):
         RecyclerView.ViewHolder(view) {
 
-    interface WordViewHolderHandlers {
-        fun onWordClicked(word: String)
+    interface SearchViewHolderHandlers {
+        fun onWordClicked(word: WordSource)
     }
 
     fun bind(word: WordSource) {
         when (word) {
-            is SimpleWordSource -> bindSource(word.word.word, R.drawable.ic_round_search_outlined_24px)
-            is FirestoreUserSource -> bindSource(word.userWord.word, R.drawable.ic_round_recent_outlined_24px)
-            is SuggestSource -> bindSource(word.item.term, R.drawable.ic_round_smart_outlined_24px)
+            is SimpleWordSource -> bindSource(word.word.word, R.drawable.ic_round_search_outlined_24px, word)
+            is FirestoreUserSource -> bindSource(word.userWord.word, R.drawable.ic_round_recent_outlined_24px, word)
+            is SuggestSource -> bindSource(word.item.term, R.drawable.ic_round_smart_outlined_24px, word)
             else -> clear()
         }
     }
 
-    private fun bindSource(word: String, imgRes: Int) {
-        view.wordText.text = word
+    private fun bindSource(term: String, imgRes: Int, word: WordSource) {
+        view.wordText.text = term
         view.wordIcon.setImageResource(imgRes)
         view.container.setOnClickListener { handlers.onWordClicked(word) }
     }

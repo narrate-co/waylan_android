@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.words.android.*
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.*
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -70,6 +71,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
         view.toolbarTitle.text = type.title
         view.toolbarTitleCollapsed.text = type.title
         view.navigationIcon.setOnClickListener {
+            setUnconsumedNavigationMethod(NavigationMethod.NAV_ICON)
             activity?.onBackPressed()
         }
 
@@ -77,7 +79,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
         setUpBanner(view, type)
 
         setUpStatusBarScrim(view.statusBarScrim, view.appBar)
-        setUpReachabilityAppBar(view.appBar)
+        setUpReachabilityAppBar(view)
 
         return view
     }
@@ -112,14 +114,17 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
         })
     }
 
-    private fun setUpReachabilityAppBar(appBar: AppBarLayout) {
+    private fun setUpReachabilityAppBar(view: View) {
 
-        appBar.doOnPreDraw {
+        view.appBar.doOnPreDraw {
+            //TODO set height of expanded toolbar based on view height. Set collapsed if under a certain limit
+
+            // set min height
             val minHeight = underline.bottom - navigationIcon.top
             val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
             val alphaFraction = 0.6F
-            appBar.toolbarContainer.minimumHeight = minHeight
-            appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            view.appBar.toolbarContainer.minimumHeight = minHeight
+            view.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 val totalScrollRange = appBarLayout.totalScrollRange - minHeight
                 val interpolationEarlyFinish = Math.abs(verticalOffset.toFloat()) / totalScrollRange
 
@@ -151,6 +156,7 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     }
 
     override fun onDragDismissed(): Boolean {
+        setUnconsumedNavigationMethod(NavigationMethod.DRAG_DISMISS)
         Handler().post { activity?.onBackPressed() }
         return true
     }

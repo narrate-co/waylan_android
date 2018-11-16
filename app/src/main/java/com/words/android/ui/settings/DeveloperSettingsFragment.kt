@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.R
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.data.firestore.users.PluginState
 import com.words.android.data.firestore.users.User
 import com.words.android.data.firestore.users.merriamWebsterState
@@ -34,7 +35,7 @@ class DeveloperSettingsFragment : BaseUserFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_developer_settings, container, false)
         view.navigationIcon.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
         setDeveloperSettings(view)
         return view

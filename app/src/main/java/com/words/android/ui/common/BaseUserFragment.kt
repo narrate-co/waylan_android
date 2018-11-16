@@ -1,7 +1,6 @@
 package com.words.android.ui.common
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -9,8 +8,9 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.transition.Transition
 import com.google.android.material.appbar.AppBarLayout
+import com.words.android.MainActivity
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.di.Injectable
 import com.words.android.util.invisible
 import com.words.android.util.visible
@@ -83,5 +83,10 @@ abstract class BaseUserFragment: Fragment(), Injectable {
             }
         })
     }
+
+    fun setUnconsumedNavigationMethod(method: NavigationMethod) {
+        (activity as? MainActivity)?.unconsumedNavigationMethod = method
+    }
+
 }
 

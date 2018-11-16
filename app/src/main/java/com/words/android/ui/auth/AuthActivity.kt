@@ -19,8 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.words.android.App
 import com.words.android.R
 import com.words.android.MainActivity

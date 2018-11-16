@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.ui.common.BaseUserActivity
 import com.words.android.ui.list.ListFragment
 import com.words.android.ui.search.SearchSheetCallback
@@ -25,6 +26,8 @@ class MainActivity : BaseUserActivity() {
                 .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
     }
+
+    var unconsumedNavigationMethod: NavigationMethod? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!(application as App).hasUser) {
@@ -65,7 +68,8 @@ class MainActivity : BaseUserActivity() {
 
     override fun onBackPressed() {
         if (handleFragmentOnBackPressed()) return
-        viewModel.popBackStack()
+        viewModel.popBackStack(unconsumedNavigationMethod)
+        unconsumedNavigationMethod = null
         super.onBackPressed()
     }
 

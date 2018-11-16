@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.words.android.MainViewModel
 import com.words.android.R
+import com.words.android.data.analytics.NavigationMethod
 import com.words.android.data.repository.MerriamWebsterSource
-import com.words.android.data.repository.WordSource
 import com.words.android.ui.common.BaseUserFragment
 import com.words.android.util.*
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -45,6 +45,7 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
         val view = inflater.inflate(R.layout.fragment_details, container, false)
         ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
         view.navigationIcon.setOnClickListener {
+            setUnconsumedNavigationMethod(NavigationMethod.NAV_ICON)
             activity?.onBackPressed()
         }
 
@@ -120,6 +121,7 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
     }
 
     override fun onDragDismissed(): Boolean {
+        setUnconsumedNavigationMethod(NavigationMethod.DRAG_DISMISS)
         Handler().post { activity?.onBackPressed() }
         return true
     }

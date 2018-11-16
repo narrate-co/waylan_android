@@ -19,13 +19,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.words.android.data.firestore.users.UserWord
 import com.words.android.data.firestore.users.UserWordType
+import com.words.android.data.repository.FirestoreUserSource
+import com.words.android.data.repository.SimpleWordSource
+import com.words.android.data.repository.SuggestSource
+import com.words.android.data.repository.WordSource
 import com.words.android.util.collapse
 import com.words.android.util.expand
 import com.words.android.util.hideSoftKeyboard
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
-class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, TextWatcher{
+class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -48,7 +52,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         BottomSheetBehavior.from(view)
     }
 
-    private val adapter by lazy { WordsAdapter(this) }
+    private val adapter by lazy { SearchAdapter(this) }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -72,9 +76,16 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         return view
     }
 
-    override fun onWordClicked(word: String) {
+    override fun onWordClicked(word: WordSource) {
         bottomSheetBehavior.collapse(activity)
-        sharedViewModel.setCurrentWordId(word)
+        val id = when (word) {
+            is SimpleWordSource -> word.word.word
+            is FirestoreUserSource -> word.userWord.word
+            is SuggestSource -> word.item.term
+            else -> ""
+        }
+        sharedViewModel.setCurrentWordId(id)
+        viewModel.logSearchWordEvent(id, word)
         (activity as MainActivity).showDetails()
     }
 
@@ -110,6 +121,7 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
 
         viewModel.searchResults.observe(this, Observer {
             adapter.submitList(it)
+            view.recycler.scrollToPosition(0)
         })
     }
 

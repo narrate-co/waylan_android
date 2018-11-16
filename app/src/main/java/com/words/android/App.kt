@@ -6,6 +6,8 @@ import android.content.Intent
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.words.android.data.analytics.AnalyticsRepository
 import com.words.android.data.prefs.Preferences
 import com.words.android.di.AppInjector
 import com.words.android.di.UserComponent
@@ -27,9 +29,13 @@ class App: Application(), HasActivityInjector{
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
 
+    @Inject
+    lateinit var analyticsRepository: AnalyticsRepository
+
     var hasUser: Boolean = false
 
     fun setUser(auth: Auth?) {
+        analyticsRepository.setUserId(auth?.firebaseUser?.uid)
         userComponentBuilder
                 .user(auth?.user)
                 .firebaseUser(auth?.firebaseUser)

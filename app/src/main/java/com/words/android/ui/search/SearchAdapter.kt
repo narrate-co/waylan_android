@@ -10,7 +10,7 @@ import com.words.android.data.repository.SimpleWordSource
 import com.words.android.data.repository.SuggestSource
 import com.words.android.data.repository.WordSource
 
-class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordSource, WordViewHolder>(diffCallback), WordViewHolder.WordViewHolderHandlers {
+class SearchAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordSource, SearchViewHolder>(diffCallback), SearchViewHolder.SearchViewHolderHandlers {
 
     companion object {
         val diffCallback: DiffUtil.ItemCallback<WordSource> = object : DiffUtil.ItemCallback<WordSource>() {
@@ -42,19 +42,18 @@ class WordsAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordS
     }
 
     interface WordAdapterHandlers {
-        fun onWordClicked(word: String)
+        fun onWordClicked(word: WordSource)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-        return WordViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_word_layout, parent, false), this)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_word_layout, parent, false), this)
     }
 
-    override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onWordClicked(word: String) {
+    override fun onWordClicked(word: WordSource) {
         handlers.onWordClicked(word)
     }
-
 }

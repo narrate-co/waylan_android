@@ -1,6 +1,7 @@
 package com.words.android.ui.search
 
 import androidx.lifecycle.*
+import com.words.android.data.analytics.AnalyticsRepository
 import com.words.android.data.repository.FirestoreUserSource
 import com.words.android.data.repository.WordRepository
 import com.words.android.data.repository.WordSource
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @UserScope
 class SearchViewModel @Inject constructor(
-        private val wordRepository: WordRepository
+        private val wordRepository: WordRepository,
+        private val analyticsRepository: AnalyticsRepository
 ): ViewModel() {
 
     var searchInput: String = ""
@@ -19,8 +21,8 @@ class SearchViewModel @Inject constructor(
             if (value == field) return
             field = value
             searchInputData.value = value
-
         }
+
     private val searchInputData: MutableLiveData<String> = MutableLiveData()
     val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputData) {
         if (it.isEmpty()) {
@@ -44,6 +46,10 @@ class SearchViewModel @Inject constructor(
         if (wordId.value != id) {
             wordId.value = id
         }
+    }
+
+    fun logSearchWordEvent(id: String, word: WordSource) {
+        analyticsRepository.logSearchWordEvent(searchInput, id, word::class.java.simpleName)
     }
 
 }

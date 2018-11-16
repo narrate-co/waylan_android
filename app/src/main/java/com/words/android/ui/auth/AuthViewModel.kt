@@ -158,6 +158,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     private fun <T> Continuation<T>.resumeWithFirebaseAuthException(type: FirebaseAuthWordErrorType, task: Task<AuthResult>? = null) {
         isLoading.value = false
+
         resumeWithException(task?.exception ?: type.exception)
     }
 
