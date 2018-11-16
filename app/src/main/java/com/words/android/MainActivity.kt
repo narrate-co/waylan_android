@@ -70,8 +70,14 @@ class MainActivity : BaseUserActivity() {
     }
 
     private fun setUpSearchSheet() {
+
+        //Set max expanded height to 60% of screen height (max reachability area)
         searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
+
+        // Set scrim alpha on slide
         searchSheetCallback.addOnSlideAction { _, fl -> bottomSheetSkrim.alpha = fl }
+
+        // Set scrim visibility on sheet collapsed/shown
         searchSheetCallback.addOnStateChangedAction { _, newState ->
             when (newState) {
                 BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
@@ -80,10 +86,22 @@ class MainActivity : BaseUserActivity() {
                 else -> bottomSheetSkrim.visible()
             }
         }
-        bottomSheet.setBottomSheetCallback(searchSheetCallback)
+
+        // Hide keyboard if sheet is manually collapsed
+        searchSheetCallback.addOnStateChangedAction { view, newState ->
+            if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                //make sure keyboard is down
+                hideSoftKeyboard()
+            }
+        }
+
+        // collapse sheet if scrim is touched
         bottomSheetSkrim.setOnClickListener {
             bottomSheet.collapse(this)
         }
+
+        bottomSheet.setBottomSheetCallback(searchSheetCallback)
+
     }
 
     private fun handleFragmentOnBackPressed(): Boolean {

@@ -54,62 +54,12 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        //set up recycler view
-        view.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        view.recycler.adapter = adapter
 
-        view.searchEditText.addTextChangedListener(this)
+        setUpSearchBar(view)
 
-        view.searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bottomSheetBehavior.expand()
-            } else {
-                bottomSheetBehavior.collapse(activity)
-            }
-        }
+        setUpRecyclerView(view)
 
-        view.searchEditText.setOnClickListener {
-            if (searchEditText.hasFocus()) {
-                bottomSheetBehavior.expand()
-            }
-        }
-
-        viewModel.searchResults.observe(this, Observer {
-            adapter.submitList(it)
-        })
-
-        sharedViewModel.getBackStack().observe(this, Observer {
-            println("$TAG::getHomeDestination - $it")
-            val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
-            // wait for the next layout step to grantee the actions.width is correctly captured
-            view.post {
-                when (dest) {
-                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
-                    Navigator.HomeDestination.DETAILS -> runActionsAnimation(true)
-                }
-            }
-        })
-
-        (activity as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
-            val currentDest = sharedViewModel.getBackStack().value?.peek()
-                    ?: Navigator.HomeDestination.HOME
-            if (currentDest == Navigator.HomeDestination.DETAILS) {
-                val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-                val hideMargin = keyline2
-                val showMargin = actions.width + keyline2
-                val params = search.layoutParams as ConstraintLayout.LayoutParams
-                val adjustedInterpolatedTime = 1.0F - offset
-                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
-                search.layoutParams = params
-            }
-        }
-
-        (activity as MainActivity).searchSheetCallback.addOnStateChangedAction { view, newState ->
-            if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
-                //make sure keyboard is down
-                (activity as MainActivity).hideSoftKeyboard()
-            }
-        }
+        setUpShelfActions(view)
 
         sharedViewModel.currentWord.observe(this, Observer {
             viewModel.setWordId(it)
@@ -126,6 +76,72 @@ class SearchFragment : BaseUserFragment(), WordsAdapter.WordAdapterHandlers, Tex
         bottomSheetBehavior.collapse(activity)
         sharedViewModel.setCurrentWordId(word)
         (activity as MainActivity).showDetails()
+    }
+
+    private fun setUpSearchBar(view: View) {
+
+        view.searchEditText.addTextChangedListener(this)
+
+        view.searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                bottomSheetBehavior.expand()
+            } else {
+                bottomSheetBehavior.collapse(activity)
+            }
+        }
+
+        view.searchEditText.setOnClickListener {
+            if (searchEditText.hasFocus()) {
+                bottomSheetBehavior.expand()
+            }
+        }
+    }
+
+    private fun setUpRecyclerView(view: View) {
+        //set up recycler view
+        view.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        view.recycler.adapter = adapter
+
+        // hide keyboard if scrolling search results
+        view.recycler.setOnTouchListener { v, event ->
+            (activity as MainActivity).hideSoftKeyboard()
+            false
+        }
+
+        viewModel.searchResults.observe(this, Observer {
+            adapter.submitList(it)
+        })
+    }
+
+    private fun setUpShelfActions(view: View) {
+
+        // Hide actions when not in details
+        sharedViewModel.getBackStack().observe(this, Observer {
+            println("$TAG::getHomeDestination - $it")
+            val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
+            // wait for the next layout step to grantee the actions.width is correctly captured
+            view.post {
+                when (dest) {
+                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runActionsAnimation(false)
+                    Navigator.HomeDestination.DETAILS -> runActionsAnimation(true)
+                }
+            }
+        })
+
+        // Hide actions if sheet is expanded
+        (activity as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+            val currentDest = sharedViewModel.getBackStack().value?.peek()
+                    ?: Navigator.HomeDestination.HOME
+            if (currentDest == Navigator.HomeDestination.DETAILS) {
+                val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
+                val hideMargin = keyline2
+                val showMargin = actions.width + keyline2
+                val params = search.layoutParams as ConstraintLayout.LayoutParams
+                val adjustedInterpolatedTime = 1.0F - offset
+                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
+                search.layoutParams = params
+            }
+        }
     }
 
     private fun runActionsAnimation(show: Boolean) {
