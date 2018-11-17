@@ -36,6 +36,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570800478331:android:9631d05a79ddf53d",
+        "android_client_info": {
+          "package_name": "com.wordsdict.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570800478331-29ke38tn10ht1fjc9dujl92eg33omnne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_IUZf9EgTYkDotuO4Jh6WUp_OdRrmQC8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

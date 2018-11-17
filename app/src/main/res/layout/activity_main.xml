@@ -11,7 +11,7 @@
 
     <!--clipChildren and clipToPadding are false to make sure -->
     <!--we allow fragments to draw shadows -->
-    <com.words.android.util.InsetFrameLayout
+    <com.wordsdict.android.util.InsetFrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.words.android.ui.search.SearchFragment"
+        android:name="com.wordsdict.android.ui.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"

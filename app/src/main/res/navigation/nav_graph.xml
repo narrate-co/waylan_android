@@ -6,12 +6,12 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.words.android.ui.home.HomeFragment"
+        android:name="com.wordsdict.android.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.words.android.ui.details.DetailsFragment"
+        android:name="com.wordsdict.android.ui.details.DetailsFragment"
         tools:layout="@layout/fragment_details"
         android:label="DetailsFragment" >
     </fragment>

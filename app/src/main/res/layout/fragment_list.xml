@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.words.android.util.InsetFrameLayout
+<com.wordsdict.android.util.InsetFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,7 +34,7 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="com.words.android.util.ElasticAppBarBehavior"
+            app:layout_behavior="com.wordsdict.android.util.ElasticAppBarBehavior"
             app:dragDismissDirection="down"
             android:background="@android:color/transparent"
             app:elevation="0dp"
@@ -113,4 +113,4 @@
         android:background="?android:windowBackground"
         android:layout_gravity="top"/>
 
-</com.words.android.util.InsetFrameLayout>
+</com.wordsdict.android.util.InsetFrameLayout>
