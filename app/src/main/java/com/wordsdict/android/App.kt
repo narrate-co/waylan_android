@@ -9,6 +9,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.prefs.Preferences
 import com.wordsdict.android.di.AppInjector
+import com.wordsdict.android.di.DaggerAppComponent
 import com.wordsdict.android.di.UserComponent
 import com.wordsdict.android.ui.auth.Auth
 import dagger.android.AndroidInjector
@@ -46,7 +47,8 @@ class App: Application(), HasActivityInjector {
 
     fun clearUser() {
         setUser(null)
-        AppInjector.init(this) //TODO should this be here?
+//        AppInjector.init(this) //TODO should this be here?
+        DaggerAppComponent.builder().application(this).build().inject(this)
         dispatchReinjectUserBroadcast()
         hasUser = false
     }
@@ -61,7 +63,8 @@ class App: Application(), HasActivityInjector {
     override fun onCreate() {
         updateDefaultNightMode()
         super.onCreate()
-        AppInjector.init(this)
+//        AppInjector.init(this)
+        DaggerAppComponent.builder().application(this).build().inject(this)
     }
 
     private fun dispatchReinjectUserBroadcast() {

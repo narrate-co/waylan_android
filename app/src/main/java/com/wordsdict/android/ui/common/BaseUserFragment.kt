@@ -14,9 +14,10 @@ import com.wordsdict.android.data.analytics.NavigationMethod
 import com.wordsdict.android.di.Injectable
 import com.wordsdict.android.util.invisible
 import com.wordsdict.android.util.visible
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseUserFragment: Fragment(), Injectable {
+abstract class BaseUserFragment: DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
