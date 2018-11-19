@@ -12,9 +12,11 @@ class ListItemDivider(private val drawable: Drawable?): RecyclerView.ItemDecorat
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
-        if (parent.getChildAdapterPosition(view) == 0 || drawable == null) return
 
-        outRect.top = drawable.intrinsicHeight
+        val isHeader = view.findViewWithTag<View>("header") != null ?: false
+        if (parent.getChildAdapterPosition(view) == 0 || drawable == null || isHeader) return
+
+        outRect.set(0,drawable.intrinsicHeight,0,0)
     }
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
@@ -28,8 +30,10 @@ class ListItemDivider(private val drawable: Drawable?): RecyclerView.ItemDecorat
             val dividerTop = child.bottom + params.bottomMargin
             val dividerBottom = dividerTop + drawable.intrinsicHeight
 
-            drawable.setBounds(dividerLeft, dividerTop, dividerRight, dividerBottom)
-            drawable.draw(c)
+            if (child.findViewWithTag<View>("header") == null) {
+                drawable.setBounds(dividerLeft, dividerTop, dividerRight, dividerBottom)
+                drawable.draw(c)
+            }
         }
     }
 }

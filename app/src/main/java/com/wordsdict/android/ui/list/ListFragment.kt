@@ -20,7 +20,10 @@ import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.fragment_list.view.*
 
-class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+class ListFragment:
+        BaseUserFragment(),
+        ListTypeAdapter.ListTypeListener,
+        ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
 
 
@@ -76,7 +79,6 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
         }
 
         ((view.appBar.layoutParams as CoordinatorLayout.LayoutParams).behavior as ElasticAppBarBehavior).addCallback(this)
-        setUpBanner(view, type)
 
         setUpStatusBarScrim(view.statusBarScrim, view.appBar)
         setUpReachabilityAppBar(view)
@@ -88,21 +90,6 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
         setUpList()
     }
 
-    private fun setUpBanner(view: View, type: ListType) {
-//        view.bannerLayout.body.text = when (type) {
-//            ListType.TRENDING -> getString(R.string.list_banner_trending_body)
-//            ListType.RECENT -> getString(R.string.list_banner_recents_body)
-//            ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
-//        }
-//        view.bannerLayout.topButton.setOnClickListener {
-//            viewModel.setHasSeenBanner(type, true)
-//        }
-
-//        viewModel.getHasSeenBanner(type).observe(this, Observer {
-//            view.bannerLayout.visibility = if (it) View.GONE else View.VISIBLE
-//        })
-    }
-
     private fun setUpList() {
         view?.recyclerView?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view?.recyclerView?.adapter = adapter
@@ -111,6 +98,18 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
 
         viewModel.getList(type).observe(this, Observer {
             adapter.submitList(it)
+
+            if (!viewModel.getHasSeenBanner(type)) {
+                val text = when (type) {
+                    ListType.TRENDING -> getString(R.string.list_banner_trending_body)
+                    ListType.RECENT -> getString(R.string.list_banner_recents_body)
+                    ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
+                }
+                val topButton = "Got it"
+                adapter.setBanner(Banner(text, topButton))
+            } else {
+                adapter.setBanner(null)
+            }
         })
     }
 
@@ -143,6 +142,20 @@ class ListFragment: BaseUserFragment(), ListTypeAdapter.ListTypeListener, Elasti
     override fun onWordClicked(word: String) {
         sharedViewModel.setCurrentWordId(word)
         (activity as? MainActivity)?.showDetails()
+    }
+
+    override fun onBannerClicked(banner: Banner) {
+        //TODO
+    }
+
+    override fun onBannerTopButtonClicked(banner: Banner) {
+        //TODO
+        adapter.setBanner(null)
+        viewModel.setHasSeenBanner(type, true)
+    }
+
+    override fun onBannerBottomButtonClicked(banner: Banner) {
+        //TODO
     }
 
     override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {

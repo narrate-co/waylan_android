@@ -14,7 +14,14 @@ class ListViewModel @Inject constructor(
         private val userPreferenceRepository: UserPreferenceRepository
 ): ViewModel() {
 
-    fun getHasSeenBanner(type: ListFragment.ListType): LiveData<Boolean> =
+    fun getHasSeenBanner(type: ListFragment.ListType): Boolean =
+            when (type) {
+                ListFragment.ListType.TRENDING -> userPreferenceRepository.hasSeenTrendingBanner
+                ListFragment.ListType.RECENT -> userPreferenceRepository.hasSeenRecentsBanner
+                ListFragment.ListType.FAVORITE -> userPreferenceRepository.hasSeenFavoritesBanner
+            }
+
+    fun getHasSeenBannerLive(type: ListFragment.ListType): LiveData<Boolean> =
             when (type) {
                 ListFragment.ListType.TRENDING -> userPreferenceRepository.hasSeenTrendingBannerLive
                 ListFragment.ListType.RECENT -> userPreferenceRepository.hasSeenRecentsBannerLive

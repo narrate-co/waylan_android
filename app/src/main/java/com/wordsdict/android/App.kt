@@ -16,7 +16,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
-class App: Application(), HasActivityInjector{
+class App: Application(), HasActivityInjector {
 
     companion object {
         const val REINJECT_USER_BROADCAST_ACTION = "reinject_user_broadcast_action"
