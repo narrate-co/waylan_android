@@ -112,9 +112,9 @@ class ListFragment:
 
             val topButton = if (isListEmpty) "Get started" else null
             val bottomButton = if (isListEmpty) null else "Dismiss"
-            adapter.setBanner(Banner(text, topButton, bottomButton))
+            adapter.setHeader(Banner(text, topButton, bottomButton))
         } else {
-            adapter.setBanner(null)
+            adapter.setHeader(null)
         }
     }
 
@@ -158,7 +158,7 @@ class ListFragment:
     }
 
     override fun onBannerBottomButtonClicked(banner: Banner) {
-        adapter.setBanner(null)
+        adapter.setHeader(null)
         viewModel.setHasSeenBanner(type, true)
     }
 

@@ -8,23 +8,21 @@ import com.wordsdict.android.R
 import com.wordsdict.android.data.repository.FirestoreGlobalSource
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.ui.common.HeaderListAdapter
 import com.wordsdict.android.util.Banner
+import com.wordsdict.android.util.BannerViewHolderListener
 import java.lang.IllegalStateException
 
 class ListTypeAdapter(
         private val listener: ListTypeAdapter.ListTypeListener
 ):
-        ListAdapter<WordSource,
-        ListViewHolder>(diffCallback),
+        HeaderListAdapter<WordSource, ListViewHolder, Banner>(diffCallback),
         ListWordSourceViewHolder.ListWordSourceListener,
-        ListHeaderViewHolder.ListHeaderListener {
+        BannerViewHolderListener {
 
 
-    interface ListTypeListener {
+    interface ListTypeListener: BannerViewHolderListener {
         fun onWordClicked(word: String)
-        fun onBannerClicked(banner: Banner)
-        fun onBannerTopButtonClicked(banner: Banner)
-        fun onBannerBottomButtonClicked(banner: Banner)
     }
 
     companion object {
@@ -58,59 +56,20 @@ class ListTypeAdapter(
 
         }
 
-        private const val VIEW_TYPE_HEADER = 0
-        private const val VIEW_TYPE_WORDSOURCE = 1
     }
 
-    private var banner: Banner? = null
-
-    private fun getHeaderOffset(): Int {
-        return if (banner == null) 0 else 1
-    }
-
-    fun setBanner(banner: Banner?) {
-        if (this.banner == null && banner != null) {
-            //we're inserting the header
-            this.banner = banner
-            notifyItemInserted(0)
-        } else if (this.banner != null && banner == null) {
-            //we're removing the header
-            this.banner = banner
-            notifyItemRemoved(0)
-        } else if (this.banner != null && banner != null) {
-            //we're changing the header
-            this.banner = banner
-            notifyItemChanged(0)
-        } // else nothing has changed. The banner was, and still is, null.
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && banner != null) {
-            VIEW_TYPE_HEADER
-        } else {
-            VIEW_TYPE_WORDSOURCE
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount() + getHeaderOffset()
-    }
-
-    override fun getItem(position: Int): WordSource {
-        return super.getItem(position - getHeaderOffset())
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADER -> ListHeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_banner_layout, parent, false), this)
-            VIEW_TYPE_WORDSOURCE -> ListWordSourceViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_layout, parent, false), this)
+            VIEW_TYPE_ITEM -> ListWordSourceViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_layout, parent, false), this)
             else -> throw IllegalStateException("Unsupported type being inflated ")
         }
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         when (holder) {
-            is ListHeaderViewHolder -> holder.bind(banner)
+            is ListHeaderViewHolder -> holder.bind(getHeader())
             is ListWordSourceViewHolder -> holder.bind(getItem(position))
         }
     }

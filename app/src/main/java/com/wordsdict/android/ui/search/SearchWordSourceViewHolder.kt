@@ -7,10 +7,17 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.util.Banner
+import com.wordsdict.android.util.BannerViewHolder
+import com.wordsdict.android.util.BannerViewHolderListener
+import com.wordsdict.android.util.getColorFromAttr
+import kotlinx.android.synthetic.main.list_banner_layout.view.*
 import kotlinx.android.synthetic.main.search_word_layout.view.*
 
-class SearchViewHolder(private val view: View, private val handlers: SearchViewHolderHandlers):
-        RecyclerView.ViewHolder(view) {
+sealed class SearchViewHolder(val view: View): RecyclerView.ViewHolder(view)
+
+class SearchWordSourceViewHolder(view: View, private val handlers: SearchViewHolderHandlers):
+        SearchViewHolder(view) {
 
     interface SearchViewHolderHandlers {
         fun onWordClicked(word: WordSource)
@@ -37,6 +44,17 @@ class SearchViewHolder(private val view: View, private val handlers: SearchViewH
     }
 
 
+}
+
+class SearchHeaderViewHolder(
+        view: View,
+        private val listener: BannerViewHolderListener
+): SearchViewHolder(view), BannerViewHolder {
+
+    fun bind(banner: Banner?) {
+        view.banner.setBackgroundColor(view.context.getColorFromAttr(R.attr.colorPrimaryLight))
+        setBanner(view.banner, banner, listener)
+    }
 }
 
 

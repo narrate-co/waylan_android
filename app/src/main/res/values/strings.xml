@@ -3,10 +3,16 @@
     <!--App-->
     <string name="app_name">Words</string>
 
-    <!--List Types-->
+    <!--List-->
     <string name="title_favorite">Favorite</string>
     <string name="title_recent">Recent</string>
     <string name="title_trending">Trending</string>
+    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched by other users.</string>
+    <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
+    <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
+
+    <!--Search-->
+    <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>
 
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
@@ -67,10 +73,6 @@
         Words is a dictionary concept designed to be an ergonomic, one-handable experience. In addition to being a great tool to improve your vocabulary, Words experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and visual balance. \n\nThe idea for Words came when reading in bed, with a book in one hand and a phone in the other, trying to stretch a thumb to a far away search bar.
     </string>
 
-    <!--List-->
-    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched by other users.</string>
-    <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
-    <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
 
     <!--Developer Settings-->
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>

@@ -23,10 +23,7 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.util.collapse
-import com.wordsdict.android.util.expand
-import com.wordsdict.android.util.hideSoftKeyboard
-import com.wordsdict.android.util.showSoftKeyboard
+import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -77,18 +74,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         return view
     }
 
-    override fun onWordClicked(word: WordSource) {
-        bottomSheetBehavior.collapse(activity)
-        val id = when (word) {
-            is SimpleWordSource -> word.word.word
-            is FirestoreUserSource -> word.userWord.word
-            is SuggestSource -> word.item.term
-            else -> ""
-        }
-        sharedViewModel.setCurrentWordId(id)
-        viewModel.logSearchWordEvent(id, word)
-        (activity as MainActivity).showDetails()
-    }
 
     private fun setUpSearchBar(view: View) {
 
@@ -122,8 +107,17 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         viewModel.searchResults.observe(this, Observer {
             adapter.submitList(it)
+            setBanner(it.isEmpty())
             view.recycler.scrollToPosition(0)
         })
+    }
+
+    private fun setBanner(isListEmpty: Boolean) {
+        if (isListEmpty) {
+            adapter.setHeader(Banner(getString(R.string.search_banner_body), null, null))
+        } else {
+            adapter.setHeader(null)
+        }
     }
 
     private fun setUpShelfActions(view: View) {
@@ -195,6 +189,32 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         }
 
         favorite?.setImageResource(if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
+    }
+
+
+    override fun onWordClicked(word: WordSource) {
+        bottomSheetBehavior.collapse(activity)
+        val id = when (word) {
+            is SimpleWordSource -> word.word.word
+            is FirestoreUserSource -> word.userWord.word
+            is SuggestSource -> word.item.term
+            else -> ""
+        }
+        sharedViewModel.setCurrentWordId(id)
+        viewModel.logSearchWordEvent(id, word)
+        (activity as MainActivity).showDetails()
+    }
+
+    override fun onBannerClicked(banner: Banner) {
+        // do nothing. Search banner should not have any buttons
+    }
+
+    override fun onBannerTopButtonClicked(banner: Banner) {
+        // do nothing. Search banner should not have any buttons
+    }
+
+    override fun onBannerBottomButtonClicked(banner: Banner) {
+        // do nothing. Search banner should not have any buttons
     }
 
     override fun afterTextChanged(s: Editable?) {}

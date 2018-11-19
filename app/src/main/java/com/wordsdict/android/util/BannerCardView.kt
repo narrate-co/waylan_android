@@ -3,6 +3,7 @@ package com.wordsdict.android.util
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import com.google.android.material.card.MaterialCardView
 import com.wordsdict.android.R
 import kotlinx.android.synthetic.main.banner_card_veiw_layout.view.*

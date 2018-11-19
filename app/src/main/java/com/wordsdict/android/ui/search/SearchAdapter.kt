@@ -3,14 +3,23 @@ package com.wordsdict.android.ui.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.wordsdict.android.R
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.ui.common.HeaderListAdapter
+import com.wordsdict.android.util.Banner
+import com.wordsdict.android.util.BannerViewHolderListener
+import java.lang.IllegalStateException
 
-class SearchAdapter(private val handlers: WordAdapterHandlers): ListAdapter<WordSource, SearchViewHolder>(diffCallback), SearchViewHolder.SearchViewHolderHandlers {
+class SearchAdapter(
+        private val handlers: WordAdapterHandlers
+): HeaderListAdapter<WordSource, SearchViewHolder, Banner>(diffCallback), SearchWordSourceViewHolder.SearchViewHolderHandlers, BannerViewHolderListener {
+
+    interface WordAdapterHandlers: BannerViewHolderListener {
+        fun onWordClicked(word: WordSource)
+    }
 
     companion object {
         val diffCallback: DiffUtil.ItemCallback<WordSource> = object : DiffUtil.ItemCallback<WordSource>() {
@@ -41,19 +50,35 @@ class SearchAdapter(private val handlers: WordAdapterHandlers): ListAdapter<Word
         }
     }
 
-    interface WordAdapterHandlers {
-        fun onWordClicked(word: WordSource)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_word_layout, parent, false), this)
+        return when (viewType) {
+            VIEW_TYPE_HEADER -> SearchHeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_banner_layout, parent, false), this)
+            VIEW_TYPE_ITEM -> SearchWordSourceViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_word_layout, parent, false), this)
+            else -> throw IllegalStateException("Unsupported viewType attempting to be inflated")
+        }
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        when (holder) {
+            is SearchHeaderViewHolder -> holder.bind(getHeader())
+            is SearchWordSourceViewHolder -> holder.bind(getItem(position))
+        }
     }
 
     override fun onWordClicked(word: WordSource) {
         handlers.onWordClicked(word)
+    }
+
+    override fun onBannerClicked(banner: Banner) {
+        handlers.onBannerClicked(banner)
+    }
+
+    override fun onBannerTopButtonClicked(banner: Banner) {
+        handlers.onBannerTopButtonClicked(banner)
+    }
+
+    override fun onBannerBottomButtonClicked(banner: Banner) {
+        handlers.onBannerBottomButtonClicked(banner)
     }
 }
