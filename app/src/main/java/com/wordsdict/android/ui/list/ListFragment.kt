@@ -98,19 +98,24 @@ class ListFragment:
 
         viewModel.getList(type).observe(this, Observer {
             adapter.submitList(it)
-
-            if (!viewModel.getHasSeenBanner(type)) {
-                val text = when (type) {
-                    ListType.TRENDING -> getString(R.string.list_banner_trending_body)
-                    ListType.RECENT -> getString(R.string.list_banner_recents_body)
-                    ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
-                }
-                val topButton = "Got it"
-                adapter.setBanner(Banner(text, topButton))
-            } else {
-                adapter.setBanner(null)
-            }
+            setBanner(it.isEmpty())
         })
+    }
+
+    private fun setBanner(isListEmpty: Boolean) {
+        if (!viewModel.getHasSeenBanner(type) || isListEmpty) {
+            val text = when (type) {
+                ListType.TRENDING -> getString(R.string.list_banner_trending_body)
+                ListType.RECENT -> getString(R.string.list_banner_recents_body)
+                ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
+            }
+
+            val topButton = if (isListEmpty) "Get started" else null
+            val bottomButton = if (isListEmpty) null else "Dismiss"
+            adapter.setBanner(Banner(text, topButton, bottomButton))
+        } else {
+            adapter.setBanner(null)
+        }
     }
 
     private fun setUpReachabilityAppBar(view: View) {
@@ -145,17 +150,16 @@ class ListFragment:
     }
 
     override fun onBannerClicked(banner: Banner) {
-        //TODO
+        //do nothing
     }
 
     override fun onBannerTopButtonClicked(banner: Banner) {
-        //TODO
-        adapter.setBanner(null)
-        viewModel.setHasSeenBanner(type, true)
+        (activity as? MainActivity)?.focusAndOpenSearch()
     }
 
     override fun onBannerBottomButtonClicked(banner: Banner) {
-        //TODO
+        adapter.setBanner(null)
+        viewModel.setHasSeenBanner(type, true)
     }
 
     override fun onDrag(dragFraction: Float, dragTo: Float, rawOffset: Float, rawOffsetPixels: Float, dragDismissScale: Float) {

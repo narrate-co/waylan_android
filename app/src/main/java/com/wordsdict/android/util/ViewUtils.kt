@@ -41,6 +41,11 @@ fun Activity.hideSoftKeyboard() {
     im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
 }
 
+fun Activity.showSoftKeyboard(view: View) {
+    val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    im.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
 class ViewGroupChildIterator(private val viewGroup: ViewGroup): Iterator<View> {
 
     private var current: Int = 0

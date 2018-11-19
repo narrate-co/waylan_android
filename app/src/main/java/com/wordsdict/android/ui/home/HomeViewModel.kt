@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(private val wordRepository: WordReposito
                     else -> ""
                 }
             }
-            if (previewWords.isNotEmpty()) previewWords.reduce { acc, word -> "$acc, $word" } else "---"
+            if (previewWords.isNotEmpty()) previewWords.reduce { acc, word -> "$acc, $word" } else ""
         }
     }
 }

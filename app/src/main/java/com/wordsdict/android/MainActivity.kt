@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.data.analytics.NavigationMethod
 import com.wordsdict.android.ui.common.BaseUserActivity
 import com.wordsdict.android.ui.list.ListFragment
+import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.SearchSheetCallback
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -106,6 +107,12 @@ class MainActivity : BaseUserActivity() {
 
         bottomSheet.setBottomSheetCallback(searchSheetCallback)
 
+    }
+
+    fun focusAndOpenSearch() {
+        val searchFragment = supportFragmentManager.findFragmentById(R.id.searchFragment) as? SearchFragment
+        println("MainActivity::focusAndOpenSearch. searchFragment == $searchFragment")
+        searchFragment?.focusAndOpenSearch()
     }
 
     private fun handleFragmentOnBackPressed(): Boolean {

@@ -26,6 +26,7 @@ import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.util.collapse
 import com.wordsdict.android.util.expand
 import com.wordsdict.android.util.hideSoftKeyboard
+import com.wordsdict.android.util.showSoftKeyboard
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -114,8 +115,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         view.recycler.adapter = adapter
 
         // hide keyboard if scrolling search results
-        view.recycler.setOnTouchListener { v, event ->
-            (activity as MainActivity).hideSoftKeyboard()
+        view.recycler.setOnTouchListener { _, _ ->
+            activity?.hideSoftKeyboard()
             false
         }
 
@@ -154,6 +155,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 search.layoutParams = params
             }
         }
+    }
+
+    fun focusAndOpenSearch() {
+        bottomSheetBehavior.expand()
+        searchEditText.requestFocus()
+        activity?.showSoftKeyboard(searchEditText)
     }
 
     private fun runActionsAnimation(show: Boolean) {
