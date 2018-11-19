@@ -103,7 +103,7 @@ class ListFragment:
     }
 
     private fun setBanner(isListEmpty: Boolean) {
-        if (!viewModel.getHasSeenBanner(type) || isListEmpty) {
+        if (isListEmpty) {
             val text = when (type) {
                 ListType.TRENDING -> getString(R.string.list_banner_trending_body)
                 ListType.RECENT -> getString(R.string.list_banner_recents_body)
