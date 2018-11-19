@@ -7,9 +7,11 @@
     <string name="title_favorite">Favorite</string>
     <string name="title_recent">Recent</string>
     <string name="title_trending">Trending</string>
-    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched by other users.</string>
+    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Words, searched by other users and you.</string>
     <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
     <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
+    <string name="list_banner_get_started_button">Get started</string>
+    <string name="list_banner_dismiss_button">Dismiss</string>
 
     <!--Search-->
     <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>

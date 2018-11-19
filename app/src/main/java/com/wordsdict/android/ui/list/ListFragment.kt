@@ -103,15 +103,15 @@ class ListFragment:
     }
 
     private fun setBanner(isListEmpty: Boolean) {
-        if (isListEmpty) {
+        if (isListEmpty || (!viewModel.getHasSeenBanner(type) && type == ListType.TRENDING)) {
             val text = when (type) {
                 ListType.TRENDING -> getString(R.string.list_banner_trending_body)
                 ListType.RECENT -> getString(R.string.list_banner_recents_body)
                 ListType.FAVORITE -> getString(R.string.list_banner_favorites_body)
             }
 
-            val topButton = if (isListEmpty) "Get started" else null
-            val bottomButton = if (isListEmpty) null else "Dismiss"
+            val topButton = if (isListEmpty) getString(R.string.list_banner_get_started_button) else null
+            val bottomButton = if (isListEmpty) null else getString(R.string.list_banner_dismiss_button)
             adapter.setHeader(Banner(text, topButton, bottomButton))
         } else {
             adapter.setHeader(null)
@@ -124,12 +124,13 @@ class ListFragment:
             //TODO set height of expanded toolbar based on view height. Set collapsed if under a certain limit
 
             // set min height
-            val minHeight = underline.bottom - navigationIcon.top
+            val minCollapsedHeight = underline.bottom - navigationIcon.top
             val toolbarTitleCollapsedHeight = appBar.toolbarTitleCollapsed.height
+
             val alphaFraction = 0.6F
-            view.appBar.toolbarContainer.minimumHeight = minHeight
+            view.appBar.toolbarContainer.minimumHeight = minCollapsedHeight
             view.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                val totalScrollRange = appBarLayout.totalScrollRange - minHeight
+                val totalScrollRange = appBarLayout.totalScrollRange - minCollapsedHeight
                 val interpolationEarlyFinish = Math.abs(verticalOffset.toFloat()) / totalScrollRange
 
                 // translate the navIcon to make room for the collapsed toolbar title
