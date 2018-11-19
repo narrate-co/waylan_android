@@ -1,5 +1,6 @@
 package com.wordsdict.android.di
 
+import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.ui.details.DetailsFragment
 import com.wordsdict.android.ui.home.HomeFragment
 import com.wordsdict.android.ui.list.ListFragment

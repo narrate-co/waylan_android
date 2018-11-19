@@ -15,7 +15,9 @@ import com.wordsdict.android.data.spell.SymSpellStore
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [ActivityBuildersModule::class, ViewModelModule::class])
+@Module(
+        includes = [ActivityBuildersModule::class, ViewModelModule::class]
+)
 class UserModule {
 
     @UserScope
