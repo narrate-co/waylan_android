@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wordsdict.android.billing.BillingManager
+import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.User
@@ -30,8 +31,8 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideMerriamWebsterStore(appDatabase: AppDatabase): MerriamWebsterStore {
-        return MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao())
+    fun provideMerriamWebsterStore(appDatabase: AppDatabase, analyticsRepository: AnalyticsRepository): MerriamWebsterStore {
+        return MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao(), analyticsRepository)
     }
 
     @UserScope

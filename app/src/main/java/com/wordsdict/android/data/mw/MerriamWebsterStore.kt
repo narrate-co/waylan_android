@@ -3,6 +3,7 @@ package com.wordsdict.android.data.mw
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.crashlytics.android.Crashlytics
+import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.mw.MwDao
 import com.wordsdict.android.data.disk.mw.WordAndDefinitions
 import com.wordsdict.android.util.contentEquals
@@ -13,7 +14,8 @@ import retrofit2.Response
 
 class MerriamWebsterStore(
         private val merriamWebsterService: MerriamWebsterService,
-        private val mwDao: MwDao
+        private val mwDao: MwDao,
+        private val analyticsRepository: AnalyticsRepository
 ) {
 
     companion object {
@@ -37,6 +39,7 @@ class MerriamWebsterStore(
     private fun getMerriamWebsterApiWordCallback(word: String) = object : Callback<EntryList> {
         override fun onFailure(call: Call<EntryList>?, t: Throwable?) {
             Log.e(TAG, "mwApiWordCallback on Failure = $t")
+            analyticsRepository.logMerriamWebsterParseErrorEvent(word, t.toString())
         }
         override fun onResponse(call: Call<EntryList>?, response: Response<EntryList>?) {
             //Save to db
@@ -69,12 +72,10 @@ class MerriamWebsterStore(
                         val existingMwWord = mwDao.getWord(word)
                         if (existingMwWord != null && existingMwWord.suggestions.contentEquals(entryList.suggestions)) {
                             //this is already present in the db. Update just it's suggestions
-                            println("$TAG::Updating existing word suggestions")
                             existingMwWord.suggestions = entryList.suggestions
                             mwDao.insert(existingMwWord)
                         } else if (existingMwWord == null) {
                             //this is not already in the db. Add it
-                            println("$TAG::Adding new word with suggestons")
                             val newWord = entryList.toSuggestionWord(word)
                             mwDao.insert(newWord)
                         }

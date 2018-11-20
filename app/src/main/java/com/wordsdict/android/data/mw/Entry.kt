@@ -12,9 +12,9 @@ import org.simpleframework.xml.stream.OutputNode
  * <entry id="hypocrite">
  *     <word>hypocrite</word>
  *     <phonetic>hyp*o*crite</phonetic>
- *     <sounds>
+ *     <sound>
  *         <wav>hypocr02.wav</wav>
- *     </sounds>
+ *     </sound>
  *     <pr>ˈhi-pə-ˌkrit</pr>
  *     <fl>noun</fl>
  *     <et>Middle English
@@ -71,7 +71,7 @@ class Entry {
     @field:Element(name = "lb", required = false)
     var lb: String = ""
 
-    @field:ElementList(entry = "sounds", inline = true, required = false)
+    @field:ElementList(entry = "sound", inline = true, required = false)
     var sounds: MutableList<Sound> = mutableListOf()
 
     @field:Element(name = "vr", required = false)
@@ -127,7 +127,7 @@ class Variants {
     @field:ElementList(entry = "if", inline = true, required = false)
     var variant: MutableList<String> = mutableListOf()
 
-    @field:Element(name = "sounds", required = false)
+    @field:Element(name = "sound", required = false)
     var sound: Sound = Sound()
 
     @field:Element(name = "pr", required = false)
@@ -208,9 +208,8 @@ class Uro {
     @field:Element(name = "fl", required = false)
     var fl: String = ""
 
-    @field:Element(name = "sounds", required = false)
+    @field:Element(name = "sound", required = false)
     var sound: Sound = Sound()
-
 
     @field:Element(name = "pr", required = false)
     @field:Convert(FormattedStringConverter::class)
@@ -227,7 +226,7 @@ class Vr {
     @field:Element(name = "va", required = false)
     var va: String = ""
 
-    @field:Element(name = "sounds", required = false)
+    @field:Element(name = "sound", required = false)
     var sound: Sound = Sound()
 
     @field:Element(name = "pr", required = false)

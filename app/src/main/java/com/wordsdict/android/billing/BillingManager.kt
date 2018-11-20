@@ -2,6 +2,7 @@ package com.wordsdict.android.billing
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.core.util.TimeUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -186,8 +187,9 @@ class BillingManager(
 //        }
 
         //TODO parse purchase and update User with userRepository
-        val startedDate = Date(TimeUnit.MILLISECONDS.convert(purchase.purchaseTime, TimeUnit.SECONDS))
-        println("$TAG::handlePurchase - start = $startedDate, json = ${purchase.originalJson}")
+//        val startedDate = Date(TimeUnit.MILLISECONDS.convert(purchase.purchaseTime, TimeUnit.SECONDS))
+        val startedDate = Date(purchase.purchaseTime)
+        println("$TAG::handlePurchase - start $startedDate, json ${purchase.originalJson}")
 
         when (purchase.sku) {
             BillingConfig.SKU_MERRIAM_WEBSTER -> {

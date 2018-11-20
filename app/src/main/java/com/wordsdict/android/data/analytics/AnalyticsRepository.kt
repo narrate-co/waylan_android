@@ -10,6 +10,7 @@ class AnalyticsRepository(
     companion object {
         private const val EVENT_SEARCH_WORD = "search_word"
         private const val EVENT_NAVIGATE_BACK = "navigate_back"
+        private const val EVENT_MERRIAM_WEBSTER_PARSE_ERROR = "merriam_webster_parse_error"
     }
 
     fun setUserId(uid: String?) {
@@ -32,4 +33,10 @@ class AnalyticsRepository(
     }
 
 
+    fun logMerriamWebsterParseErrorEvent(url: String, message: String) {
+        val params = Bundle()
+        params.putString(FirebaseAnalytics.Param.ITEM_ID, url)
+        params.putString(FirebaseAnalytics.Param.VALUE, message)
+        firebaseAnalytics.logEvent(EVENT_MERRIAM_WEBSTER_PARSE_ERROR, params)
+    }
 }

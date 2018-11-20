@@ -16,6 +16,10 @@
     <!--Search-->
     <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>
 
+    <!--Details-->
+    <string name="details_merriam_webster_card_details_button">Details</string>
+    <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
+
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
     <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
@@ -44,6 +48,7 @@
     <string name="auth_sign_up_button">Sign up</string>
     <string name="auth_cancel_button">Cancel</string>
     <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
+    <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
 
     <!--Settings Screen-->
     <string name="settings_night_mode_title">Night mode</string>
@@ -87,9 +92,7 @@
     <!--Developer Settings-->
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
-    <string name="details_merriam_webster_card_details_button">Details</string>
-    <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
-    <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
+
 
 
 </resources>

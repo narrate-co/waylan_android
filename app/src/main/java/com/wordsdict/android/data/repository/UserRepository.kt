@@ -18,6 +18,7 @@ class UserRepository(
         firestoreStore?.getUserLive() ?: LiveDataHelper.empty()
 
     fun setUserMerriamWebsterState(state: PluginState) {
+        println("UserRepository::setUserMerriamWebsterState = $state")
         launch {
             firestoreStore?.setUserMerriamWebsterState(state)
         }
