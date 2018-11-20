@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.User
+import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.data.prefs.UserPreferenceRepository
 import com.wordsdict.android.util.LiveDataHelper
 import kotlinx.coroutines.launch

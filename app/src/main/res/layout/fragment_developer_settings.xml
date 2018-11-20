@@ -29,6 +29,10 @@
                 layout="@layout/settings_item_layout"/>
 
             <include
+                android:id="@+id/useTestSkus"
+                layout="@layout/settings_item_layout"/>
+
+            <include
                 android:id="@+id/merriamWebsterIAB"
                 layout="@layout/settings_item_layout"/>
 

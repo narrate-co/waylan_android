@@ -26,6 +26,14 @@ class SettingsViewModel @Inject constructor(
 
     var nightModeLive: LiveData<Int> = preferenceRepository.nightModeLive
 
+    var useTestSkus: Boolean
+        get() = preferenceRepository.useTestSkus
+        set(value) {
+            preferenceRepository.useTestSkus = value
+        }
+
+    var useTestSkusLive: LiveData<Boolean> = preferenceRepository.useTestSkusLive
+
     fun clearUserPreferences() = userPreferenceRepository.resetAll()
 
     fun setMerriamWebsterState(state: PluginState) {

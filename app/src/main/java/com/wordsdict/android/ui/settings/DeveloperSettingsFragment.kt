@@ -15,6 +15,7 @@ import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.data.firestore.users.oneDayPastExpiration
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.util.configInformative
+import com.wordsdict.android.util.setChecked
 import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
 import kotlinx.android.synthetic.main.settings_item_layout.view.*
 
@@ -65,6 +66,16 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                 cycleState(user)
             }
         })
+
+        view.useTestSkus.settingsTitle.text = "Use test skus"
+        view.useTestSkus.settingsDescription.text = "Run IAB against fake product skus"
+        viewModel.useTestSkusLive.observe(this, Observer {
+            view.useTestSkus.checkbox.setChecked(it)
+        })
+        view.useTestSkus.setOnClickListener {
+            viewModel.useTestSkus = !viewModel.useTestSkus
+        }
+
 
         view.merriamWebsterIAB.settingsTitle.text = "Toggle Merriam-Webster Billing response"
         view.merriamWebsterIAB.checkbox.visibility = View.INVISIBLE

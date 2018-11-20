@@ -217,8 +217,7 @@ class SettingsFragment : BaseUserFragment() {
     }
 
     private fun launchMerriamWebsterPurchaseFlow() {
-        val sku = if (BuildConfig.DEBUG) BillingConfig.TEST_SKU_MERRIAM_WEBSTER else BillingConfig.SKU_MERRIAM_WEBSTER
-        billingManger.initiatePurchaseFlow(activity!!, sku)
+        billingManger.initiatePurchaseFlow(activity!!, BillingConfig.SKU_MERRIAM_WEBSTER)
     }
 
 }

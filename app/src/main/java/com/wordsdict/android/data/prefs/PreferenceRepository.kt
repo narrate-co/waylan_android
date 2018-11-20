@@ -24,5 +24,12 @@ class PreferenceRepository(
     var nightModeLive: LiveData<Int> =
             PreferenceLiveData(defaultPrefs, Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
+    var useTestSkus: Boolean by PreferenceDelegate(
+            defaultPrefs,
+            Preferences.USE_TEST_SKUS,
+            false
+    )
+    val useTestSkusLive: LiveData<Boolean> =
+            PreferenceLiveData(defaultPrefs, Preferences.USE_TEST_SKUS, false)
 }
 

@@ -52,5 +52,6 @@ class UserPreferenceRepository(
     val hasSeenTrendingBannerLive: LiveData<Boolean> =
         PreferenceLiveData(sharedPrefs, UserPreferences.HAS_SEEN_TRENDING_BANNER, false)
 
+
 }
 

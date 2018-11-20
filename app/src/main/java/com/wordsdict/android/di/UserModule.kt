@@ -9,6 +9,7 @@ import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.mw.MerriamWebsterStore
 import com.wordsdict.android.data.mw.RetrofitService
+import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.prefs.UserPreferenceRepository
 import com.wordsdict.android.data.repository.UserRepository
 import com.wordsdict.android.data.repository.WordRepository
@@ -61,8 +62,8 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideBillingManager(application: Application, userRepository: UserRepository): BillingManager {
-        return BillingManager(application, userRepository)
+    fun provideBillingManager(application: Application, preferenceRepository: PreferenceRepository, userRepository: UserRepository): BillingManager {
+        return BillingManager(application, preferenceRepository, userRepository)
     }
 
 }

@@ -6,7 +6,9 @@ import androidx.core.util.TimeUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
+import com.google.api.Billing
 import com.wordsdict.android.data.firestore.users.PluginState
+import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -20,6 +22,7 @@ import kotlin.coroutines.CoroutineContext
 
 class BillingManager(
         private val context: Context,
+        private val preferenceRepository: PreferenceRepository,
         private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
@@ -27,7 +30,7 @@ class BillingManager(
         private val TAG = BillingManager::class.java.simpleName
 
         private const val BILLING_MANAGER_NOT_INITIALIZED = -1
-        private const val BASE_64_ENCODED_PUBLIC_KEY = "CONSTRUCT_YOUR_KEY_AND_PLACE_IT_HERE"
+        private const val BASE_64_ENCODED_PUBLIC_KEY = "EMPTY_FOR_NOW"
     }
 
     private val billingClient by lazy { BillingClient.newBuilder(context).setListener(this).build() }
@@ -47,7 +50,15 @@ class BillingManager(
     }
 
     fun initiatePurchaseFlow(activity: Activity, skuId: String, @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP) {
-        initiatePurchaseFlow(activity, skuId, null, billingType)
+        val sku = if (preferenceRepository.useTestSkus) {
+            when (skuId) {
+                BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+                else -> BillingConfig.TEST_SKU_PURCHASED
+            }
+        } else {
+            skuId
+        }
+        initiatePurchaseFlow(activity, sku, null, billingType)
     }
 
     fun initiatePurchaseFlow(activity: Activity, skuId: String, oldSkus: ArrayList<String>?, @BillingClient.SkuType billingType: String) {

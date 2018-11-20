@@ -60,7 +60,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         }
     }
 
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         registerAudioStateDispatchReceiver()

@@ -1,6 +1,8 @@
 package com.wordsdict.android.billing
 
 object BillingConfig {
+    const val USE_TEST_SKUS = true
+
     const val TEST_SKU_PURCHASED = "android.test.purchased"
     const val TEST_SKU_CANCELED = "android.test.canceled"
     const val TEST_SKU_ITEM_UNAVAILABLE = "android.test.item_unavailable"

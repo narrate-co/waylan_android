@@ -9,5 +9,7 @@ package com.wordsdict.android.data.prefs
  */
 object Preferences {
     const val NIGHT_MODE = "uses_night_mode"
+
+    const val USE_TEST_SKUS = "use_test_skus"
 }
 
