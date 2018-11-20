@@ -12,7 +12,8 @@ enum class FirebaseAuthWordErrorType(val errorCode: String, val message: String,
     SIGN_UP_UNKNOWN("su", "An unknown sign up error occurred", R.string.auth_error_message_signup_unknown),
     SIGN_UP_FAILED("sf", "Unable to sign up", R.string.auth_error_message_signup_failed),
     SIGN_UP_PASSWORDS_DONT_MATCH("sm","Unable to use credentials", R.string.auth_error_message_passwords_mismatch),
-    SIGN_UP_NO_CURRENT_USER("sc", "Unable to link null user", R.string.auth_error_message_no_current_user_to_link);
+    SIGN_UP_NO_CURRENT_USER("sc", "Unable to link null user", R.string.auth_error_message_no_current_user_to_link),
+    FIRESTORE_USER_UNKNOWN("fu", "Unable to create a new user", R.string.auth_error_message_firestore_user_unknown_error);
 
     val exception: FirebaseAuthWordException
         get() = FirebaseAuthWordException(this)

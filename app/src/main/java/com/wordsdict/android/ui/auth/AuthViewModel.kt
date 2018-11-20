@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.SetOptions
 import com.wordsdict.android.data.firestore.users
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.util.FirebaseAuthWordErrorType
@@ -129,8 +130,11 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 .addOnSuccessListener {
                     if (it.exists()) {
                         val user = it.toObject(User::class.java)
-                        cont.resume(Auth(firebaseUser, user!!))
-                        isLoading.value = false
+                        if (user != null) {
+                            updateUser(firestore, firebaseUser, user, cont)
+                        } else {
+                            cont.resumeWithFirebaseAuthException(FirebaseAuthWordErrorType.FIRESTORE_USER_UNKNOWN)
+                        }
                     } else {
                         newUser(firestore, cont, firebaseUser)
                     }
@@ -148,6 +152,22 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         firestore.users.document(newUser.uid).set(newUser)
                 .addOnSuccessListener {
                     cont.resume(Auth(firebaseUser, newUser))
+                    isLoading.value = false
+                }
+                .addOnFailureListener {
+                    cont.resumeWithException(it)
+                    isLoading.value = false
+                }
+    }
+
+    private fun updateUser(firestore: FirebaseFirestore, firebaseUser: FirebaseUser, user: User, cont: Continuation<Auth>) {
+        user.isAnonymous = firebaseUser.isAnonymous
+        user.name = firebaseUser.displayName ?: user.name
+        user.email = firebaseUser.email ?: user.email
+
+        firestore.users.document(user.uid).set(user)
+                .addOnSuccessListener {
+                    cont.resume(Auth(firebaseUser, user))
                     isLoading.value = false
                 }
                 .addOnFailureListener {
