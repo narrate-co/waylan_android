@@ -8,7 +8,8 @@ data class User(
         var name: String = "",
         var email: String = "",
         var isMerriamWebsterSubscriber: Boolean = false,
-        var merriamWebsterStarted: Date = Date()
+        var merriamWebsterStarted: Date = Date(),
+        var merriamWebsterPurchaseToken: String = ""
 )
 
 

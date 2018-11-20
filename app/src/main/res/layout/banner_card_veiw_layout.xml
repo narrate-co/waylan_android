@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/container"
@@ -8,6 +8,16 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/keyline_3"
         android:orientation="vertical">
+
+        <com.google.android.material.chip.Chip
+            style="?styleTextLabel"
+            android:id="@+id/bannerLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="@dimen/keyline_2"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:text="Free trial: 30d"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:textAppearance="?textAppearanceBody1"
@@ -46,7 +56,6 @@
             android:gravity="right"
             android:layout_gravity="right"
             />
-
 
     </LinearLayout>
 

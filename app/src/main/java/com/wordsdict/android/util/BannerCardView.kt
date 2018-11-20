@@ -14,6 +14,7 @@ class BannerCardView @JvmOverloads constructor(
         defStyleAttr: Int = com.google.android.material.R.attr.materialCardViewStyle
         ) : MaterialCardView(context, attrs, defStyleAttr) {
 
+    private var bannerLabel: String? = null
     private var bannerText: String = ""
     private var bannerTopButtonText: String? = null
     private var bannerBottomButtonText: String? = null
@@ -23,6 +24,9 @@ class BannerCardView @JvmOverloads constructor(
         val a = context.obtainStyledAttributes(attrs, R.styleable.BannerCardView, 0, 0)
 
         if (a != null) {
+            if (a.hasValue(R.styleable.BannerCardView_bannerLabel)) {
+                bannerLabel = a.getString(R.styleable.BannerCardView_bannerLabel)
+            }
             if (a.hasValue(R.styleable.BannerCardView_bannerText)) {
                 bannerText = a.getString(R.styleable.BannerCardView_bannerText) ?: bannerText
             }
@@ -42,9 +46,45 @@ class BannerCardView @JvmOverloads constructor(
         inflater.inflate(R.layout.banner_card_veiw_layout, this, true)
 
         //set defaults
+        setBannerLabel(bannerLabel, null)
         setBannerText(bannerText)
         setBannerTopButton(bannerTopButtonText, null)
         setBannerBottomButton(bannerBottomButtonText, null)
+    }
+
+    fun setBanner(
+            text: String,
+            label: String? = null,
+            labelListener: OnClickListener? = null,
+            topButton: String? = null,
+            topButtonListener: OnClickListener? = null,
+            bottomButton: String? = null,
+            bottomButtonListener: OnClickListener? = null
+    ) {
+        setBannerLabel(label, labelListener)
+        setBannerText(text)
+        setBannerTopButton(topButton, topButtonListener)
+        setBannerBottomButton(bottomButton, bottomButtonListener)
+    }
+
+    fun setBannerLabel(label: String?, listener: OnClickListener?) {
+        setBannerLabelText(label)
+        setBannerLabelOnClickListener(listener)
+    }
+
+    fun setBannerLabelText(label: String?) {
+        bannerLabel = label
+        if (bannerLabel != null) {
+            bannerLabelTextView.text = label
+            bannerLabelTextView.visible()
+        } else {
+            bannerLabelTextView.text = ""
+            bannerLabelTextView.gone()
+        }
+    }
+
+    fun setBannerLabelOnClickListener(listener: OnClickListener?) {
+        bannerLabelTextView.setOnClickListener(listener)
     }
 
     fun setBannerText(text: String) {

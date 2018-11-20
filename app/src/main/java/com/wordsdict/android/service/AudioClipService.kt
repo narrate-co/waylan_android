@@ -83,7 +83,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
         //if the given url is null, dispatch an error, destroy
         if (url == null || url.isEmpty()) {
             stop()
-            dispatchError(url, "No available pronunciation")
+            dispatchError(url, "No available pronunciations")
             destroy()
             return
         }
@@ -123,7 +123,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            dispatchError(url, "No pronunciation available")
+            dispatchError(url, "No pronunciations available")
             stop()
             destroy()
         }
@@ -155,7 +155,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
                 mediaPlayer?.start()
             }
         } else {
-            dispatchError(currentUrl, "Unable to play pronunciation")
+            dispatchError(currentUrl, "Unable to play pronunciations")
             stop()
             destroy()
         }
@@ -167,7 +167,7 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
-        dispatchError(currentUrl, "An error occurred playing pronunciation")
+        dispatchError(currentUrl, "An error occurred playing pronunciations")
         stop()
         destroy()
         return true

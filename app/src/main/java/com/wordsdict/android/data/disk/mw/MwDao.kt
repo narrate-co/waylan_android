@@ -18,6 +18,9 @@ interface MwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg definition: Definition)
 
+    @Query("SELECT * FROM mw_words WHERE word = :word")
+    fun getWord(word: String): Word?
+
     @Transaction
     @Query("SELECT * FROM mw_words WHERE word = :word")
     fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>>

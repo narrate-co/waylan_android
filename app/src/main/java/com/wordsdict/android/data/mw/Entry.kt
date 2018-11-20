@@ -12,9 +12,9 @@ import org.simpleframework.xml.stream.OutputNode
  * <entry id="hypocrite">
  *     <word>hypocrite</word>
  *     <phonetic>hyp*o*crite</phonetic>
- *     <sound>
+ *     <sounds>
  *         <wav>hypocr02.wav</wav>
- *     </sound>
+ *     </sounds>
  *     <pr>ˈhi-pə-ˌkrit</pr>
  *     <fl>noun</fl>
  *     <et>Middle English
@@ -43,8 +43,11 @@ class EntryList {
     @field:Attribute
     var version: String = ""
 
-    @field:ElementList(entry = "entry", inline = true)
+    @field:ElementList(entry = "entry", inline = true, required = false)
     var entries: MutableList<Entry> = mutableListOf()
+
+    @field:ElementList(entry = "suggestion", inline = true, required = false)
+    var suggestions: MutableList<String> = mutableListOf()
 }
 
 @Root(name = "entry", strict = false)
@@ -68,8 +71,8 @@ class Entry {
     @field:Element(name = "lb", required = false)
     var lb: String = ""
 
-    @field:Element(name = "sound", required = false)
-    var sound: Sound = Sound()
+    @field:ElementList(entry = "sounds", inline = true, required = false)
+    var sounds: MutableList<Sound> = mutableListOf()
 
     @field:Element(name = "vr", required = false)
     var vr: Vr = Vr()
@@ -77,9 +80,9 @@ class Entry {
     @field:Element(name = "cx", required = false)
     var cx: Cx = Cx()
 
-    @field:Element(name = "pr", required = false)
+    @field:ElementList(entry = "pr", inline = true, required = false)
     @field:Convert(FormattedStringConverter::class)
-    var pronunciation: FormattedString = FormattedString()
+    var pronunciations: List<FormattedString> = mutableListOf()
 
     @field:Element(name = "fl", required = false)
     var partOfSpeech: String = ""
@@ -124,7 +127,7 @@ class Variants {
     @field:ElementList(entry = "if", inline = true, required = false)
     var variant: MutableList<String> = mutableListOf()
 
-    @field:Element(name = "sound", required = false)
+    @field:Element(name = "sounds", required = false)
     var sound: Sound = Sound()
 
     @field:Element(name = "pr", required = false)
@@ -205,7 +208,7 @@ class Uro {
     @field:Element(name = "fl", required = false)
     var fl: String = ""
 
-    @field:Element(name = "sound", required = false)
+    @field:Element(name = "sounds", required = false)
     var sound: Sound = Sound()
 
 
@@ -224,7 +227,7 @@ class Vr {
     @field:Element(name = "va", required = false)
     var va: String = ""
 
-    @field:Element(name = "sound", required = false)
+    @field:Element(name = "sounds", required = false)
     var sound: Sound = Sound()
 
     @field:Element(name = "pr", required = false)
@@ -310,18 +313,36 @@ class FormattedStringConverter: Converter<FormattedString> {
     }
 }
 
-fun Entry.toDbMwWord(relatedWords: List<String>): Word {
+fun EntryList.toSuggestionWord(id: String): Word {
+    return Word(
+            id,
+            id,
+            "",
+            "",
+            com.wordsdict.android.data.disk.mw.Sound("",""),
+            "",
+            "",
+            "",
+            emptyList(),
+            this.suggestions.filterNot { it == id }.distinct(),
+            com.wordsdict.android.data.disk.mw.Uro("","")
+    )
+}
+
+fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Word {
     val relWordsFiltered = relatedWords.filterNot{ it == this.word }.distinct()
+    val suggestionsFiltered = suggestions.filterNot { it == this.word }.distinct()
     return Word(
             this.id,
             this.word,
             this.subj,
             this.phonetic,
-            com.wordsdict.android.data.disk.mw.Sound(this.sound.wav.firstOrNull() ?: "", this.sound.wpr.firstOrNull() ?: ""), //TODO restructure db
-            this.pronunciation.value,
+            com.wordsdict.android.data.disk.mw.Sound(this.sounds.map { it.wav }.firstOrNull()?.firstOrNull() ?: "", this.sounds.map { it.wpr }.firstOrNull()?.firstOrNull() ?: ""), //TODO restructure db
+            this.pronunciations.firstOrNull()?.value ?: "",
             this.partOfSpeech,
             this.etymology.value,
             relWordsFiltered,
+            suggestionsFiltered,
             com.wordsdict.android.data.disk.mw.Uro(this.uro.firstOrNull()?.ure ?: "", this.uro.firstOrNull()?.fl ?: ""))
 }
 

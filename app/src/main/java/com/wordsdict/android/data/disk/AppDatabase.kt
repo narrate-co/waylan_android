@@ -48,7 +48,7 @@ abstract class AppDatabase: RoomDatabase() {
 
         private fun seedAndBuildDatabase(context: Context, dbName: String): AppDatabase {
             return Room
-                    .databaseBuilder(context, AppDatabase::class.java, "words-db")
+                    .databaseBuilder(context, AppDatabase::class.java, dbName)
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
@@ -60,7 +60,7 @@ abstract class AppDatabase: RoomDatabase() {
 
         private fun buildDatabase(context: Context, dbName: String): AppDatabase {
             return RoomAsset
-                    .databaseBuilder(context, AppDatabase::class.java, "word-db.db")
+                    .databaseBuilder(context, AppDatabase::class.java, "$dbName.db")
                     .build()
         }
 

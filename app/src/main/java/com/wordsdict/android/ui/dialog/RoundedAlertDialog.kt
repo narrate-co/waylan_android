@@ -56,16 +56,16 @@ class RoundedAlertDialog: AppCompatDialogFragment() {
         ).forEach {
             val item = activity!!.layoutInflater.inflate(R.layout.radio_list_item_layout, v.container, false)
             val title = when (it) {
-                AppCompatDelegate.MODE_NIGHT_AUTO -> "Auto"
-                AppCompatDelegate.MODE_NIGHT_YES -> "Yes"
-                AppCompatDelegate.MODE_NIGHT_NO -> "No"
-                else -> "Follow System"
+                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_title)
+                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_title)
+                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_title)
+                else -> getString(R.string.settings_night_mode_follows_system_title)
             }
             val desc = when (it) {
-                AppCompatDelegate.MODE_NIGHT_AUTO -> "Night mode turns on between sunset and sunrise"
-                AppCompatDelegate.MODE_NIGHT_YES -> "Always use night mode"
-                AppCompatDelegate.MODE_NIGHT_NO -> "Never use night mode"
-                else -> "Night mode usage is determined by your global system settings"
+                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_desc)
+                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_desc)
+                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_desc)
+                else -> getString(R.string.settings_night_mode_follows_system_desc)
             }
             item.radioTitle.text = title
             item.radioDesc.text = desc

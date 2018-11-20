@@ -2,8 +2,10 @@ package com.wordsdict.android.data.mw
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.crashlytics.android.Crashlytics
 import com.wordsdict.android.data.disk.mw.MwDao
 import com.wordsdict.android.data.disk.mw.WordAndDefinitions
+import com.wordsdict.android.util.contentEquals
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +26,7 @@ class MerriamWebsterStore(
     fun getWord(word: String): LiveData<List<WordAndDefinitions>> {
         //asynchronously get the word from the mw service
         launch {
-            merriamWebsterService.getWord(word, DEV_KEY).enqueue(mwApiWordCallback)
+            merriamWebsterService.getWord(word, DEV_KEY).enqueue(getMerriamWebsterApiWordCallback(word))
         }
 
         //return a live data observing the db which will update once the service returns and saved
@@ -32,7 +34,7 @@ class MerriamWebsterStore(
         return mwDao.getWordAndDefinitions(word)
     }
 
-    private val mwApiWordCallback = object : Callback<EntryList> {
+    private fun getMerriamWebsterApiWordCallback(word: String) = object : Callback<EntryList> {
         override fun onFailure(call: Call<EntryList>?, t: Throwable?) {
             Log.e(TAG, "mwApiWordCallback on Failure = $t")
         }
@@ -50,9 +52,9 @@ class MerriamWebsterStore(
                     }
 
                     val relatedWords = entryList.entries.map { it.word }
-                    entryList.entries.forEach {
-                        val word = it.toDbMwWord(relatedWords)
 
+                    entryList.entries.forEach {
+                        val word = it.toDbMwWord(relatedWords, entryList.suggestions)
                         mwDao.insert(word)
                     }
 
@@ -61,10 +63,25 @@ class MerriamWebsterStore(
                         val definitions = it.toDbMwDefinitions
                         mwDao.insertAll(*definitions.toTypedArray())
                     }
+
+                    //if empty, in order to return results, add a placeholder word with suggestions
+                    if (entryList.entries.isEmpty() && entryList.suggestions.isNotEmpty()) {
+                        val existingMwWord = mwDao.getWord(word)
+                        if (existingMwWord != null && existingMwWord.suggestions.contentEquals(entryList.suggestions)) {
+                            //this is already present in the db. Update just it's suggestions
+                            println("$TAG::Updating existing word suggestions")
+                            existingMwWord.suggestions = entryList.suggestions
+                            mwDao.insert(existingMwWord)
+                        } else if (existingMwWord == null) {
+                            //this is not already in the db. Add it
+                            println("$TAG::Adding new word with suggestons")
+                            val newWord = entryList.toSuggestionWord(word)
+                            mwDao.insert(newWord)
+                        }
+                    }
                 }
             }
         }
     }
-
 }
 

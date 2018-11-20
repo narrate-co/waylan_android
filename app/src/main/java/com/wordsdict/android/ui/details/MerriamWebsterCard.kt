@@ -23,6 +23,7 @@ import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.service.AudioClipService
 import com.wordsdict.android.service.AudioController
 import com.wordsdict.android.util.fromHtml
+import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 
@@ -38,6 +39,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
     interface MerriamWebsterViewListener {
         fun onRelatedWordClicked(word: String)
+        fun onSuggestionWordClicked(word: String)
         fun onAudioClipError(message: String)
         fun onDismissCardClicked()
     }
@@ -75,6 +77,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
         definitionGroups = mutableListOf()
         definitionsContainer.removeAllViews()
         relatedWordsChipGroup.removeAllViews()
+        suggestionsWordsChipGroup.removeAllViews()
         audioImageView.setOnClickListener {  }
     }
 
@@ -138,9 +141,12 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
         //add entries
         wordsAndDefinitions.entries.forEach {
-            setWord(it.word)
+            setRelatedWords(it.word)
+            setSuggestionsWords(it.word)
             setDefinitions(it.word, it.definitions)
         }
+
+        visibility = View.VISIBLE
     }
 
     private fun setFieldsDenied(user: User?) {
@@ -149,6 +155,8 @@ class MerriamWebsterCard @JvmOverloads constructor(
         definitionsContainer.visibility = View.GONE
         relatedWordsHeader.visibility = View.GONE
         relatedWordsHorizontalScrollView.visibility = View.GONE
+        suggestionsWordsHeader.gone()
+        suggestionsWordsHorizontalScrollView.gone()
 
         val state = user?.merriamWebsterState ?: PluginState.None()
         when (state) {
@@ -179,11 +187,12 @@ class MerriamWebsterCard @JvmOverloads constructor(
 
 
     private fun setAudio(word: Word?) {
-        if (word == null || word.sound.wav.isBlank()) return
+//        if (word == null || word.sounds.wav.isBlank()) return
+        val wavFile = word?.sound?.wav ?: ""
 
         audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
 
-        var fileName = word.sound.wav.removeSuffix(".wav")
+        var fileName = wavFile.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "https://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
 //        val url = "error" //error url
         audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
@@ -247,7 +256,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     }
 
 
-    private fun setWord(word: Word?) {
+    private fun setRelatedWords(word: Word?) {
         if (word == null) return
 
         //TODO make this diffing smarter
@@ -264,6 +273,26 @@ class MerriamWebsterCard @JvmOverloads constructor(
             relatedWordsChipGroup.removeAllViews()
             relatedWordsHeader.visibility = View.GONE
             relatedWordsHorizontalScrollView.visibility = View.GONE
+        }
+    }
+
+    private fun setSuggestionsWords(word: Word?) {
+        if (word == null) return
+
+        //TODO make this diffing smarter
+        if (word.suggestions.isNotEmpty()) {
+            word.suggestions.distinct().forEach {
+                suggestionsWordsChipGroup?.addView(it.toRelatedChip(context, suggestionsWordsChipGroup) {
+                    listener?.onSuggestionWordClicked(it)
+                })
+            }
+
+            suggestionsWordsHeader.visibility = View.VISIBLE
+            suggestionsWordsHorizontalScrollView.visibility = View.VISIBLE
+        } else {
+            suggestionsWordsChipGroup.removeAllViews()
+            suggestionsWordsHeader.visibility = View.GONE
+            suggestionsWordsHorizontalScrollView.visibility = View.GONE
         }
     }
 
@@ -291,8 +320,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         }
 
         definitionsContainer.visibility = View.VISIBLE
-        visibility = View.VISIBLE
-
 
         //TODO add examples
 

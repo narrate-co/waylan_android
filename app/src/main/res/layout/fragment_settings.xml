@@ -22,9 +22,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/accountDialogCard"
-                layout="@layout/dialog_card_view_layout" />
+            <!--<include-->
+                <!--android:id="@+id/accountDialogCard"-->
+                <!--layout="@layout/dialog_card_view_layout" />-->
+
+            <com.wordsdict.android.util.BannerCardView
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_2"
+                android:layout_marginEnd="@dimen/keyline_2"
+                android:layout_marginTop="@dimen/keyline_2"
+                android:layout_marginBottom="@dimen/keyline_4"
+                app:cardElevation="2dp"
+                app:cardCornerRadius="@dimen/keyline_2"
+                app:cardBackgroundColor="?colorPrimaryLight"
+                />
 
             <include
                 android:id="@+id/darkModeSettings"

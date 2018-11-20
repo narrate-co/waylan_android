@@ -93,6 +93,9 @@ class DetailsFragment: BaseUserFragment(), DetailsAdapter.Listener, ElasticAppBa
         sharedViewModel.setCurrentWordId(relatedWord)
     }
 
+    override fun onSuggestionWordClicked(suggestionWord: String) {
+        sharedViewModel.setCurrentWordId(suggestionWord)
+    }
 
     override fun onSynonymChipClicked(synonym: String) {
         sharedViewModel.setCurrentWordId(synonym)

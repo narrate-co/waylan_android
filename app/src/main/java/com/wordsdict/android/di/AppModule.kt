@@ -3,6 +3,7 @@ package com.wordsdict.android.di
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.wordsdict.android.App
+import com.wordsdict.android.billing.BillingManager
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.prefs.PreferenceRepository
@@ -37,5 +38,6 @@ class AppModule {
     fun provideAnalyticsRepository(application: Application): AnalyticsRepository {
         return AnalyticsRepository(FirebaseAnalytics.getInstance(application))
     }
+
 }
 

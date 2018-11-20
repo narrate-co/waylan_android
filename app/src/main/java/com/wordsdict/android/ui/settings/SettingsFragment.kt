@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.*
+import com.wordsdict.android.billing.BillingConfig
+import com.wordsdict.android.billing.BillingManager
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.ui.auth.AuthActivity
 import com.wordsdict.android.ui.common.BaseUserFragment
@@ -21,9 +23,14 @@ import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.ui.dialog.RoundedAlertDialog
 import com.wordsdict.android.util.invisible
+import com.wordsdict.android.util.visible
+import javax.inject.Inject
 
 
 class SettingsFragment : BaseUserFragment() {
+
+    @Inject
+    lateinit var billingManger: BillingManager
 
     companion object {
         const val FRAGMENT_TAG = "settings_fragment_tag"
@@ -58,11 +65,11 @@ class SettingsFragment : BaseUserFragment() {
         view.darkModeSettings.settingsTitle.text = getString(R.string.settings_night_mode_title)
         viewModel.nightModeLive.observe(this, Observer {
             val desc = when (it) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> "Follows system"
-                AppCompatDelegate.MODE_NIGHT_AUTO -> "Auto"
-                AppCompatDelegate.MODE_NIGHT_YES -> "Yes"
-                AppCompatDelegate.MODE_NIGHT_NO -> "No"
-                else -> "Follows system"
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> getString(R.string.settings_night_mode_follows_system_title)
+                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_title)
+                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_title)
+                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_title)
+                else -> getString(R.string.settings_night_mode_follows_system_title)
             }
 
             view.darkModeSettings.settingsDescription.text = desc
@@ -119,89 +126,84 @@ class SettingsFragment : BaseUserFragment() {
         val state = user?.merriamWebsterState ?: PluginState.None()
         when (state) {
             is PluginState.None -> {
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
-                view.accountDialogCard.textLabel.visibility = View.GONE
+                view.banner.setBannerText(getString(R.string.settings_header_anonymous_none_body))
+                view.banner.setBannerLabelText(null)
             }
             is PluginState.FreeTrial -> {
                 val label = if (state.isValid) "Free Trial: ${state.remainingDays}d" else "Free trial expired"
-                view.accountDialogCard.textLabel.text = label
-                view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_free_trial_body)
+                view.banner.setBannerLabelText(label)
+                view.banner.setBannerText(getString(R.string.settings_header_anonymous_free_trial_body))
             }
             is PluginState.Purchased -> {
                 //This should never happen
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_anonymous_none_body)
-                view.accountDialogCard.textLabel.visibility = View.GONE
+                view.banner.setBannerText(getString(R.string.settings_header_anonymous_none_body))
+                view.banner.setBannerLabelText(null)
             }
         }
 
 
-        view.accountDialogCard.topButton.text = getString(R.string.settings_header_anonymous_create_account_button)
-        view.accountDialogCard.bottomButton.text = getString(R.string.settings_header_anonymous_log_in_button)
-        view.accountDialogCard.topButton.setOnClickListener {
+        view.banner.setBannerTopButton(getString(R.string.settings_header_anonymous_create_account_button), View.OnClickListener {
             Navigator.launchAuth(context!!, AuthActivity.AuthRoute.SIGN_UP)
-        }
-        view.accountDialogCard.bottomButton.setOnClickListener {
-            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
-        }
+        })
 
-        view.accountDialogCard.topButton.visibility = View.VISIBLE
-        view.accountDialogCard.bottomButton.visibility = View.VISIBLE
-        view.accountDialogCard.visibility = View.VISIBLE
+        view.banner.setBannerBottomButton(getString(R.string.settings_header_anonymous_log_in_button), View.OnClickListener {
+            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
+        })
+
+        view.banner.visible()
     }
 
     private fun setAsRegistered(view: View, user: User) {
         val state = user.merriamWebsterState
         when (state) {
             is PluginState.None -> {
-                view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_none_body)
-                view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
-                view.accountDialogCard.topButton.visibility = View.VISIBLE
-                view.accountDialogCard.textLabel.visibility = View.GONE
+                view.banner.setBanner(
+                        text = getString(R.string.settings_header_registered_none_body),
+                        topButton = getString(R.string.settings_header_registered_add_button)
+                )
             }
             is PluginState.FreeTrial -> {
                 if (state.isValid) {
-                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_body)
-                    view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
-                    view.accountDialogCard.topButton.visibility = View.VISIBLE
-                    view.accountDialogCard.topButton.setOnClickListener {
-                        //TODO take to Google Play Billing add flow
-                    }
-                    view.accountDialogCard.textLabel.text = "Free trial: ${state.remainingDays}d"
-                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                    view.banner.setBanner(
+                            text = getString(R.string.settings_header_registered_free_trial_body),
+                            label = "Free trial: ${state.remainingDays}d",
+                            topButton = getString(R.string.settings_header_registered_add_button),
+                            topButtonListener = View.OnClickListener {
+                                launchMerriamWebsterPurchaseFlow()
+                            }
+                    )
                 } else {
-                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_free_trial_expired_body)
-                    view.accountDialogCard.topButton.text = getString(R.string.settings_header_registered_add_button)
-                    view.accountDialogCard.topButton.visibility = View.VISIBLE
-                    view.accountDialogCard.topButton.setOnClickListener {
-                        //TODO take to Google Play Billing add flow
-                    }
-                    view.accountDialogCard.textLabel.text = "Free trial expired"
-                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
+                    view.banner.setBanner(
+                            text = getString(R.string.settings_header_registered_free_trial_expired_body),
+                            label = "Free trial expired",
+                            topButton = getString(R.string.settings_header_registered_add_button),
+                            topButtonListener = View.OnClickListener {
+                                launchMerriamWebsterPurchaseFlow()
+                            }
+                    )
                 }
             }
             is PluginState.Purchased -> {
                 if (state.isValid) {
-                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_subscribed_body)
-                    view.accountDialogCard.topButton.visibility = View.GONE
-                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                    view.accountDialogCard.textLabel.text = "Added"
+
+                    view.banner.setBanner(
+                            text = getString(R.string.settings_header_registered_subscribed_body),
+                            label = "Added"
+                    )
                 } else {
-                    view.accountDialogCard.messageTextView.text = getString(R.string.settings_header_registered_subscribed_expired_body)
-                    view.accountDialogCard.topButton.visibility = View.VISIBLE
-                    view.accountDialogCard.topButton.text = "Renew"
-                    view.accountDialogCard.topButton.setOnClickListener {
-                        //TODO take to Google Play Billing renewal flow
-                    }
-                    view.accountDialogCard.textLabel.visibility = View.VISIBLE
-                    view.accountDialogCard.textLabel.text = "Plugin expired"
+
+                    view.banner.setBanner(
+                            text = getString(R.string.settings_header_registered_subscribed_expired_body),
+                            label = "Plugin expired",
+                            topButton = "Renew",
+                            topButtonListener = View.OnClickListener {
+                                launchMerriamWebsterPurchaseFlow()
+                            }
+                    )
                 }
 
             }
         }
-
-        view.accountDialogCard.bottomButton.visibility = View.GONE
-        view.accountDialogCard.visibility = View.VISIBLE
 
         // Common settings
         view.signOutSetting.settingsTitle.text = getString(R.string.settings_sign_out_title)
@@ -212,6 +214,11 @@ class SettingsFragment : BaseUserFragment() {
 
         view.signOutSetting.checkbox.visibility = View.INVISIBLE
         view.signOutSetting.visibility = View.VISIBLE
+    }
+
+    private fun launchMerriamWebsterPurchaseFlow() {
+        val sku = if (BuildConfig.DEBUG) BillingConfig.TEST_SKU_MERRIAM_WEBSTER else BillingConfig.SKU_MERRIAM_WEBSTER
+        billingManger.initiatePurchaseFlow(activity!!, sku)
     }
 
 }

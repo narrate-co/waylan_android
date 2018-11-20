@@ -3,6 +3,7 @@
 
 
     <declare-styleable name="BannerCardView">
+        <attr name="bannerLabel" format="string"/>
         <attr name="bannerText" format="string"/>
         <attr name="bannerTopButtonText" format="string"/>
         <attr name="bannerBottomButtonText" format="string"/>

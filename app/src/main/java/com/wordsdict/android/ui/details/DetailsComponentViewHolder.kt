@@ -58,6 +58,10 @@ sealed class DetailsComponentViewHolder(val view: View, val listener: DetailsCom
             listener.onRelatedWordClicked(word)
         }
 
+        override fun onSuggestionWordClicked(word: String) {
+            listener.onSuggestionWordClicked(word)
+        }
+
         override fun onAudioClipError(message: String) {
             listener.onAudioClipError(message)
         }

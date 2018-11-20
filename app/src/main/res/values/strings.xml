@@ -61,7 +61,7 @@
     <string name="settings_header_anonymous_log_in_button">Log in</string>
     <string name="settings_header_registered_none_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words for an entire year of access.</string>
     <string name="settings_header_registered_free_trial_expired_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words for an entire year of access.</string>
-    <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Words. Help support Merriam-Webster and Words with and get an entire year of access.</string>
+    <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Words. Help support Merriam-Webster and Words and get an entire year of access.</string>
     <string name="settings_header_registered_subscribed_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. You have unlimited access. Thank you for your support.</string>
     <string name="settings_header_registered_subscribed_expired_body">Looks like your purchase expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Renew for a whole year of access.</string>
     <string name="settings_header_registered_add_button">Add</string>
@@ -69,6 +69,14 @@
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
     <string name="settings_developer_title">Developer Settings</string>
     <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
+    <string name="settings_night_mode_follows_system_title">Follows system</string>
+    <string name="settings_night_mode_auto_title">Auto</string>
+    <string name="settings_night_mode_yes_title">Yes</string>
+    <string name="settings_night_mode_no_title">No</string>
+    <string name="settings_night_mode_auto_desc">Night mode turns on between sunset and sunrise</string>
+    <string name="settings_night_mode_yes_desc">Always use night mode</string>
+    <string name="settings_night_mode_no_desc">Never use night mode</string>
+    <string name="settings_night_mode_follows_system_desc">Night mode usage is determined by your global system settings</string>
 
     <!--About-->
     <string name="about_header_body">
@@ -81,6 +89,7 @@
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
     <string name="details_merriam_webster_card_details_button">Details</string>
     <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
+
 
 
 </resources>

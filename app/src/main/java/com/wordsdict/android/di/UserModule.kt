@@ -3,6 +3,7 @@ package com.wordsdict.android.di
 import android.app.Application
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.wordsdict.android.billing.BillingManager
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.User
@@ -56,6 +57,12 @@ class UserModule {
             firestoreStore: FirestoreStore?,
             userPreferenceRepository: UserPreferenceRepository): UserRepository {
         return UserRepository(firestoreStore, userPreferenceRepository)
+    }
+
+    @UserScope
+    @Provides
+    fun provideBillingManager(application: Application, userRepository: UserRepository): BillingManager {
+        return BillingManager(application, userRepository)
     }
 
 }

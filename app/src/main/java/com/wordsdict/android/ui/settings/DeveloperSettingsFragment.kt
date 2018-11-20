@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.R
+import com.wordsdict.android.billing.BillingConfig
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
@@ -64,13 +65,22 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                 cycleState(user)
             }
         })
+
+        view.merriamWebsterIAB.settingsTitle.text = "Toggle Merriam-Webster Billing response"
+        view.merriamWebsterIAB.checkbox.visibility = View.INVISIBLE
+        view.merriamWebsterIAB.settingsDescription.text = BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+        view.merriamWebsterIAB.setOnClickListener {
+            val newResponse = cycleIabTestResponse(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
+            BillingConfig.TEST_SKU_MERRIAM_WEBSTER = newResponse
+            view.merriamWebsterIAB.settingsDescription.text = newResponse
+        }
     }
 
     /**
      * Should cycle through:
      *
      * NONE
-     * FREE_TRIAL (valid)
+     * FREE_TRIAL (VALID)
      * FREE_TRIAL (expired)
      * SUBSCRIBED (valid)
      * SUBSCRIBED (expired)
@@ -84,14 +94,23 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                     //FreeTrial (valid) -> FreeTrial (expired)
                     state is PluginState.FreeTrial && state.isValid -> PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
                     //FreeTrial (expired) -> Purchased (valid)
-                    state is PluginState.FreeTrial && !state.isValid -> PluginState.Purchased()
+                    state is PluginState.FreeTrial && !state.isValid -> PluginState.Purchased(purchaseToken = user.merriamWebsterPurchaseToken)
                     //Purchased (valid) -> Purchased (expired)
-                    state is PluginState.Purchased && state.isValid -> PluginState.Purchased(user.oneDayPastExpiration)
+                    state is PluginState.Purchased && state.isValid -> PluginState.Purchased(user.oneDayPastExpiration, user.merriamWebsterPurchaseToken)
                     //Purchased (expired) -> FreeTrial (valid)
                     state is PluginState.Purchased && !state.isValid -> PluginState.FreeTrial(user.isAnonymous)
                     //Default
                     else -> PluginState.None()
                 })
+    }
+
+    private fun cycleIabTestResponse(currentResponse: String): String {
+        return when (currentResponse) {
+            BillingConfig.TEST_SKU_PURCHASED -> BillingConfig.TEST_SKU_CANCELED
+            BillingConfig.TEST_SKU_CANCELED -> BillingConfig.TEST_SKU_ITEM_UNAVAILABLE
+            BillingConfig.TEST_SKU_ITEM_UNAVAILABLE -> BillingConfig.TEST_SKU_PURCHASED
+            else -> BillingConfig.TEST_SKU_PURCHASED
+        }
     }
 
 }

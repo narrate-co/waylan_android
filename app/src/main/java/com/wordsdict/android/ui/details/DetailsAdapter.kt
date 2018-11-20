@@ -10,6 +10,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
     interface Listener {
         fun onRelatedWordClicked(relatedWord: String)
+        fun onSuggestionWordClicked(suggestionWord: String)
         fun onSynonymChipClicked(synonym: String)
         fun onAudioClipError(message: String)
         fun onMerriamWebsterDismissClicked()
@@ -54,7 +55,7 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
                     wordset = source
                 }
                 is MerriamWebsterSource -> {
-                    if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty()) {
+                    if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty() || source.wordsDefinitions.entries.map { it.word }.filterNotNull().map { it.suggestions }.flatten().isNotEmpty()) {
                         merriamWebster = source
                     }
                 }
@@ -147,6 +148,10 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
     override fun onRelatedWordClicked(relatedWord: String) {
         listener.onRelatedWordClicked(relatedWord)
+    }
+
+    override fun onSuggestionWordClicked(suggestionWord: String) {
+        listener.onSuggestionWordClicked(suggestionWord)
     }
 
     override fun onAudioClipError(message: String) {

@@ -25,19 +25,6 @@ class SettingsActivity : BaseUserActivity() {
 
     fun showDeveloperSettings() = Navigator.showDeveloperSettings(this)
 
-    fun restartWithReconstructedStack() {
-        val mainIntent = Intent(this, MainActivity::class.java)
-        val taskBuilder = TaskStackBuilder.create(this)
-        taskBuilder.addParentStack(MainActivity::class.java)
-        taskBuilder.addNextIntent(mainIntent)
-
-        val settingsIntent = Intent(this, SettingsActivity::class.java)
-        taskBuilder.addNextIntent(settingsIntent)
-
-        taskBuilder.startActivities()
-
-    }
-
     fun updateNightMode(mode: Int) {
         delegate.setLocalNightMode(mode)
         (application as App).updateDefaultNightMode()
