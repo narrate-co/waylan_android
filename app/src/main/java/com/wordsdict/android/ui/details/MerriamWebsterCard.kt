@@ -76,7 +76,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         definitionGroups = mutableListOf()
         definitionsContainer.removeAllViews()
         relatedWordsChipGroup.removeAllViews()
-        suggestionsWordsChipGroup.removeAllViews()
         audioImageView.setOnClickListener {  }
     }
 
@@ -141,7 +140,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         //add entries
         wordsAndDefinitions.entries.forEach {
             setRelatedWords(it.word)
-            setSuggestionsWords(it.word)
             setDefinitions(it.word, it.definitions)
         }
 
@@ -154,8 +152,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
         definitionsContainer.visibility = View.GONE
         relatedWordsHeader.visibility = View.GONE
         relatedWordsHorizontalScrollView.visibility = View.GONE
-        suggestionsWordsHeader.gone()
-        suggestionsWordsHorizontalScrollView.gone()
 
         val state = user?.merriamWebsterState ?: PluginState.None()
         when (state) {
@@ -258,9 +254,11 @@ class MerriamWebsterCard @JvmOverloads constructor(
     private fun setRelatedWords(word: Word?) {
         if (word == null) return
 
+        val wordsList = (word.relatedWords + word.suggestions).filterNot { it == word.word }.distinct()
+
         //TODO make this diffing smarter
-        if (word.relatedWords.isNotEmpty()) {
-            word.relatedWords.distinct().forEach {
+        if (wordsList.isNotEmpty()) {
+            wordsList.forEach {
                 relatedWordsChipGroup?.addView(it.toRelatedChip(context, relatedWordsChipGroup) {
                     listener?.onRelatedWordClicked(it)
                 })
@@ -272,26 +270,6 @@ class MerriamWebsterCard @JvmOverloads constructor(
             relatedWordsChipGroup.removeAllViews()
             relatedWordsHeader.visibility = View.GONE
             relatedWordsHorizontalScrollView.visibility = View.GONE
-        }
-    }
-
-    private fun setSuggestionsWords(word: Word?) {
-        if (word == null) return
-
-        //TODO make this diffing smarter
-        if (word.suggestions.isNotEmpty()) {
-            word.suggestions.distinct().forEach {
-                suggestionsWordsChipGroup?.addView(it.toRelatedChip(context, suggestionsWordsChipGroup) {
-                    listener?.onSuggestionWordClicked(it)
-                })
-            }
-
-            suggestionsWordsHeader.visibility = View.VISIBLE
-            suggestionsWordsHorizontalScrollView.visibility = View.VISIBLE
-        } else {
-            suggestionsWordsChipGroup.removeAllViews()
-            suggestionsWordsHeader.visibility = View.GONE
-            suggestionsWordsHorizontalScrollView.visibility = View.GONE
         }
     }
 

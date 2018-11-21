@@ -312,7 +312,7 @@ class FormattedStringConverter: Converter<FormattedString> {
     }
 }
 
-fun EntryList.toSuggestionWord(id: String): Word {
+fun getNewSuggestionWord(id: String, suggestions: List<String>): Word {
     return Word(
             id,
             id,
@@ -323,14 +323,17 @@ fun EntryList.toSuggestionWord(id: String): Word {
             "",
             "",
             emptyList(),
-            this.suggestions.filterNot { it == id }.distinct(),
+            suggestions,
             com.wordsdict.android.data.disk.mw.Uro("","")
     )
 }
 
+val EntryList.synthesizedSuggestions: List<String>
+    get() = (this.entries.map { it.word } + this.suggestions).distinct()
+
 fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Word {
-    val relWordsFiltered = relatedWords.filterNot{ it == this.word }.distinct()
-    val suggestionsFiltered = suggestions.filterNot { it == this.word }.distinct()
+    val relWordsFiltered = relatedWords.filterNot{ it == this.word }
+    val suggestionsFiltered = suggestions.filterNot { it == this.word }
     return Word(
             this.id,
             this.word,

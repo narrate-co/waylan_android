@@ -4,7 +4,7 @@ import com.wordsdict.android.data.firestore.users.User
 
 
 data class PermissiveWordsDefinitions(
-        val user: User?,
-        val entries: List<WordAndDefinitions>
+        var user: User?,
+        var entries: List<WordAndDefinitions>
 )
 

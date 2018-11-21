@@ -1,11 +1,14 @@
 package com.wordsdict.android.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import com.wordsdict.android.data.disk.wordset.WordAndMeanings
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.disk.mw.PermissiveWordsDefinitions
+import com.wordsdict.android.data.disk.mw.WordAndDefinitions
 import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.words.GlobalWord
@@ -93,7 +96,7 @@ class WordRepository(
         if (id.isBlank() || merriamWebsterStore == null || firestoreStore == null) return LiveDataHelper.empty()
 
         return MergedLiveData(
-                merriamWebsterStore.getWord(id),
+                merriamWebsterStore.getWordAndDefinitions(id),
                 firestoreStore.getUserLive()) { d1, d2 ->
             PermissiveWordsDefinitions(d2, d1)
         }

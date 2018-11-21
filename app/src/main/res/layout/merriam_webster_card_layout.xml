@@ -26,8 +26,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/keyline_3"
-            android:layout_marginStart="@dimen/keyline_3"
+            android:paddingStart="@dimen/keyline_3"
+            android:paddingEnd="@dimen/keyline_3"
             >
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -43,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginRight="4dp"
+                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_round_play_arrow_24px"/>
 
@@ -180,37 +181,6 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/relatedWordsChipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                app:singleLine="true" />
-
-        </HorizontalScrollView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:textAppearance="?textAppearanceCaption"
-            android:id="@+id/suggestionsWordsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="Suggestions:"
-            android:visibility="gone"
-            />
-
-        <HorizontalScrollView
-            android:id="@+id/suggestionsWordsHorizontalScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_1"
-            android:layout_marginBottom="@dimen/keyline_3"
-            android:clipToPadding="false"
-            android:paddingEnd="@dimen/keyline_1"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/suggestionsWordsChipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
