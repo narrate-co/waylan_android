@@ -42,7 +42,6 @@ class BillingManager(
     private val tokensToBeConsumed = HashSet<String>()
 
     init {
-        println("$TAG::init")
         doWithServiceConnection {
             launch(UI) {
                 it.queryPurchasesAndSubscription(true)
@@ -95,7 +94,6 @@ class BillingManager(
     }
 
     private fun doWithServiceConnection(work: (BillingClient) -> Unit) {
-        println("$TAG::doWithServiceConnection isServiceConnected = $isServiceConnected")
         if (isServiceConnected) {
             launch(UI) {
                 work(billingClient)
@@ -103,7 +101,6 @@ class BillingManager(
         } else {
             billingClient.startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(responseCode: Int) {
-                    println("$TAG::doWithService::onBillingSetupFinished")
                     if (responseCode == BillingClient.BillingResponse.OK) {
                         isServiceConnected = true
                         launch(UI) {
@@ -113,7 +110,6 @@ class BillingManager(
                     }
                 }
                 override fun onBillingServiceDisconnected() {
-                    println("$TAG::doWithService::onBillingServiceDisconnected")
                     isServiceConnected = false
                 }
             })
@@ -122,22 +118,18 @@ class BillingManager(
 
 
     fun consume(purchaseToken: String) {
-        println("$TAG::consume $purchaseToken")
         if (tokensToBeConsumed.contains(purchaseToken)) {
-            println("$TAG::consume - tokenIsAlready in tokensToBeConsumed $purchaseToken")
             return
         }
 
         tokensToBeConsumed.add(purchaseToken)
 
         val onConsumeListener = ConsumeResponseListener { responseCode, purchaseToken ->
-            println("$TAG::consume - onConsumeListener $purchaseToken")
             tokensToBeConsumed.remove(purchaseToken)
         }
 
         doWithServiceConnection {
             launch(UI) {
-                println("$TAG::consumeAsync")
                 it.consumeAsync(purchaseToken, onConsumeListener)
             }
         }
@@ -165,31 +157,26 @@ class BillingManager(
 
     override fun onPurchasesUpdated(resultCode: Int, purchases: MutableList<Purchase>?) {
         if (resultCode == BillingClient.BillingResponse.OK && purchases != null) {
-            println("$TAG::onPurchasesUpdated::OK - $purchases")
             purchases.forEach {
                 handlePurchase(it)
             }
         } else if (resultCode == BillingClient.BillingResponse.USER_CANCELED) {
+            //TODO
             // the user canceled the purchase flow
-            println("$TAG::onPurchasesUpdated::Canceled - $purchases")
         } else {
             //TODO
-            // and unknown error ocurred
-            println("$TAG::onPurchasesUpdated::Other - $purchases, resultCode = $resultCode")
+            // a different response was returned
         }
     }
 
     private fun handlePurchase(purchase: Purchase) {
         //TODO add security checks
 //        if (!verifyValidSignature(purchase.originalJson, purchase.signature)) {
-//            println("$TAG::handlePurchase - not valid signature!")
 //            return
 //        }
 
         //TODO parse purchase and update User with userRepository
-//        val startedDate = Date(TimeUnit.MILLISECONDS.convert(purchase.purchaseTime, TimeUnit.SECONDS))
         val startedDate = Date(purchase.purchaseTime)
-        println("$TAG::handlePurchase - start $startedDate, json ${purchase.originalJson}")
 
         when (purchase.sku) {
             BillingConfig.SKU_MERRIAM_WEBSTER -> {
@@ -209,7 +196,6 @@ class BillingManager(
     }
 
     private fun onQueryPurchasesFinished(result: Purchase.PurchasesResult, consumeAll: Boolean) {
-        println("$TAG::onQueryPurchasesFinished consumeAll: $consumeAll, purchases: ${result.purchasesList}")
         if (billingClient == null || result.responseCode != BillingClient.BillingResponse.OK) {
             return
         }
