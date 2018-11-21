@@ -16,13 +16,10 @@ import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.ui.auth.AuthActivity
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.util.configError
-import kotlinx.android.synthetic.main.dialog_card_view_layout.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
-import kotlinx.android.synthetic.main.settings_item_layout.view.*
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.ui.dialog.RoundedAlertDialog
-import com.wordsdict.android.util.invisible
 import com.wordsdict.android.util.visible
 import javax.inject.Inject
 
@@ -62,20 +59,7 @@ class SettingsFragment : BaseUserFragment() {
         }
 
         //set common settings
-        view.darkModeSettings.settingsTitle.text = getString(R.string.settings_night_mode_title)
-        viewModel.nightModeLive.observe(this, Observer {
-            val desc = when (it) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> getString(R.string.settings_night_mode_follows_system_title)
-                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_title)
-                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_title)
-                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_title)
-                else -> getString(R.string.settings_night_mode_follows_system_title)
-            }
-
-            view.darkModeSettings.settingsDescription.text = desc
-
-        })
-
+        //night mode
         val nightModeCallback = object: RoundedAlertDialog.NightModeCallback() {
             var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             override fun onSelected(nightMode: Int) {
@@ -88,22 +72,29 @@ class SettingsFragment : BaseUserFragment() {
             }
         }
 
-        view.darkModeSettings.checkbox.invisible()
-        view.darkModeSettings.settingsItem.setOnClickListener {
+        viewModel.nightModeLive.observe(this, Observer {
+            val desc = when (it) {
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> getString(R.string.settings_night_mode_follows_system_title)
+                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_title)
+                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_title)
+                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_title)
+                else -> getString(R.string.settings_night_mode_follows_system_title)
+            }
+            view.nightMode.setDesc(desc)
+        })
+
+        view.nightMode.setOnClickListener {
             RoundedAlertDialog.newNightModeInstance(viewModel.nightMode, nightModeCallback).show(activity?.supportFragmentManager, "night_mode")
         }
 
-        view.aboutSetting.settingsTitle.text = getString(R.string.settings_about_title)
-        view.aboutSetting.settingsDescription.text = getString(R.string.settings_about_desc)
-        view.aboutSetting.checkbox.visibility = View.INVISIBLE
-        view.aboutSetting.setOnClickListener {
+        // about
+        view.about.setOnClickListener {
             (activity as? SettingsActivity)?.showAbout()
         }
 
-        view.contactSetting.settingsTitle.text = getString(R.string.settings_contact_title)
-        view.contactSetting.settingsDescription.text = getString(R.string.settings_contact_desc)
-        view.contactSetting.checkbox.visibility = View.INVISIBLE
-        view.contactSetting.setOnClickListener {
+        // contact
+        view.contact.setShowDivider(BuildConfig.DEBUG) // if debug, there will be a developer settings tile after this. Show divider
+        view.contact.setOnClickListener {
             try {
                 Navigator.launchEmail(context!!, Config.SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
             } catch (e: ActivityNotFoundException) {
@@ -113,11 +104,9 @@ class SettingsFragment : BaseUserFragment() {
             }
         }
 
-        view.developerSettings.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
-        view.developerSettings.checkbox.visibility = View.INVISIBLE
-        view.developerSettings.settingsTitle.text = getString(R.string.settings_developer_title)
-        view.developerSettings.settingsDescription.text = getString(R.string.settings_developer_desc)
-        view.developerSettings.setOnClickListener {
+        // developer settings
+        view.developer.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        view.developer.setOnClickListener {
             (activity as? SettingsActivity)?.showDeveloperSettings()
         }
     }
@@ -205,15 +194,13 @@ class SettingsFragment : BaseUserFragment() {
             }
         }
 
-        // Common settings
-        view.signOutSetting.settingsTitle.text = getString(R.string.settings_sign_out_title)
-        view.signOutSetting.settingsDescription.text = if (user.email.isNotBlank()) user.email else getString(R.string.settings_sign_out_default_desc)
-        view.signOutSetting.settingsItem.setOnClickListener {
+        //sign out
+        if (user.email.isNotBlank()) {
+            view.signOut.setDesc(user.email)
+        }
+        view.signOut.setOnClickListener {
             Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
         }
-
-        view.signOutSetting.checkbox.visibility = View.INVISIBLE
-        view.signOutSetting.visibility = View.VISIBLE
     }
 
     private fun launchMerriamWebsterPurchaseFlow() {

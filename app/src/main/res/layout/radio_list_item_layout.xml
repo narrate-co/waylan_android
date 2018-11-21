@@ -36,7 +36,6 @@
         android:id="@+id/radioDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/settingsTitle"
         android:layout_marginStart="32dp"
         android:layout_marginTop="2dp"
         android:text="Night mode turns on between sunrise and sunset"

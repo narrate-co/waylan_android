@@ -15,9 +15,7 @@ import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.data.firestore.users.oneDayPastExpiration
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.util.configInformative
-import com.wordsdict.android.util.setChecked
 import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
-import kotlinx.android.synthetic.main.settings_item_layout.view.*
 
 
 class DeveloperSettingsFragment : BaseUserFragment() {
@@ -43,47 +41,37 @@ class DeveloperSettingsFragment : BaseUserFragment() {
     }
 
     private fun setDeveloperSettings(view: View) {
-        view.clearUserPreferences.settingsTitle.text = getString(R.string.developer_settings_clear_user_preferences_title)
-        view.clearUserPreferences.settingsDescription.text = getString(R.string.developer_settings_clear_user_preferences_desc)
-        view.clearUserPreferences.checkbox.visibility = View.INVISIBLE
-        view.clearUserPreferences.setOnClickListener {
+        view.clearUser.setOnClickListener {
             viewModel.clearUserPreferences()
             Snackbar.make(view, "All user preferences cleared", Snackbar.LENGTH_SHORT)
                     .configInformative(context!!, false)
                     .show()
         }
 
-        view.merriamWebsterPreference.settingsTitle.text = "Toggle Merriam-Wesbter state"
-        view.merriamWebsterPreference.checkbox.visibility = View.INVISIBLE
         viewModel.getUserLive().observe(this, Observer { user ->
             val state = user.merriamWebsterState
-            view.merriamWebsterPreference.settingsDescription.text = when (state) {
+            view.merriamWebsterState.setDesc(when (state) {
                 is PluginState.None -> "None"
                 is PluginState.FreeTrial -> "Free trial (${if (state.isValid) "valid" else "expired"})"
                 is PluginState.Purchased -> "Purchased (${if (state.isValid) "valid" else "expired"})"
-            }
-            view.merriamWebsterPreference.setOnClickListener {
+            })
+            view.merriamWebsterState.setOnClickListener {
                 cycleState(user)
             }
         })
 
-        view.useTestSkus.settingsTitle.text = "Use test skus"
-        view.useTestSkus.settingsDescription.text = "Run IAB against fake product skus"
         viewModel.useTestSkusLive.observe(this, Observer {
-            view.useTestSkus.checkbox.setChecked(it)
+            view.useTestSkus.setChecked(it)
         })
         view.useTestSkus.setOnClickListener {
             viewModel.useTestSkus = !viewModel.useTestSkus
         }
 
-
-        view.merriamWebsterIAB.settingsTitle.text = "Toggle Merriam-Webster Billing response"
-        view.merriamWebsterIAB.checkbox.visibility = View.INVISIBLE
-        view.merriamWebsterIAB.settingsDescription.text = BillingConfig.TEST_SKU_MERRIAM_WEBSTER
-        view.merriamWebsterIAB.setOnClickListener {
+        view.merriamWebsterBillingResponse.setDesc(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
+        view.merriamWebsterBillingResponse.setOnClickListener {
             val newResponse = cycleIabTestResponse(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
             BillingConfig.TEST_SKU_MERRIAM_WEBSTER = newResponse
-            view.merriamWebsterIAB.settingsDescription.text = newResponse
+            view.merriamWebsterBillingResponse.setDesc(newResponse)
         }
     }
 

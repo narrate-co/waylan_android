@@ -22,10 +22,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--<include-->
-                <!--android:id="@+id/accountDialogCard"-->
-                <!--layout="@layout/dialog_card_view_layout" />-->
-
             <com.wordsdict.android.util.BannerCardView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
@@ -39,26 +35,46 @@
                 app:cardBackgroundColor="?colorPrimaryLight"
                 />
 
-            <include
-                android:id="@+id/darkModeSettings"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/nightMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/settings_night_mode_title"
+                />
 
-            <include
-                android:id="@+id/signOutSetting"
-                android:visibility="gone"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/signOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/settings_sign_out_title"
+                app:desc="@string/settings_sign_out_default_desc"
+                />
 
-            <include
-                android:id="@+id/aboutSetting"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/settings_about_title"
+                app:desc="@string/settings_about_desc"
+                />
 
-            <include
-                android:id="@+id/contactSetting"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/settings_contact_title"
+                app:desc="@string/settings_contact_desc"
+                />
 
-            <include
-                android:id="@+id/developerSettings"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/developer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/settings_developer_title"
+                app:desc="@string/settings_developer_desc"
+                app:showDivider="false"
+                />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

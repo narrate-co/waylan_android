@@ -20,21 +20,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/clearUserPreferences"
-                layout="@layout/settings_item_layout" />
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/clearUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/developer_settings_clear_user_preferences_title"
+                app:desc="@string/developer_settings_clear_user_preferences_desc"
+                />
 
-            <include
-                android:id="@+id/merriamWebsterPreference"
-                layout="@layout/settings_item_layout"/>
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/merriamWebsterState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Toggle Merriam-Webster state"
+                />
 
-            <include
+            <com.wordsdict.android.util.CheckPreferenceView
                 android:id="@+id/useTestSkus"
-                layout="@layout/settings_item_layout"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Use test skus"
+                app:desc="Run billing against fake product skus"
+                app:checkable="true"
+                />
 
-            <include
-                android:id="@+id/merriamWebsterIAB"
-                layout="@layout/settings_item_layout"/>
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/merriamWebsterBillingResponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Toggle Merriam-Webster Billing response"
+                app:showDivider="false"
+                />
 
         </LinearLayout>
 
