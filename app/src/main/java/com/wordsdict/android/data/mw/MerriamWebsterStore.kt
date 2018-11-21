@@ -57,27 +57,16 @@ class MerriamWebsterStore(
 
                     }
 
-                    println("$TAG::onResponse")
-
                     val relatedWords = entryList.entries.map { it.word }.distinct()
 
                     entryList.entries.forEach {
                         val word = it.toDbMwWord(relatedWords, entryList.synthesizedSuggestions)
-                        println("$TAG::inserting word id = ${word.id}")
-                        val inserted = mwDao.insert(word)
-                        println("$TAG::inserted word = $inserted")
+                        mwDao.insert(word)
                     }
 
                     entryList.entries.forEach {
-
                         val definitions = it.toDbMwDefinitions
-                        definitions.forEach {def ->
-                            println("$TAG::inserting definition. parentId = ${def.parentId}, def = ${def.definitions}")
-                        }
-                        val inserted = mwDao.insertAll(*definitions.toTypedArray())
-                        inserted.forEach { long ->
-                            println("$TAG::inserted definition = $long")
-                        }
+                        mwDao.insertAll(*definitions.toTypedArray())
                     }
 
                     val shouldInsertSuggestions = (entryList.entries.isEmpty() && entryList.suggestions.isNotEmpty()) || !entryList.entries.map { it.word }.contains(word)

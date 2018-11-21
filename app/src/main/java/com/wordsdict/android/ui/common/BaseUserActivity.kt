@@ -20,8 +20,6 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val app = application as App
-        println("BaseUserActivity::hasUser = ${app.hasUser}, userComponentBuilder = ${app.userComponentBuilder}, savedInstanceState = $savedInstanceState")
-        Crashlytics.log("BaseUserActivity::hasUser = ${app.hasUser}, userComponentBuilder = ${app.userComponentBuilder}, savedInstanceState = $savedInstanceState")
         if (!app.hasUser) {
             app.setUser(null)
             Navigator.launchAuth(this)

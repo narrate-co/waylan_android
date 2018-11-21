@@ -40,7 +40,6 @@ class MainActivity : BaseUserActivity() {
             showHome()
         }
 
-        println("MainActivity::onCreate - savedInstanceState = $savedInstanceState")
         processText(intent)
 
         setUpSearchSheet()
@@ -48,13 +47,11 @@ class MainActivity : BaseUserActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        println("MainActivity::onNewIntent")
         processText(intent)
     }
 
     private fun processText(intent: Intent?) {
         val textToProcess = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        println("MainActivity::processText - $textToProcess")
         if (!textToProcess.isNullOrBlank()) {
             viewModel.setCurrentWordId(textToProcess.toString())
             showDetails()
@@ -105,7 +102,6 @@ class MainActivity : BaseUserActivity() {
 
     fun focusAndOpenSearch() {
         val searchFragment = supportFragmentManager.findFragmentById(R.id.searchFragment) as? SearchFragment
-        println("MainActivity::focusAndOpenSearch. searchFragment == $searchFragment")
         searchFragment?.focusAndOpenSearch()
     }
 

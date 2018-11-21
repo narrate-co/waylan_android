@@ -33,7 +33,6 @@ object AppInjector {
 
     private fun handleActivity(activity: Activity?) {
         if (activity is HasSupportFragmentInjector) {
-            println("AppInjector::handleActivity - activity = $activity")
             AndroidInjection.inject(activity)
         }
         if (activity is FragmentActivity) {

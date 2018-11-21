@@ -43,8 +43,6 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
         fun addSource(source: WordSource) {
 
-            println("SourceHolder::addSource - ${source::class.java.simpleName}")
-
             clearIfNewWordSource(source)
 
             when (source) {
@@ -55,8 +53,6 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
                     wordset = source
                 }
                 is MerriamWebsterSource -> {
-                    println("SourceHolder::addMerriamWebsterSource. current = $merriamWebster, wordsAndDifinitions = ${source.wordsDefinitions}")
-
                     if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty() || source.wordsDefinitions.entries.map { it.word }.filterNotNull().map { it.suggestions }.flatten().isNotEmpty()) {
                         merriamWebster = source
                     }

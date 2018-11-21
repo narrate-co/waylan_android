@@ -142,7 +142,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
                 shouldDismissDown = dir.containsFlag(DIRECTION_DOWN)
                 shouldDismissRight = dir.containsFlag(DIRECTION_RIGHT)
                 shouldDismissLeft = dir.containsFlag(DIRECTION_LEFT)
-                printlnD("$TAG::dragDismissDirection = up = $shouldDismissUp, down = $shouldDismissDown, right = $shouldDismissRight, left = $shouldDismissLeft")
             }
             // Set dragDismissFraction/dragDismissDistanceVertical
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissFraction)) {
@@ -190,7 +189,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
      * Dismissing up should only happed when fully collapsed
      */
     override fun onOffsetChanged(abl: AppBarLayout?, verticalOffset: Int) {
-        printlnD("$TAG::onOffsetChanged verticalOffset = $verticalOffset, totalScrollRange = ${abl?.totalScrollRange}")
         appBarVerticalOffset = verticalOffset
         appBarTotalScrollRange = abl?.totalScrollRange ?: 0
     }
@@ -218,23 +216,17 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     // GestureDetector to understand raw touch events on the AppBarLayout itself
     private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.OnGestureListener {
 
-
-        override fun onShowPress(e: MotionEvent?) {
-            printlnD("$TAG::gestureDetector::onShowPress - ${e?.action}")
-        }
+        override fun onShowPress(e: MotionEvent?) { }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            printlnD("$TAG::gestureDetector::onSingleTapUp")
             return true
         }
 
         override fun onDown(e: MotionEvent?): Boolean {
-            printlnD("$TAG::gestureDetector::onDown")
             return true
         }
 
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            printlnD("$TAG::gestureDetector::onFling")
             if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) { //we are not currently dragging and should not consume this fling
                 flinging = true
             }
@@ -242,15 +234,12 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-            printlnD("$TAG::gestureDetector::onScroll distanceY = $distanceY")
             dragScaleVertical(parentCoordinatorLayout, distanceY.toInt())
             //TODO add dragScaleHorizontal.... which currently breaks things
             return true
         }
 
-        override fun onLongPress(e: MotionEvent?) {
-            printlnD("$TAG::gestureDetector::onLongPress")
-        }
+        override fun onLongPress(e: MotionEvent?) { }
 
     })
 
@@ -259,7 +248,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         lastMotionEvent = ev
         if (!hasStartedVerticalDrag) {
             val consume = super.onInterceptTouchEvent(parent, child, ev)
-            printlnD("$TAG::onInterceptTouchEvent - action = ${ev.action}, consume = $consume")
             return consume
         }
 
@@ -277,12 +265,10 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             when (ev.action) {
                 // Scrolling/touch has stopped. Process any accumulated drag
                 MotionEvent.ACTION_UP -> {
-                    printlnD("$TAG::onTouchEvent ACTION_UP")
                     handleStopScroll(parentCoordinatorLayout)
                 }
                 // Scrolling/touch has been canceled. Reset our drag variables and view properties
                 MotionEvent.ACTION_CANCEL -> {
-                    printlnD("$TAG::onTouchEvent ACTION_CANCEL")
                     totalDragX = 0F
                     totalDragY = 0F
                     handleStopScroll(parentCoordinatorLayout)
@@ -292,7 +278,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         if (!hasStartedVerticalDrag) {
             val consume = super.onTouchEvent(parent, child, ev)
-            printlnD("$TAG::onTouchEvent, action = ${ev.action}, consume = $consume, nestedScrolling = $nestedScrolling")
             return consume
         }
 
@@ -302,7 +287,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onStartNestedScroll(parent: CoordinatorLayout, child: AppBarLayout, directTargetChild: View, target: View, axes: Int, type: Int): Boolean {
-        printlnD("$TAG::onStartNestedScroll, scroll contains vertical = ${axes.containsFlag(View.SCROLL_AXIS_VERTICAL)}, horizontal = ${axes.containsFlag(View.SCROLL_AXIS_HORIZONTAL)}")
 
         nestedScrolling = true
         if (flinging) {
@@ -321,7 +305,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        printlnD("$TAG::onNestedPreScroll - dy = $dy, draggingDown = $draggingDown, draggingUp = $draggingUp")
 
 
         if (draggingDown && dy > 0 || draggingUp && dy < 0) {
@@ -339,7 +322,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
-        printlnD("$TAG::onNestedScroll - dyUnconsumed = $dyUnconsumed")
         dragScaleVertical(coordinatorLayout, dyUnconsumed)
         dragScaleHorizontal(coordinatorLayout, dxUnconsumed)
 
@@ -349,7 +331,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: AppBarLayout, target: View, velocityX: Float, velocityY: Float): Boolean {
-        printlnD("$TAG::onNestedPreFling - draggingUp = $draggingUp, draggingDown = $draggingDown")
         if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) { //we are not currently dragging and should not consume this fling
             flinging = true
         }
@@ -358,7 +339,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, abl: AppBarLayout, target: View, type: Int) {
         super.onStopNestedScroll(coordinatorLayout, abl, target, type)
-        printlnD("$TAG::onStopNestedScroll - totalDragY = $totalDragY, dragDismissDistanceVertical = $dragDismissDistanceVertical")
         nestedScrolling = false
         handleStopScroll(coordinatorLayout)
     }
@@ -392,7 +372,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: AppBarLayout, dependency: View): Boolean {
-        printlnD("$TAG::onDependentViewChanged")
         if (dragDismissFraction > 0F) {
             dragDismissDistanceVertical = parent.height * dragDismissFraction
             dragDismissDistanceHorizontal = parent.width * dragDismissFraction
@@ -430,7 +409,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         scalePropertiesY(view, dragFractionY, dragToY)
 
-        printlnD("$TAG::dragScaleVertical scroll = $scroll, totalDragY = $totalDragY, dragDismissDistanceVertical = $dragDismissDistanceVertical, draggingDown = $draggingDown, draggingUp = $draggingUp, appBarVerticalOffset = $appBarVerticalOffset, appBarTotalScrollRange = $appBarTotalScrollRange")
 
         if (
                 // if dragging down, totalDragY should always be negative
@@ -446,7 +424,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
                 // for collapsing toolbars, we should not start dismissing up if the AppBarLayout is not fully collapsed
                 || (draggingUp && (Math.abs(appBarVerticalOffset) != appBarTotalScrollRange))
         ) {
-            printlnD("$TAG::dragScale - on Cancel!!")
             totalDragY = 0F
             dragToY = 0F
             dragFractionY = 0F
@@ -566,9 +543,5 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         callbacks.removeAll {
             it.onDragDismissed()
         }
-    }
-
-    private fun printlnD(message: String) {
-        if (BuildConfig.DEBUG && Config.DEBUG_VERBOSE) println(message)
     }
 }

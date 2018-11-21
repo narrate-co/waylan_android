@@ -106,7 +106,6 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
         mediaPlayer?.setAudioAttributes(AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
         try {
             dispatchLoading(url)
-            println("$TAG::setting up url: $url")
             mediaPlayer?.setDataSource(url)
             mediaPlayer?.setOnPreparedListener(this)
             mediaPlayer?.setOnCompletionListener(this)

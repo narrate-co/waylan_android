@@ -88,7 +88,6 @@ class DatabaseSeedService: Service() {
                             OffsetDateTime.now()
                     )
                     //insert word
-                    println("$TAG::addingWord $word")
                     words.add(word)
 
                     for (m in value.meanings ?: emptyList()) {

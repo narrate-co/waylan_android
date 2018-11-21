@@ -565,7 +565,6 @@ public class SymSpell {
         boolean lastCombi = false;
         for (int i = 0; i < termList1.length; i++){      // For each term do loop
             suggestions = lookup(termList1[i], Verbosity.Top, maxEditDistance); // Get the normal suggestions,
-//            suggestions.forEach(it -> System.out.println("Suggestions: " + it.term));
             //combi check, always before split. i > 0 because we can't split on zero obviously.
             if((i > 0) && !lastCombi) {
                 suggestionsCombi = lookup(termList1[i - 1] + termList1[i], Verbosity.Top, maxEditDistance);

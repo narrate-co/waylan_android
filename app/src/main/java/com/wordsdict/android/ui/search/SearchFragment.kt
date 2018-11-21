@@ -124,7 +124,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         // Hide actions when not in details
         sharedViewModel.getBackStack().observe(this, Observer {
-            println("$TAG::getHomeDestination - $it")
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             // wait for the next layout step to grantee the actions.width is correctly captured
             view.post {

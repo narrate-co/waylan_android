@@ -13,9 +13,6 @@ class SquareToRoundCornerTreatment(
 
         val roundedCornerOffset = (1F - interpolation) * maxCornerRadius
 
-
-        println("rounded corner get path - interpolation = $interpolation, roundedCornerOffset = $roundedCornerOffset")
-
         shapePath.reset(0F, roundedCornerOffset)
         shapePath.addArc(
                 0f,
