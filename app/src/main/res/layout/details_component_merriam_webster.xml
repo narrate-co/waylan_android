@@ -13,6 +13,6 @@
     android:paddingBottom="@dimen/keyline_3"
     app:cardElevation="2dp"
     app:cardCornerRadius="@dimen/keyline_2"
-    app:cardBackgroundColor="?colorPrimaryLight"
+    app:cardBackgroundColor="?surfaceBColor"
     android:clipToPadding="false"
     />

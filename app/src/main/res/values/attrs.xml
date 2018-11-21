@@ -18,6 +18,11 @@
     <attr name="textColorOnError" format="color"/>
     <attr name="textColorHintOnError" format="color"/>
 
+    <attr name="surfaceAColor" format="color"/>
+    <attr name="surfaceASubsurfaceAColor" format="color"/>
+    <attr name="surfaceBColor" format="color"/>
+    <attr name="surfaceBSubsurfaceAColor" format="color"/>
+
     <attr name="textLabelBackgroundColor" format="color"/>
     <attr name="textLabelTextColor" format="color"/>
 

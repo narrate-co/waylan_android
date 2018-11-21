@@ -20,6 +20,11 @@
         <item name="android:textColorSecondaryInverse">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:textColorTertiaryInverse">@color/colorTextDarkLowEmphasis</item>
 
+        <item name="surfaceAColor">@color/colorBlack800</item>
+        <item name="surfaceASubsurfaceAColor">@color/colorBlack700</item>
+        <item name="surfaceBColor">@color/colorBlack600</item>
+        <item name="surfaceBSubsurfaceAColor">@color/colorBlack500</item>
+
         <item name="colorAccentDark">@color/colorWhite900</item>
         <item name="colorPrimaryLight">@color/colorBlack700</item>
         <item name="colorHairline">@color/dark_colorWhite25a</item>
@@ -43,13 +48,11 @@
 
     <style name="Base.Theme.Words.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/colorTan50</item>
-        <item name="colorPrimaryDark">@color/colorTan100</item>
+        <item name="colorPrimary">@color/colorIvory50</item>
+        <item name="colorPrimaryDark">@color/colorIvory100</item>
         <item name="colorAccent">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/colorTan50</item>
-
-
+        <item name="android:windowBackground">@color/colorIvory50</item>
 
         <item name="android:textColorPrimary">@color/colorTextDarkHighEmphasis</item>
         <item name="android:textColorSecondary">@color/colorTextDarkMediumEmphasis</item>
@@ -59,8 +62,13 @@
         <item name="android:textColorSecondaryInverse">@color/colorTextLightMediumEmphasis</item>
         <item name="android:textColorTertiaryInverse">@color/colorTextLightLowEmphasis</item>
 
+        <item name="surfaceAColor">@color/colorIvory50</item>
+        <item name="surfaceASubsurfaceAColor">@color/colorIvory100</item>
+        <item name="surfaceBColor">@color/colorIvory50</item>
+        <item name="surfaceBSubsurfaceAColor">@color/colorIvory100</item>
+
         <item name="colorAccentDark">@color/colorBlack900</item>
-        <item name="colorPrimaryLight">@color/colorTan25</item>
+        <item name="colorPrimaryLight">@color/colorIvory25</item>
         <item name="colorHairline">@color/light_colorBlack25a</item>
         <item name="colorDivider">@color/light_colorBlack05a</item>
         <item name="colorScrim">@color/light_colorBlack05a</item>
@@ -196,7 +204,7 @@
     <style name="Widget.Words.Light.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">@style/TextAppearance.Words.Light.Body2</item>
         <item name="android:textColor">?android:textColorTertiary</item>
-        <item name="chipBackgroundColor">?colorPrimaryLight</item>
+        <item name="chipBackgroundColor">?surfaceBColor</item>
         <item name="chipStrokeColor">@android:color/transparent</item>
         <item name="chipStrokeWidth">0dp</item>
         <item name="chipCornerRadius">2dp</item>

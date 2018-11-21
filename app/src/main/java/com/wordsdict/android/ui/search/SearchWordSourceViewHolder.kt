@@ -52,7 +52,7 @@ class SearchHeaderViewHolder(
 ): SearchViewHolder(view), BannerViewHolder {
 
     fun bind(banner: Banner?) {
-        view.banner.setBackgroundColor(view.context.getColorFromAttr(R.attr.colorPrimaryLight))
+        view.banner.setBackgroundColor(view.context.getColorFromAttr(R.attr.surfaceBColor))
         setBanner(view.banner, banner, listener)
     }
 }

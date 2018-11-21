@@ -32,7 +32,7 @@
                 android:layout_marginBottom="@dimen/keyline_4"
                 app:cardElevation="2dp"
                 app:cardCornerRadius="@dimen/keyline_2"
-                app:cardBackgroundColor="?colorPrimaryLight"
+                app:cardBackgroundColor="?surfaceBColor"
                 />
 
             <com.wordsdict.android.util.CheckPreferenceView

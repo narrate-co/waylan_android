@@ -32,18 +32,23 @@
     <color name="colorBlue800">#354a56</color>
     <color name="colorBlue900">#24353e</color>
 
-    <color name="colorTan25">#fcf8f2</color>
-    <color name="colorTan50">#f7f3ed</color>
-    <color name="colorTan100">#EFE9E0</color>
-    <color name="colorTan200">#e8dfd1</color>
 
-    <color name="colorBlack900">#131313</color>
-    <color name="colorBlack800">#202124</color>
-    <color name="colorBlack700">#292a2c</color>
-    <color name="colorBlack600">#2e2e30</color>
-    <color name="colorBlack500">#313235</color>
-    <color name="colorBlack400">#353639</color>
-    <color name="colorBlack300">#3a3b3d</color>
+    <color name="colorIvory25">#faf8f2</color>
+    <color name="colorIvory50">#f8f5ee</color>
+    <color name="colorIvory100">#f2efea</color>
+    <color name="colorIvory200">#efeee9</color>
+    <color name="colorIvory300">#eae9e5</color>
+    <color name="colorIvory400">#e7e6e1</color>
+    <color name="colorIvory500">#e2e1dd</color>
+    <color name="colorIvory600">#deddda</color>
+
+    <color name="colorBlack900">#131314</color>
+    <color name="colorBlack800">#181819</color>
+    <color name="colorBlack700">#1c1c1e</color>
+    <color name="colorBlack600">#212021</color>
+    <color name="colorBlack500">#242424</color>
+    <color name="colorBlack400">#272727</color>
+    <color name="colorBlack300">#2a292a</color>
 
     <color name="colorWhite900">#F2FFFFFF</color>
 
