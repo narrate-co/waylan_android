@@ -31,13 +31,7 @@ class MainActivity : BaseUserActivity() {
     var unconsumedNavigationMethod: NavigationMethod? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!(application as App).hasUser) {
-            Navigator.launchAuth(this, null, intent)
-            finish()
-        }
-
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

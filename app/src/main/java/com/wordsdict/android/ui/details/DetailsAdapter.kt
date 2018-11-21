@@ -55,6 +55,8 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
                     wordset = source
                 }
                 is MerriamWebsterSource -> {
+                    println("SourceHolder::addMerriamWebsterSource. current = $merriamWebster, wordsAndDifinitions = ${source.wordsDefinitions}")
+
                     if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty() || source.wordsDefinitions.entries.map { it.word }.filterNotNull().map { it.suggestions }.flatten().isNotEmpty()) {
                         merriamWebster = source
                     }

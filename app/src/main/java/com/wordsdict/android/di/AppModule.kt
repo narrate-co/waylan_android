@@ -16,25 +16,25 @@ import javax.inject.Singleton
 @Module(subcomponents = [UserComponent::class])
 class AppModule {
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideAppDatabase(application: Application): AppDatabase {
         return AppDatabase.getInstance(application)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePreferenceRepository(application: Application): PreferenceRepository {
         return PreferenceRepository(application)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideSymSpellStore(application: Application): SymSpellStore {
         return SymSpellStore(application.applicationContext)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideAnalyticsRepository(application: Application): AnalyticsRepository {
         return AnalyticsRepository(FirebaseAnalytics.getInstance(application))

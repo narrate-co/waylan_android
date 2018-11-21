@@ -16,7 +16,7 @@ import javax.inject.Singleton
             AndroidSupportInjectionModule::class
         ]
 )
-@Singleton
+@ApplicationScope
 interface AppComponent: AndroidInjector<App> {
 
     @Component.Builder

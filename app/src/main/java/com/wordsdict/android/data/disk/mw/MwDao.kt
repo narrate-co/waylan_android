@@ -13,10 +13,10 @@ interface MwDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(word: Word)
+    fun insert(word: Word): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg definition: Definition)
+    fun insertAll(vararg definition: Definition): List<Long>
 
     @Query("SELECT * FROM mw_words WHERE word = :word")
     fun getWord(word: String): Word?

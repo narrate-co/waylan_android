@@ -47,7 +47,6 @@ class App: Application(), HasActivityInjector {
 
     fun clearUser() {
         setUser(null)
-//        AppInjector.init(this) //TODO should this be here?
         DaggerAppComponent.builder().application(this).build().inject(this)
         dispatchReinjectUserBroadcast()
         hasUser = false
@@ -60,10 +59,10 @@ class App: Application(), HasActivityInjector {
         }
     }
 
+
     override fun onCreate() {
         updateDefaultNightMode()
         super.onCreate()
-//        AppInjector.init(this)
         DaggerAppComponent.builder().application(this).build().inject(this)
     }
 

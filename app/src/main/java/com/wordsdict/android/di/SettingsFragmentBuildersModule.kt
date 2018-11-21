@@ -9,15 +9,15 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class SettingsFragmentBuildersModule {
 
-//    @FragmentScope
+    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeSettingsFragment(): SettingsFragment
 
-//    @FragmentScope
+    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeAboutFragment(): AboutFragment
 
-//    @FragmentScope
+    @FragmentScope
     @ContributesAndroidInjector
     abstract fun contributeDeveloperSettingsFragment(): DeveloperSettingsFragment
 

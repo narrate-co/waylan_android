@@ -39,7 +39,7 @@ class MerriamWebsterStore(
     private fun getMerriamWebsterApiWordCallback(word: String) = object : Callback<EntryList> {
         override fun onFailure(call: Call<EntryList>?, t: Throwable?) {
             Log.e(TAG, "mwApiWordCallback on Failure = $t")
-            analyticsRepository.logMerriamWebsterParseErrorEvent(word, t.toString())
+            Crashlytics.logException(t)
         }
         override fun onResponse(call: Call<EntryList>?, response: Response<EntryList>?) {
             //Save to db
@@ -54,17 +54,27 @@ class MerriamWebsterStore(
 
                     }
 
+                    println("$TAG::onResponse")
+
                     val relatedWords = entryList.entries.map { it.word }
 
                     entryList.entries.forEach {
                         val word = it.toDbMwWord(relatedWords, entryList.suggestions)
-                        mwDao.insert(word)
+                        println("$TAG::inserting word id = ${word.id}")
+                        val inserted = mwDao.insert(word)
+                        println("$TAG::inserted word = $inserted")
                     }
 
                     entryList.entries.forEach {
 
                         val definitions = it.toDbMwDefinitions
-                        mwDao.insertAll(*definitions.toTypedArray())
+                        definitions.forEach {def ->
+                            println("$TAG::inserting definition. parentId = ${def.parentId}, def = ${def.definitions}")
+                        }
+                        val inserted = mwDao.insertAll(*definitions.toTypedArray())
+                        inserted.forEach { long ->
+                            println("$TAG::inserted definition = $long")
+                        }
                     }
 
                     //if empty, in order to return results, add a placeholder word with suggestions

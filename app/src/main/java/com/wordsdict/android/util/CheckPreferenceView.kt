@@ -19,6 +19,8 @@ class CheckPreferenceView @JvmOverloads constructor(
     private var checked = false
     private var showDivider = true
 
+    //TODO add ability for custom check drawables and avds
+
     init {
         orientation = LinearLayout.VERTICAL
 
