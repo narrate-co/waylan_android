@@ -11,19 +11,19 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class MainFragmentBuildersModule {
 
-    @FragmentScope
+//    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeHomeFragment(): HomeFragment
 
-    @FragmentScope
+//    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeSearchFragment(): SearchFragment
 
-    @FragmentScope
+//    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeDetailsFragment(): DetailsFragment
 
-    @FragmentScope
+//    @FragmentScope
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeListFragment(): ListFragment
 

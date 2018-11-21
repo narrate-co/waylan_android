@@ -9,11 +9,11 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBuildersModule {
 
-    @ActivityScope
+//    @ActivityScope
     @ContributesAndroidInjector(modules = [MainFragmentBuildersModule::class])
     abstract fun contributeMainActivity(): MainActivity
 
-    @ActivityScope
+//    @ActivityScope
     @ContributesAndroidInjector(modules = [SettingsFragmentBuildersModule::class])
     abstract fun contributeSettingsActivity(): SettingsActivity
 

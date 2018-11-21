@@ -11,29 +11,30 @@ import com.wordsdict.android.data.spell.SymSpellStore
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module(subcomponents = [UserComponent::class])
 class AppModule {
 
-    @ApplicationScope
+    @Singleton
     @Provides
     fun provideAppDatabase(application: Application): AppDatabase {
         return AppDatabase.getInstance(application)
     }
 
-    @ApplicationScope
+    @Singleton
     @Provides
     fun providePreferenceRepository(application: Application): PreferenceRepository {
         return PreferenceRepository(application)
     }
 
-    @ApplicationScope
+    @Singleton
     @Provides
     fun provideSymSpellStore(application: Application): SymSpellStore {
         return SymSpellStore(application.applicationContext)
     }
 
-    @ApplicationScope
+    @Singleton
     @Provides
     fun provideAnalyticsRepository(application: Application): AnalyticsRepository {
         return AnalyticsRepository(FirebaseAnalytics.getInstance(application))
