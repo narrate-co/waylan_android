@@ -87,12 +87,20 @@
     <string name="about_header_body">
         Words is a dictionary concept designed to be an ergonomic, one-handable experience. In addition to being a great tool to improve your vocabulary, Words experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and visual balance.
     </string>
+    <string name="about_third_party_lib_title">Third Party Libraries</string>
+    <string name="about_third_party_lib_desc">Software that\'s helped make Words</string>
+    <string name="about_title">About</string>
 
+    <!--Third Party Libraries-->
+    <string name="third_party_libraries_title">Third Party Libraries</string>
 
     <!--Developer Settings-->
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
-
+    <string name="developer_settings_toggle_merriam_webster_state_title">Toggle Merriam-Webster state</string>
+    <string name="developer_settings_use_test_skus_title">Use test skus</string>
+    <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
+    <string name="developer_settings_title">Developer Settings</string>
 
 
 </resources>

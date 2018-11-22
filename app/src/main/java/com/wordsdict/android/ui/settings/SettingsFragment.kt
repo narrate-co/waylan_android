@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_settings.view.*
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.ui.dialog.RoundedAlertDialog
+import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.visible
 import javax.inject.Inject
 
@@ -59,6 +60,7 @@ class SettingsFragment : BaseUserFragment() {
         }
 
         //set common settings
+        
         //night mode
         val nightModeCallback = object: RoundedAlertDialog.NightModeCallback() {
             var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -138,6 +140,8 @@ class SettingsFragment : BaseUserFragment() {
         view.banner.setBannerBottomButton(getString(R.string.settings_header_anonymous_log_in_button), View.OnClickListener {
             Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
         })
+
+        view.signOut.gone()
 
         view.banner.visible()
     }

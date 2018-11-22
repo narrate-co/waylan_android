@@ -7,14 +7,11 @@ import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.Transition
-import com.wordsdict.android.ui.about.AboutFragment
 import com.wordsdict.android.ui.auth.AuthActivity
 import com.wordsdict.android.ui.details.DetailsFragment
 import com.wordsdict.android.ui.home.HomeFragment
 import com.wordsdict.android.ui.list.ListFragment
-import com.wordsdict.android.ui.settings.DeveloperSettingsFragment
-import com.wordsdict.android.ui.settings.SettingsActivity
-import com.wordsdict.android.ui.settings.SettingsFragment
+import com.wordsdict.android.ui.settings.*
 import com.wordsdict.android.util.ElasticTransition
 
 object Navigator {
@@ -126,6 +123,16 @@ object Navigator {
         return true
     }
 
+    fun showThirdPartyLibraries(activity: FragmentActivity): Boolean {
+        activity.supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit)
+                .add(R.id.fragmentContainer, ThirdPartyLibrariesFragment.newInstance(), ThirdPartyLibrariesFragment.FRAGMENT_TAG)
+                .addToBackStack(ThirdPartyLibrariesFragment.FRAGMENT_TAG)
+                .commit()
+        return true
+    }
+
     fun showDeveloperSettings(activity: FragmentActivity): Boolean {
         activity.supportFragmentManager
                 .beginTransaction()
@@ -174,6 +181,11 @@ object Navigator {
             intent.putExtras(filterIntent)
         }
         context.startActivity(intent)
+    }
+
+    fun launchWebsite(context: Context, url: String) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(browserIntent)
     }
 }
 

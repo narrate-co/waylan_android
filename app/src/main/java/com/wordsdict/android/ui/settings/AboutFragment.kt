@@ -1,12 +1,15 @@
-package com.wordsdict.android.ui.about
+package com.wordsdict.android.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.wordsdict.android.BuildConfig
+import com.wordsdict.android.Navigator
 import com.wordsdict.android.R
 import com.wordsdict.android.ui.common.BaseUserFragment
-import kotlinx.android.synthetic.main.fragment_list.view.*
+import com.wordsdict.android.util.CheckPreferenceView
+import kotlinx.android.synthetic.main.fragment_about.view.*
 
 
 class AboutFragment: BaseUserFragment() {
@@ -21,7 +24,17 @@ class AboutFragment: BaseUserFragment() {
         view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()
         }
+
+        //version
+        view.version.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
+
+        //third part libs
+        view.thirdPartyLibraries.setOnClickListener {
+            Navigator.showThirdPartyLibraries(activity!!)
+        }
+
         return view
     }
+
 
 }

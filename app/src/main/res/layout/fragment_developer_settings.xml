@@ -32,15 +32,15 @@
                 android:id="@+id/merriamWebsterState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="Toggle Merriam-Webster state"
+                app:title="@string/developer_settings_toggle_merriam_webster_state_title"
                 />
 
             <com.wordsdict.android.util.CheckPreferenceView
                 android:id="@+id/useTestSkus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="Use test skus"
-                app:desc="Run billing against fake product skus"
+                app:title="@string/developer_settings_use_test_skus_title"
+                app:desc="@string/developer_settings_use_test_skus_desc"
                 app:checkable="true"
                 />
 
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/keyline_2"
-                android:text="Developer Settings"
+                android:text="@string/developer_settings_title"
                 />
 
             <View
