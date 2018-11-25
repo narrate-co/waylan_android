@@ -2,6 +2,7 @@ package com.wordsdict.android.data.prefs
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.google.protobuf.Enum
 import java.lang.RuntimeException
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

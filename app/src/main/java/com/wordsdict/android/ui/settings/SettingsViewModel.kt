@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.User
+import com.wordsdict.android.data.prefs.Orientation
 import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.prefs.UserPreferenceRepository
 import com.wordsdict.android.data.repository.UserRepository
@@ -33,6 +34,13 @@ class SettingsViewModel @Inject constructor(
         }
 
     var useTestSkusLive: LiveData<Boolean> = preferenceRepository.useTestSkusLive
+
+    var orientation: Orientation
+        get() = Orientation.valueOf(preferenceRepository.orientationLock)
+        set(value) {
+            preferenceRepository.orientationLock = value.name
+        }
+    var orientationLive: LiveData<Orientation> = preferenceRepository.orientationLive
 
     fun clearUserPreferences() = userPreferenceRepository.resetAll()
 

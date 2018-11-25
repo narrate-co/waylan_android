@@ -43,6 +43,15 @@
                 />
 
             <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/orientation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Orientation lock"
+                app:desc="None"
+                />
+
+
+            <com.wordsdict.android.util.CheckPreferenceView
                 android:id="@+id/signOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

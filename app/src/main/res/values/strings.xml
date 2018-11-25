@@ -101,6 +101,12 @@
     <string name="developer_settings_use_test_skus_title">Use test skus</string>
     <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
     <string name="developer_settings_title">Developer Settings</string>
+    <string name="settings_orientation_unspecified_title">Unspecified</string>
+    <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
+    <string name="settings_orientation_portrait_title">Portrait</string>
+    <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
+    <string name="settings_orientation_landscape_title">Landscape</string>
+    <string name="settings_orientation_landscape_desc">Only allow landscape mode</string>
 
 
 </resources>

@@ -57,6 +57,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
 
+
+        return view
+    }
+
+    override fun onEnterTransactionEnded() {
+
         setUpSearchBar(view)
 
         setUpRecyclerView(view)
@@ -70,12 +76,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         viewModel.firestoreUserSource.observe(this, Observer { source ->
             setUserWord(source.userWord)
         })
-
-        return view
     }
 
-
-    private fun setUpSearchBar(view: View) {
+    private fun setUpSearchBar(view: View?) {
+        if (view == null) return
 
         view.searchEditText.addTextChangedListener(this)
 
@@ -94,7 +98,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         }
     }
 
-    private fun setUpRecyclerView(view: View) {
+    private fun setUpRecyclerView(view: View?) {
+        if (view == null) return
         //set up recycler view
         view.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.recycler.adapter = adapter
@@ -120,7 +125,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         }
     }
 
-    private fun setUpShelfActions(view: View) {
+    private fun setUpShelfActions(view: View?) {
+        if (view == null) return
 
         // Hide actions when not in details
         sharedViewModel.getBackStack().observe(this, Observer {
@@ -157,6 +163,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     }
 
     private fun runActionsAnimation(show: Boolean) {
+        if (!isAdded) return
+
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
         val hideMargin = keyline2
         val showMargin = actions.width + keyline2

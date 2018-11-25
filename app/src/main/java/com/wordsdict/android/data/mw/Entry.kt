@@ -185,6 +185,10 @@ class Definition {
     @field:ElementList(entry = "snp", inline = true, required = false)
     var snps: MutableList<String> = mutableListOf()
 
+    @field:ElementList(inline = true, entry = "slb", required = false)
+    var slb: MutableList<String> = mutableListOf()
+
+
 }
 
 class Dro {

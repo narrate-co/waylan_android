@@ -19,6 +19,10 @@ import com.wordsdict.android.util.configError
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
+import com.wordsdict.android.data.prefs.Orientation
+import com.wordsdict.android.ui.common.BaseUserActivity
+import com.wordsdict.android.ui.dialog.NightModeDialog
+import com.wordsdict.android.ui.dialog.OrientationDialog
 import com.wordsdict.android.ui.dialog.RoundedAlertDialog
 import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.visible
@@ -60,20 +64,8 @@ class SettingsFragment : BaseUserFragment() {
         }
 
         //set common settings
-        
+
         //night mode
-        val nightModeCallback = object: RoundedAlertDialog.NightModeCallback() {
-            var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            override fun onSelected(nightMode: Int) {
-                selected = nightMode
-            }
-
-            override fun onDismissed() {
-                viewModel.nightMode = selected
-                (activity as? SettingsActivity)?.updateNightMode(selected)
-            }
-        }
-
         viewModel.nightModeLive.observe(this, Observer {
             val desc = when (it) {
                 AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> getString(R.string.settings_night_mode_follows_system_title)
@@ -85,8 +77,40 @@ class SettingsFragment : BaseUserFragment() {
             view.nightMode.setDesc(desc)
         })
 
+        val nightModeCallback = object: NightModeDialog.NightModeCallback() {
+            var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            override fun onSelected(nightMode: Int) {
+                selected = nightMode
+            }
+
+            override fun onDismissed() {
+                viewModel.nightMode = selected
+                (activity as? SettingsActivity)?.updateNightMode(selected)
+            }
+        }
+
         view.nightMode.setOnClickListener {
-            RoundedAlertDialog.newNightModeInstance(viewModel.nightMode, nightModeCallback).show(activity?.supportFragmentManager, "night_mode")
+            NightModeDialog.newInstance(viewModel.nightMode, nightModeCallback).show(activity?.supportFragmentManager, "night_mode")
+        }
+
+        //orientation
+        viewModel.orientationLive.observe(this, Observer {
+            view.orientation.setDesc(getString(it.title))
+        })
+
+        val orientationCallback = object: OrientationDialog.OrientationCallback() {
+            var selected = Orientation.UNSPECIFIED
+            override fun onSelected(orientation: Orientation) {
+                selected = orientation
+            }
+            override fun onDismissed() {
+                viewModel.orientation = selected
+                (activity?.application as? App)?.updateOrientation()
+            }
+        }
+
+        view.orientation.setOnClickListener {
+            OrientationDialog.newInstance(viewModel.orientation, orientationCallback).show(activity?.supportFragmentManager, "orientation")
         }
 
         // about
