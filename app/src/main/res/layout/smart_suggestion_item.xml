@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/smartContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/keyline_3"
+    android:paddingBottom="@dimen/keyline_2"
+    >
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/smartImage"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/ic_round_orientation_lock_24px"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="?textAppearanceBody1"
+        android:id="@+id/smartLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/keyline_2"
+        android:layout_marginRight="@dimen/keyline_2"
+        android:layout_gravity="center_vertical"
+        android:text="Lock screen to portrait?"/>
+
+</LinearLayout>
+

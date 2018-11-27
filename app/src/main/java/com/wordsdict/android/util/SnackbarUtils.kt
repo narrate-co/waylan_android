@@ -52,8 +52,8 @@ private fun Snackbar.config(type: SnackbarType, context: Context, abovePeekedShe
         SnackbarType.INFORMATIVE -> R.style.TextAppearance_Words_Light_Body1_Inverse //white text
     }
     val textColor = when (type) {
-        SnackbarType.ERROR -> R.color.colorTextDarkHighEmphasis
-        SnackbarType.INFORMATIVE -> R.color.colorTextLightHighEmphasis
+        SnackbarType.ERROR -> context.getColorFromAttr(R.attr.textColorOnError)
+        SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.textColorOnInformative)
     }
 
     a.recycle()
@@ -64,13 +64,13 @@ private fun Snackbar.config(type: SnackbarType, context: Context, abovePeekedShe
     //alter text
     val tv = view.findViewById<TextView>(R.id.snackbar_text)
     TextViewCompat.setTextAppearance(tv, textAppearance)
-    tv.setTextColor(ContextCompat.getColor(context, textColor))
+    tv.setTextColor(textColor)
     tv.typeface = ResourcesCompat.getFont(context, R.font.source_sans_pro)
 
     //alter action
     val action = view.findViewById<TextView>(R.id.snackbar_action)
     TextViewCompat.setTextAppearance(action, buttonTextAppearance)
-    action.setTextColor(ContextCompat.getColor(context, textColor))
+    action.setTextColor(textColor)
     action.typeface = ResourcesCompat.getFont(context, R.font.source_code_pro_medium)
     action.isAllCaps = false
 

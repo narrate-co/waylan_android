@@ -1,8 +1,13 @@
 package com.wordsdict.android
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.Transformation
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.data.analytics.NavigationMethod
@@ -12,6 +17,8 @@ import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.SearchSheetCallback
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlin.math.exp
 
 class MainActivity : BaseUserActivity() {
 
@@ -128,7 +135,5 @@ class MainActivity : BaseUserActivity() {
     }
 
     fun launchSettings() = Navigator.launchSettings(this)
-
-
 
 }

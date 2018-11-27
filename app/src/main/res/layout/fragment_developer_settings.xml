@@ -49,8 +49,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Toggle Merriam-Webster Billing response"
-                app:showDivider="false"
                 />
+
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/informativeSnackbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Informative Snackbar"
+                app:desc="Show a test of an informative snackbar"/>
+
+            <com.wordsdict.android.util.CheckPreferenceView
+                android:id="@+id/errorSnackbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Error Snackbar"
+                app:desc="Show a test of an error snackbar"
+                app:showDivider="false"/>
 
         </LinearLayout>
 

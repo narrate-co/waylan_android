@@ -1,12 +1,16 @@
 package com.wordsdict.android.ui.search
 
+import android.animation.*
+import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Property
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,16 +20,30 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.*
 import com.wordsdict.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
+import androidx.core.view.doOnNextLayout
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.transition.ChangeBounds
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.users.UserWordType
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.ui.settings.ShelfTransition
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.exp
 
 class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
 
@@ -96,6 +114,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 bottomSheetBehavior.expand()
             }
         }
+
+
     }
 
     private fun setUpRecyclerView(view: View?) {
@@ -154,12 +174,210 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 search.layoutParams = params
             }
         }
+
+        view.share.setOnClickListener {
+//            runShelfTransition()
+            runShelfAnimation()
+        }
+
     }
 
     fun focusAndOpenSearch() {
         bottomSheetBehavior.expand()
         searchEditText.requestFocus()
         activity?.showSoftKeyboard(searchEditText)
+    }
+
+
+    @Volatile
+    var expanded = false
+
+    fun runShelfTransition() {
+        val changeBounds = ChangeBounds()
+        changeBounds.interpolator = DecelerateInterpolator()
+        changeBounds.duration = 200
+        TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
+        if (!expanded) {
+            val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
+            shelfContainer.addView(smartSuggestion)
+            val display = activity!!.windowManager.defaultDisplay
+            val point = Point()
+            display.getSize(point)
+            smartSuggestion.measure(point.x, point.y)
+            val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
+            bottomSheetBehavior.peekHeight += measuredDiff
+        } else {
+            shelfContainer.removeAllViews()
+            val measuredDiff = shelfContainer.height
+            bottomSheetBehavior.peekHeight -= measuredDiff
+        }
+        expanded = !expanded
+    }
+
+    fun runShelfAnimation() {
+        if (!expanded) {
+            addShelfItem()
+        } else {
+            removeShelfItem()
+        }
+    }
+
+    private fun addShelfItem() {
+        synchronized(expanded) {
+
+            val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
+            println("SearchFragment::runShelfAnimation - shelfHeight = ${shelfContainer.height}, smartSuggestionHeight = ${smartSuggestion.height}")
+            val originalShelfHeight = shelfContainer.height
+            val originalPeekHeight = bottomSheetBehavior.peekHeight
+            val display = activity!!.windowManager.defaultDisplay
+            val point = Point()
+            display.getSize(point)
+            smartSuggestion.measure(point.x, point.y)
+            val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
+
+
+            smartSuggestion.alpha = 0F
+            smartSuggestion.gone()
+
+
+            //alpha
+            val alphaAnimator = ObjectAnimator.ofFloat(smartSuggestion, "alpha", 1.0F)
+            alphaAnimator.setAutoCancel(true)
+            alphaAnimator.doOnEnd { smartSuggestion.alpha = 1F }
+            alphaAnimator.addUpdateListener {
+                if (it.animatedFraction > .25F) {
+                    smartSuggestion.visible()
+                }
+            }
+
+            //peek
+            val peekAnimator = ObjectAnimator.ofObject(view, object: Property<View, Int>(Int::class.java, "peek") {
+                var behavior : BottomSheetBehavior<View>? = null
+                override fun get(view: View?): Int? {
+                    return null
+                }
+
+                override fun set(view: View, value: Int) {
+                    if (behavior == null) {
+                        behavior = BottomSheetBehavior.from(view)
+                    }
+                    behavior?.peekHeight = value
+                }
+            }, null, originalPeekHeight, originalPeekHeight + measuredDiff)
+            peekAnimator.setAutoCancel(true)
+            peekAnimator.doOnEnd {
+                bottomSheetBehavior.peekHeight = originalPeekHeight + measuredDiff
+            }
+
+            //height
+            val heightAnimator = ObjectAnimator.ofObject(shelfContainer, object: Property<View, Int>(Int::class.java, "shelfHeight") {
+                override fun get(view: View?): Int? {
+                    return null
+                }
+
+                override fun set(view: View, value: Int) {
+                    view.layoutParams.height = value
+                }
+            }, null, originalShelfHeight, originalShelfHeight + measuredDiff)
+            heightAnimator.setAutoCancel(true)
+            heightAnimator.doOnStart {
+                shelfContainer.addView(smartSuggestion)
+            }
+            heightAnimator.doOnEnd {
+                shelfContainer.layoutParams.height = originalShelfHeight + measuredDiff
+            }
+
+
+            val set = AnimatorSet()
+            set.duration = 200
+            set.interpolator = DecelerateInterpolator()
+            set.playTogether(alphaAnimator, peekAnimator, heightAnimator)
+            heightAnimator.addListener(object: Animator.AnimatorListener {
+                var canceled = false
+                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    println("onAnimationEnd")
+                    launch(UI) {
+                        delay(3000)
+                        if (!canceled) {
+                            removeShelfItem()
+                        }
+                    }
+                }
+                override fun onAnimationCancel(animation: Animator?) {
+                    println("onAnimationCanceled")
+                    canceled = true
+                }
+                override fun onAnimationStart(animation: Animator?) {}
+            })
+            set.start()
+            expanded = true
+        }
+    }
+
+    private fun removeShelfItem() {
+        synchronized(expanded) {
+
+            val originalShelfHeight = shelfContainer.height
+            val originalPeekHeight = bottomSheetBehavior.peekHeight
+            val smartSuggestion: View? = shelfContainer.getChildAt(0)
+            val measuredDiff = originalShelfHeight
+
+            println("SearchFragment::runShelfAnimation collapsing - shelfHeight = ${shelfContainer.height}")
+
+            //alpha
+            val alphaAnimator = ObjectAnimator.ofFloat(smartSuggestion, "alpha", 0.0F)
+            alphaAnimator.setAutoCancel(true)
+            alphaAnimator.doOnEnd {
+                smartSuggestion?.alpha = 0F
+            }
+
+            //peek
+            val peekAnimator = ObjectAnimator.ofObject(view, object: Property<View, Int>(Int::class.java, "peek") {
+                var behavior : BottomSheetBehavior<View>? = null
+                override fun get(view: View?): Int? {
+                    return null
+                }
+
+                override fun set(view: View, value: Int) {
+                    if (behavior == null) {
+                        behavior = BottomSheetBehavior.from(view)
+                    }
+                    behavior?.peekHeight = value
+                }
+            }, null, originalPeekHeight, originalPeekHeight - measuredDiff)
+            peekAnimator.setAutoCancel(true)
+            peekAnimator.doOnEnd {
+                bottomSheetBehavior.peekHeight = originalPeekHeight - measuredDiff
+            }
+
+            //height
+            val heightAnimator = ObjectAnimator.ofObject(shelfContainer, object: Property<View, Int>(Int::class.java, "shelfHeight") {
+                override fun get(view: View?): Int? {
+                    return null
+                }
+
+                override fun set(view: View, value: Int) {
+                    view.layoutParams.height = value
+                }
+            }, null, originalShelfHeight, originalShelfHeight - measuredDiff)
+            heightAnimator.setAutoCancel(true)
+            heightAnimator.doOnStart {
+                shelfContainer.removeAllViews()
+            }
+            heightAnimator.doOnEnd {
+                shelfContainer.layoutParams.height = originalShelfHeight - measuredDiff
+            }
+
+
+            val set = AnimatorSet()
+            set.duration = 200
+            set.interpolator = DecelerateInterpolator()
+            set.playTogether(alphaAnimator, peekAnimator, heightAnimator)
+            set.start()
+
+            expanded = false
+        }
     }
 
     private fun runActionsAnimation(show: Boolean) {

@@ -1,6 +1,7 @@
 package com.wordsdict.android.ui.settings
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,9 @@ import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.data.firestore.users.oneDayPastExpiration
 import com.wordsdict.android.ui.common.BaseUserFragment
+import com.wordsdict.android.util.configError
 import com.wordsdict.android.util.configInformative
+import kotlinx.android.synthetic.main.fragment_developer_settings.*
 import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
 
 
@@ -72,6 +75,24 @@ class DeveloperSettingsFragment : BaseUserFragment() {
             val newResponse = cycleIabTestResponse(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
             BillingConfig.TEST_SKU_MERRIAM_WEBSTER = newResponse
             view.merriamWebsterBillingResponse.setDesc(newResponse)
+        }
+
+        view.informativeSnackbar.setOnClickListener {
+            Snackbar.make(settingsRoot, "A test piece of information", Snackbar.LENGTH_LONG)
+                    .setAction("Okay") {
+                        Log.d("DevSettings", "Informative snackbard clicked!")
+                    }
+                    .configInformative(context!!, false)
+                    .show()
+        }
+
+        view.errorSnackbar.setOnClickListener {
+            Snackbar.make(settingsRoot, "A test error", Snackbar.LENGTH_LONG)
+                    .setAction("Report") {
+                        Log.d("DevSettings", "Error snackbar clicked")
+                    }
+                    .configError(context!!, false)
+                    .show()
         }
     }
 

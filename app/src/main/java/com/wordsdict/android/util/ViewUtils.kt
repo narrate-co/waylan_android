@@ -99,3 +99,10 @@ fun View.runTransitionDrawable(duration: Int, reverse: Boolean = false, isCrossF
         }
     }
 }
+
+fun View.setLeftTopRightBottom(left: Int? = null, top: Int? = null, right: Int? = null, bottom: Int? = null) {
+    this.left = left ?: this.left
+    this.top = left ?: this.top
+    this.right = left ?: this.right
+    this.bottom = left ?: this.bottom
+}

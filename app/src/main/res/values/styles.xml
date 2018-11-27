@@ -37,6 +37,7 @@
         <item name="textColorError">@color/dark_colorTextError</item>
         <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
         <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
+        <item name="textColorOnInformative">@color/colorTextLightHighEmphasis</item>
 
 
         <item name="textLabelBackgroundColor">@color/colorPink900</item>
@@ -73,12 +74,13 @@
         <item name="colorDivider">@color/light_colorBlack05a</item>
         <item name="colorScrim">@color/light_colorBlack05a</item>
         <item name="colorError">@color/colorMauve50</item>
-        <item name="colorInformative">@color/colorBlack300</item>
+        <item name="colorInformative">@color/colorIvory600</item>
         <item name="colorBrand">@color/colorPink400</item>
         <item name="colorBrandSecondary">@color/colorBlue800</item>
         <item name="textColorError">@color/light_colorTextError</item>
         <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
         <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
+        <item name="textColorOnInformative">@color/colorTextDarkHighEmphasis</item>
 
         <item name="textLabelBackgroundColor">@color/colorPink50</item>
         <item name="textLabelTextColor">@color/colorPink800</item>

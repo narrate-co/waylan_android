@@ -17,6 +17,7 @@
     <attr name="textColorError" format="color"/>
     <attr name="textColorOnError" format="color"/>
     <attr name="textColorHintOnError" format="color"/>
+    <attr name="textColorOnInformative" format="color"/>
 
     <attr name="surfaceAColor" format="color"/>
     <attr name="surfaceASubsurfaceAColor" format="color"/>
