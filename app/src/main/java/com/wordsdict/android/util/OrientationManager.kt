@@ -17,7 +17,6 @@ class OrientationManager(
     private var orientation: MutableLiveData<Info> = MutableLiveData()
 
     data class Info(
-            val currentOrientation: Int,
             val prevOrientation: Int,
             val nextOrientation: Int
     ) {
@@ -74,10 +73,15 @@ class OrientationManager(
         }
 
         if (orientation.value?.nextOrientation != or) {
-            val info = Info(context.resources.configuration.orientation, orientation.value?.nextOrientation ?: ORIENTATION_UNKNOWN, or)
+            val info = Info(orientation.value?.nextOrientation ?: ORIENTATION_UNKNOWN, or)
             println("OrientationManager::setting new orientation value = $info")
             orientation.value = info
         }
     }
+}
 
+enum class OrientationPrompt(val message: String) {
+    LOCK_PORTRAIT("Lock screen to portrait?"),
+    LOCK_LANDSCAPE("Lock screen to landscape?"),
+    UNLOCK("Unlock screen orientation?")
 }

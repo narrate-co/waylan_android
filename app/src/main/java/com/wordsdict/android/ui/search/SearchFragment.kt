@@ -1,6 +1,7 @@
 package com.wordsdict.android.ui.search
 
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -35,6 +36,7 @@ import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
+import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 
 class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
 
@@ -153,7 +155,19 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             if (info.prevOrientation != -1 && orientationPref == Orientation.UNSPECIFIED) {
                 // are we in the orientation to make the suggestion or are we still waiting for the config change?
                 if (info.overallNextOrientation == currentOrientation) {
-//                    runSmartShelfTransition()
+                    runDelayed(500) {
+                        expandSmartShelf(
+                                if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    OrientationPrompt.LOCK_LANDSCAPE.message
+                                } else {
+                                    OrientationPrompt.LOCK_PORTRAIT.message
+                                }
+                        )
+                    }
+                }
+            } else if (orientationPref != Orientation.UNSPECIFIED && info.prevOrientation != -1 && info.overallNextOrientation != currentOrientation) {
+                runDelayed(500) {
+                    expandSmartShelf(OrientationPrompt.UNLOCK.message)
                 }
             }
         })
@@ -204,56 +218,66 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun runSmartShelfTransition() {
         synchronized(smartShelfExpanded) {
             if (!smartShelfExpanded) {
-                expandSmartShelf()
+                expandSmartShelf("Lock screen to portrait?")
             } else {
                 collapseSmartShelf()
             }
         }
     }
 
-    private fun expandSmartShelf() {
+    //TODO make this more robust
+    //TODO calling this while expanded should just change the smartSuggestion text with an animation,
+    //TODO skipping the peekHeight animation
+    private fun expandSmartShelf(message: String) {
         if (view == null) return
 
-        smartShelfTransitionEndAction?.cancel()
-        smartShelfTransitionEndAction = null
-        TransitionManager.endTransitions(view as ViewGroup)
+        synchronized(smartShelfExpanded) {
+            smartShelfTransitionEndAction?.cancel()
+            smartShelfTransitionEndAction = null
+            TransitionManager.endTransitions(view as ViewGroup)
 
-        val changeBounds = ChangeBounds()
-        changeBounds.interpolator = DecelerateInterpolator()
-        changeBounds.duration = 200
+            val changeBounds = ChangeBounds()
+            changeBounds.interpolator = DecelerateInterpolator()
+            changeBounds.duration = 200
 
-        val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
-        val display = activity!!.windowManager.defaultDisplay
-        val point = Point()
-        display.getSize(point)
-        smartSuggestion.measure(point.x, point.y)
-        val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
-        smartShelfTransitionEndAction = TransitionEndAction(changeBounds, 2000, ::collapseSmartShelf)
+            val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
+            smartSuggestion.smartLabel.text = message
+            val display = activity!!.windowManager.defaultDisplay
+            val point = Point()
+            display.getSize(point)
+            smartSuggestion.measure(point.x, point.y)
+            val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
+            smartShelfTransitionEndAction = TransitionEndAction(this, changeBounds, 3000, ::collapseSmartShelf)
 
-        //start transition
-        TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
-        shelfContainer.addView(smartSuggestion)
-        bottomSheetBehavior.peekHeight += measuredDiff
-        smartShelfExpanded = !smartShelfExpanded
+            //start transition
+            TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
+            shelfContainer.addView(smartSuggestion)
+            bottomSheetBehavior.peekHeight += measuredDiff
+            smartShelfExpanded = !smartShelfExpanded
+        }
     }
 
     private fun collapseSmartShelf() {
         if (view == null) return
 
-        smartShelfTransitionEndAction?.cancel()
-        smartShelfTransitionEndAction = null
-        TransitionManager.endTransitions(view as ViewGroup)
-        val measuredDiff = shelfContainer.height
+        synchronized(smartShelfExpanded) {
 
-        val changeBounds = ChangeBounds()
-        changeBounds.interpolator = DecelerateInterpolator()
-        changeBounds.duration = 200
+            smartShelfTransitionEndAction?.cancel()
+            smartShelfTransitionEndAction = null
+            TransitionManager.endTransitions(view as ViewGroup)
+            val measuredDiff = shelfContainer.height
 
-        //start transition
-        TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
-        shelfContainer.removeAllViews()
-        bottomSheetBehavior.peekHeight -= measuredDiff
-        smartShelfExpanded = !smartShelfExpanded
+            val changeBounds = ChangeBounds()
+            changeBounds.interpolator = DecelerateInterpolator()
+            changeBounds.duration = 200
+
+            //start transition
+            TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
+            shelfContainer.removeAllViews()
+            bottomSheetBehavior.peekHeight -= measuredDiff
+            smartShelfExpanded = !smartShelfExpanded
+        }
+
     }
 
     private fun runShelfActionsAnimation(show: Boolean) {

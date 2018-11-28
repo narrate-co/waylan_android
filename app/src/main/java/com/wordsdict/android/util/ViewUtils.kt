@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.wordsdict.android.R
 import com.wordsdict.android.data.disk.wordset.Synonym
+import com.wordsdict.android.ui.search.DelayedLifecycleAction
 
 fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: Synonym) -> Unit)? = null): Chip {
     val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip
@@ -105,4 +107,8 @@ fun View.setLeftTopRightBottom(left: Int? = null, top: Int? = null, right: Int? 
     this.top = left ?: this.top
     this.right = left ?: this.right
     this.bottom = left ?: this.bottom
+}
+
+fun Fragment.runDelayed(delay: Long, block: () -> Unit) {
+    DelayedLifecycleAction(this, delay, block).run()
 }

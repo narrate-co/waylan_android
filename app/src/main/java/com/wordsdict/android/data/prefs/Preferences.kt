@@ -18,13 +18,6 @@ object Preferences {
     const val USE_TEST_SKUS = "use_test_skus"
 }
 
-
-//object Orientation {
-//    const val UNSPECIFIED = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-//    const val PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//    const val LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//}
-
 enum class Orientation(val value: Int, val title: Int, val desc: Int) {
     UNSPECIFIED(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, R.string.settings_orientation_unspecified_title, R.string.settings_orientation_unspecified_desc),
     PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, R.string.settings_orientation_portrait_title, R.string.settings_orientation_portrait_desc),
