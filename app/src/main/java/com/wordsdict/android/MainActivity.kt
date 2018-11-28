@@ -1,13 +1,8 @@
 package com.wordsdict.android
 
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.Transformation
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.data.analytics.NavigationMethod
@@ -17,11 +12,12 @@ import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.SearchSheetCallback
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlin.math.exp
 
 class MainActivity : BaseUserActivity() {
 
+    companion object {
+        private const val SAVED_INSTANCE_STATE_ORIENTATION = "old_orientation"
+    }
 
     val searchSheetCallback = SearchSheetCallback()
 
@@ -42,19 +38,23 @@ class MainActivity : BaseUserActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         if (savedInstanceState == null) {
             showHome()
         }
 
         processText(intent)
 
-        setUpSearchSheet()
+        setUpSearchSheet(savedInstanceState)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         processText(intent)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(SAVED_INSTANCE_STATE_ORIENTATION, resources.configuration.orientation)
     }
 
     private fun processText(intent: Intent?) {
@@ -72,7 +72,7 @@ class MainActivity : BaseUserActivity() {
         super.onBackPressed()
     }
 
-    private fun setUpSearchSheet() {
+    private fun setUpSearchSheet(savedInstanceState: Bundle?) {
 
         //Set max expanded height to 60% of screen height (max reachability area)
         searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
@@ -105,6 +105,9 @@ class MainActivity : BaseUserActivity() {
 
         bottomSheet.setBottomSheetCallback(searchSheetCallback)
 
+        val newOrientation = resources.configuration.orientation
+        val oldOrientation = savedInstanceState?.getInt(SAVED_INSTANCE_STATE_ORIENTATION, newOrientation) ?: newOrientation
+        viewModel.setOrientation(oldOrientation, newOrientation)
     }
 
     fun focusAndOpenSearch() {

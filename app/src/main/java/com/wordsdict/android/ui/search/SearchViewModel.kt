@@ -6,12 +6,14 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.di.UserScope
+import com.wordsdict.android.util.OrientationManager
 import javax.inject.Inject
 
 @UserScope
 class SearchViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val analyticsRepository: AnalyticsRepository
+        private val analyticsRepository: AnalyticsRepository,
+        private val orientationManager: OrientationManager
 ): ViewModel() {
 
     var searchInput: String = ""
@@ -49,6 +51,8 @@ class SearchViewModel @Inject constructor(
     fun logSearchWordEvent(id: String, word: WordSource) {
         analyticsRepository.logSearchWordEvent(searchInput, id, word::class.java.simpleName)
     }
+
+    fun getOrientation(): LiveData<Pair<Int, Int>> = orientationManager.getOrientation()
 
 }
 

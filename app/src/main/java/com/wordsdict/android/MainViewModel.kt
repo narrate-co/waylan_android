@@ -3,6 +3,8 @@ package com.wordsdict.android
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.analytics.NavigationMethod
+import com.wordsdict.android.data.prefs.Orientation
+import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.di.UserScope
 import java.util.*
@@ -11,6 +13,7 @@ import javax.inject.Inject
 @UserScope
 class MainViewModel @Inject constructor(
         private val wordRepository: WordRepository,
+        private val preferenceRepository: PreferenceRepository,
         private val analyticsRepository: AnalyticsRepository
 ) : ViewModel() {
 
@@ -19,6 +22,8 @@ class MainViewModel @Inject constructor(
     private var currentWordId = MutableLiveData<String>()
 
     val currentWord: LiveData<String> = currentWordId
+
+    private val orientation: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
 
     fun setCurrentWordId(id: String) {
         val sanitizedId = id.toLowerCase()
@@ -58,6 +63,14 @@ class MainViewModel @Inject constructor(
 
         stack?.pop()
         if (stack != null) backStack.value = stack
+    }
+
+    fun setOrientation(old: Int, new: Int) {
+        orientation.value = Pair(old, new)
+    }
+
+    fun getOrientation(): LiveData<Pair<Int, Int>> {
+        return orientation
     }
 
 }

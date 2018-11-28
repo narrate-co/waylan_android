@@ -8,6 +8,7 @@ import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.spell.SymSpellStore
+import com.wordsdict.android.util.OrientationManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -38,6 +39,12 @@ class AppModule {
     @Provides
     fun provideAnalyticsRepository(application: Application): AnalyticsRepository {
         return AnalyticsRepository(FirebaseAnalytics.getInstance(application))
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideOrientationManager(application: Application): OrientationManager {
+        return OrientationManager(application)
     }
 
 }
