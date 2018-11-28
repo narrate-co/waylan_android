@@ -2,18 +2,50 @@ package com.wordsdict.android.util
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.view.OrientationEventListener
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.wordsdict.android.data.prefs.Orientation
+import com.wordsdict.android.data.prefs.PreferenceRepository
 
-class OrientationManager(private val context: Context): OrientationEventListener(context) {
+class OrientationManager(
+        private val context: Context
+): OrientationEventListener(context) {
 
-    private var orientation: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
+    private var orientation: MutableLiveData<Info> = MutableLiveData()
+
+    data class Info(
+            val currentOrientation: Int,
+            val prevOrientation: Int,
+            val nextOrientation: Int
+    ) {
+
+        val overallPrevOrientation: Int
+            get() {
+                return if (prevOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || prevOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                    Configuration.ORIENTATION_LANDSCAPE
+                } else {
+                    Configuration.ORIENTATION_PORTRAIT
+                }
+            }
+
+
+        val overallNextOrientation: Int
+            get() {
+                return if (nextOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || nextOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                    Configuration.ORIENTATION_LANDSCAPE
+                } else {
+                    Configuration.ORIENTATION_PORTRAIT
+                }
+            }
+    }
 
     /**
      * A live data object that will only be called when there is a change in orientation
      */
-    fun getOrientation(): LiveData<Pair<Int, Int>> = orientation
+    fun getOrientation(): LiveData<Info> = orientation
 
     init {
         enable()
@@ -41,9 +73,10 @@ class OrientationManager(private val context: Context): OrientationEventListener
             }
         }
 
-        if (orientation.value == null || orientation.value?.second != or) {
-            val pair = Pair(orientation.value?.second ?: ORIENTATION_UNKNOWN, or)
-            orientation.value = pair
+        if (orientation.value?.nextOrientation != or) {
+            val info = Info(context.resources.configuration.orientation, orientation.value?.nextOrientation ?: ORIENTATION_UNKNOWN, or)
+            println("OrientationManager::setting new orientation value = $info")
+            orientation.value = info
         }
     }
 

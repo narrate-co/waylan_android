@@ -97,8 +97,8 @@ class Entry {
     @field:Element(name = "def", required = false)
     var def: Definition = Definition()
 
-    @field:Element(name = "art", required = false)
-    var art: Art = Art()
+    @field:ElementList(entry = "art", inline = true, required = false)
+    var art: MutableList<Art> = mutableListOf()
 
     @field:Element(name = "dro", required = false)
     var dro: Dro = Dro()
@@ -139,12 +139,27 @@ class Variants {
 
 class Art {
 
+    @field:Element(name = "artref", required = false)
+    var artRef: ArtRef = ArtRef()
+
     @field:Element(name = "bmp", required = false)
     var bmp: String = ""
+
+    @field:Element(name = "capt", required = false)
+    @field:Convert(FormattedStringConverter::class)
+    var capt: FormattedString = FormattedString()
 
     @field:Element(name = "cap", required = false)
     @field:Convert(FormattedStringConverter::class)
     var cap: FormattedString = FormattedString()
+
+    @field:Element(name = "dim", required = false)
+    var dim: String = ""
+}
+
+class ArtRef {
+    @field:Attribute
+    var id: String = ""
 }
 
 
@@ -230,8 +245,8 @@ class Vr {
     @field:Element(name = "va", required = false)
     var va: String = ""
 
-    @field:Element(name = "sound", required = false)
-    var sound: Sound = Sound()
+    @field:ElementList(entry = "sound", inline = true, required = false)
+    var sound: MutableList<Sound> = mutableListOf()
 
     @field:Element(name = "pr", required = false)
     var pr: String = ""

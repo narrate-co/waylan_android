@@ -1,10 +1,12 @@
 package com.wordsdict.android.ui.search
 
+import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -25,6 +27,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.users.UserWordType
+import com.wordsdict.android.data.prefs.Orientation
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
@@ -140,12 +143,19 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun setUpSmartShelf(view: View?) {
         if (view == null) return
 
-        sharedViewModel.getOrientation().observe(this, Observer {
-            println("SearchFragment::main activity oreintation changed = $it")
-        })
-
         viewModel.getOrientation().observe(this, Observer {
-            println("SearchFragment::orientation manager = $it")
+            val info = it.first
+            val orientationPref = it.second
+            val currentOrientation = activity!!.resources.configuration.orientation
+
+            println("SearchFragment::onOrientationChanged - info = $info, overallNext = ${info.overallNextOrientation}, pref = $orientationPref")
+            // if there has been an actual change and the user does not have an explicit preference
+            if (info.prevOrientation != -1 && orientationPref == Orientation.UNSPECIFIED) {
+                // are we in the orientation to make the suggestion or are we still waiting for the config change?
+                if (info.overallNextOrientation == currentOrientation) {
+//                    runSmartShelfTransition()
+                }
+            }
         })
 
     }
@@ -182,9 +192,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         view.share.setOnClickListener {
             runSmartShelfTransition()
-//            runShelfAnimation()
         }
-
     }
 
     fun focusAndOpenSearch() {
