@@ -161,6 +161,16 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         rotationManager.observe(SearchFragment::class.java.simpleName, this, viewModel)
 
+        rotationManager.observeForPattern(SearchFragment::class.java.simpleName, this, listOf(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT), object : RotationManager.PatternObserver {
+            override fun onUnlockedOrientationPatternSeen(pattern: List<Int>) {
+                println("SearchFragment::onUnlockedOrientationPatternSeen - $pattern")
+            }
+
+            override fun onLockedRotatePatternSeen(pattern: List<Int>) {
+                println("SearchFragment::onLockedRotatePatternSeen - $pattern")
+            }
+        })
+
     }
 
     private fun setUpShelfActions(view: View?) {
