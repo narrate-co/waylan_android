@@ -15,9 +15,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseUserActivity() {
 
-    companion object {
-        private const val SAVED_INSTANCE_STATE_ORIENTATION = "old_orientation"
-    }
 
     val searchSheetCallback = SearchSheetCallback()
 
@@ -44,17 +41,12 @@ class MainActivity : BaseUserActivity() {
 
         processText(intent)
 
-        setUpSearchSheet(savedInstanceState)
+        setUpSearchSheet()
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         processText(intent)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        outState?.putInt(SAVED_INSTANCE_STATE_ORIENTATION, resources.configuration.orientation)
     }
 
     private fun processText(intent: Intent?) {
@@ -72,7 +64,7 @@ class MainActivity : BaseUserActivity() {
         super.onBackPressed()
     }
 
-    private fun setUpSearchSheet(savedInstanceState: Bundle?) {
+    private fun setUpSearchSheet() {
 
         //Set max expanded height to 60% of screen height (max reachability area)
         searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
@@ -104,10 +96,6 @@ class MainActivity : BaseUserActivity() {
         }
 
         bottomSheet.setBottomSheetCallback(searchSheetCallback)
-
-        val newOrientation = resources.configuration.orientation
-        val oldOrientation = savedInstanceState?.getInt(SAVED_INSTANCE_STATE_ORIENTATION, newOrientation) ?: newOrientation
-        viewModel.setOrientation(oldOrientation, newOrientation)
     }
 
     fun focusAndOpenSearch() {

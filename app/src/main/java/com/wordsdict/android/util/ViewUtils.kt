@@ -109,6 +109,6 @@ fun View.setLeftTopRightBottom(left: Int? = null, top: Int? = null, right: Int? 
     this.bottom = left ?: this.bottom
 }
 
-fun Fragment.runDelayed(delay: Long, block: () -> Unit) {
-    DelayedLifecycleAction(this, delay, block).run()
+fun Fragment.runDelayed(delay: Long, block: () -> Unit): DelayedLifecycleAction {
+    return DelayedLifecycleAction(this, delay, block).run()
 }

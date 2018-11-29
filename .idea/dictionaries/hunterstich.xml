@@ -4,6 +4,7 @@
       <w>firebase</w>
       <w>firestore</w>
       <w>propname</w>
+      <w>undispatched</w>
       <w>upsert</w>
     </words>
   </dictionary>

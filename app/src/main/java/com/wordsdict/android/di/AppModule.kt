@@ -2,17 +2,13 @@ package com.wordsdict.android.di
 
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.wordsdict.android.App
-import com.wordsdict.android.billing.BillingManager
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.spell.SymSpellStore
-import com.wordsdict.android.util.OrientationManager
-import dagger.Binds
+import com.wordsdict.android.util.RotationManager
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module(subcomponents = [UserComponent::class])
 class AppModule {
@@ -43,8 +39,8 @@ class AppModule {
 
     @ApplicationScope
     @Provides
-    fun provideOrientationManager(application: Application): OrientationManager {
-        return OrientationManager(application)
+    fun provideRotationManager(application: Application): RotationManager {
+        return RotationManager(application)
     }
 
 }

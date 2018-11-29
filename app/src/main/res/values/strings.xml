@@ -105,8 +105,13 @@
     <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
     <string name="settings_orientation_portrait_title">Portrait</string>
     <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
-    <string name="settings_orientation_landscape_title">Landscape</string>
-    <string name="settings_orientation_landscape_desc">Only allow landscape mode</string>
+    <string name="settings_orientation_landscape_title">Landscape (Left)</string>
+    <string name="settings_orientation_landscape_desc">Only allow landscape (90° counter-clockwise)</string>
+    <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
+    <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
+    <string name="orientation_prompt_unlock_orientation">Allow screen to rotate?</string>
+    <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
+    <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
 
 
 </resources>

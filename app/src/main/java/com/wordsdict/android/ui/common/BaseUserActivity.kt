@@ -4,27 +4,25 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.preference.PreferenceManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.crashlytics.android.Crashlytics
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.wordsdict.android.App
 import com.wordsdict.android.Navigator
-import com.wordsdict.android.data.firestore.users
 import com.wordsdict.android.data.prefs.Orientation
-import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.prefs.Preferences
+import com.wordsdict.android.util.RotationManager
 import dagger.android.support.DaggerAppCompatActivity
-import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 abstract class BaseUserActivity: DaggerAppCompatActivity() {
 
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+//    @Inject
+//    lateinit var rotationManager: RotationManager
 
     private val localBroadcastReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -47,7 +45,20 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, app.getLocalBroadcastIntentFilter())
 
         super.onCreate(savedInstanceState)
+
+//        rotationManager.observe(BaseUserActivity::class.java.name, this, object: RotationManager.Observer {
+//            override fun onLockedRotate(last: Int, new: Int) {
+//                println("BaseUserActivity::onLockedRotate - last: $last, new: $new")
+//            }
+//
+//            override fun onUnlockedOrientationChange(last: Int, new: Int) {
+//                println("BaseUserActivity::onUnlockedOrientationChange - last: $last, new: $new")
+//            }
+//        })
+
+
     }
+
 
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(localBroadcastReceiver)
@@ -62,8 +73,5 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
                         .getString(Preferences.ORIENTATION_LOCK, Orientation.UNSPECIFIED?.name) ?: Orientation.UNSPECIFIED.name)
         requestedOrientation = orientation.value
     }
-
-
-
 }
 

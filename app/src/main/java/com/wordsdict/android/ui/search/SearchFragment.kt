@@ -21,6 +21,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.*
 import com.wordsdict.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.*
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
@@ -37,6 +39,7 @@ import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
+import javax.inject.Inject
 
 class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
 
@@ -67,6 +70,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     var smartShelfExpanded = false
 
     var smartShelfTransitionEndAction: TransitionEndAction? = null
+
+    @Inject
+    lateinit var rotationManager: RotationManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
@@ -145,32 +151,15 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun setUpSmartShelf(view: View?) {
         if (view == null) return
 
-        viewModel.getOrientation().observe(this, Observer {
-            val info = it.first
-            val orientationPref = it.second
-            val currentOrientation = activity!!.resources.configuration.orientation
-
-            println("SearchFragment::onOrientationChanged - info = $info, overallNext = ${info.overallNextOrientation}, pref = $orientationPref")
-            // if there has been an actual change and the user does not have an explicit preference
-            if (info.prevOrientation != -1 && orientationPref == Orientation.UNSPECIFIED) {
-                // are we in the orientation to make the suggestion or are we still waiting for the config change?
-                if (info.overallNextOrientation == currentOrientation) {
-                    runDelayed(500) {
-                        expandSmartShelf(
-                                if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                    OrientationPrompt.LOCK_LANDSCAPE.message
-                                } else {
-                                    OrientationPrompt.LOCK_PORTRAIT.message
-                                }
-                        )
-                    }
-                }
-            } else if (orientationPref != Orientation.UNSPECIFIED && info.prevOrientation != -1 && info.overallNextOrientation != currentOrientation) {
+        viewModel.getOrientationPrompt().observe(this, Observer {
+            if (it != null) {
                 runDelayed(500) {
-                    expandSmartShelf(OrientationPrompt.UNLOCK.message)
+                    expandSmartShelf(it)
                 }
             }
         })
+
+        rotationManager.observe(SearchFragment::class.java.simpleName, this, viewModel)
 
     }
 
@@ -204,9 +193,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             }
         }
 
-        view.share.setOnClickListener {
-            runSmartShelfTransition()
-        }
     }
 
     fun focusAndOpenSearch() {
@@ -215,20 +201,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         activity?.showSoftKeyboard(searchEditText)
     }
 
-    private fun runSmartShelfTransition() {
-        synchronized(smartShelfExpanded) {
-            if (!smartShelfExpanded) {
-                expandSmartShelf("Lock screen to portrait?")
-            } else {
-                collapseSmartShelf()
-            }
-        }
-    }
-
     //TODO make this more robust
     //TODO calling this while expanded should just change the smartSuggestion text with an animation,
     //TODO skipping the peekHeight animation
-    private fun expandSmartShelf(message: String) {
+    private fun expandSmartShelf(prompt: OrientationPrompt) {
         if (view == null) return
 
         synchronized(smartShelfExpanded) {
@@ -241,7 +217,16 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             changeBounds.duration = 200
 
             val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
-            smartSuggestion.smartLabel.text = message
+            smartSuggestion.smartLabel.text = getString(prompt.message)
+            smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
+            smartSuggestion.setOnClickListener {
+                //TODO create a custom smartLabel view that is able to change bounds
+                smartSuggestion.smartLabel.text = "Locked"
+
+                viewModel.orientation = prompt.orientationToRequest
+                (activity?.application as? App)?.updateOrientation()
+
+            }
             val display = activity!!.windowManager.defaultDisplay
             val point = Point()
             display.getSize(point)

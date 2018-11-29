@@ -23,6 +23,8 @@ class UserPreferenceRepository(
         hasSeenRecentsBanner = false
         hasSeenFavoritesBanner = false
         hasSeenTrendingBanner = false
+        portraitToLandscapeOrientationChangeCount = 0L
+        landscapeToPortraitOrientationChangeCount = 0L
     }
 
 
@@ -52,6 +54,17 @@ class UserPreferenceRepository(
     val hasSeenTrendingBannerLive: LiveData<Boolean> =
         PreferenceLiveData(sharedPrefs, UserPreferences.HAS_SEEN_TRENDING_BANNER, false)
 
-
+    var portraitToLandscapeOrientationChangeCount: Long by PreferenceDelegate(
+            sharedPrefs,
+            UserPreferences.PORTRAIT_TO_LANDSCAPE_ORIENTATION_CHANGE_COUNT,
+            0L
+    )
+    
+    var landscapeToPortraitOrientationChangeCount: Long by PreferenceDelegate(
+            sharedPrefs,
+            UserPreferences.LANDSCAPE_TO_PORTRAIT_ORIENTATION_CHANGE_COUNT,
+            0L
+    )
+    
 }
 

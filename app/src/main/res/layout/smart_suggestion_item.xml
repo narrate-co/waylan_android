@@ -6,8 +6,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/keyline_3"
+    android:paddingTop="@dimen/keyline_2"
+    android:layout_marginTop="@dimen/keyline_2"
     android:paddingBottom="@dimen/keyline_2"
+    android:background="?selectableItemBackground"
     >
 
     <androidx.appcompat.widget.AppCompatImageView

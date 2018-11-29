@@ -28,7 +28,7 @@ open class DelayedLifecycleAction(
         owner.lifecycle.addObserver(this)
     }
 
-    fun run() {
+    fun run(): DelayedLifecycleAction {
         if (!canceled) {
             job = launch(UI) {
                 delay(delay)
@@ -37,6 +37,8 @@ open class DelayedLifecycleAction(
                 }
             }
         }
+
+        return this
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
