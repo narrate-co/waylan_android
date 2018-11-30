@@ -14,33 +14,32 @@ import javax.inject.Inject
 @UserScope
 class SettingsViewModel @Inject constructor(
         private val userRepository: UserRepository,
-        private val preferenceRepository: PreferenceRepository,
         private val userPreferenceRepository: UserPreferenceRepository): ViewModel() {
 
     fun getUserLive(): LiveData<User> = userRepository.getUser()
 
     var nightMode: Int
-        get() = preferenceRepository.nightMode
+        get() = userPreferenceRepository.nightMode
         set(value) {
-            preferenceRepository.nightMode = value
+            userPreferenceRepository.nightMode = value
         }
 
-    var nightModeLive: LiveData<Int> = preferenceRepository.nightModeLive
+    var nightModeLive: LiveData<Int> = userPreferenceRepository.nightModeLive
 
     var useTestSkus: Boolean
-        get() = preferenceRepository.useTestSkus
+        get() = userPreferenceRepository.useTestSkus
         set(value) {
-            preferenceRepository.useTestSkus = value
+            userPreferenceRepository.useTestSkus = value
         }
 
-    var useTestSkusLive: LiveData<Boolean> = preferenceRepository.useTestSkusLive
+    var useTestSkusLive: LiveData<Boolean> = userPreferenceRepository.useTestSkusLive
 
     var orientation: Orientation
-        get() = Orientation.valueOf(preferenceRepository.orientationLock)
+        get() = Orientation.fromActivityInfoScreenOrientation(userPreferenceRepository.orientationLock)
         set(value) {
-            preferenceRepository.orientationLock = value.name
+            userPreferenceRepository.orientationLock = value.value
         }
-    var orientationLive: LiveData<Orientation> = preferenceRepository.orientationLive
+    var orientationLive: LiveData<Orientation> = userPreferenceRepository.orientationLockLive
 
     fun clearUserPreferences() = userPreferenceRepository.resetAll()
 

@@ -9,21 +9,16 @@ import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import com.google.api.Billing
 import com.wordsdict.android.data.firestore.users.PluginState
-import com.wordsdict.android.data.prefs.PreferenceRepository
+import com.wordsdict.android.data.prefs.UserPreferenceRepository
 import com.wordsdict.android.data.repository.UserRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.android.UI
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.coroutines.CoroutineContext
 
 class BillingManager(
         private val context: Context,
-        private val preferenceRepository: PreferenceRepository,
+        private val userPreferenceRepository: UserPreferenceRepository,
         private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
@@ -50,7 +45,7 @@ class BillingManager(
     }
 
     fun initiatePurchaseFlow(activity: Activity, skuId: String, @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP) {
-        val sku = if (preferenceRepository.useTestSkus) {
+        val sku = if (userPreferenceRepository.useTestSkus) {
             when (skuId) {
                 BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
                 else -> BillingConfig.TEST_SKU_PURCHASED

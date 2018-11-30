@@ -6,7 +6,7 @@ import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.prefs.PreferenceRepository
 import com.wordsdict.android.data.spell.SymSpellStore
-import com.wordsdict.android.util.RotationManager
+import com.wordsdict.android.data.prefs.RotationManager
 import dagger.Module
 import dagger.Provides
 

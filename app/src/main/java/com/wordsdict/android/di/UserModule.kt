@@ -49,8 +49,8 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideUserPreferenceRepository(application: Application, user: User?): UserPreferenceRepository {
-        return UserPreferenceRepository(application, user?.uid)
+    fun provideUserPreferenceRepository(application: Application, preferenceRepository: PreferenceRepository, user: User?): UserPreferenceRepository {
+        return UserPreferenceRepository(application, preferenceRepository, user?.uid)
     }
 
     @UserScope
@@ -63,8 +63,8 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideBillingManager(application: Application, preferenceRepository: PreferenceRepository, userRepository: UserRepository): BillingManager {
-        return BillingManager(application, preferenceRepository, userRepository)
+    fun provideBillingManager(application: Application, userPreferenceRepository: UserPreferenceRepository, userRepository: UserRepository): BillingManager {
+        return BillingManager(application, userPreferenceRepository, userRepository)
     }
 
 }

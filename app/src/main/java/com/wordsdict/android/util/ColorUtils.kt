@@ -9,7 +9,8 @@ fun Context.getColorFromAttr(attr: Int): Int {
     theme.resolveAttribute(attr, typedValue, true)
     return typedValue.data
 }
-//
+
+
 //fun Int.darken(factor: Float): Int {
 //    val a = Color.alpha(this)
 //    val r = Color.red((this * factor).toInt())

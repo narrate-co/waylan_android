@@ -2,26 +2,19 @@ package com.wordsdict.android.ui.search
 
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
-import com.wordsdict.android.data.prefs.Orientation
-import com.wordsdict.android.data.prefs.PreferenceRepository
-import com.wordsdict.android.data.prefs.UserPreferenceRepository
-import com.wordsdict.android.data.prefs.getOrientationPref
+import com.wordsdict.android.data.prefs.*
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.di.UserScope
-import com.wordsdict.android.util.RotationManager
-import com.wordsdict.android.util.isLandscapeToPortrait
-import com.wordsdict.android.util.isPortraitToLandscape
 import javax.inject.Inject
 
 @UserScope
 class SearchViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val preferenceRepository: PreferenceRepository,
         private val userPreferenceRepository: UserPreferenceRepository,
         private val analyticsRepository: AnalyticsRepository
-): ViewModel(), RotationManager.Observer {
+): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
     var searchInput: String = ""
         set(value) {
@@ -54,9 +47,9 @@ class SearchViewModel @Inject constructor(
     fun getOrientationPrompt(): LiveData<OrientationPrompt?> = orientationPrompt
 
     var orientation: Orientation
-        get() = Orientation.valueOf(preferenceRepository.orientationLock)
+        get() = Orientation.fromActivityInfoScreenOrientation(userPreferenceRepository.orientationLock)
         set(value) {
-            preferenceRepository.orientationLock = value.name
+            userPreferenceRepository.orientationLock = value.value
         }
 
 
@@ -70,27 +63,36 @@ class SearchViewModel @Inject constructor(
         analyticsRepository.logSearchWordEvent(searchInput, id, word::class.java.simpleName)
     }
 
-    override fun onLockedRotate(old: Int, new: Int) {
-        println("SearchViewModel::onLockedRotation old: $old, new: $new")
-        //TODO prompt to unlock orientation lock
-        //TODO possibly make a sequence detector in RotationManager to handle this
+    override fun onLockedRotate(old: RotationManager.RotationEvent, new: RotationManager.RotationEvent, lockedTo: Int) {
+        //do nothing
     }
 
-    override fun onUnlockedOrientationChange(old: Int, new: Int) {
-        println("SearchViewModel::onUnlockedOrientationChange: $old, new: $new")
+    override fun onUnlockedOrientationChange(old: RotationManager.RotationEvent, new: RotationManager.RotationEvent) {
         if (isPortraitToLandscape(old, new)) {
             userPreferenceRepository.portraitToLandscapeOrientationChangeCount++
             if (userPreferenceRepository.portraitToLandscapeOrientationChangeCount == 2L) {
-                orientationPrompt.value = OrientationPrompt.LockToLandscape(getOrientationPref(new))
+                orientationPrompt.value = OrientationPrompt.LockToLandscape(Orientation.fromActivityInfoScreenOrientation(new.orientation))
                 orientationPrompt.value = null
             }
         } else if (isLandscapeToPortrait(old, new)) {
             userPreferenceRepository.landscapeToPortraitOrientationChangeCount++
             if (userPreferenceRepository.landscapeToPortraitOrientationChangeCount == 1L) {
-                orientationPrompt.value = OrientationPrompt.LockToPortrait(getOrientationPref(new))
+                orientationPrompt.value = OrientationPrompt.LockToPortrait(Orientation.fromActivityInfoScreenOrientation(new.orientation))
                 orientationPrompt.value = null
             }
         }
+    }
+
+    override fun onLockedRotatePatternSeen(pattern: List<RotationManager.RotationEvent>, lockedTo: Int, observedSince: Long) {
+        if (isLikelyUnlockDesiredScenario(pattern, lockedTo, observedSince, System.nanoTime())) {
+            //should suggest unlocking
+            orientationPrompt.value = OrientationPrompt.UnlockOrientation(Orientation.UNSPECIFIED)
+            orientationPrompt.value = null
+        }
+    }
+
+    override fun onUnlockedOrientationPatternSeen(pattern: List<RotationManager.RotationEvent>) {
+        //do nothing. maybe move to pattern matching over orientation change counts
     }
 
 

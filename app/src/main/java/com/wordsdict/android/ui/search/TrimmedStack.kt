@@ -25,6 +25,10 @@ class TrimmedStack<T>(private var array: MutableList<T?>): Iterable<T?> {
         return array[0]
     }
 
+    fun clear() {
+        array = MutableList(capacity) { null }
+    }
+
     inner class TrimmedStackIterator(startFrom: Int = 0): Iterator<T?> {
         private var current: Int = startFrom
 
@@ -90,4 +94,26 @@ fun <T> TrimmedStack<T>.hasPattern(pattern: List<T>): Boolean {
     }
 
     return matches
+}
+
+//[1, 0, 8, x, x, x]
+//[8, 0, 1]
+fun <T, P> TrimmedStack<T>.copyMatchedPattern(pattern: List<P>, areEqual: (T, P) -> Boolean): List<T>? {
+    if (capacity < pattern.size) return null
+
+    val copy: MutableList<T> = mutableListOf()
+
+    forEachIndexed { index, t ->
+        //only go up to the last index of pattern
+        if (index > pattern.lastIndex) return@forEachIndexed
+
+        val patternIndex = pattern.lastIndex - index
+        if (t == null || !areEqual(t, pattern[patternIndex])) {
+            return null
+        } else {
+            copy.add(0, t)
+        }
+    }
+
+    return copy.toList()
 }

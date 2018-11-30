@@ -15,6 +15,9 @@
 
     <!--Search-->
     <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>
+    <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
+    <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
+    <string name="orientation_prompt_unlock_orientation">Unlock screen orientation?</string>
 
     <!--Details-->
     <string name="details_merriam_webster_card_details_button">Details</string>
@@ -82,6 +85,15 @@
     <string name="settings_night_mode_yes_desc">Always use night mode</string>
     <string name="settings_night_mode_no_desc">Never use night mode</string>
     <string name="settings_night_mode_follows_system_desc">Night mode usage is determined by your global system settings</string>
+    <string name="settings_orientation_unspecified_title">None</string>
+    <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
+    <string name="settings_orientation_portrait_title">Portrait</string>
+    <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
+    <string name="settings_orientation_landscape_title">Landscape (Left)</string>
+    <string name="settings_orientation_landscape_desc">Only allow landscape (90° counter-clockwise)</string>
+    <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
+    <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
+
 
     <!--About-->
     <string name="about_header_body">
@@ -101,17 +113,6 @@
     <string name="developer_settings_use_test_skus_title">Use test skus</string>
     <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
     <string name="developer_settings_title">Developer Settings</string>
-    <string name="settings_orientation_unspecified_title">None</string>
-    <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
-    <string name="settings_orientation_portrait_title">Portrait</string>
-    <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
-    <string name="settings_orientation_landscape_title">Landscape (Left)</string>
-    <string name="settings_orientation_landscape_desc">Only allow landscape (90° counter-clockwise)</string>
-    <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
-    <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
-    <string name="orientation_prompt_unlock_orientation">Allow screen to rotate?</string>
-    <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
-    <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
 
 
 </resources>

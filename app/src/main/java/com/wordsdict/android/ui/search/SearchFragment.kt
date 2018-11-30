@@ -1,13 +1,11 @@
 package com.wordsdict.android.ui.search
 
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -22,15 +20,13 @@ import com.wordsdict.android.*
 import com.wordsdict.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.*
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
-import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.users.UserWordType
-import com.wordsdict.android.data.prefs.Orientation
+import com.wordsdict.android.data.prefs.RotationManager
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
@@ -161,16 +157,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         rotationManager.observe(SearchFragment::class.java.simpleName, this, viewModel)
 
-        rotationManager.observeForPattern(SearchFragment::class.java.simpleName, this, listOf(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT), object : RotationManager.PatternObserver {
-            override fun onUnlockedOrientationPatternSeen(pattern: List<Int>) {
-                println("SearchFragment::onUnlockedOrientationPatternSeen - $pattern")
-            }
-
-            override fun onLockedRotatePatternSeen(pattern: List<Int>) {
-                println("SearchFragment::onLockedRotatePatternSeen - $pattern")
-            }
-        })
-
+        rotationManager.observeForPattern(SearchFragment::class.java.simpleName, this, RotationManager.PATTERNS_ALL, viewModel)
     }
 
     private fun setUpShelfActions(view: View?) {

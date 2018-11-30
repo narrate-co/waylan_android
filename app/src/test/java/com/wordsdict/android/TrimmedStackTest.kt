@@ -1,5 +1,7 @@
 package com.wordsdict.android
 
+import com.wordsdict.android.data.prefs.RotationManager
+import com.wordsdict.android.ui.search.copyMatchedPattern
 import com.wordsdict.android.ui.search.emptyTrimmedStack
 import com.wordsdict.android.ui.search.hasPattern
 import org.junit.Test
@@ -107,5 +109,46 @@ class TrimmedStackTest {
         trimmedStack.push(landscape)
 
         assert(!trimmedStack.hasPattern(pattern))
+    }
+
+    @Test
+    fun mixed_comparators_copys_on_equal() {
+        val trimmedStack = emptyTrimmedStack<RotationManager.RotationEvent>(CAPACITY + 4)
+
+        val landscape = 0
+        val portrait = 1
+        val reverseLandscape = 8
+
+        val pattern = listOf(landscape, portrait, reverseLandscape)
+
+        trimmedStack.push(RotationManager.RotationEvent(landscape, System.currentTimeMillis()))
+        trimmedStack.push(RotationManager.RotationEvent(portrait, System.currentTimeMillis()))
+        trimmedStack.push(RotationManager.RotationEvent(reverseLandscape, System.currentTimeMillis()))
+
+        val copy = trimmedStack.copyMatchedPattern(pattern) { t, p ->
+            t.orientation == p
+        }
+
+        assertNotNull(copy)
+    }
+
+    @Test
+    fun mixed_comparators_returns_null_on_copy_no_match() {
+        val trimmedStack = emptyTrimmedStack<RotationManager.RotationEvent>(CAPACITY + 4)
+
+        val landscape = 0
+        val portrait = 1
+        val reverseLandscape = 8
+
+        val pattern = listOf(landscape, portrait, reverseLandscape)
+
+        trimmedStack.push(RotationManager.RotationEvent(landscape, System.currentTimeMillis()))
+        trimmedStack.push(RotationManager.RotationEvent(portrait, System.currentTimeMillis()))
+
+        val copy = trimmedStack.copyMatchedPattern(pattern) { t, p ->
+            t.orientation == p
+        }
+
+        assertNull(copy)
     }
 }

@@ -12,25 +12,7 @@ import com.wordsdict.android.R
  */
 object Preferences {
     const val NIGHT_MODE = "uses_night_mode"
-    const val ORIENTATION_LOCK = "orientation_lock"
+    const val ORIENTATION_LOCK = "orientation_lock_pref"
 
-    // debug prefs
-    const val USE_TEST_SKUS = "use_test_skus"
 }
 
-enum class Orientation(val value: Int, val title: Int, val desc: Int) {
-    UNSPECIFIED(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, R.string.settings_orientation_unspecified_title, R.string.settings_orientation_unspecified_desc),
-    PORTRAIT(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, R.string.settings_orientation_portrait_title, R.string.settings_orientation_portrait_desc),
-    LANDSCAPE(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE, R.string.settings_orientation_landscape_title, R.string.settings_orientation_landscape_desc),
-    LANDSCAPE_REVERSE(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE, R.string.settings_orientation_landscape_reverse_title, R.string.settings_orientation_landscape_reverse_desc)
-}
-
-fun getOrientationPref(activityInfoInt: Int): Orientation {
-    return when (activityInfoInt) {
-        ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED -> Orientation.UNSPECIFIED
-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> Orientation.PORTRAIT
-        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> Orientation.LANDSCAPE
-        ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE -> Orientation.LANDSCAPE_REVERSE
-        else -> Orientation.UNSPECIFIED
-    }
-}

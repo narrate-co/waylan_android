@@ -4,6 +4,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 
+fun Lifecycle.doOnResume(block: () -> Unit) {
+    this.addObserver(object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        fun onResume() {
+            block()
+        }
+    })
+}
+
 fun Lifecycle.doOnNextResume(block: () -> Unit) {
     this.addObserver(object: LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

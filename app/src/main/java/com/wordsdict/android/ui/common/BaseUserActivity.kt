@@ -11,7 +11,6 @@ import com.wordsdict.android.App
 import com.wordsdict.android.Navigator
 import com.wordsdict.android.data.prefs.Orientation
 import com.wordsdict.android.data.prefs.Preferences
-import com.wordsdict.android.util.RotationManager
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -21,8 +20,6 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-//    @Inject
-//    lateinit var rotationManager: RotationManager
 
     private val localBroadcastReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -45,18 +42,6 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(localBroadcastReceiver, app.getLocalBroadcastIntentFilter())
 
         super.onCreate(savedInstanceState)
-
-//        rotationManager.observe(BaseUserActivity::class.java.name, this, object: RotationManager.Observer {
-//            override fun onLockedRotate(last: Int, new: Int) {
-//                println("BaseUserActivity::onLockedRotate - last: $last, new: $new")
-//            }
-//
-//            override fun onUnlockedOrientationChange(last: Int, new: Int) {
-//                println("BaseUserActivity::onUnlockedOrientationChange - last: $last, new: $new")
-//            }
-//        })
-
-
     }
 
 
@@ -67,11 +52,8 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
 
 
     private fun setOrientation() {
-        val orientation = Orientation.valueOf(
-                PreferenceManager
-                        .getDefaultSharedPreferences(this)
-                        .getString(Preferences.ORIENTATION_LOCK, Orientation.UNSPECIFIED?.name) ?: Orientation.UNSPECIFIED.name)
-        requestedOrientation = orientation.value
+        val orientation = PreferenceManager.getDefaultSharedPreferences(this).getInt(Preferences.ORIENTATION_LOCK, Orientation.UNSPECIFIED.value)
+        requestedOrientation = orientation
     }
 }
 
