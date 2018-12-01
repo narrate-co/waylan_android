@@ -11,7 +11,7 @@
 
     <!--clipChildren and clipToPadding are false to make sure -->
     <!--we allow fragments to draw shadows -->
-    <com.wordsdict.android.util.InsetFrameLayout
+    <com.wordsdict.android.util.widget.InsetFrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

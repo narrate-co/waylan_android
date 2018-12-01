@@ -7,9 +7,9 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.util.Banner
-import com.wordsdict.android.util.BannerViewHolder
-import com.wordsdict.android.util.BannerViewHolderListener
+import com.wordsdict.android.ui.list.Banner
+import com.wordsdict.android.ui.list.BannerViewHolder
+import com.wordsdict.android.ui.list.BannerViewHolderListener
 import com.wordsdict.android.util.getColorFromAttr
 import kotlinx.android.synthetic.main.list_banner_layout.view.*
 import kotlinx.android.synthetic.main.search_word_layout.view.*

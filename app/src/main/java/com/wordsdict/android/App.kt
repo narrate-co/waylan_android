@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.crashlytics.android.Crashlytics
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.prefs.Preferences
 import com.wordsdict.android.di.DaggerAppComponent

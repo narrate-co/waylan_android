@@ -40,6 +40,12 @@ class AuthActivity : DaggerAppCompatActivity() {
         ANONYMOUS, SIGN_UP, LOG_IN
     }
 
+    private val authViewModel by lazy {
+        ViewModelProviders.of(this).get(AuthViewModel::class.java)
+    }
+
+    private var filterIntent: Intent? = null
+
     private val errorMessageTextWatcher = object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {}
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -47,12 +53,6 @@ class AuthActivity : DaggerAppCompatActivity() {
             hideErrorMessage()
         }
     }
-
-    private val authViewModel by lazy {
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
-    }
-
-    var filterIntent: Intent? = null
 
     //TODO clean up
     override fun onCreate(savedInstanceState: Bundle?) {

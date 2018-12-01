@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import com.google.android.material.shape.CornerTreatment
 import com.google.android.material.shape.ShapePath

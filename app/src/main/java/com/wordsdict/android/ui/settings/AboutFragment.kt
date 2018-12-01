@@ -8,7 +8,6 @@ import com.wordsdict.android.BuildConfig
 import com.wordsdict.android.Navigator
 import com.wordsdict.android.R
 import com.wordsdict.android.ui.common.BaseUserFragment
-import com.wordsdict.android.util.CheckPreferenceView
 import kotlinx.android.synthetic.main.fragment_about.view.*
 
 

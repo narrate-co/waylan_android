@@ -12,7 +12,7 @@ import com.wordsdict.android.ui.details.DetailsFragment
 import com.wordsdict.android.ui.home.HomeFragment
 import com.wordsdict.android.ui.list.ListFragment
 import com.wordsdict.android.ui.settings.*
-import com.wordsdict.android.util.ElasticTransition
+import com.wordsdict.android.util.widget.ElasticTransition
 
 object Navigator {
 

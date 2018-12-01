@@ -1,4 +1,4 @@
-package com.wordsdict.android.ui.search
+package com.wordsdict.android.util.widget
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

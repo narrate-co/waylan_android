@@ -1,13 +1,11 @@
-package com.wordsdict.android.ui.search
+package com.wordsdict.android.util.widget
 
-import java.lang.IllegalArgumentException
-import java.lang.IndexOutOfBoundsException
 import java.lang.StringBuilder
 import java.util.*
 
 /**
- * A class that holds a set number of items and maintains chronological list from
- * most recently push to least recently pushed
+ * A class that holds a set number of items and maintains a chronological list from
+ * most recently pushed to least recently pushed
  */
 class TrimmedStack<T>(private var array: MutableList<T?>): Iterable<T?> {
 

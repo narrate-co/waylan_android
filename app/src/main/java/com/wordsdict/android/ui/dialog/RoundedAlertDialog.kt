@@ -2,14 +2,12 @@ package com.wordsdict.android.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -39,7 +37,8 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
         builder.setView(v)
 
         val d = builder.create()
-        //TODO should this be a surface C?
+
+        //TODO should this be a surface C (see color attrs)?
         d.window.setBackgroundDrawable(createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.surfaceBColor))
 
         return d
@@ -50,15 +49,13 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
             setAllCorners(RoundedCornerTreatment(context.resources.getDimensionPixelSize(cornerRadiusDimen).toFloat()))
         }
 
-        val materialShapeDrawable = MaterialShapeDrawable(shapePathModel).apply {
+        return MaterialShapeDrawable(shapePathModel).apply {
             isShadowEnabled = true
             paintStyle = Paint.Style.FILL
             DrawableCompat.setTintList(
                     this@apply,
                     ColorStateList.valueOf(context.getColorFromAttr(backgroundColorAttr)))
         }
-
-        return materialShapeDrawable
     }
 
     fun ViewGroup.addRadioItemView(title: String, desc: String, checked: Boolean, listener: View.OnClickListener) {

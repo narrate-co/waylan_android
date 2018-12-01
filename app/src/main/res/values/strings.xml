@@ -18,6 +18,8 @@
     <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
     <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
     <string name="orientation_prompt_unlock_orientation">Unlock screen orientation?</string>
+    <string name="orientation_prompt_locked_label">Locked</string>
+    <string name="orientation_prompt_unlocked_label">Unlocked</string>
 
     <!--Details-->
     <string name="details_merriam_webster_card_details_button">Details</string>

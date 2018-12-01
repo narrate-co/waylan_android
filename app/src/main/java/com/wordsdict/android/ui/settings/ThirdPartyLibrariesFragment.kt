@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wordsdict.android.R
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.ui.list.ListItemDivider
-import com.wordsdict.android.util.EmptyDiffItemCallback
 import kotlinx.android.synthetic.main.fragment_third_party_libraries.view.*
 import com.wordsdict.android.Navigator
+import com.wordsdict.android.util.emptyDiffItemCallback
 
 
 class ThirdPartyLibrariesFragment: BaseUserFragment(), ThirdPartyLibraryViewHolder.ThirdPartyListener {
@@ -41,7 +41,7 @@ class ThirdPartyLibrariesFragment: BaseUserFragment(), ThirdPartyLibraryViewHold
     private fun setUpList() {
         view?.recycler?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = object : ListAdapter<ThirdPartyLibrary, ThirdPartyLibraryViewHolder>(EmptyDiffItemCallback<ThirdPartyLibrary>()) {
+        val adapter = object : ListAdapter<ThirdPartyLibrary, ThirdPartyLibraryViewHolder>(emptyDiffItemCallback()) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThirdPartyLibraryViewHolder {
                 return ThirdPartyLibraryViewHolder(
                         LayoutInflater

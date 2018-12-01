@@ -1,9 +1,10 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import com.wordsdict.android.util.children
 
 class InsetFrameLayout @JvmOverloads constructor(
         context: Context,

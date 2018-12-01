@@ -7,22 +7,35 @@ import com.wordsdict.android.App
 import com.wordsdict.android.Navigator
 
 
+/**
+ * A Theme.NoDisplay Activity that serves as an entry hub for all intents
+ * that Words is able to handle.
+ *
+ * An informative note on Theme.NoDisplay see <a>https://plus.google.com/+DianneHackborn/posts/LjnRzJKWPGW</a>
+ */
 class RouterActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // We should only get to RouterActivity by receiving a filtered intent
+        // defined in AndroidManifest.xml
         if (intent == null) {
+            // Default to AuthActivity
             Navigator.launchAuth(this)
             finish()
             return
         }
 
+
         val hasProcessText = intent.hasExtra(Intent.EXTRA_PROCESS_TEXT)
+        // If we're processing text, make sure there's a valid user
         if (hasProcessText) {
             if ((application as App).hasUser) {
+                // Go straight to MainActivity and pass along intent to be processed
                 Navigator.launchMain(this, true, intent)
             } else {
+                // Go to AuthActivity, authorize, and then MainActivity, passing along intent to each
                 Navigator.launchAuth(this, null, intent)
             }
         } else {

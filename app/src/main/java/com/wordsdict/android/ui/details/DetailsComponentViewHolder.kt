@@ -11,7 +11,6 @@ import com.wordsdict.android.data.disk.wordset.Meaning
 import com.wordsdict.android.data.repository.MerriamWebsterSource
 import com.wordsdict.android.data.repository.WordPropertiesSource
 import com.wordsdict.android.data.repository.WordsetSource
-import com.wordsdict.android.util.Bindable
 import com.wordsdict.android.util.toChip
 import kotlinx.android.synthetic.main.details_component_examples.view.*
 import kotlinx.android.synthetic.main.details_component_merriam_webster.view.*

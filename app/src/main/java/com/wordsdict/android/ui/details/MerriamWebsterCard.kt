@@ -21,9 +21,8 @@ import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.service.AudioClipService
-import com.wordsdict.android.service.AudioController
+import com.wordsdict.android.service.AudioClipController
 import com.wordsdict.android.util.fromHtml
-import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 
@@ -104,7 +103,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
     }
 
     private fun unregisterAudioStateDispatchReceiver() {
-        AudioController.stop(context)
+        AudioClipController.stop(context)
         LocalBroadcastManager.getInstance(context).unregisterReceiver(audioStateDispatchReceiver)
     }
 
@@ -176,7 +175,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
         return entries.asSequence().map { it.word?.word }.firstOrNull() ?: ""
     }
 
-    private val audioStopClickListener = OnClickListener { AudioController.stop(context) }
+    private val audioStopClickListener = OnClickListener { AudioClipController.stop(context) }
 
     private var audioPlayClickListener = OnClickListener {  }
 
@@ -190,7 +189,7 @@ class MerriamWebsterCard @JvmOverloads constructor(
         var fileName = wavFile.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "https://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
 //        val url = "error" //error url
-        audioPlayClickListener = OnClickListener { AudioController.play(context, url) }
+        audioPlayClickListener = OnClickListener { AudioClipController.play(context, url) }
 
         audioImageView.setOnClickListener(audioPlayClickListener)
         audioImageView.visibility = View.VISIBLE

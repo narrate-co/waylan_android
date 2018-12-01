@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.ui.list
 
 import android.view.View
 

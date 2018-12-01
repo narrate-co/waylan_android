@@ -9,6 +9,38 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
+/**
+ * __________________________________________________________
+ * |                                                        |
+ * |  @ApplicationScope                                     |
+ * |   (App, AuthActivity, RouterActivity)                  |
+ * |    _________________________________________________   |
+ * |    |                                               |   |
+ * |    |   @UserScope                                  |   |
+ * |    |    (Owns all objects which require            |   |
+ * |    |     a user)                                   |   |
+ * |    |   _________________________________________   |   |
+ * |    |   |                                       |   |   |
+ * |    |   |   @ActivityScope                      |   |   |
+ * |    |   |    (MainActivity, SettingsActivity)   |   |   |
+ * |    |   |   _____________________________       |   |   |
+ * |    |   |   |                           |       |   |   |
+ * |    |   |   |   @FragmentScope          |       |   |   |
+ * |    |   |   |    (All fragments owned   |       |   |   |
+ * |    |   |   |     by @ActivityScope     |       |   |   |
+ * |    |   |   |     Activities)           |       |   |   |
+ * |    |   |   |___________________________|       |   |   |
+ * |    |   |                                       |   |   |
+ * |    |   |_______________________________________|   |   |
+ * |    |                                               |   |
+ * |    |_______________________________________________|   |
+ * |                                                        |
+ * |________________________________________________________|
+ *
+ * //TODO refine this since it doesn't make perfect sense (ie. AuthActivity should have @ActivityScope
+ * //TODO but not @UserScope like MainActivity. @ActivityScope might need to be a scope that overlaps
+ * //TODO @UserScope and @ApplicationScope
+ */
 @Component(
         modules = [
             AppModule::class,

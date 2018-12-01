@@ -1,6 +1,5 @@
 package com.wordsdict.android.ui.search
 
-import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -26,11 +25,13 @@ import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.users.UserWordType
+import com.wordsdict.android.data.prefs.Orientation
 import com.wordsdict.android.data.prefs.RotationManager
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.ui.list.Banner
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
@@ -63,9 +64,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private val adapter by lazy { SearchAdapter(this) }
 
     @Volatile
-    var smartShelfExpanded = false
+    private var smartShelfExpanded = false
 
-    var smartShelfTransitionEndAction: TransitionEndAction? = null
+    private var smartShelfAfterTransitionEndAction: DelayedAfterTransitionEndAction? = null
 
     @Inject
     lateinit var rotationManager: RotationManager
@@ -144,8 +145,15 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         }
     }
 
+    var clicks = 0
     private fun setUpSmartShelf(view: View?) {
         if (view == null) return
+
+        view.share.setOnClickListener {
+            val prompt = if (clicks % 2 == 0) OrientationPrompt.LockToPortrait(Orientation.PORTRAIT) else OrientationPrompt.LockToLandscape(Orientation.LANDSCAPE)
+            expandSmartShelf(prompt)
+            clicks++
+        }
 
         viewModel.getOrientationPrompt().observe(this, Observer {
             if (it != null) {
@@ -205,37 +213,52 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         if (view == null) return
 
         synchronized(smartShelfExpanded) {
-            smartShelfTransitionEndAction?.cancel()
-            smartShelfTransitionEndAction = null
-            TransitionManager.endTransitions(view as ViewGroup)
 
-            val changeBounds = ChangeBounds()
-            changeBounds.interpolator = DecelerateInterpolator()
-            changeBounds.duration = 200
+            // if the smart shelf is not added to the sheet, add it with a transition
+            var smartSuggestion = shelfContainer.getChildAt(0)
+            if (smartSuggestion == null) {
+                smartShelfAfterTransitionEndAction?.cancel()
+                smartShelfAfterTransitionEndAction = null
+                TransitionManager.endTransitions(view as ViewGroup)
 
-            val smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
-            smartSuggestion.smartLabel.text = getString(prompt.message)
-            smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
-            smartSuggestion.setOnClickListener {
-                //TODO create a custom smartLabel view that is able to change bounds
-                smartSuggestion.smartLabel.text = "Locked"
+                val changeBounds = ChangeBounds()
+                changeBounds.interpolator = DecelerateInterpolator()
+                changeBounds.duration = 200
 
-                viewModel.orientation = prompt.orientationToRequest
-                (activity?.application as? App)?.updateOrientation()
+                smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
+                smartSuggestion.smartLabel.text = getString(prompt.message)
+                smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
+                smartSuggestion.setOnClickListener {
+                    //TODO create a custom smartLabel view that is able to change bounds
+                    smartSuggestion.smartLabel.text = getString(prompt.checkedText)
 
+                    viewModel.orientation = prompt.orientationToRequest
+                    (activity?.application as? App)?.updateOrientation()
+
+                }
+                val display = activity!!.windowManager.defaultDisplay
+                val point = Point()
+                display.getSize(point)
+                smartSuggestion.measure(point.x, point.y)
+                val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
+                smartShelfAfterTransitionEndAction = DelayedAfterTransitionEndAction(this, changeBounds, 3000, ::collapseSmartShelf)
+
+                //start transition
+                TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
+                shelfContainer.addView(smartSuggestion)
+                bottomSheetBehavior.peekHeight += measuredDiff
+                smartShelfExpanded = true
+            } else {
+                // if the shelf is added, use it to manipulate it's existing prompt
+                smartSuggestion.smartLabel.text = getString(prompt.message)
+                smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
+                smartSuggestion.setOnClickListener {
+                    smartSuggestion.smartLabel.text = getString(prompt.checkedText)
+
+                    viewModel.orientation = prompt.orientationToRequest
+                    (activity?.application as? App)?.updateOrientation()
+                }
             }
-            val display = activity!!.windowManager.defaultDisplay
-            val point = Point()
-            display.getSize(point)
-            smartSuggestion.measure(point.x, point.y)
-            val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
-            smartShelfTransitionEndAction = TransitionEndAction(this, changeBounds, 3000, ::collapseSmartShelf)
-
-            //start transition
-            TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
-            shelfContainer.addView(smartSuggestion)
-            bottomSheetBehavior.peekHeight += measuredDiff
-            smartShelfExpanded = !smartShelfExpanded
         }
     }
 
@@ -244,8 +267,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         synchronized(smartShelfExpanded) {
 
-            smartShelfTransitionEndAction?.cancel()
-            smartShelfTransitionEndAction = null
+            smartShelfAfterTransitionEndAction?.cancel()
+            smartShelfAfterTransitionEndAction = null
             TransitionManager.endTransitions(view as ViewGroup)
             val measuredDiff = shelfContainer.height
 

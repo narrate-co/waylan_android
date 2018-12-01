@@ -16,7 +16,7 @@ import com.wordsdict.android.data.disk.wordset.Meaning
 import com.wordsdict.android.data.disk.wordset.MeaningDao
 import com.wordsdict.android.data.disk.wordset.Word
 import com.wordsdict.android.data.disk.wordset.WordDao
-import com.wordsdict.android.util.RoomAsset
+import com.wordsdict.android.util.widget.RoomAsset
 
 @Database(entities = [
     (Word::class),

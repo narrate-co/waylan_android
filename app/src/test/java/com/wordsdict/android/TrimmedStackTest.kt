@@ -1,9 +1,9 @@
 package com.wordsdict.android
 
 import com.wordsdict.android.data.prefs.RotationManager
-import com.wordsdict.android.ui.search.copyMatchedPattern
-import com.wordsdict.android.ui.search.emptyTrimmedStack
-import com.wordsdict.android.ui.search.hasPattern
+import com.wordsdict.android.util.widget.copyMatchedPattern
+import com.wordsdict.android.util.widget.emptyTrimmedStack
+import com.wordsdict.android.util.widget.hasPattern
 import org.junit.Test
 import org.junit.Assert.*
 

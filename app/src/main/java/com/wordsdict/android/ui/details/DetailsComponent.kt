@@ -4,7 +4,6 @@ import com.wordsdict.android.data.repository.MerriamWebsterSource
 import com.wordsdict.android.data.repository.WordPropertiesSource
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.data.repository.WordsetSource
-import com.wordsdict.android.util.Diffable
 
 sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<DetailsComponent> {
 

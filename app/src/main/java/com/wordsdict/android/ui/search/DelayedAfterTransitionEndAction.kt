@@ -3,12 +3,13 @@ package com.wordsdict.android.ui.search
 import androidx.lifecycle.LifecycleOwner
 import androidx.transition.Transition
 import androidx.transition.TransitionListenerAdapter
+import com.wordsdict.android.util.widget.DelayedLifecycleAction
 
 
 /**
  * A class that invokes a function after [transition] has ended and after [delay] has passed
  */
-class TransitionEndAction(
+class DelayedAfterTransitionEndAction(
         owner: LifecycleOwner,
         private val transition: Transition,
         delay: Long, onEndAction: () -> Unit

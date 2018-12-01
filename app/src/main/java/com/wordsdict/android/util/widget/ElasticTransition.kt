@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import android.animation.Animator
 import android.animation.AnimatorSet

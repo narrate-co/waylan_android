@@ -7,10 +7,9 @@ import android.provider.Settings
 import android.view.OrientationEventListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.wordsdict.android.ui.search.TrimmedStack
-import com.wordsdict.android.ui.search.copyMatchedPattern
-import com.wordsdict.android.ui.search.emptyTrimmedStack
-import com.wordsdict.android.ui.search.hasPattern
+import com.wordsdict.android.util.widget.TrimmedStack
+import com.wordsdict.android.util.widget.copyMatchedPattern
+import com.wordsdict.android.util.widget.emptyTrimmedStack
 import com.wordsdict.android.util.doOnDestroy
 import com.wordsdict.android.util.doOnNextResume
 import com.wordsdict.android.util.doOnResume

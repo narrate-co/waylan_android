@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -16,9 +16,8 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapePathModel
-import com.wordsdict.android.BuildConfig
-import com.wordsdict.android.Config
 import com.wordsdict.android.R
+import com.wordsdict.android.util.getColorFromAttr
 
 /**
  * A [CoordinatorLayout.Behavior] to handle elastic dragging of the parent [CoordinatorLayout]

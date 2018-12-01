@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.ui.details
 
 interface Diffable<T> {
     fun equalTo(newOther: T): Boolean

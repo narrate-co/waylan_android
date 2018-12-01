@@ -16,6 +16,19 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
 
+/**
+ * A modified version of TrivialDrive2's BillingManager
+ *
+ *
+ * Words plugins are lightweight purchases that should avoid making the user contemplate a commitment.
+ * In an effort to acheive this, Words plugins are one-time purchases that are good for one year (365 days).
+ *
+ * Once a year elapses, the plugin is expired and [PluginState.isValid]' should return false.
+ *
+ * Billing works by making a one-time purchase for a plugin, setting the [User.merriamWebsterPurchaseToken] and [User.merriamWebsterStarted]
+ * variables in Firebase and then immediately consuming the purchase.
+ *
+ */
 class BillingManager(
         private val context: Context,
         private val userPreferenceRepository: UserPreferenceRepository,
@@ -166,11 +179,7 @@ class BillingManager(
 
     private fun handlePurchase(purchase: Purchase) {
         //TODO add security checks
-//        if (!verifyValidSignature(purchase.originalJson, purchase.signature)) {
-//            return
-//        }
 
-        //TODO parse purchase and update User with userRepository
         val startedDate = Date(purchase.purchaseTime)
 
         when (purchase.sku) {

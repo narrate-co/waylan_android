@@ -1,10 +1,13 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.wordsdict.android.R
+import com.wordsdict.android.util.gone
+import com.wordsdict.android.util.invisible
+import com.wordsdict.android.util.visible
 import kotlinx.android.synthetic.main.check_preference_view_layout.view.*
 
 class CheckPreferenceView @JvmOverloads constructor(

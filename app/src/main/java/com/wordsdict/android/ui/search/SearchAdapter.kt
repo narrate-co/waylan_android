@@ -9,8 +9,8 @@ import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.ui.common.HeaderListAdapter
-import com.wordsdict.android.util.Banner
-import com.wordsdict.android.util.BannerViewHolderListener
+import com.wordsdict.android.ui.list.Banner
+import com.wordsdict.android.ui.list.BannerViewHolderListener
 import java.lang.IllegalStateException
 
 class SearchAdapter(

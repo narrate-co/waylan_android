@@ -3,14 +3,11 @@ package com.wordsdict.android.ui.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.wordsdict.android.R
 import com.wordsdict.android.data.repository.FirestoreGlobalSource
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.ui.common.HeaderListAdapter
-import com.wordsdict.android.util.Banner
-import com.wordsdict.android.util.BannerViewHolderListener
 import java.lang.IllegalStateException
 
 class ListTypeAdapter(

@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.util.widget
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

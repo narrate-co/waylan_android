@@ -3,7 +3,7 @@ package com.wordsdict.android.service
 import android.content.Context
 import android.content.Intent
 
-object AudioController {
+object AudioClipController {
 
     fun play(context: Context, url: String) {
         val intent = Intent(context, AudioClipService::class.java)

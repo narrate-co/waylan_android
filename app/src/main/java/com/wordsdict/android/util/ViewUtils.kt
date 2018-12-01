@@ -15,7 +15,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.wordsdict.android.R
 import com.wordsdict.android.data.disk.wordset.Synonym
-import com.wordsdict.android.ui.search.DelayedLifecycleAction
+import com.wordsdict.android.util.widget.DelayedLifecycleAction
 
 fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: Synonym) -> Unit)? = null): Chip {
     val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip

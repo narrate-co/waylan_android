@@ -9,7 +9,6 @@ import com.wordsdict.android.data.spell.SuggestItem
 
 sealed class WordSource
 
-
 //success responses
 class WordPropertiesSource(val props: com.wordsdict.android.data.repository.WordProperties): WordSource()
 class SimpleWordSource(val word: Word): WordSource()

@@ -3,15 +3,28 @@ package com.wordsdict.android.data.analytics
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 
+/**
+ * An abstraction of FirebaseAnalytics to log custom events
+ *
+ * @property EVENT_NAVIGATE_BACK An event to track how the user navigates back within the app.
+ * Words has 3 options for back navigation - the navigation bar back button, the toolbar back button
+ * and drag to dismiss. This event hopes to track the discoverability/usability of drag to dismiss
+ *
+ * @property EVENT_SEARCH_WORD An event to track when a user searches a word. Things considered are
+ * the text they input and the word they click on and where it was populated from. This hopes to discover
+ * how accurate/valuable SymSpell and [SuggestSource] is and how to imprve it.
+ */
 class AnalyticsRepository(
         private val firebaseAnalytics: FirebaseAnalytics
 ) {
 
+    // All custom events
     companion object {
         private const val EVENT_SEARCH_WORD = "search_word"
         private const val EVENT_NAVIGATE_BACK = "navigate_back"
     }
 
+    // Optionally set the current user's Id for additional info
     fun setUserId(uid: String?) {
         firebaseAnalytics.setUserId(uid)
     }
