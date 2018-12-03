@@ -18,6 +18,19 @@ import com.wordsdict.android.data.disk.wordset.Word
 import com.wordsdict.android.data.disk.wordset.WordDao
 import com.wordsdict.android.util.widget.RoomAsset
 
+/**
+ * AppDatabase manages the two main local disk data sources - Wordset and Merriam-Webster
+ *
+ * Wordset (<a>https://github.com/wordset/wordset-dictionary</a>) is db that is shipped with Words, pre-populated and
+ * copied on first access by [RoomAsset]
+ *
+ * Merriam-Webster is a db that hold all definitions ever retreived from the Merriam-Webster API.
+ * When searching a word on Words, [WordRepository] immediately returns a LiveData object of mwDao. It then fetches
+ * the word from Merriam-Webster and inserts it into [MwDao], which is seen by the previously returned
+ * LiveData object. This works as a cache for words that have previously been looked up by immediately returning
+ * stored Merriam-Webster words while refreshing the data in the background (and then diffing it with the current
+ * displayed data before making any UI changes).
+ */
 @Database(entities = [
     (Word::class),
     (Meaning::class),
@@ -46,6 +59,7 @@ abstract class AppDatabase: RoomDatabase() {
                     }
                 }
 
+        // Used if building the database instead of copying an included .db file
         private fun seedAndBuildDatabase(context: Context, dbName: String): AppDatabase {
             return Room
                     .databaseBuilder(context, AppDatabase::class.java, dbName)
@@ -58,6 +72,7 @@ abstract class AppDatabase: RoomDatabase() {
                     .build()
         }
 
+        // Copy the .db file on first load, otherwise return the AppDatabase instance
         private fun buildDatabase(context: Context, dbName: String): AppDatabase {
             return RoomAsset
                     .databaseBuilder(context, AppDatabase::class.java, "$dbName.db")

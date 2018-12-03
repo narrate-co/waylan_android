@@ -5,6 +5,14 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 
+/**
+ * A repository that corresponds to a [userId], making it possible for multiple users
+ * to have local SharedPreferences.
+ *
+ * In addition to user specific preferences, this class also provides access to preferences in [PreferenceRepository]
+ * The difference being, [Preferences] need to be available outside of [UserScope] while preferences
+ * in [UserPreferenceRepository] don't need to be initialized or available until a valid user is available.
+ */
 class UserPreferenceRepository(
         private val applicationContext: Context,
         private val preferenceRepository: PreferenceRepository,

@@ -10,6 +10,9 @@ fun <T> Query.liveData(clazz: Class<T>): LiveData<List<T>> {
     return FirestoreCollectionLiveData(this, clazz)
 }
 
+/**
+ * A helper class to turn a [QuerySnapshot] [EventListener] into a LiveData object
+ */
 class FirestoreCollectionLiveData<T>(private val query: Query, private val clazz: Class<T>): LiveData<List<T>>() {
 
     companion object {

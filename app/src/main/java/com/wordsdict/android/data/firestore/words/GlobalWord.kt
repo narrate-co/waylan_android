@@ -2,6 +2,10 @@ package com.wordsdict.android.data.firestore.words
 
 import java.util.*
 
+/**
+ * A Firestore document that holds properties relevant to all user's (ie. viewCount and
+ * possibly, in the future, user created public content such as additional examples and definitions, like a wiki)
+ */
 data class GlobalWord(
         var id: String = "",
         var word: String = "",

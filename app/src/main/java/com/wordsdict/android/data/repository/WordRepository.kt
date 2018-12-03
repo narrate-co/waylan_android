@@ -43,14 +43,8 @@ class WordRepository(
     }
 
     fun getWordPropertiesSource(id: String): LiveData<WordPropertiesSource> {
-        return Transformations.map(getWordProperties(id)) {
-            WordPropertiesSource(it)
-        }
-    }
-
-    private fun getWordProperties(word: String): LiveData<WordProperties> {
-        val data = MutableLiveData<WordProperties>()
-        data.value = WordProperties(word, word)
+        val data = MutableLiveData<WordPropertiesSource>()
+        data.value = WordPropertiesSource(id, id)
         return data
     }
 

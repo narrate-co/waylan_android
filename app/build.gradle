@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
+apply plugin: 'org.jetbrains.dokka-android'
+
 
 
 android {
@@ -24,6 +26,11 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
+    dokka {
+        includes = ['app.md']
+        outputFormat = 'html'
+        outputDirectory = "$buildDir/javadoc"
+    }
 }
 
 kotlin {
@@ -37,6 +44,7 @@ kapt {
         arg("room.schemaLocation", "$projectDir/schemas".toString())
     }
 }
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

@@ -22,7 +22,7 @@ sealed class DetailsComponent(val source: WordSource, val type: Type): Diffable<
             if (this == newOther) return true
             if (source !is WordPropertiesSource || newOther.source !is WordPropertiesSource) return false
 
-            return source.props.word == newOther.source.props.word
+            return source.word == newOther.source.word
         }
 
         override fun getChangePayload(newOther: DetailsComponent): Any? {

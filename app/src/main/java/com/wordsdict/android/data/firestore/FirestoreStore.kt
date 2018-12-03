@@ -20,6 +20,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * A data store to abstract away Firestore access
+ *
+ * Note this store is user-centric. Meaning it's only available with a valid user and all
+ * actions made are made by the current [firestoreUser]
+ */
 class FirestoreStore(
         private val firestore: FirebaseFirestore,
         private val db: AppDatabase,
@@ -109,7 +115,11 @@ class FirestoreStore(
     private fun newUserWord(id: String): Deferred<UserWord?> = async {
         //get word from db.
         val word = db.wordDao().get(id)
+
         //get meanings from db.
+        // we add a limited number of definitions, synonyms etc to make it easy to query for, for example,
+        // a user's favorites and have a list populate with the word and definition preview without the need
+        // for extraneous joins, queries, etc.
         val meanings = db.meaningDao().get(id)
 
         if (word == null) {
@@ -228,9 +238,10 @@ class FirestoreStore(
     }
 
 
-    //add meaning
+    //TODO add meaning
+    //allow users to add their own definitions, set to either public or private
 
-    //edit meaning (synonyms, examples, part of speech, labels
+    //TODO edit meaning (synonyms, examples, part of speech, labels)
 
-    //delete meaning
+    //TODO delete meaning
 }

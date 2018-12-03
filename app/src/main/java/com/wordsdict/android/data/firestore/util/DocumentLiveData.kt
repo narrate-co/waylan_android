@@ -8,6 +8,9 @@ fun <T> DocumentReference.liveData(clazz: Class<T>): LiveData<T> {
     return FirestoreDocumentLiveData(this, clazz)
 }
 
+/**
+ * A helper class to turn a [DocumentSnapshot] [EventListener] into a LiveData object
+ */
 class FirestoreDocumentLiveData<T>(
         private val documentReference: DocumentReference,
         private val clazz: Class<T>): LiveData<T>() {

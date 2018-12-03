@@ -7,6 +7,9 @@ import java.lang.RuntimeException
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * A delegate that handles reading and writing from SharedPreferences
+ */
 class PreferenceDelegate<T>(
         private val sharedPrefs: SharedPreferences,
         private val key: String,
