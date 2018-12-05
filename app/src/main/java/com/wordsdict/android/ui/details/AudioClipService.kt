@@ -1,4 +1,4 @@
-package com.wordsdict.android.service
+package com.wordsdict.android.ui.details
 
 import android.app.Service
 import android.content.Context
@@ -16,9 +16,6 @@ import kotlin.concurrent.schedule
 
 
 class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
-
-
-
 
     companion object {
         const val INTENT_KEY_COMMAND = "KEY_COMMAND"

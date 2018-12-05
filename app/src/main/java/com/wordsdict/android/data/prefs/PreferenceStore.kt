@@ -8,19 +8,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 
 /**
- * A repo for global preferences
+ * A top-level store for default (non user tied) [SharedPreferences]
  *
- * Some preferences need to be accessible before the User scope has been established
- * such as set basic defaults like orientation and theme
+ * Some preferences need to be accessible outside of [UserScope]. [Preferences] and
+ * [PreferenceStore] are for those variables.
  *
- * It should <b>not</b> be necessary to write directly to preferences here using a [PreferenceRepository] instance
- *
- * This should be a class that is only read from and used to simply separate preference scope, aiding
- * developer understanding
- *
- * To write to these preferences, do so via [UserPreferenceRepository]
+ * It should <b>not</b> be necessary to write directly [Preferences] directly using
+ * [PreferenceStore]. This should be a class that is only read from and used to simply separate
+ * where preferences are stored (either in default [SharedPreferences] or a user tied
+ * instance), aiding code/function clarity. To write to these preferences, do so using
+ * [UserPreferenceStore].
  */
-class PreferenceRepository(
+class PreferenceStore(
         private val applicationContext: Context
 ) {
 
@@ -35,7 +34,11 @@ class PreferenceRepository(
     )
 
     var nightModeLive: LiveData<Int> =
-            PreferenceLiveData(defaultPrefs, Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            PreferenceLiveData(
+                    defaultPrefs,
+                    Preferences.NIGHT_MODE,
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            )
 
 
      var orientationLock: Int by PreferenceDelegate(
@@ -44,7 +47,11 @@ class PreferenceRepository(
              Orientation.UNSPECIFIED.value
      )
     var orientationLive: LiveData<Orientation> =
-            Transformations.map(PreferenceLiveData(defaultPrefs, Preferences.ORIENTATION_LOCK, Orientation.UNSPECIFIED.value)) {
+            Transformations.map(PreferenceLiveData(
+                    defaultPrefs,
+                    Preferences.ORIENTATION_LOCK,
+                    Orientation.UNSPECIFIED.value
+            )) {
                 Orientation.fromActivityInfoScreenOrientation(it)
             }
 

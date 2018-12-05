@@ -1,5 +1,13 @@
 package com.wordsdict.android.data.disk.mw
 
+/**
+ * A class that ensures a [def] is always associated with the same [sn] when returned
+ * from the Merriam-Webster API.
+ *
+ * Responses from Merriam-Webster do not ensure order in their definitions list. To help diffing
+ * the local Merriam-Webster RooomDatbase and responses received from the API, [sn] acts as a
+ * weak "id" of sorts.
+ */
 data class OrderedDefinitionItem(
      val sn: String,
      val def: String

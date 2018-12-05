@@ -1,4 +1,4 @@
-package com.wordsdict.android.data
+package com.wordsdict.android.data.disk
 
 import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
@@ -13,7 +13,10 @@ import org.aaronhe.threetengson.ThreeTenGsonAdapter
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
-object AppTypeConverters {
+/**
+ * Type converters for unsupported types in Room objects
+ */
+object RoomTypeConverters {
 
     private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     private val gson = ThreeTenGsonAdapter.registerOffsetDateTime(GsonBuilder()).create()

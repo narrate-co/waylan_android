@@ -1,4 +1,4 @@
-package com.wordsdict.android.data
+package com.wordsdict.android.data.firestore
 
 /**
  * An enum to hold the value of where data originated

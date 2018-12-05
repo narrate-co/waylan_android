@@ -2,14 +2,9 @@ package com.wordsdict.android.billing
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
-import androidx.core.util.TimeUtils
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
-import com.google.api.Billing
 import com.wordsdict.android.data.firestore.users.PluginState
-import com.wordsdict.android.data.prefs.UserPreferenceRepository
+import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.UserRepository
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.launch
@@ -17,21 +12,28 @@ import java.io.IOException
 import java.util.*
 
 /**
- * A modified version of TrivialDrive2's BillingManager
+ * A class to handle all communication between Words and Google Play Billing
  *
+ * This is a modified version of TrivialDrive 2's BillingManager.
  *
- * Words plugins are lightweight purchases that should avoid making the user contemplate a commitment.
- * In an effort to acheive this, Words plugins are one-time purchases that are good for one year (365 days).
+ * Billing works by making a one-time purchase for a plugin, setting the
+ * [User.merriamWebsterPurchaseToken] and [User.merriamWebsterStarted] variables in Firebase and
+ * then immediately consuming the purchase.
  *
- * Once a year elapses, the plugin is expired and [PluginState.isValid]' should return false.
+ * The reason for this is because Words plugins are meant to be lightweight purchases that should
+ * avoid making the user contemplate a commitment. In an effort to achieve this, Words plugins are
+ * one-time purchases that are good for one year (365 days). Once a year elapses, the plugin is
+ * expired and [PluginState.isValid]' should return false.
  *
- * Billing works by making a one-time purchase for a plugin, setting the [User.merriamWebsterPurchaseToken] and [User.merriamWebsterStarted]
- * variables in Firebase and then immediately consuming the purchase.
- *
+ * @param userPreferenceStore Used to check if the user has developer preferences
+ *      set to run Billing against test skus.
+ * @param userRepository Used to update Firestore [User] objects with prurchaseTokens and
+ *      start dates
+ **
  */
 class BillingManager(
         private val context: Context,
-        private val userPreferenceRepository: UserPreferenceRepository,
+        private val userPreferenceStore: UserPreferenceStore,
         private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
@@ -42,7 +44,9 @@ class BillingManager(
         private const val BASE_64_ENCODED_PUBLIC_KEY = "EMPTY_FOR_NOW"
     }
 
-    private val billingClient by lazy { BillingClient.newBuilder(context).setListener(this).build() }
+    private val billingClient by lazy {
+        BillingClient.newBuilder(context).setListener(this).build()
+    }
 
     private var isServiceConnected = false
     private var billingClientResponseCode = BILLING_MANAGER_NOT_INITIALIZED
@@ -57,8 +61,12 @@ class BillingManager(
         }
     }
 
-    fun initiatePurchaseFlow(activity: Activity, skuId: String, @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP) {
-        val sku = if (userPreferenceRepository.useTestSkus) {
+    fun initiatePurchaseFlow(
+            activity: Activity,
+            skuId: String,
+            @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
+    ) {
+        val sku = if (userPreferenceStore.useTestSkus) {
             when (skuId) {
                 BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
                 else -> BillingConfig.TEST_SKU_PURCHASED
@@ -69,7 +77,12 @@ class BillingManager(
         initiatePurchaseFlow(activity, sku, null, billingType)
     }
 
-    fun initiatePurchaseFlow(activity: Activity, skuId: String, oldSkus: ArrayList<String>?, @BillingClient.SkuType billingType: String) {
+    fun initiatePurchaseFlow(
+            activity: Activity,
+            skuId: String,
+            oldSkus: ArrayList<String>?,
+            @BillingClient.SkuType billingType: String
+    ) {
         doWithServiceConnection {
             launch(UI) {
                 val purchaseParams = BillingFlowParams.newBuilder()
@@ -88,7 +101,11 @@ class BillingManager(
         }
     }
 
-    fun querySkuDetails(@BillingClient.SkuType itemType: String, skuList: List<String>, listener: SkuDetailsResponseListener) {
+    fun querySkuDetails(
+            @BillingClient.SkuType itemType: String,
+            skuList: List<String>,
+            listener: SkuDetailsResponseListener
+    ) {
         doWithServiceConnection {
             launch(UI) {
                 val params = SkuDetailsParams.newBuilder()
@@ -144,7 +161,8 @@ class BillingManager(
     }
 
     private fun areSubscriptionsSupported(): Boolean {
-        return billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS) == BillingClient.BillingResponse.OK
+        return billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS) ==
+                BillingClient.BillingResponse.OK
     }
 
     /**

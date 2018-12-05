@@ -1,4 +1,4 @@
-package com.wordsdict.android.data
+package com.wordsdict.android.data.disk
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,13 +11,22 @@ import com.wordsdict.android.R
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import com.wordsdict.android.data.disk.*
 import com.wordsdict.android.data.disk.wordset.*
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 
 /**
- * A Service to be run on first opening which loads the entire dictionary into our SQLite db...
+ * A helper [Service] that loads, converts and inserts WordSet json dictionary files into
+ * [WordDao]. This is only used if a pre-built Room db file is not included (and to be copied) or
+ * if we need to build the database from scratch, extract it and include an updated version.
+ *
+ * After the database has been seeded, use the following command to extract the .db file and copy
+ * it to assets/databases/:
+ *
+ * //TODO double check that this is correct
+ * adb -d shell "run-as com.wordsdict.android cat databases/words-db" > words-db.db
+ *
+ * To toggle whether this Service is run, use [AppDatabase.SHOULD_SEED_DATABASE].
  */
 class DatabaseSeedService: Service() {
 

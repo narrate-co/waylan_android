@@ -1,4 +1,4 @@
-package com.wordsdict.android.service
+package com.wordsdict.android.ui.details
 
 import android.content.Context
 import android.content.Intent

@@ -15,6 +15,11 @@ import com.wordsdict.android.util.LiveDataHelper
 import com.wordsdict.android.util.widget.MergedLiveData
 import kotlinx.coroutines.launch
 
+/**
+ * A repository for all data access to all underlying dictionaries, including from WordSet,
+ * Merriam-Webster, SymSpell, Firestore [UserWord]s and Firestore [GlobalWord]s. Clients should
+ * access word-related data through [WordRepository].
+ */
 class WordRepository(
         private val db: AppDatabase,
         private val firestoreStore: FirestoreStore?,
@@ -22,18 +27,27 @@ class WordRepository(
         private val symSpellStore: SymSpellStore
 ) {
 
-    fun filterWords(input: String): LiveData<List<WordSource>> {
-        return Transformations.map(db.wordDao().load("$input%")) { word ->
+    /**
+     * Query for a simple list of [SimpleWordSource] and [SuggestSource] that possibly match
+     * the given [input]. This should be used to return a list of available and suggested
+     * words while a user is actively typing a search.
+     *
+     * @param input The partial, misspelled or full target word (as it might appear
+     *      in the dictionary)
+     * @return A LiveData List that contains a mix of [SimpleWordSource] and [SuggestSource]
+     *      items matching the given [input]. If [input] is not in the WordSet db or SymSpell's
+     *      corpus, an empty List will be returned.
+     */
+    fun getSearchWords(input: String): LiveData<List<WordSource>> {
+        val wordsetSource = Transformations.map(db.wordDao().load("$input$")) { word ->
             word.map { SimpleWordSource(it) }
         }
-    }
 
-    fun lookup(input: String): LiveData<List<WordSource>> {
-        val suggSource = Transformations.map(symSpellStore.lookupLive(input)) { list ->
+        val suggestionsSource = Transformations.map(symSpellStore.lookupLive(input)) { list ->
             list.map { SuggestSource(it) }
         }
 
-        return MergedLiveData(filterWords(input), suggSource) { d1, d2 ->
+        return MergedLiveData(wordsetSource, suggestionsSource) { d1, d2 ->
             //TODO deduplicate/sort smartly. Make WordSource comparable?
             (d1 + d2).distinctBy {
                 val t = if (it is SimpleWordSource) it.word.word else if (it is SuggestSource) it.item.term else ""
@@ -42,71 +56,122 @@ class WordRepository(
         }
     }
 
-    fun getWordPropertiesSource(id: String): LiveData<WordPropertiesSource> {
+    /**
+     * Immediately returns a [WordPropertiesSource] containing the value of [word].
+     *
+     * This is useful for API consistency and can be used if a UI element only needs the word
+     * (as it appears in the dictionary) in order to set UI elements.
+     *
+     * @see [DetailsComponentViewHolder.TitleComponentViewHolder]
+     */
+    fun getWordPropertiesSource(word: String): LiveData<WordPropertiesSource> {
         val data = MutableLiveData<WordPropertiesSource>()
-        data.value = WordPropertiesSource(id, id)
+        data.value = WordPropertiesSource(word, word)
         return data
     }
 
-    fun getWordsetSource(id: String): LiveData<WordsetSource?> {
-        return Transformations.map(getWordAndMeanings(id)) {
+    /**
+     * Query for a [WordsetSource] where [WordsetSource.word] exactly matches to [word].
+     * results for exact matches
+     *
+     * @param word The exact word (as it appears in the dictionary) to query for.
+     */
+    fun getWordsetSource(word: String): LiveData<WordsetSource?> {
+        val wordAndMeaning = if (word.isNotBlank()) db.wordDao().getWordAndMeanings(word) else LiveDataHelper.empty()
+
+        return Transformations.map(wordAndMeaning) {
             if (it != null) WordsetSource(it) else null
         }
     }
 
-    private fun getWordAndMeanings(word: String): LiveData<WordAndMeanings> =
-            if (word.isNotBlank()) db.wordDao().getWordAndMeanings(word) else LiveDataHelper.empty()
-
+    /**
+     * Query for a Firestore [UserWord] where [UserWord.id] exactly matches [id].
+     *
+     * @param id The document id of the Firestore [UserWord]. Document id's are the same as their
+     *      word property value (the word as the it appears in the dictionary). ie, A [UserWord]
+     *      with [UserWord.word] equal to <i>quiescent</i> will have the id <i>quiescent</i>
+     */
    fun getFirestoreUserSource(id: String): LiveData<FirestoreUserSource> {
-        return Transformations.map(getUserWord(id)) {
+       val userWord = if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+        return Transformations.map(userWord) {
             FirestoreUserSource(it)
         }
     }
 
-    private fun getUserWord(id: String): LiveData<UserWord> {
-        return if (id.isNotBlank()) firestoreStore?.getUserWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
-    }
-
+    /**
+     * Query for a Firestore [GlobalWord] where [GlobalWord.id] exactly matches [id].
+     *
+     * @param id The document id of the Firestore [GlobalWord]. Document id's are the same as their
+     *      word property value (the word as the it appears in the dictionary). ie, A [GlobalWord]
+     *      with [GlobalWord.word] equal to <i>quiescent</i> will have the id <i>quiescent</i>
+     */
     fun getFirestoreGlobalSource(id: String): LiveData<FirestoreGlobalSource> {
-        return Transformations.map(getGlobalWord(id)) {
+        val globalWord = if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
+        return Transformations.map(globalWord) {
             FirestoreGlobalSource(it)
         }
     }
 
-    private fun getGlobalWord(id: String): LiveData<GlobalWord> {
-        return if (id.isNotBlank()) firestoreStore?.getGlobalWordLive(id) ?: LiveDataHelper.empty() else LiveDataHelper.empty()
-    }
+    /**
+     * Query for a [MerriamWebsterSource] where [com.wordsdict.android.data.disk.mw.Word.word]
+     * exactly matches [word].
+     *
+     * @param word The word (as it appears in the dictionary) to query for
+     */
+    fun getMerriamWebsterSource(word: String): LiveData<MerriamWebsterSource> {
+        val permissiveWordsDefinitions: LiveData<PermissiveWordsDefinitions> =
+                if (word.isBlank() || merriamWebsterStore == null || firestoreStore == null) {
+                    LiveDataHelper.empty()
+                } else {
+                    MergedLiveData(
+                            merriamWebsterStore.getWordAndDefinitions(word),
+                            firestoreStore.getUserLive()) { d1, d2 ->
+                        PermissiveWordsDefinitions(d2, d1)
+                    }
+                }
 
-    fun getMerriamWebsterSource(id: String): LiveData<MerriamWebsterSource> {
-        return Transformations.map(getMerriamWebsterWordAndDefinitions(id)) {
+
+        return Transformations.map(permissiveWordsDefinitions) {
             MerriamWebsterSource(it)
         }
     }
 
-    private fun getMerriamWebsterWordAndDefinitions(id: String): LiveData<PermissiveWordsDefinitions> {
-        if (id.isBlank() || merriamWebsterStore == null || firestoreStore == null) return LiveDataHelper.empty()
-
-        return MergedLiveData(
-                merriamWebsterStore.getWordAndDefinitions(id),
-                firestoreStore.getUserLive()) { d1, d2 ->
-            PermissiveWordsDefinitions(d2, d1)
-        }
-    }
-
-    fun getTrending(limit: Long? = null): LiveData<List<WordSource>> {
+    /**
+     * Get a list of [FirestoreGlobalSource] words that are "trending" (aka have the highest
+     * [GlobalWord.totalViewCount].
+     *
+     * //TODO create a cascading counter to hold view counts for different intervals (now, hour,
+     * //TODO day, week, month, quater, year, all_time)
+     *
+     * @param limit The max number of items to return
+     */
+    fun getTrending(limit: Long? = null): LiveData<List<FirestoreGlobalSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getTrending(limit)) { globalWords ->
             globalWords.map { FirestoreGlobalSource(it) }
         }
     }
 
-    fun getFavorites(limit: Long? = null): LiveData<List<WordSource>> {
+    /**
+     * Get a list of [FirestoreUserSource] words that are "favorited" (contain
+     * [UserWordType.FAVORITE] in their [UserWord.types] map set to true).
+     *
+     * @param limit The max number of items to return
+     */
+    fun getFavorites(limit: Long? = null): LiveData<List<FirestoreUserSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getFavorites(limit)) { userWords ->
             userWords.map { FirestoreUserSource(it) }
         }
     }
 
+    /**
+     * Set a [UserWord] as "favorited" (put or set [UserWordType.FAVORITE] in the
+     * [UserWord.types] map to true)
+     *
+     * @param id The Firestore document id of the word to be favorited. The document id should be
+     *      the same as the [UserWord.word] property (the word as it appears in the dictionary)
+     */
     fun setFavorite(id: String, favorite: Boolean) {
         if (id.isBlank()) return
 
@@ -115,13 +180,26 @@ class WordRepository(
         }
     }
 
-    fun getRecents(limit: Long? = null): LiveData<List<WordSource>> {
+    /**
+     * Get a list of [FirestoreUserSource] words that a user has recently viewed (where
+     * [UserWord.types] contains [UserWordType.RECENT] set to true)
+     *
+     * @param limit The max number of items to return
+     */
+    fun getRecents(limit: Long? = null): LiveData<List<FirestoreUserSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
         return Transformations.map(firestoreStore.getRecents(limit)) { userWords ->
             userWords.map { FirestoreUserSource(it) }
         }
     }
 
+    /**
+     * Set a [UserWord] as "recented" (put or set [UserWordType.RECENT] in the [UserWord.types] map
+     * to true)
+     *
+     * @param id The Firstore document id of the word to set as recented. The document id should
+     *      be the same as the [UserWord.word] property (the word as it appears in the dictionary)
+     */
     fun setRecent(id: String) {
         if (id.isBlank()) return
 

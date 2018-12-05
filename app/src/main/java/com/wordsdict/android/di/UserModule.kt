@@ -10,8 +10,8 @@ import com.wordsdict.android.data.firestore.FirestoreStore
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.mw.MerriamWebsterStore
 import com.wordsdict.android.data.mw.RetrofitService
-import com.wordsdict.android.data.prefs.PreferenceRepository
-import com.wordsdict.android.data.prefs.UserPreferenceRepository
+import com.wordsdict.android.data.prefs.PreferenceStore
+import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.UserRepository
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.spell.SymSpellStore
@@ -49,22 +49,22 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideUserPreferenceRepository(application: Application, preferenceRepository: PreferenceRepository, user: User?): UserPreferenceRepository {
-        return UserPreferenceRepository(application, preferenceRepository, user?.uid)
+    fun provideUserPreferenceRepository(application: Application, preferenceStore: PreferenceStore, user: User?): UserPreferenceStore {
+        return UserPreferenceStore(application, preferenceStore, user?.uid)
     }
 
     @UserScope
     @Provides
     fun provideUserRepository(
             firestoreStore: FirestoreStore?,
-            userPreferenceRepository: UserPreferenceRepository): UserRepository {
-        return UserRepository(firestoreStore, userPreferenceRepository)
+            userPreferenceStore: UserPreferenceStore): UserRepository {
+        return UserRepository(firestoreStore, userPreferenceStore)
     }
 
     @UserScope
     @Provides
-    fun provideBillingManager(application: Application, userPreferenceRepository: UserPreferenceRepository, userRepository: UserRepository): BillingManager {
-        return BillingManager(application, userPreferenceRepository, userRepository)
+    fun provideBillingManager(application: Application, userPreferenceStore: UserPreferenceStore, userRepository: UserRepository): BillingManager {
+        return BillingManager(application, userPreferenceStore, userRepository)
     }
 
 }

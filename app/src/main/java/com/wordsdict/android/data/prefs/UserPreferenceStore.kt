@@ -6,16 +6,19 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 
 /**
- * A repository that corresponds to a [userId], making it possible for multiple users
- * to have local SharedPreferences.
  *
- * In addition to user specific preferences, this class also provides access to preferences in [PreferenceRepository]
- * The difference being, [Preferences] need to be available outside of [UserScope] while preferences
- * in [UserPreferenceRepository] don't need to be initialized or available until a valid user is available.
+ * A top-level store for user-tied [SharedPreferences]. This makes it simpler to support multiple
+ * users on a single device.
+ *
+ * In addition to user specific preferences, this class also provides surfacings for preferences
+ * in [PreferenceStore]. [Preferences] need to be available to read outside of [UserScope],
+ * but should only be written through [UserPreferenceStore]. [UserPreferences] don't need to
+ * be initialized available to read or write until a valid user is available and can be both
+ * read to and written from [UserPreferenceStore].
  */
-class UserPreferenceRepository(
+class UserPreferenceStore(
         private val applicationContext: Context,
-        private val preferenceRepository: PreferenceRepository,
+        private val preferenceStore: PreferenceStore,
         userId: String? = null
 ) {
 
@@ -38,23 +41,23 @@ class UserPreferenceRepository(
 
     //Globally scoped preference pass-through helpers
     var orientationLock: Int
-        get() = preferenceRepository.orientationLock
+        get() = preferenceStore.orientationLock
         set(value) {
-            preferenceRepository.orientationLock = value
+            preferenceStore.orientationLock = value
         }
 
     val orientationLockLive: LiveData<Orientation>
-        get() = preferenceRepository.orientationLive
+        get() = preferenceStore.orientationLive
 
 
     var nightMode: Int
-        get() = preferenceRepository.nightMode
+        get() = preferenceStore.nightMode
         set(value) {
-            preferenceRepository.nightMode = value
+            preferenceStore.nightMode = value
         }
 
     val nightModeLive: LiveData<Int>
-        get() = preferenceRepository.nightModeLive
+        get() = preferenceStore.nightModeLive
 
 
     // User scoped preferences
@@ -108,20 +111,6 @@ class UserPreferenceRepository(
             UserPreferences.LANDSCAPE_TO_PORTRAIT_ORIENTATION_CHANGE_COUNT,
             0L
     )
-
-    // able to suggest orientation unlock
-    // this should only be true when
-    //// A. The app orientation is locked
-    //// B. The app has just opened
-    //// C. Patterns matched is high/they're rotating a lot - (PATTERNS_MATCHED_AFTER_LAST_LOCK_OR_OPEN > n)
-
-    //// D. Multiple patterns are matched in very quick succession (should be handled by RotationManager)
-    var isAbleToSuggestOrientationUnlock: Boolean by PreferenceDelegate(
-            sharedPrefs,
-            UserPreferences.IS_ABLE_TO_SUGGEST_ORIENTATION_UNLOCK,
-            false
-    )
-
 
 }
 

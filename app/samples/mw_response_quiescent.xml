@@ -1,0 +1,41 @@
+<entry_list version="1.0">
+    <entry id="quiescent">
+        <ew>quiescent</ew>
+        <subj>MD-2</subj>
+        <hw>qui*es*cent</hw>
+        <sound>
+            <wav>quiesc02.wav</wav>
+            <wpr>kwI-!e-s/unt</wpr>
+        </sound>
+        <pr>-sᵊnt</pr>
+        <fl>adjective</fl>
+        <et>
+            Latin
+            <it>quiescent-, quiescens,</it>
+            present participle of
+            <it>quiescere</it>
+            to become quiet, rest, from
+            <it>quies</it>
+        </et>
+        <def>
+            <date>1605</date>
+            <sn>1</sn>
+            <dt>
+                :marked by inactivity or repose :tranquilly at rest
+            </dt>
+            <sn>2</sn>
+            <dt>
+                :causing no trouble or symptoms
+                <vi>
+                    <it>quiescent</it>
+                    gallstones
+                </vi>
+            </dt>
+            <ss>latent</ss>
+        </def>
+        <uro>
+            <ure>qui*es*cent*ly</ure>
+            <fl>adverb</fl>
+        </uro>
+    </entry>
+</entry_list>

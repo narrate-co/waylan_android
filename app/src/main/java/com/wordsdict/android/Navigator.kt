@@ -14,6 +14,10 @@ import com.wordsdict.android.ui.list.ListFragment
 import com.wordsdict.android.ui.settings.*
 import com.wordsdict.android.util.widget.ElasticTransition
 
+/**
+ * A static object to Navigate to Words destinations. This removes the need to remember parameters
+ * and extras at the call site, leading to dryer, stabler code.
+ */
 object Navigator {
 
     enum class HomeDestination {

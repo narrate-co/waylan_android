@@ -1,5 +1,10 @@
 package com.wordsdict.android.billing
 
+/**
+ * An object to hold billing configuration constants.
+ *
+ * @property SKU_MERRIAM_WEBSTER The Google Play sku for the Merriam-Webster plugin
+ */
 object BillingConfig {
     // Test skus that automatically return specific results. Used for testing
     const val TEST_SKU_PURCHASED = "android.test.purchased"

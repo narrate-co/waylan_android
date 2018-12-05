@@ -3,10 +3,9 @@ package com.wordsdict.android.data.firestore.util
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.launch
 
-fun <T> DocumentReference.liveData(clazz: Class<T>): LiveData<T> {
-    return FirestoreDocumentLiveData(this, clazz)
-}
 
 /**
  * A helper class to turn a [DocumentSnapshot] [EventListener] into a LiveData object
@@ -16,7 +15,7 @@ class FirestoreDocumentLiveData<T>(
         private val clazz: Class<T>): LiveData<T>() {
 
     companion object {
-        private const val TAG = "FstrDocumentLiveData"
+        private const val TAG = "FirestoreDocumentLiveData"
     }
 
     private var listenerRegistration: ListenerRegistration? = null
@@ -26,7 +25,10 @@ class FirestoreDocumentLiveData<T>(
         listenerRegistration = documentReference.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if (firebaseFirestoreException == null) {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
-                    value = documentSnapshot.toObject(clazz)
+                    // move parsing off the main thread
+                    launch(UI) {
+                        value = documentSnapshot.toObject(clazz)
+                    }
                 }
             } else {
                 firebaseFirestoreException.printStackTrace()

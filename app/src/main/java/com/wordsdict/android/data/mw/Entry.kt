@@ -1,42 +1,15 @@
 package com.wordsdict.android.data.mw
 
-import com.wordsdict.android.data.disk.mw.OrderedDefinitionItem
-import com.wordsdict.android.data.disk.mw.Word
 import org.simpleframework.xml.*
 import org.simpleframework.xml.convert.Convert
-import org.simpleframework.xml.convert.Converter
-import org.simpleframework.xml.stream.InputNode
-import org.simpleframework.xml.stream.OutputNode
 
 /**
- * <entry id="hypocrite">
- *     <word>hypocrite</word>
- *     <phonetic>hyp*o*crite</phonetic>
- *     <sound>
- *         <wav>hypocr02.wav</wav>
- *     </sound>
- *     <pr>ˈhi-pə-ˌkrit</pr>
- *     <fl>noun</fl>
- *     <et>Middle English
- *          <it>ypocrite,</it> from Anglo-French, from Late Latin
- *          <it>hypocrita,</it> from Greek
- *          <it>hypokritēs</it> actor, hypocrite, from
- *          <it>hypokrinesthai</it>
- *     </et>
- *     <def>
- *         <date>13th century</date>
- *         <sn>1</sn>
- *         <dt>:a person who puts on a false appearance of <d_link>virtue</d_link> or religion</dt>
- *         <sn>2</sn>
- *         <dt>:a person who acts in contradiction to his or her stated beliefs or feelings</dt>
- *     </def>
- *     <uro>
- *         <ure>hypocrite</ure>
- *         <fl>adjective</fl>
- *     </uro>
- * </entry>
+ * The XML representation of a Merriam-Webster API response.
+ *
+ * @sample mw_response_quiescent A same Merriam-Webster API response
+ *      for GET: https://www.dictionaryapi.com/api/v1/references/collegiate/xml/quiescent?key=<merriam_webster_dev_key>
+ *
  */
-
 @Root(name = "entry_list", strict = false)
 class EntryList {
 
@@ -46,6 +19,8 @@ class EntryList {
     @field:ElementList(entry = "entry", inline = true, required = false)
     var entries: MutableList<Entry> = mutableListOf()
 
+    // A list of possible alternate words (as they appear in the dictionary)
+    // typically only returned when entries are empty
     @field:ElementList(entry = "suggestion", inline = true, required = false)
     var suggestions: MutableList<String> = mutableListOf()
 }
@@ -252,135 +227,3 @@ class Vr {
     var pr: String = ""
 
 }
-
-@Root
-@Convert(FormattedStringConverter::class)
-data class FormattedString(var value: String = "")
-
-class FormattedStringConverter: Converter<FormattedString> {
-
-    override fun write(node: OutputNode?, value: FormattedString?) {
-        //Do nothing. We're not writing XML
-    }
-
-    override fun read(node: InputNode?): FormattedString {
-        val builder = StringBuilder()
-
-        builder.append(node?.value ?: "")
-        flatten(node, node?.next, builder)
-
-        val formattedString = FormattedString(builder.toString())
-        return formattedString
-    }
-
-    private fun flatten(parent: InputNode?, child: InputNode?, sb: StringBuilder) {
-        if (parent != null) {
-
-            //append floating text before child element
-            appendValue(parent.value, sb)
-
-            var c = child
-            while (c != null) {
-
-                //TODO use html compliant tags to easily format string in ui
-                /**
-                 *
-                 * d_link -> link to another word
-                 * sx -> all caps link to another word
-                 * vi -> •
-                 * it -> italics
-                 * sxn -> sn reference to another word
-                 * fn -> link to another word
-                 * dx -> start reference to extra material (illustrations)
-                 * dxt -> dx reference name
-                 * dxn -> dx reference type (illustration)
-                 * ag -> attribution (author, name, etc.)
-                 *
-                 */
-
-                when (c.name) {
-                    "d_link", "sx", "fn" -> appendValueInsideTag(if (c.name == "d_link") c.value else c.value.toUpperCase(), "u", sb)
-                    "vi" -> appendValue("• ", sb)
-                    "it" -> appendValueInsideTag(c.value, "i", sb)
-                    "dx", "dxt", "dxn" -> appendValue("", sb) //do nothing. remove
-                    "ag" -> {
-                        appendValue(" - ${c.value}", sb)
-                    }
-                    else -> appendValueInsideTag(c.value, c.name, sb)
-                }
-
-                //append floating text after child element
-                appendValue(parent.value, sb)
-
-                flatten(c, c.next, sb)
-
-                c = parent.next
-            }
-        }
-    }
-
-    private fun appendValue(value: String?, sb: StringBuilder) {
-        val v = value?.replace(":", ": ")
-        sb.append(v ?: "")
-    }
-
-    private fun appendValueInsideTag(value: String?, tagName: String, sb: StringBuilder) {
-        sb.append("<$tagName>")
-        appendValue(value, sb)
-        sb.append("</$tagName>")
-    }
-}
-
-fun getNewSuggestionWord(id: String, suggestions: List<String>): Word {
-    return Word(
-            id,
-            id,
-            "",
-            "",
-            com.wordsdict.android.data.disk.mw.Sound("",""),
-            "",
-            "",
-            "",
-            emptyList(),
-            suggestions,
-            com.wordsdict.android.data.disk.mw.Uro("","")
-    )
-}
-
-val EntryList.synthesizedSuggestions: List<String>
-    get() = (this.entries.map { it.word } + this.suggestions).distinct()
-
-fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Word {
-    val relWordsFiltered = relatedWords.filterNot{ it == this.word }
-    val suggestionsFiltered = suggestions.filterNot { it == this.word }
-    return Word(
-            this.id,
-            this.word,
-            this.subj,
-            this.phonetic,
-            com.wordsdict.android.data.disk.mw.Sound(this.sounds.map { it.wav }.firstOrNull()?.firstOrNull() ?: "", this.sounds.map { it.wpr }.firstOrNull()?.firstOrNull() ?: ""), //TODO restructure db
-            this.pronunciations.firstOrNull()?.value ?: "",
-            this.partOfSpeech,
-            this.etymology.value,
-            relWordsFiltered,
-            suggestionsFiltered,
-            com.wordsdict.android.data.disk.mw.Uro(this.uro.firstOrNull()?.ure ?: "", this.uro.firstOrNull()?.fl ?: ""))
-}
-
-
-val Entry.toDbMwDefinitions: List<com.wordsdict.android.data.disk.mw.Definition>
-    get() {
-        val orderedDefs = this.def.dts.mapIndexed { index, formattedString ->
-            val sn = this.def.sn.getOrNull(index) ?: (index + 1).toString()
-            OrderedDefinitionItem(sn, formattedString.value)
-        }
-        return listOf(
-                com.wordsdict.android.data.disk.mw.Definition(
-                        "${this.id}${orderedDefs.hashCode()}",
-                        this.id,
-                        this.word,
-                        this.def.date,
-                        orderedDefs
-                )
-        )
-    }

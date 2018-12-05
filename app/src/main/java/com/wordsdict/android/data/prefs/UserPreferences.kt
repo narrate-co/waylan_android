@@ -1,10 +1,11 @@
 package com.wordsdict.android.data.prefs
 
 /**
- * Preferences that depend on a valid uid
+ * [SharedPreferences] that depend on a valid uid
  *
- * These have to be able to wait until AuthActivity has finished to be
- * get or set
+ * As opposed to [Preferences], [UserPreferences] are accessed by using
+ * [PreferenceManager.getSharedPreferences] and passing in the user's uid
+ *
  */
 object UserPreferences {
     //onboarding prefs

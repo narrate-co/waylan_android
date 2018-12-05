@@ -20,8 +20,6 @@ import com.wordsdict.android.data.disk.mw.WordAndDefinitions
 import com.wordsdict.android.data.firestore.users.PluginState
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.data.firestore.users.merriamWebsterState
-import com.wordsdict.android.service.AudioClipService
-import com.wordsdict.android.service.AudioClipController
 import com.wordsdict.android.util.fromHtml
 import com.wordsdict.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*

@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.DatabaseSeedService" />
+        <service android:name=".data.disk.DatabaseSeedService" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -48,7 +48,7 @@
         <activity android:name=".ui.settings.SettingsActivity"></activity>
 
         <service
-            android:name=".service.AudioClipService"
+            android:name=".ui.details.AudioClipService"
             android:exported="false"/>
     </application>
 

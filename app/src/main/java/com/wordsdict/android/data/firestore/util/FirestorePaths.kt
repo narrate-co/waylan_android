@@ -1,4 +1,4 @@
-package com.wordsdict.android.data.firestore
+package com.wordsdict.android.data.firestore.util
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 /**
  * Helpers for easier Firestore data access
  */
+
 
 object RootCollection {
     const val USERS = "users"

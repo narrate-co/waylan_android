@@ -17,6 +17,9 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
+/**
+ * //TODO move to using [DaggerApplication]
+ */
 class App: Application(), HasActivityInjector {
 
     companion object {

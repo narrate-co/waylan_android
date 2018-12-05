@@ -4,7 +4,7 @@ import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.AppDatabase
-import com.wordsdict.android.data.prefs.PreferenceRepository
+import com.wordsdict.android.data.prefs.PreferenceStore
 import com.wordsdict.android.data.spell.SymSpellStore
 import com.wordsdict.android.data.prefs.RotationManager
 import dagger.Module
@@ -21,8 +21,8 @@ class AppModule {
 
     @ApplicationScope
     @Provides
-    fun providePreferenceRepository(application: Application): PreferenceRepository {
-        return PreferenceRepository(application)
+    fun providePreferenceRepository(application: Application): PreferenceStore {
+        return PreferenceStore(application)
     }
 
     @ApplicationScope

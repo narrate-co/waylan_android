@@ -5,11 +5,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import com.wordsdict.android.data.DataOwners
 import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.firestore.users.*
-import com.wordsdict.android.data.firestore.util.FirebaseFirestoreNotFoundException
-import com.wordsdict.android.data.firestore.util.liveData
+import com.wordsdict.android.data.firestore.util.*
 import com.wordsdict.android.data.firestore.words.GlobalWord
 import com.wordsdict.android.util.isMoreThanOneMinuteAgo
 import kotlinx.coroutines.Deferred
@@ -21,10 +19,11 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 /**
- * A data store to abstract away Firestore access
+ * The top-most store for access to Firestore data. This class abstracts handles CRUD operations
+ * for [User], [UserWord] and [GlobalWord].
  *
  * Note this store is user-centric. Meaning it's only available with a valid user and all
- * actions made are made by the current [firestoreUser]
+ * actions made are seen as made by the current [firestoreUser]
  */
 class FirestoreStore(
         private val firestore: FirebaseFirestore,
@@ -35,7 +34,6 @@ class FirestoreStore(
     companion object {
         private const val TAG = "FirestoreStore"
     }
-
 
 
     fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
@@ -65,71 +63,97 @@ class FirestoreStore(
                     if (it.exists()) {
                         cont.resume(it.toObject(User::class.java)!!)
                     } else {
-                        cont.resumeWithException(FirebaseFirestoreNotFoundException(firestoreUser.uid))
+                        cont.resumeWithException(getFirestoreNotFoundException(firestoreUser.uid))
                     }
                 }
     }
 
-    private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord = suspendCoroutine { cont ->
-        firestore.userWords(firestoreUser.uid).document(id).get()
-                .addOnFailureListener {
-                    when ((it as FirebaseFirestoreException).code) {
-                        FirebaseFirestoreException.Code.UNAVAILABLE -> {
-                            if (createIfDoesNotExist) {
-                                launch {
-                                    val newUserWord = newUserWord(id).await()
-                                    if (newUserWord != null) {
-                                        cont.resume(newUserWord)
+    private suspend fun getUserWord(id: String, createIfDoesNotExist: Boolean): UserWord =
+            suspendCoroutine { cont ->
+                firestore.userWords(firestoreUser.uid).document(id).get()
+                        .addOnFailureListener {
+                            when ((it as FirebaseFirestoreException).code) {
+                                FirebaseFirestoreException.Code.UNAVAILABLE -> {
+                                    if (createIfDoesNotExist) {
+                                        launch {
+                                            val newUserWord = newUserWord(id).await()
+                                            if (newUserWord != null) {
+                                                cont.resume(newUserWord)
+                                            } else {
+                                                cont.resumeWithException(
+                                                        getFirestoreUnknownException(
+                                                                "Unable to create new UserWord"
+                                                        )
+                                                )
+                                            }
+                                        }
                                     } else {
-                                        cont.resumeWithException(FirebaseFirestoreException("Unable to create new UserWord", FirebaseFirestoreException.Code.UNKNOWN))
+                                        cont.resumeWithException(it)
                                     }
                                 }
-                            } else {
-                                cont.resumeWithException(it)
+                                else -> cont.resumeWithException(it)
                             }
                         }
-                        else -> cont.resumeWithException(it)
-                    }
-                }
-                .addOnSuccessListener {
-                    if (it.exists()) {
-                        cont.resume(it.toObject(UserWord::class.java)!!)
-                    } else {
-                        if (createIfDoesNotExist) {
-                            launch {
-                                val newUserWord = newUserWord(id).await()
-                                if (newUserWord != null) {
-                                    cont.resume(newUserWord)
+                        .addOnSuccessListener {
+                            if (it.exists()) {
+                                cont.resume(it.toObject(UserWord::class.java)!!)
+                            } else {
+                                if (createIfDoesNotExist) {
+                                    launch {
+                                        val newUserWord = newUserWord(id).await()
+                                        if (newUserWord != null) {
+                                            cont.resume(newUserWord)
+                                        } else {
+                                            cont.resumeWithException(
+                                                    getFirestoreUnknownException(
+                                                            "Unable to create new UserWord"
+                                                            )
+                                            )
+                                        }
+                                    }
                                 } else {
-                                    cont.resumeWithException(FirebaseFirestoreException("Unable to create new UserWord", FirebaseFirestoreException.Code.UNKNOWN))
+                                    cont.resumeWithException(getFirestoreNotFoundException(id))
                                 }
                             }
-                        } else {
-                            cont.resumeWithException(FirebaseFirestoreNotFoundException(id))
                         }
-                    }
-                }
-    }
+            }
 
 
     private fun newUserWord(id: String): Deferred<UserWord?> = async {
         //get word from db.
         val word = db.wordDao().get(id)
 
-        //get meanings from db.
-        // we add a limited number of definitions, synonyms etc to make it easy to query for, for example,
-        // a user's favorites and have a list populate with the word and definition preview without the need
-        // for extraneous joins, queries, etc.
+        // get meanings from db.
+        // we add a limited number of definitions, synonyms etc to make it easy to query for,
+        // for example, a user's favorites and have a list populate with the word and definition
+        // preview without the need for extraneous joins, queries, etc.
         val meanings = db.meaningDao().get(id)
 
         if (word == null) {
             null
         } else {
 
-            val partOfSpeech: Map<String, String> = meanings?.map { it.partOfSpeech to DataOwners.WORDSET.name }?.distinct()?.toMap() ?: mapOf()
-            val defs: Map<String, String> = meanings?.map { it.def to DataOwners.WORDSET.name }?.distinct()?.toMap() ?: mapOf()
-            val synonyms: Map<String, String> = meanings?.flatMap { it.synonyms }?.map { it.synonym to DataOwners.WORDSET.name }?.distinct()?.toMap() ?: mapOf()
-            val labels: Map<String, String> = meanings?.flatMap { it.labels }?.map { it.name to DataOwners.WORDSET.name }?.distinct()?.toMap() ?: mapOf()
+            val partOfSpeech: Map<String, String> =
+                    meanings?.map { it.partOfSpeech to DataOwners.WORDSET.name }
+                            ?.distinct()
+                            ?.toMap() ?: mapOf()
+
+            val defs: Map<String, String> =
+                    meanings?.map { it.def to DataOwners.WORDSET.name }
+                            ?.distinct()
+                            ?.toMap() ?: mapOf()
+
+            val synonyms: Map<String, String> =
+                    meanings?.flatMap { it.synonyms }
+                            ?.map { it.synonym to DataOwners.WORDSET.name }
+                            ?.distinct()
+                            ?.toMap() ?: mapOf()
+
+            val labels: Map<String, String> =
+                    meanings?.flatMap { it.labels }
+                            ?.map { it.name to DataOwners.WORDSET.name }
+                            ?.distinct()
+                            ?.toMap() ?: mapOf()
 
 
             val userWord = UserWord(
@@ -193,7 +217,11 @@ class FirestoreStore(
     suspend fun setRecent(id: String) {
         try {
             val userWord = getUserWord(id, true)
-            if (!userWord.types.containsKey(UserWordType.RECENT.name) || userWord.modified.isMoreThanOneMinuteAgo) {
+            // if the word has not recently been viewed or has been recently viewed but happened
+            // over one minute ago, set recented and update modified field.
+            if (!userWord.types.containsKey(UserWordType.RECENT.name)
+                    || userWord.modified.isMoreThanOneMinuteAgo) {
+
                 userWord.types[UserWordType.RECENT.name] = true
                 userWord.modified = Date()
                 userWord.totalViewCount = userWord.totalViewCount + 1
@@ -244,4 +272,5 @@ class FirestoreStore(
     //TODO edit meaning (synonyms, examples, part of speech, labels)
 
     //TODO delete meaning
+
 }

@@ -7,8 +7,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.SetOptions
-import com.wordsdict.android.data.firestore.users
+import com.wordsdict.android.data.firestore.util.users
 import com.wordsdict.android.data.firestore.users.User
 import com.wordsdict.android.util.FirebaseAuthWordErrorType
 import javax.inject.Inject

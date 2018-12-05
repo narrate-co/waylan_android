@@ -1,14 +1,16 @@
 package com.wordsdict.android.data.prefs
 
-import android.content.pm.ActivityInfo
-import com.wordsdict.android.R
-
 /**
- * Preferences that should be set outside of the user scope.
- * Dark mode needs to be initialized faster than we can instantiate
- * UserPreferenceRepository with a valid uid.
+ * Preferences that should be set outside of [UserScope].
  *
- * These are globally set for all users
+ * For example, Dark mode needs to be available earlier than we can instantiate
+ * UserPreferenceStore with a valid uid. When the app is launched, we need to immediately set
+ * [AppCompatDelegates.setDefaultNightMde] to avoid flashing day or night mode changes.
+ *
+ * While these Preferences are read outside of [UserScope], they should not be written to
+ * directly. For consistency, prefer using [UserPreferenceStore], which surfaces
+ * limited [PreferenceStore] functionality, to write to these values. It should not be necessary
+ * to write to [Preferences] outside of [UserScope].
  */
 object Preferences {
     const val NIGHT_MODE = "uses_night_mode"

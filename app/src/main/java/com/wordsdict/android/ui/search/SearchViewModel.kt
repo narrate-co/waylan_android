@@ -12,7 +12,7 @@ import javax.inject.Inject
 @UserScope
 class SearchViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val userPreferenceRepository: UserPreferenceRepository,
+        private val userPreferenceStore: UserPreferenceStore,
         private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(
         if (it.isEmpty()) {
             wordRepository.getRecents(25L)
         } else {
-            wordRepository.lookup(it)
+            wordRepository.getSearchWords(it)
         }
     }
 
@@ -47,9 +47,9 @@ class SearchViewModel @Inject constructor(
     fun getOrientationPrompt(): LiveData<OrientationPrompt?> = orientationPrompt
 
     var orientation: Orientation
-        get() = Orientation.fromActivityInfoScreenOrientation(userPreferenceRepository.orientationLock)
+        get() = Orientation.fromActivityInfoScreenOrientation(userPreferenceStore.orientationLock)
         set(value) {
-            userPreferenceRepository.orientationLock = value.value
+            userPreferenceStore.orientationLock = value.value
         }
 
 
@@ -69,14 +69,14 @@ class SearchViewModel @Inject constructor(
 
     override fun onUnlockedOrientationChange(old: RotationManager.RotationEvent, new: RotationManager.RotationEvent) {
         if (isPortraitToLandscape(old, new)) {
-            userPreferenceRepository.portraitToLandscapeOrientationChangeCount++
-            if (userPreferenceRepository.portraitToLandscapeOrientationChangeCount == 2L) {
+            userPreferenceStore.portraitToLandscapeOrientationChangeCount++
+            if (userPreferenceStore.portraitToLandscapeOrientationChangeCount == 2L) {
                 orientationPrompt.value = OrientationPrompt.LockToLandscape(Orientation.fromActivityInfoScreenOrientation(new.orientation))
                 orientationPrompt.value = null
             }
         } else if (isLandscapeToPortrait(old, new)) {
-            userPreferenceRepository.landscapeToPortraitOrientationChangeCount++
-            if (userPreferenceRepository.landscapeToPortraitOrientationChangeCount == 1L) {
+            userPreferenceStore.landscapeToPortraitOrientationChangeCount++
+            if (userPreferenceStore.landscapeToPortraitOrientationChangeCount == 1L) {
                 orientationPrompt.value = OrientationPrompt.LockToPortrait(Orientation.fromActivityInfoScreenOrientation(new.orientation))
                 orientationPrompt.value = null
             }
