@@ -15,18 +15,25 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
+class AudioClipService :
+       Service(),
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener,
+        MediaPlayer.OnCompletionListener,
+        AudioManager.OnAudioFocusChangeListener {
 
     companion object {
         const val INTENT_KEY_COMMAND = "KEY_COMMAND"
         const val INTENT_KEY_URL = "KEY_URL"
 
+        // AudioClipService state (stopped, loading, playing, error) is dispatched and consumed
+        // via a broadcast
         const val BROADCAST_AUDIO_STATE_DISPATCH = "audio_state_dispatch_broadcast"
         const val BROADCAST_AUDIO_STATE_EXTRA_STATE = "audio_state_extra_state"
         const val BROADCAST_AUDIO_STATE_EXTRA_URL = "audio_state_extra_url"
         const val BROADCAST_AUDIO_STATE_EXTRA_MESSAGE = "audio_state_extra_message"
 
-        // Milliseconds to wait for audio to load
+        // Milliseconds to wait for audio to load before throwing a timeout error
         const val MEDIA_PREPARE_TIMEOUT = 8000L // 8 seconds
 
         const val TAG = "AudioClipService"
@@ -42,7 +49,9 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
 
 
     private var mediaPlayer: MediaPlayer? = null
-    private val audioManager: AudioManager by lazy { getSystemService(Context.AUDIO_SERVICE) as AudioManager }
+    private val audioManager: AudioManager by lazy {
+        getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
     private var currentUrl: String? = null
 
     private var isPreparing = false
@@ -50,10 +59,15 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
 
     private var networkIsAvailable = true //TODO use a network monitor
 
+    var timer: TimerTask? = null
+
     override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val command = Command.valueOf(intent?.getStringExtra(INTENT_KEY_COMMAND) ?: Command.NONE.name)
+        val command = Command.valueOf(
+                intent?.getStringExtra(INTENT_KEY_COMMAND
+                ) ?: Command.NONE.name)
+
         when (command) {
             Command.PLAY -> play(intent?.getStringExtra(INTENT_KEY_URL))
             Command.STOP, Command.NONE -> {
@@ -125,8 +139,6 @@ class AudioClipService: Service(), MediaPlayer.OnPreparedListener, MediaPlayer.O
         }
 
     }
-
-    var timer: TimerTask? = null
 
     private fun stop() {
         timer?.cancel()

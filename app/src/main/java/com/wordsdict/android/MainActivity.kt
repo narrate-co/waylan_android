@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseUserActivity() {
 
-
     val searchSheetCallback = SearchSheetCallback()
 
     private val bottomSheet by lazy {
@@ -28,7 +27,6 @@ class MainActivity : BaseUserActivity() {
                 .get(MainViewModel::class.java)
     }
 
-    var unconsumedNavigationMethod: NavigationMethod? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

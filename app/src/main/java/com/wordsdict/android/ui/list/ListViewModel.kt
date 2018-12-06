@@ -41,7 +41,7 @@ class ListViewModel @Inject constructor(
             ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L)
             ListFragment.ListType.RECENT -> wordRepository.getRecents(25L)
             ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(25L)
-        }
+        } as LiveData<List<WordSource>>
     }
 }
 

@@ -4,6 +4,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * A generic [ListAdapter] that supports adding, changing and removing a header item view which
+ * differs from the list's main type T
+ *
+ * @param T Type of Lists this adapter will receive
+ * @param VH A class that extends ViewHolder that will be used by the adapter
+ * @param H The type of object this adapter's header will be
+ */
 abstract class HeaderListAdapter<T, VH : RecyclerView.ViewHolder, H>(
         diffCallback: DiffUtil.ItemCallback<T>
 ): ListAdapter<T, VH>(diffCallback) {
@@ -20,7 +28,7 @@ abstract class HeaderListAdapter<T, VH : RecyclerView.ViewHolder, H>(
         return header
     }
 
-    fun getHeaderOffset(): Int {
+    private fun getHeaderOffset(): Int {
         return if (header != null) 1 else 0
     }
 

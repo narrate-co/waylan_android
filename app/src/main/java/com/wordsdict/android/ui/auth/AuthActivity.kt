@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
@@ -29,6 +28,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+/**
+ * An Activity which acts as a splash screen, an [Auth] getter/setter and a Login or Sign up
+ * screen.
+ */
 class AuthActivity : DaggerAppCompatActivity() {
 
     companion object {
@@ -36,16 +39,68 @@ class AuthActivity : DaggerAppCompatActivity() {
         const val AUTH_ROUTE_EXTRA_KEY = "auth_route_extra_key"
     }
 
+    /**
+     * An enumeration that defines how this activity should behave. Use the key
+     * [AUTH_ROUTE_EXTRA_KEY] and add an [AuthRoute] to [AuthActivity]'s start intent to
+     * determine what [AuthActivity] should expect to accomplish.
+     *
+     * For example, using [SIGN_UP] will force [AuthActivity] to immediately display the
+     * credentials input layout along with both a password and a confirm password field.
+     *
+     * Note: To allow either log in or sign up in a single layout, a user can switch between
+     * the two routes.
+     */
     enum class AuthRoute {
-        ANONYMOUS, SIGN_UP, LOG_IN
+
+        /**
+         * An [AuthRoute] which checks for a current [FirebaseUser] or creates a new
+         * anonymous [FirebaseUser].
+         *
+         * If a [FirebaseUser] is present, the [com.wordsdict.android.data.firestore.users.User]
+         * is retreived, [App.setUser] is called and this activity finishes. If there is not a
+         * FirebaseUser, a new anonymous user is created, a new
+         * [com.wordsdict.android.data.firestore.users.User] is created, [App.setUser] is called
+         * and this activity finishes.
+         *
+         * No UI is shown during this route other than the logo
+         * //TODO handle a poor/no network connection state
+         */
+        ANONYMOUS,
+
+        /**
+         * An [AuthRoute] that allows a user create a new account or tie their
+         * existing anonymous account to an email and password.
+         *
+         * Once credentials are entered, they are checked an either tied to an existing anonymous
+         * user or a new user is created. The [com.wordsdict.android.data.firestore.users.User]
+         * for the [FirebaseUser] is then either updated or created, [App.setUser] is called and
+         * this activity finishes.
+         */
+        SIGN_UP,
+
+        /**
+         * An [AuthRoute] that allows a user log in with existing email/password
+         * credentials.
+         *
+         * Once credentials are entered, the user is logged in via [FirebaseAuth], their
+         * [com.wordsdict.android.data.firestore.users.User] is retreived, [App.setUser] is called
+         * and this activity finishes.
+         */
+        LOG_IN
     }
 
     private val authViewModel by lazy {
         ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
 
+    // A property to hold an intent which should be passed through and handled by the next
+    // activity. ie. A ACTION_PROCESS_TEXT extra that should be handled by MainActivity
+    // but has landed here while the user is authorized.
     private var filterIntent: Intent? = null
 
+    // A text watcher that ensures the text area's error state is not shown if the user
+    // is typing. This results in an error message that shows on error, but disappears as
+    // soon as the user begins correcting (instead of a timeout or other logic)
     private val errorMessageTextWatcher = object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {}
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -54,21 +109,32 @@ class AuthActivity : DaggerAppCompatActivity() {
         }
     }
 
-    //TODO clean up
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
         handleIntent(intent)
 
-        val auth = FirebaseAuth.getInstance()
-        val firebaseUser: FirebaseUser? = auth.currentUser
+        initViews()
 
-        if (firebaseUser != null) {
-            cancel.setOnClickListener {
-                returnMain(firebaseUser)
-            }
+        // Get the intended AuthRoute and configure accordingly
+        val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
+        initAuthState(authRoute)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    // Catch any intents that should be passed through after auth has happened
+    private fun handleIntent(intent: Intent?) {
+        if (intent != null && filterIntent == null) {
+            filterIntent = intent
         }
+    }
 
+    // Initialize common views across all routes and configurations
+    private fun initViews() {
         email.addTextChangedListener(errorMessageTextWatcher)
         password.addTextChangedListener(errorMessageTextWatcher)
         confirmPassword.addTextChangedListener(errorMessageTextWatcher)
@@ -84,9 +150,25 @@ class AuthActivity : DaggerAppCompatActivity() {
             done.isClickable = !it
             cancel.isClickable = !it
         })
+    }
 
-        val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
+    // Initialize and act according to the given authRoute. See AuthRoute for more details
+    private fun initAuthState(authRoute: String?) {
+        // Get the current FirebaseUser
+        val auth = FirebaseAuth.getInstance()
+        val firebaseUser: FirebaseUser? = auth.currentUser
+
+        // If the user is not null, allow them to hit cancel to return to an authorized session
+        //TODO properly log a user out and remove this functionality
+        if (firebaseUser != null) {
+            cancel.setOnClickListener {
+                getCurrentAuthAndReturnToMain(firebaseUser)
+            }
+        }
+
+        // Check AuthRoute to determine intended behavior
         when (authRoute) {
+            // Sign up and log in AuthRoute
             AuthRoute.SIGN_UP.name, AuthRoute.LOG_IN.name -> {
                 launch (UI) {
                     delay(500)
@@ -94,9 +176,10 @@ class AuthActivity : DaggerAppCompatActivity() {
                     showCredentialsUi()
                 }
             }
+            // Anonymous or null authRoute
             else -> {
                 if (firebaseUser != null ) {
-                    returnMain(firebaseUser)
+                    getCurrentAuthAndReturnToMain(firebaseUser)
                 } else {
                     launch(UI) {
                         try {
@@ -111,36 +194,20 @@ class AuthActivity : DaggerAppCompatActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        handleIntent(intent)
-    }
 
-    private fun handleIntent(intent: Intent?) {
-        if (intent != null && filterIntent == null) {
-            filterIntent = intent
-        }
-    }
-
-    private fun returnMain(firebaseUser: FirebaseUser) {
-        launch(UI) {
-            try {
-                val auth = authViewModel.getCurrentAuth(firebaseUser)
-                launchMain(auth, true)
-            } catch (e: Exception) {
-                showErrorMessage(e)
-            }
-        }
-    }
-
+    // Alter the UI to allow login
+    //TODO use a ChangeBounds Transition
     private fun setToLoginUi() {
         confirmPassword.visibility = View.GONE
-        alternateCredentialType.text = "Sign up"
-        done.text = "Log in"
+        alternateCredentialType.text = getString(R.string.auth_sign_up_button)
+        done.text = getString(R.string.auth_log_in_button)
         done.setOnClickListener {
             launch(UI) {
                 try {
-                    val loggedInUser = authViewModel.logIn(email.text.toString(), password.text.toString())
+                    val loggedInUser = authViewModel.logIn(
+                            email.text.toString(),
+                            password.text.toString()
+                    )
                     launchMain(loggedInUser, true)
                 } catch (e: Exception) {
                     showErrorMessage(e)
@@ -150,28 +217,44 @@ class AuthActivity : DaggerAppCompatActivity() {
         alternateCredentialType.setOnClickListener { setToSignUpUi() }
     }
 
+    // Alter the UI to allow sign up
+    //TODO use a ChangeBounds Transition
     private fun setToSignUpUi() {
         confirmPassword.visibility = View.VISIBLE
-        alternateCredentialType.text = "Log in"
-        done.text = "Sign up"
+        alternateCredentialType.text = getString(R.string.auth_log_in_button)
+        done.text = getString(R.string.auth_sign_up_button)
         done.setOnClickListener {
             launch(UI) {
                 try {
-                    val newlyLinkedUser = authViewModel.signUp(email.text.toString(), password.text.toString(), confirmPassword.text.toString())
+                    val newlyLinkedUser = authViewModel.signUp(
+                            email.text.toString(),
+                            password.text.toString(),
+                            confirmPassword.text.toString()
+                    )
                     launchMain(newlyLinkedUser, true)
                 } catch (e: Exception) {
-                    showErrorMessage(e) //TODO make sure this is a user friendly error
+                    showErrorMessage(e)
                 }
             }
         }
         alternateCredentialType.setOnClickListener { setToLoginUi() }
     }
 
+    // Transition from the splash screen to the credentials layout
     private fun showCredentialsUi() {
         val set = AnimatorSet()
         set.playTogether(
-                ObjectAnimator.ofFloat(container, "translationY", resources.displayMetrics.density * -100),
-                ObjectAnimator.ofFloat(credentialsContainer, "alpha", 0F, 1F)
+                ObjectAnimator.ofFloat(
+                        container,
+                        "translationY",
+                        resources.displayMetrics.density * -100
+                ),
+                ObjectAnimator.ofFloat(
+                        credentialsContainer,
+                        "alpha",
+                        0F,
+                        1F
+                )
         )
         set.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
@@ -188,9 +271,10 @@ class AuthActivity : DaggerAppCompatActivity() {
 
     private var lastErrorStateIsShown = false
 
+    //TODO use a Transition and clean up
     private fun showErrorMessage(e: Exception) {
         e.printStackTrace()
-        //TODO clean this up?
+
         synchronized(lastErrorStateIsShown) {
             if (!lastErrorStateIsShown) {
                 lastErrorStateIsShown = true
@@ -224,6 +308,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         }
     }
 
+    //TODO use a Transition and clean up
     private fun hideErrorMessage() {
         if (lastErrorStateIsShown) {
             synchronized(lastErrorStateIsShown) {
@@ -252,6 +337,19 @@ class AuthActivity : DaggerAppCompatActivity() {
         }
     }
 
+    // A helper function to create an Auth object and then call launchMain
+    private fun getCurrentAuthAndReturnToMain(firebaseUser: FirebaseUser) {
+        launch(UI) {
+            try {
+                val auth = authViewModel.getCurrentAuth(firebaseUser)
+                launchMain(auth, true)
+            } catch (e: Exception) {
+                showErrorMessage(e)
+            }
+        }
+    }
+
+    // Set the user and go to MainActivity
     private fun launchMain(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
         (application as App).setUser(auth)
         launch(UI) {

@@ -26,7 +26,7 @@ class SearchViewModel @Inject constructor(
     private val searchInputData: MutableLiveData<String> = MutableLiveData()
     val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputData) {
         if (it.isEmpty()) {
-            wordRepository.getRecents(25L)
+            wordRepository.getRecents(25L) as LiveData<List<WordSource>>
         } else {
             wordRepository.getSearchWords(it)
         }

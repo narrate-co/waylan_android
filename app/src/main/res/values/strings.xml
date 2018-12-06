@@ -49,8 +49,6 @@
     <string name="auth_email_hint">Email</string>
     <string name="auth_password_hint">Password</string>
     <string name="auth_confirm_passsword_hint">Confirm Password</string>
-    <string name="auth_log_in_button">Log in</string>
-    <string name="auth_sign_up_button">Sign up</string>
     <string name="auth_cancel_button">Cancel</string>
     <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
     <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
@@ -115,6 +113,8 @@
     <string name="developer_settings_use_test_skus_title">Use test skus</string>
     <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
     <string name="developer_settings_title">Developer Settings</string>
+    <string name="auth_sign_up_button">Sign up</string>
+    <string name="auth_log_in_button">Log in</string>
 
 
 </resources>
