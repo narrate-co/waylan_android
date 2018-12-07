@@ -1,9 +1,16 @@
-package com.wordsdict.android.ui.list
+package com.wordsdict.android.ui.common
 
 import android.view.View
+import com.wordsdict.android.util.widget.BannerCardView
 
-interface BannerViewHolder {
-    fun setBanner(view: BannerCardView, banner: Banner?, listener: BannerViewHolderListener) {
+/**
+ * An interface with a provided implementation to handle binding a [HeaderBanner] to
+ * a [BannerCardView].
+ *
+ * @see [ListHeaderViewHolder] and [SearchHeaderViewHolder]
+ */
+interface HeaderBannerBinder {
+    fun bindHeaderBanner(view: BannerCardView, banner: HeaderBanner?, listener: HeaderBannerListener) {
         if (banner == null) return
         view.setBannerText(banner.text)
         view.setOnClickListener { listener.onBannerClicked(banner) }
@@ -12,8 +19,3 @@ interface BannerViewHolder {
     }
 }
 
-interface BannerViewHolderListener {
-    fun onBannerClicked(banner: Banner)
-    fun onBannerTopButtonClicked(banner: Banner)
-    fun onBannerBottomButtonClicked(banner: Banner)
-}

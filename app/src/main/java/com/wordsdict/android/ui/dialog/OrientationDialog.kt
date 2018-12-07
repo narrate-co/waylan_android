@@ -5,6 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.wordsdict.android.data.prefs.Orientation
 
+/**
+ * A [RoundedAlertDialog] that displays a list of radio button items, one for each
+ * possible orientation preference option.
+ */
 class OrientationDialog: RoundedAlertDialog() {
 
     companion object {
@@ -24,6 +28,9 @@ class OrientationDialog: RoundedAlertDialog() {
     private var currentOrientation: Orientation = Orientation.UNSPECIFIED
     private var orientationCallback: OrientationCallback? = null
 
+    /**
+     * Add all [Orientation]s to the [RoundedAlertDialog]'s container to be displayed
+     */
     override fun setBuilderView(container: ViewGroup) {
         Orientation.values().forEach { or ->
             container.addRadioItemView(

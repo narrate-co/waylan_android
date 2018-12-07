@@ -10,9 +10,20 @@ import com.wordsdict.android.di.UserScope
 import com.wordsdict.android.ui.list.ListFragment
 import javax.inject.Inject
 
+/**
+ * ViewModel for [HomeFragment]
+ */
 @UserScope
 class HomeViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
 
+    /**
+     * Get a LiveData object which queries and observes a user's
+     * [com.wordsdict.android.data.firestore.users.UserWord]'s depending on the [type] given. The
+     * results are transformed into a simple comma separated string for easy display
+     *
+     * @return a comma separated string of the last 4 words (as they appear in the dictionary)
+     *  from the users words of [type]
+     */
     fun getListPreview(type: ListFragment.ListType): LiveData<String> {
         return Transformations.map(when (type) {
             ListFragment.ListType.TRENDING -> wordRepository.getTrending(4L)
@@ -26,7 +37,11 @@ class HomeViewModel @Inject constructor(private val wordRepository: WordReposito
                     else -> ""
                 }
             }
-            if (previewWords.isNotEmpty()) previewWords.reduce { acc, word -> "$acc, $word" } else ""
+            if (previewWords.isNotEmpty()) {
+                previewWords.reduce { acc, word -> "$acc, $word" }
+            } else {
+                ""
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ import com.wordsdict.android.util.fromHtml
 import com.wordsdict.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 
-class MerriamWebsterCard @JvmOverloads constructor(
+class MerriamWebsterCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -41,7 +41,11 @@ class MerriamWebsterCard @JvmOverloads constructor(
         fun onDismissCardClicked()
     }
 
-    data class DefinitionGroup(var word: Word, var definitions: List<Definition>, var viewGroup: LinearLayout)
+    data class DefinitionGroup(
+            var word: Word,
+            var definitions: List<Definition>,
+            var viewGroup: LinearLayout
+    )
 
     private var currentWordId: String = ""
     private var definitionGroups: MutableList<DefinitionGroup> = mutableListOf()
@@ -80,18 +84,18 @@ class MerriamWebsterCard @JvmOverloads constructor(
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
 
-            val audioStateDispatch: AudioClipService.AudioStateDispatch = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioStateDispatch
+            val audioState: AudioClipService.AudioState = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioState
             val url = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_URL)
             val message = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
 
-            setAudioIcon(audioStateDispatch)
+            setAudioIcon(audioState)
 
-            when (audioStateDispatch) {
-                AudioClipService.AudioStateDispatch.ERROR -> listener?.onAudioClipError(message)
-                AudioClipService.AudioStateDispatch.LOADING,
-                AudioClipService.AudioStateDispatch.STOPPED,
-                AudioClipService.AudioStateDispatch.PREPARED,
-                AudioClipService.AudioStateDispatch.PLAYING -> setAudioIcon(audioStateDispatch)
+            when (audioState) {
+                AudioClipService.AudioState.ERROR -> listener?.onAudioClipError(message)
+                AudioClipService.AudioState.LOADING,
+                AudioClipService.AudioState.STOPPED,
+                AudioClipService.AudioState.PREPARED,
+                AudioClipService.AudioState.PLAYING -> setAudioIcon(audioState)
             }
         }
     }
@@ -195,22 +199,22 @@ class MerriamWebsterCard @JvmOverloads constructor(
     }
 
 
-    private fun setAudioIcon(state: AudioClipService.AudioStateDispatch) {
+    private fun setAudioIcon(state: AudioClipService.AudioState) {
         when (state) {
-            AudioClipService.AudioStateDispatch.LOADING -> {
+            AudioClipService.AudioState.LOADING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.VISIBLE
                 underline.visibility = View.INVISIBLE
             }
-            AudioClipService.AudioStateDispatch.PREPARED,
-            AudioClipService.AudioStateDispatch.PLAYING -> {
+            AudioClipService.AudioState.PREPARED,
+            AudioClipService.AudioState.PLAYING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 progressBar.visibility = View.INVISIBLE
                 underline.visibility = View.VISIBLE
             }
-            AudioClipService.AudioStateDispatch.STOPPED -> {
+            AudioClipService.AudioState.STOPPED -> {
                 audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
                 progressBar.visibility = View.INVISIBLE

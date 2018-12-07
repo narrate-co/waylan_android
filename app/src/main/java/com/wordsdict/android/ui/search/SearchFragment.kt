@@ -31,13 +31,23 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.ui.list.Banner
+import com.wordsdict.android.ui.common.HeaderBanner
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import javax.inject.Inject
 
+/**
+ * A bottom sheet fragment that handles user search input, current word action items (share,
+ * favorite), the search shelf (contextual suggestions which expand into the space above the
+ * input bar) and displaying lists of recently searched words if the search field is empty
+ * or search results when not.
+ *
+ * This Fragment is designed to be ergonomic and easy to use one handed. The most popular
+ * user journey is to search and define a word. This journey should be as ergonomic, quick and
+ * seamless as possible.
+ */
 class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
 
     companion object {
@@ -45,36 +55,47 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         const val TAG = "SearchFragment"
     }
 
-    private val viewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(SearchViewModel::class.java)
-    }
-
+    // MainViewModel owned by MainActivity and used to share data between MainActivity
+    // and its child Fragments
     private val sharedViewModel by lazy {
         ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
     }
 
+    // SearchFragment's own ViewModel
+    private val viewModel by lazy {
+        ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(SearchViewModel::class.java)
+    }
+
+
+    // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
         BottomSheetBehavior.from(view)
     }
 
     private val adapter by lazy { SearchAdapter(this) }
 
+    // A variable to hold whether or not the space just above the input bar is expanded to
+    // show a contextual suggestion
     @Volatile
     private var smartShelfExpanded = false
 
+    // A task to be run after the smart shelf has been expanded. This task is usually to close
+    // the smart shelf after a delay has elapsed
     private var smartShelfAfterTransitionEndAction: DelayedAfterTransitionEndAction? = null
 
     @Inject
     lateinit var rotationManager: RotationManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-
-        return view
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onEnterTransactionEnded() {
@@ -92,10 +113,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         })
 
         viewModel.firestoreUserSource.observe(this, Observer { source ->
-            setUserWord(source.userWord)
+            setShelfActions(source.userWord)
         })
     }
 
+    // Set up text watchers and on focus changed listeners to help control the
+    // hiding/showing of both the search sheet and the IME
     private fun setUpSearchBar(view: View?) {
         if (view == null) return
 
@@ -118,13 +141,17 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
     }
 
+    // Set up the recycler view which holds recently viewed words when the search input field
+    // is empty and search results when not.
     private fun setUpRecyclerView(view: View?) {
         if (view == null) return
         //set up recycler view
         view.recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.recycler.adapter = adapter
 
-        // hide keyboard if scrolling search results
+        // hide IME if user is scrolling search results
+        // This avoids the need to expand the search sheet to the full height of the display
+        // and moving results out of "thumb reach"
         view.recycler.setOnTouchListener { _, _ ->
             activity?.hideSoftKeyboard()
             false
@@ -137,24 +164,49 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         })
     }
 
+    // If the list is empty, the user does not have any recent searches. Meaning we can
+    // confidently display an onboarding banner explaining the search sheet and its functionality
     private fun setBanner(isListEmpty: Boolean) {
         if (isListEmpty) {
-            adapter.setHeader(Banner(getString(R.string.search_banner_body), null, null))
+            adapter.setHeader(
+                    HeaderBanner(
+                            getString(R.string.search_banner_body),
+                            null,
+                            null
+                    )
+            )
         } else {
+            // remove the header
             adapter.setHeader(null)
         }
     }
 
-    var clicks = 0
+
     private fun setUpSmartShelf(view: View?) {
         if (view == null) return
 
-        view.share.setOnClickListener {
-            val prompt = if (clicks % 2 == 0) OrientationPrompt.LockToPortrait(Orientation.PORTRAIT) else OrientationPrompt.LockToLandscape(Orientation.LANDSCAPE)
-            expandSmartShelf(prompt)
-            clicks++
+        //TODO remove and replace with automated UI tests
+        // If this is a debug build, set the share button to show the smart shelf, alternating the
+        // prompt each with each click
+        if (BuildConfig.DEBUG) {
+            view.share.setOnClickListener(object : View.OnClickListener {
+                var clicks = 0
+                override fun onClick(v: View?) {
+                    val prompt = if (clicks % 2 == 0) {
+                        OrientationPrompt.LockToPortrait(Orientation.PORTRAIT)
+                    } else {
+                        OrientationPrompt.LockToLandscape(Orientation.LANDSCAPE)
+                    }
+                    expandSmartShelf(prompt)
+                    clicks++
+                }
+            })
         }
 
+
+        // getOrientationPrompt broadcasts a value once and then immediately broadcasts a null
+        // value to avoid observers re-receiving the last value emitted. Listen for broadcasts
+        // and display the smart shelf if not null
         viewModel.getOrientationPrompt().observe(this, Observer {
             if (it != null) {
                 runDelayed(500) {
@@ -163,22 +215,36 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             }
         })
 
+        // observe for orientation/rotation changes in the viewModel
         rotationManager.observe(SearchFragment::class.java.simpleName, this, viewModel)
 
-        rotationManager.observeForPattern(SearchFragment::class.java.simpleName, this, RotationManager.PATTERNS_ALL, viewModel)
+        // observe for all orientation/rotation patterns in the viewModel
+        rotationManager.observeForPattern(
+                SearchFragment::class.java.simpleName,
+                this,
+                RotationManager.PATTERNS_ALL,
+                viewModel)
     }
 
+    // Shelf actions are actions which live to the right of the search input field. They
+    // animate in, compressing the search input field, when the DetailsFragment is the current
+    // Fragment and animate out when the search sheet is expanded or DetailsFragment is not the
+    // current Fragment
     private fun setUpShelfActions(view: View?) {
         if (view == null) return
 
-        // Hide actions when not in details
+        // Hide actions when not DetailsFragment is not the current Fragment, otherwise show
         sharedViewModel.getBackStack().observe(this, Observer {
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             // wait for the next layout step to grantee the actions.width is correctly captured
             view.post {
                 when (dest) {
-                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> runShelfActionsAnimation(false)
-                    Navigator.HomeDestination.DETAILS -> runShelfActionsAnimation(true)
+                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> {
+                        runShelfActionsAnimation(false)
+                    }
+                    Navigator.HomeDestination.DETAILS -> {
+                        runShelfActionsAnimation(true)
+                    }
                 }
             }
         })
@@ -200,15 +266,25 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
     }
 
+    /**
+     * A method which can be called from this Fragment's parent Activity. If the parent
+     * Activity or other visible Fragments would like to trigger search sheet expanding and
+     * IME opening to initiate a search, use this method
+     */
     fun focusAndOpenSearch() {
         bottomSheetBehavior.expand()
         searchEditText.requestFocus()
         activity?.showSoftKeyboard(searchEditText)
     }
 
-    //TODO make this more robust
-    //TODO calling this while expanded should just change the smartSuggestion text with an animation,
-    //TODO skipping the peekHeight animation
+    /**
+     * Expand the smart shelf by adding a view and using a Transition. After the transition
+     * has ended, set a [DelayedAfterTransitionEndAction] to close the expanded shelf after
+     * a delay
+     *
+     * TODO Create a custom view to "vertically marquee" text that changes in smartSuggestion
+     * TODO and animate the removal of the icon/text width changing
+     */
     private fun expandSmartShelf(prompt: OrientationPrompt) {
         if (view == null) return
 
@@ -225,9 +301,15 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 changeBounds.interpolator = DecelerateInterpolator()
                 changeBounds.duration = 200
 
-                smartSuggestion = layoutInflater.inflate(R.layout.smart_suggestion_item, shelfContainer, false)
+                smartSuggestion = layoutInflater.inflate(
+                        R.layout.smart_suggestion_item,
+                        shelfContainer,
+                        false
+                )
                 smartSuggestion.smartLabel.text = getString(prompt.message)
-                smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
+                smartSuggestion.smartImage.setImageDrawable(
+                        ContextCompat.getDrawable(context!!, prompt.icon)
+                )
                 smartSuggestion.setOnClickListener {
                     //TODO create a custom smartLabel view that is able to change bounds
                     smartSuggestion.smartLabel.text = getString(prompt.checkedText)
@@ -236,12 +318,20 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                     (activity?.application as? App)?.updateOrientation()
 
                 }
+
                 val display = activity!!.windowManager.defaultDisplay
                 val point = Point()
                 display.getSize(point)
                 smartSuggestion.measure(point.x, point.y)
                 val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
-                smartShelfAfterTransitionEndAction = DelayedAfterTransitionEndAction(this, changeBounds, 3000, ::collapseSmartShelf)
+
+                // close the shelf after the transition has ended and after a delay
+                smartShelfAfterTransitionEndAction = DelayedAfterTransitionEndAction(
+                        this,
+                        changeBounds,
+                        3000,
+                        ::collapseSmartShelf
+                )
 
                 //start transition
                 TransitionManager.beginDelayedTransition(view as ViewGroup, changeBounds)
@@ -251,7 +341,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             } else {
                 // if the shelf is added, use it to manipulate it's existing prompt
                 smartSuggestion.smartLabel.text = getString(prompt.message)
-                smartSuggestion.smartImage.setImageDrawable(ContextCompat.getDrawable(context!!, prompt.icon))
+                smartSuggestion.smartImage.setImageDrawable(
+                        ContextCompat.getDrawable(context!!, prompt.icon)
+                )
                 smartSuggestion.setOnClickListener {
                     smartSuggestion.smartLabel.text = getString(prompt.checkedText)
 
@@ -262,6 +354,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         }
     }
 
+    /**
+     * Collapse the expanded smart shelf using a Transition
+     */
     private fun collapseSmartShelf() {
         if (view == null) return
 
@@ -285,22 +380,32 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
     }
 
+    /**
+     * Animate in or out the shelf actions (the actions which live to the right of the search
+     * input field) by animating the right margin of the search input layout.
+     */
     private fun runShelfActionsAnimation(show: Boolean) {
         if (!isAdded) return
 
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-        val hideMargin = keyline2
         val showMargin = actions.width + keyline2
         val currentMargin = (search.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
-        if ((show && currentMargin == showMargin) || (!show && currentMargin == hideMargin)) return
+        if ((show && currentMargin == showMargin) || (!show && currentMargin == keyline2)) return
 
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
                 val params = search.layoutParams as ConstraintLayout.LayoutParams
-                val adjustedInterpolatedTime: Float = if (show) interpolatedTime else (1.0F - interpolatedTime)
-                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
+                val adjustedInterpolatedTime: Float = if (show) {
+                    interpolatedTime
+                } else {
+                    1.0F - interpolatedTime
+                }
+                params.rightMargin = Math.max(
+                        keyline2,
+                        (showMargin * adjustedInterpolatedTime).toInt()
+                )
                 search.layoutParams = params
             }
         }
@@ -309,16 +414,26 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         search.startAnimation(animation)
     }
 
-    private fun setUserWord(userWord: UserWord?) {
+
+    /**
+     * Set shelf actions according to [userWord]
+     */
+    private fun setShelfActions(userWord: UserWord?) {
         if (userWord == null)  return
 
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-
         favorite.setOnClickListener {
             sharedViewModel.setCurrentWordFavorited(!isFavorited)
         }
+        //TODO create an AVD
+        favorite.setImageResource(if (isFavorited) {
+            R.drawable.ic_round_favorite_24px
+        } else {
+            R.drawable.ic_round_favorite_border_24px
+        })
 
-        favorite?.setImageResource(if (isFavorited) R.drawable.ic_round_favorite_24px else R.drawable.ic_round_favorite_border_24px)
+
+        //TODO add share button setup
     }
 
 
@@ -335,15 +450,15 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         (activity as MainActivity).showDetails()
     }
 
-    override fun onBannerClicked(banner: Banner) {
+    override fun onBannerClicked(banner: HeaderBanner) {
         // do nothing. Search banner should not have any buttons
     }
 
-    override fun onBannerTopButtonClicked(banner: Banner) {
+    override fun onBannerTopButtonClicked(banner: HeaderBanner) {
         // do nothing. Search banner should not have any buttons
     }
 
-    override fun onBannerBottomButtonClicked(banner: Banner) {
+    override fun onBannerBottomButtonClicked(banner: HeaderBanner) {
         // do nothing. Search banner should not have any buttons
     }
 

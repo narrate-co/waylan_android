@@ -6,14 +6,27 @@ import com.wordsdict.android.data.disk.wordset.Synonym
 import com.wordsdict.android.data.repository.FirestoreGlobalSource
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordSource
+import com.wordsdict.android.ui.common.HeaderBanner
+import com.wordsdict.android.ui.common.HeaderBannerListener
+import com.wordsdict.android.ui.common.HeaderBannerBinder
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.list_banner_layout.view.*
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 import org.threeten.bp.OffsetDateTime
 
+/**
+ * A sealed class to be used to generically define the type of [RecyclerView.ViewHolder] used
+ * in [ListTypeAdapter]
+ */
 sealed class ListViewHolder(val view: View): RecyclerView.ViewHolder(view)
 
-class ListWordSourceViewHolder(view: View, private val listener: ListWordSourceListener): ListViewHolder(view) {
+/**
+ * A [ListViewHolder] that handles binding a [FirestoreUserSource] or [FirestoreGlobalSource] item
+ */
+class ListWordSourceViewHolder(
+        view: View,
+        private val listener: ListWordSourceListener
+): ListViewHolder(view) {
 
     interface ListWordSourceListener {
         fun onWordClicked(word: String)
@@ -26,7 +39,6 @@ class ListWordSourceViewHolder(view: View, private val listener: ListWordSourceL
             is FirestoreGlobalSource -> bindFirestoreGlobalSource(source)
         }
     }
-
 
     private fun bindFirestoreUserSource(source: FirestoreUserSource) {
         bindSource(
@@ -47,7 +59,12 @@ class ListWordSourceViewHolder(view: View, private val listener: ListWordSourceL
         )
     }
 
-    private fun bindSource(word: String, partOfSpeechPreview: MutableMap<String, String>, defPreview: MutableMap<String, String>, synonymPreview: MutableMap<String, String>) {
+    private fun bindSource(
+            word: String,
+            partOfSpeechPreview: MutableMap<String, String>,
+            defPreview: MutableMap<String, String>,
+            synonymPreview: MutableMap<String, String>
+    ) {
 
         view.word.text = word
 
@@ -62,9 +79,12 @@ class ListWordSourceViewHolder(view: View, private val listener: ListWordSourceL
         //Set synonym chips
         view.chipGroup.removeAllViews()
         synonymPreview.forEach {
-            view.chipGroup.addView(Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now()).toChip(view.context, view.chipGroup) {
-                listener.onWordClicked(it.synonym)
-            })
+            val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
+            view.chipGroup.addView(
+                    synonym.toChip(view.context, view.chipGroup) {
+                        listener.onWordClicked(it.synonym)
+                    }
+            )
         }
 
         view.itemContainer.setOnClickListener {
@@ -74,13 +94,15 @@ class ListWordSourceViewHolder(view: View, private val listener: ListWordSourceL
 
 }
 
+/**
+ * A [ListViewHolder] that handles binding a [HeaderBanner] with [HeaderBannerBinder]
+ */
 class ListHeaderViewHolder(
         view: View,
-        private val listener: BannerViewHolderListener
-): ListViewHolder(view), BannerViewHolder {
+        private val listener: HeaderBannerListener
+): ListViewHolder(view), HeaderBannerBinder {
 
-
-    fun bind(banner: Banner?) {
-        setBanner(view.banner, banner, listener)
+    fun bind(banner: HeaderBanner?) {
+        bindHeaderBanner(view.banner, banner, listener)
     }
 }

@@ -21,8 +21,18 @@ import kotlinx.android.synthetic.main.dialog_rounded_alert.view.*
 import kotlinx.android.synthetic.main.radio_list_item_layout.view.*
 import java.lang.IllegalStateException
 
+/**
+ * A helper [AppCompatDialogFragment] which creates a Dialog with rounded
+ * corners and exposes a "container" ViewGroup which subclasses can add views to before
+ * the dialog is displayed.
+ */
 abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
+    /**
+     * Subclasses provide an implementation of [setBuilderView] to add any view they wish to
+     * be displayed in the dialog. [container] is a vertically oriented LinearLayout, meaning
+     * views will be displayed in the order they are added.
+     */
     abstract fun setBuilderView(container: ViewGroup)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -38,17 +48,33 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
         val d = builder.create()
 
-        //TODO should this be a surface C (see color attrs)?
-        d.window.setBackgroundDrawable(createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.surfaceBColor))
+        //TODO should this be a surface C? (see color attrs)
+        d.window.setBackgroundDrawable(
+                createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.surfaceBColor)
+        )
 
         return d
     }
 
-    private fun createBackgroundDrawable(context: Context, cornerRadiusDimen: Int, backgroundColorAttr: Int): MaterialShapeDrawable {
+    /**
+     * Create and set a custom background with [MaterialShapeDrawable]
+     */
+    private fun createBackgroundDrawable(
+            context: Context,
+            cornerRadiusDimen: Int,
+            backgroundColorAttr: Int
+    ): MaterialShapeDrawable {
+        // Create a corner treatment to be used on all 4 corners
+        val cornerTreatment = RoundedCornerTreatment(
+                context.resources.getDimensionPixelSize(cornerRadiusDimen).toFloat()
+        )
+
+        // Create a shape model defining our background
         val shapePathModel = ShapePathModel().apply {
-            setAllCorners(RoundedCornerTreatment(context.resources.getDimensionPixelSize(cornerRadiusDimen).toFloat()))
+            setAllCorners(cornerTreatment)
         }
 
+        // Construct our background drawable
         return MaterialShapeDrawable(shapePathModel).apply {
             isShadowEnabled = true
             paintStyle = Paint.Style.FILL
@@ -58,6 +84,10 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
         }
     }
 
+    /**
+     * A helper method common to multiple Words subclasses to inflate and add a list item
+     * that contains a radio button, a title and a description
+     */
     fun ViewGroup.addRadioItemView(title: String, desc: String, checked: Boolean, listener: View.OnClickListener) {
         val item = activity!!.layoutInflater.inflate(R.layout.radio_list_item_layout, this, false)
         item.radioTitle.text = title

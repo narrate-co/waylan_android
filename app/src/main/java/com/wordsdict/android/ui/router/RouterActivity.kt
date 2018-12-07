@@ -8,10 +8,11 @@ import com.wordsdict.android.Navigator
 
 
 /**
- * A Theme.NoDisplay Activity that serves as an entry hub for all intents
- * that Words is able to handle.
+ * A Theme.NoDisplay Activity that serves as an entry hub for all intent filters which Words
+ * is able to handle.
  *
- * An informative note on Theme.NoDisplay see <a>https://plus.google.com/+DianneHackborn/posts/LjnRzJKWPGW</a>
+ * For an informative note on Theme.NoDisplay see
+ * <a>https://plus.google.com/+DianneHackborn/posts/LjnRzJKWPGW</a>
  */
 class RouterActivity : Activity() {
 
@@ -26,7 +27,6 @@ class RouterActivity : Activity() {
             finish()
             return
         }
-
 
         val hasProcessText = intent.hasExtra(Intent.EXTRA_PROCESS_TEXT)
         // If we're processing text, make sure there's a valid user

@@ -1,9 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="hunterstich">
     <words>
+      <w>bindable</w>
       <w>firebase</w>
       <w>firestore</w>
       <w>propname</w>
+      <w>reachability</w>
       <w>undispatched</w>
       <w>upsert</w>
     </words>

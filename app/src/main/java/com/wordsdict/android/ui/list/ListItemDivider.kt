@@ -8,9 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wordsdict.android.R
 import com.wordsdict.android.util.children
 
+/**
+ * A [RecyclerView.ItemDecoration] that draws a divider above all items in a RecyclerView
+ * except for the first item. Effectively only drawing a divider <i>between</i> items
+ */
 class ListItemDivider(private val drawable: Drawable?): RecyclerView.ItemDecoration() {
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+    ) {
         super.getItemOffsets(outRect, view, parent, state)
 
         val isHeader = view.findViewWithTag<View>("header") != null ?: false

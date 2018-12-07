@@ -1,4 +1,4 @@
-package com.wordsdict.android.ui.list
+package com.wordsdict.android.util.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,6 +9,18 @@ import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.visible
 import kotlinx.android.synthetic.main.banner_card_veiw_layout.view.*
 
+/**
+ * A composite [MaterialCardView] which encapsulates Banner logic
+ *
+ * XML properties include
+ * @property bannerLabel The [HeaderBanner.label] to be displayed
+ * @property bannerText The [HeaderBanner.text] to be displayed
+ * @property bannerTopButtonText The [HeaderBanner.topButtonText] to be displayed
+ * @property bannerBottomButtonText The [HeaderBanner.bottomButtonText] to be displayed
+ *
+ * Any parameters set to null by either not being set via an xml property or explicitly using one
+ * of the classes helper functions, will not be shown. The only required parameter is [bannerText].
+ */
 class BannerCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -53,6 +65,20 @@ class BannerCardView @JvmOverloads constructor(
         setBannerBottomButton(bannerBottomButtonText, null)
     }
 
+    /**
+     * Function to set all [HeaderBanner] properties at once.
+     *
+     * @param text A main body text to be displayed
+     * @param label An optional short, informational String to be displayed in the
+     *  [BannerCardView]'s upper left hand corner. Passing null or not providing a value will
+     *  hide the label.
+     * @param labelListener A [View.OnClickListener] to listen for clicks on the banner's label
+     * @param topButton An optional String to set for the top button text. Passing null or not
+     *  providing a value will hide the top button.
+     * @param topButtonListener A [View.OnClickListener] to listen for clicks on the top button
+     * @param bottomButton An optional String to set as the bottom button's text. Passing null
+     *  or not providing a value will hide the bottom button.
+     */
     fun setBanner(
             text: String,
             label: String? = null,

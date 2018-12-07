@@ -96,6 +96,14 @@ class MainActivity : BaseUserActivity() {
         bottomSheet.setBottomSheetCallback(searchSheetCallback)
     }
 
+    /**
+     * Any child Fragment of this Activity can call this method to have the SearchFragment
+     * bottom sheet expanded, the SearchFragment's search input field focused and the IME opened to
+     * initiate a new search.
+     *
+     * This is used by [ListFragment] when a user clicks on a banner that prompts them to
+     * "Get Started" searching for words.
+     */
     fun focusAndOpenSearch() {
         val searchFragment = supportFragmentManager.findFragmentById(R.id.searchFragment) as? SearchFragment
         searchFragment?.focusAndOpenSearch()

@@ -7,9 +7,9 @@ import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.SimpleWordSource
 import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.ui.list.Banner
-import com.wordsdict.android.ui.list.BannerViewHolder
-import com.wordsdict.android.ui.list.BannerViewHolderListener
+import com.wordsdict.android.ui.common.HeaderBanner
+import com.wordsdict.android.ui.common.HeaderBannerBinder
+import com.wordsdict.android.ui.common.HeaderBannerListener
 import com.wordsdict.android.util.getColorFromAttr
 import kotlinx.android.synthetic.main.list_banner_layout.view.*
 import kotlinx.android.synthetic.main.search_word_layout.view.*
@@ -48,12 +48,12 @@ class SearchWordSourceViewHolder(view: View, private val handlers: SearchViewHol
 
 class SearchHeaderViewHolder(
         view: View,
-        private val listener: BannerViewHolderListener
-): SearchViewHolder(view), BannerViewHolder {
+        private val listener: HeaderBannerListener
+): SearchViewHolder(view), HeaderBannerBinder {
 
-    fun bind(banner: Banner?) {
+    fun bind(banner: HeaderBanner?) {
         view.banner.setBackgroundColor(view.context.getColorFromAttr(R.attr.surfaceBColor))
-        setBanner(view.banner, banner, listener)
+        bindHeaderBanner(view.banner, banner, listener)
     }
 }
 

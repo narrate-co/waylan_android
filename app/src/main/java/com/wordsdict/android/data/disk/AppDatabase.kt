@@ -58,7 +58,7 @@ abstract class AppDatabase: RoomDatabase() {
         fun getInstance(context: Context): AppDatabase =
                 instance ?: synchronized(this) {
                     instance ?: (
-                            if (SHOULD_SEED_DATABASE){
+                            if (SHOULD_SEED_DATABASE) {
                                 seedAndBuildDatabase(context.applicationContext, DATABASE_NAME)
                             }
                             else {

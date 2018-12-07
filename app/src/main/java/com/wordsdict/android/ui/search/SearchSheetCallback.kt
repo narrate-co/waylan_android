@@ -8,7 +8,6 @@ typealias OnStateChangedAction = (View, Int) -> Unit
 
 class SearchSheetCallback: BottomSheetBehavior.BottomSheetCallback() {
 
-
     private val onStateChangedActions: MutableList<OnStateChangedAction> = mutableListOf()
 
     private val onSlideActions: MutableList<OnSlideAction> = mutableListOf()

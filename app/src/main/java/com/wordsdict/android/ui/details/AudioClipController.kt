@@ -5,6 +5,7 @@ import android.content.Intent
 
 /**
  * A static object to "send and forget" url audio clips to be streamed by [AudioClipService]
+ *
  */
 object AudioClipController {
 

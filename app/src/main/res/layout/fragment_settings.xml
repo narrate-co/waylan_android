@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.wordsdict.android.ui.list.BannerCardView
+            <com.wordsdict.android.util.widget.BannerCardView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

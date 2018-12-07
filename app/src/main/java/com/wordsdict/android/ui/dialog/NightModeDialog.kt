@@ -9,6 +9,10 @@ import com.wordsdict.android.R
 import com.wordsdict.android.util.children
 import kotlinx.android.synthetic.main.radio_list_item_layout.view.*
 
+/**
+ * A [RoundedAlertDialog] that displays a list of radio button items, one for each night mode
+ * preference option.
+ */
 class NightModeDialog : RoundedAlertDialog() {
 
     companion object {
@@ -28,6 +32,10 @@ class NightModeDialog : RoundedAlertDialog() {
     private var currentNightMode: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
     private var nightModeCallback: NightModeCallback? = null
 
+    /**
+     * Add all [AppCompatDelegate] night modes to the [RoundedAlertDialog]'s container to
+     * be displayed
+     */
     override fun setBuilderView(container: ViewGroup) {
 
         //Add radio buttons

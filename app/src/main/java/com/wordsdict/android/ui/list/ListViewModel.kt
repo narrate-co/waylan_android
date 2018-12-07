@@ -8,12 +8,19 @@ import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.di.UserScope
 import javax.inject.Inject
 
+/**
+ * ViewModel for [ListFragment]
+ */
 @UserScope
 class ListViewModel @Inject constructor(
         private val wordRepository: WordRepository,
         private val userPreferenceStore: UserPreferenceStore
 ): ViewModel() {
 
+    /**
+     * @return whether or not the user has previously seen and dismissed an onboarding
+     *  banner for [type]
+     */
     fun getHasSeenBanner(type: ListFragment.ListType): Boolean =
             when (type) {
                 ListFragment.ListType.TRENDING -> userPreferenceStore.hasSeenTrendingBanner
@@ -21,13 +28,10 @@ class ListViewModel @Inject constructor(
                 ListFragment.ListType.FAVORITE -> userPreferenceStore.hasSeenFavoritesBanner
             }
 
-    fun getHasSeenBannerLive(type: ListFragment.ListType): LiveData<Boolean> =
-            when (type) {
-                ListFragment.ListType.TRENDING -> userPreferenceStore.hasSeenTrendingBannerLive
-                ListFragment.ListType.RECENT -> userPreferenceStore.hasSeenRecentsBannerLive
-                ListFragment.ListType.FAVORITE -> userPreferenceStore.hasSeenFavoritesBannerLive
-            }
-
+    /**
+     * Set the underlying preference dictating whether or not the user has seen and dismissed
+     * the onboarding banner for [type]
+     */
     fun setHasSeenBanner(type: ListFragment.ListType, value: Boolean) {
         when (type) {
             ListFragment.ListType.TRENDING -> userPreferenceStore.hasSeenTrendingBanner = value
@@ -36,6 +40,10 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Get a list of either [FirestoreUserSource] or [FirestoreGlobalSource] items which
+     * correspond to the given [type]
+     */
     fun getList(type: ListFragment.ListType): LiveData<List<WordSource>> {
         return when (type) {
             ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L)

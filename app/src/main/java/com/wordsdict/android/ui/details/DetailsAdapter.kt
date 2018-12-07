@@ -6,7 +6,28 @@ import androidx.recyclerview.widget.ListAdapter
 import com.wordsdict.android.data.repository.*
 import kotlin.reflect.KClass
 
-class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter<DetailsComponent, DetailsComponentViewHolder>(diffCallback), DetailsComponentListener {
+/**
+ * An adapter which is able to receive and collect [WordSource]s (diffing for most up to date
+ * values) and display a mixed list of any [DetailsComponent]s.
+ *
+ * Use this Adapter by calling [DetailsAdapter.submitWordSource] to add or update any [WordSource]
+ * to the adapter. If the [WordSource] has not previously been submitted, it will be added and
+ * held in [WordSourceList] which will map the source to it's corresponding [DetailsComponent] which
+ * will be added to the adapter (ex. submitting a [MerriamWebsterSource] will add a
+ * [DetailsComponent.MerriamWebsterComponent] to the list). If the [WordSource] <i>is</i> already
+ * in the adapter, the newly submitted [WordSource] will be checked against the existing value
+ * in [WordSourceList], a new list of [DetailsComponent]s will be submitted to the adapter the old
+ * list will be diffed against the new list to determine what should be added, updated or removed.
+ *
+ * [WordSourceList] is the class which handles collecting submitted [WordSource]s and mapping
+ * sources to a list of [DetailsComponent]s. Once a List of [DetailsComponent]s is submitted to the
+ * underlying [ListAdapter], the list adapter's [DiffUtil.ItemCallback] handles when to add, update
+ * or remove [DetailsComponent]s. Diffing is handled by [DetailsComponent]s, each
+ * implementing the [Diffable] interface.
+ */
+class DetailsAdapter(private val listener: DetailsAdapter.Listener) : ListAdapter<DetailsComponent,
+        DetailsComponentViewHolder>(diffCallback),
+        DetailsComponentListener {
 
     interface Listener {
         fun onRelatedWordClicked(relatedWord: String)
@@ -18,119 +39,48 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener): ListAdapter
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<DetailsComponent>() {
-            override fun areItemsTheSame(oldItem: DetailsComponent, newItem: DetailsComponent): Boolean {
+            override fun areItemsTheSame(
+                    oldItem: DetailsComponent,
+                    newItem: DetailsComponent
+            ) : Boolean {
                 return oldItem.equalTo(newItem)
             }
-            override fun areContentsTheSame(oldItem: DetailsComponent, newItem: DetailsComponent): Boolean {
+            override fun areContentsTheSame(
+                    oldItem: DetailsComponent,
+                    newItem: DetailsComponent
+            ): Boolean {
                 return oldItem.contentsSameAs(newItem)
             }
 
-            override fun getChangePayload(oldItem: DetailsComponent, newItem: DetailsComponent): Any? {
+            override fun getChangePayload(
+                    oldItem: DetailsComponent,
+                    newItem: DetailsComponent
+            ): Any? {
                 return oldItem.getChangePayload(newItem)
             }
         }
     }
 
-    inner class SourceHolder {
+    private val sourceHolder = WordSourceList()
 
-        private var wordId: String = ""
-
-        private var propertiesSource: WordPropertiesSource? = null
-        private var wordset: WordsetSource? = null
-        private var merriamWebster: MerriamWebsterSource? = null
-        private var firestoreUser: FirestoreUserSource? = null
-        private var firestoreGlobal: FirestoreGlobalSource? = null
-
-        fun addSource(source: WordSource) {
-
-            clearIfNewWordSource(source)
-
-            when (source) {
-                is WordPropertiesSource -> {
-                    propertiesSource = source
-                }
-                is WordsetSource -> {
-                    wordset = source
-                }
-                is MerriamWebsterSource -> {
-                    if (merriamWebster == null || source.wordsDefinitions.entries.map { it.definitions }.flatten().isNotEmpty() || source.wordsDefinitions.entries.map { it.word }.filterNotNull().map { it.suggestions }.flatten().isNotEmpty()) {
-                        merriamWebster = source
-                    }
-                }
-                is FirestoreUserSource -> {
-                    firestoreUser = source
-                }
-                is FirestoreGlobalSource -> {
-                    firestoreGlobal = source
-                }
-            }
-        }
-
-        fun removeSource(type: KClass<out WordSource>) {
-            when (type) {
-                WordPropertiesSource::class -> propertiesSource = null
-                WordsetSource::class -> wordset = null
-                MerriamWebsterSource::class -> merriamWebster = null
-                FirestoreUserSource::class -> firestoreUser = null
-                FirestoreGlobalSource::class -> firestoreGlobal = null
-            }
-        }
-
-        fun getComponentsList(): List<DetailsComponent> {
-            val list = mutableListOf<DetailsComponent>()
-            propertiesSource?.let { list.add(DetailsComponent.TitleComponent(it)) }
-            merriamWebster?.let { if (it.wordsDefinitions.entries.isNotEmpty()) list.add(DetailsComponent.MerriamWebsterComponent(it)) }
-            wordset?.let { list.add(DetailsComponent.WordsetComponent(it)) }
-
-            // Only add examples if there are any
-            // TODO change this to always show if allowing users to add their own
-            val examples = (wordset?.wordAndMeaning?.meanings?.map { it.examples } ?: emptyList()).flatten()
-            if (examples.isNotEmpty()) {
-                wordset?.let { list.add(DetailsComponent.ExamplesComponent(it)) }
-            }
-            return list
-        }
-
-        private fun clearIfNewWordSource(source: WordSource): Boolean {
-            val newWordId: String? = when (source) {
-                is WordsetSource -> source.wordAndMeaning.word?.word
-                is MerriamWebsterSource -> source.wordsDefinitions?.entries.firstOrNull()?.word?.word
-                is FirestoreUserSource -> source.userWord.word
-                is FirestoreGlobalSource -> source.globalWord.word
-                else -> return false
-            }
-
-
-            if (newWordId != null && newWordId.isNotBlank() && newWordId != wordId) {
-                //new word coming in
-                // clear source holder
-                wordset = null
-                merriamWebster = null
-                firestoreUser = null
-                firestoreGlobal = null
-
-                wordId = newWordId
-                return true
-            } else {
-                //same word. do nothing
-                return false
-            }
-        }
-    }
-
-    private val sourceHolder = SourceHolder()
-
+    /**
+     * Add individual [WordSource]s to the adapter. Each source will be mapped to it's
+     * corresponding [DetailsComponent] and and an internal list will be generated with it included
+     * to be submitted to the adapter.
+     */
     fun submitWordSource(source: WordSource) {
-        sourceHolder.addSource(source)
-        submitList(sourceHolder.getComponentsList())
+        if (sourceHolder.add(source)) {
+            submitList(sourceHolder.getComponentsList())
+        }
     }
 
     fun removeWordSource(type: KClass<out WordSource>) {
-        sourceHolder.removeSource(type)
-        submitList(sourceHolder.getComponentsList())
+        if (sourceHolder.remove(type)) {
+            submitList(sourceHolder.getComponentsList())
+        }
     }
 
-    override fun getItemViewType(position: Int): Int = getItem(position).type.number
+    override fun getItemViewType(position: Int): Int = getItem(position).type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsComponentViewHolder {
         return DetailsComponentViewHolder.createViewHolder(parent, viewType, this)

@@ -7,7 +7,7 @@ import com.wordsdict.android.util.widget.DelayedLifecycleAction
 
 
 /**
- * A class that invokes a function after [transition] has ended and after [delay] has passed
+ * A class that invokes a function after [transition] has ended <i>and</i> after [delay] has elapsed
  */
 class DelayedAfterTransitionEndAction(
         owner: LifecycleOwner,

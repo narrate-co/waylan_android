@@ -8,36 +8,48 @@ import com.wordsdict.android.data.repository.*
 import com.wordsdict.android.di.UserScope
 import javax.inject.Inject
 
-
+/**
+ * ViewModel for [DetailsFragment]
+ */
 @UserScope
 class DetailsViewModel @Inject constructor(
         private val wordRepository: WordRepository
 ): ViewModel() {
 
-    private var wordId = MutableLiveData<String>()
+    // The current word being displayed (as it appears in the dictionary)
+    private var _word = MutableLiveData<String>()
 
-    val wordPropertiesSource: LiveData<WordPropertiesSource> = Transformations.switchMap(wordId) {
+    /** LiveData object for [_word]'s [WordPropertiesSource] */
+    val wordPropertiesSource: LiveData<WordPropertiesSource> = Transformations.switchMap(_word) {
         wordRepository.getWordPropertiesSource(it)
     }
 
-    val wordsetSource: LiveData<WordsetSource?> = Transformations.switchMap(wordId) {
+    /** LiveData object for [_word]'s [WordsetSource] */
+    val wordsetSource: LiveData<WordsetSource?> = Transformations.switchMap(_word) {
         wordRepository.getWordsetSource(it)
     }
 
-    val firestoreUserSource: LiveData<FirestoreUserSource> = Transformations.switchMap(wordId) {
+    /** LiveData object for [_word]'s [FirestoreUserSource] */
+    val firestoreUserSource: LiveData<FirestoreUserSource> = Transformations.switchMap(_word) {
         wordRepository.getFirestoreUserSource(it)
     }
 
-    val firestoreGlobalSource: LiveData<FirestoreGlobalSource> = Transformations.switchMap(wordId) {
+    /** LiveData object for [_word]'s [FirestoreGlobalSource] */
+    val firestoreGlobalSource: LiveData<FirestoreGlobalSource> = Transformations.switchMap(_word) {
         wordRepository.getFirestoreGlobalSource(it)
     }
 
-    val merriamWebsterSource: LiveData<MerriamWebsterSource> = Transformations.switchMap(wordId) {
+    /** LiveData object for [_word]'s [MerriamWebsterSource] */
+    val merriamWebsterSource: LiveData<MerriamWebsterSource> = Transformations.switchMap(_word) {
         wordRepository.getMerriamWebsterSource(it)
     }
-    fun setWordId(id: String) {
-        if (wordId.value != id) {
-            wordId.value = id
+
+    /**
+     * Set the current word (as it appears in the dictionary) that is to be displayed
+     */
+    fun setWord(word: String) {
+        if (_word.value != word) {
+            _word.value = word
         }
     }
 

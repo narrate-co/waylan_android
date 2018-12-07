@@ -39,8 +39,8 @@ class WordRepository(
      *      corpus, an empty List will be returned.
      */
     fun getSearchWords(input: String): LiveData<List<WordSource>> {
-        val wordsetSource = Transformations.map(db.wordDao().load("$input$")) { word ->
-            word.map { SimpleWordSource(it) }
+        val wordsetSource = Transformations.map(db.wordDao().load("$input%")) { words ->
+            words.map { SimpleWordSource(it) }
         }
 
         val suggestionsSource = Transformations.map(symSpellStore.lookupLive(input)) { list ->
