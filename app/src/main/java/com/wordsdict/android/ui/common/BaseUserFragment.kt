@@ -88,7 +88,10 @@ abstract class BaseUserFragment: DaggerFragment(), Injectable {
 
     /**
      * Called after the current Fragment's [Fragment.getEnterTransition] has ended. If none is set,
-     * this will be called in [Fragment.onViewCreated]
+     * this will be called in [Fragment.onViewCreated].
+     *
+     * This is currently set and called when adding a transition to a fragment transaction
+     * @see [Navigatior.showDetails].
      */
     open fun onEnterTransitionEnded() { }
 

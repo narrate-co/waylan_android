@@ -213,7 +213,7 @@ class ListFragment:
     }
 
     override fun onWordClicked(word: String) {
-        sharedViewModel.setCurrentWordId(word)
+        sharedViewModel.setCurrentWord(word)
         (activity as? MainActivity)?.showDetails()
     }
 

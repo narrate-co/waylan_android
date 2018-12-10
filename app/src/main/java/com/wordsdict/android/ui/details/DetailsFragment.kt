@@ -122,15 +122,15 @@ class DetailsFragment: BaseUserFragment(),
     }
 
     override fun onRelatedWordClicked(relatedWord: String) {
-        sharedViewModel.setCurrentWordId(relatedWord)
+        sharedViewModel.setCurrentWord(relatedWord)
     }
 
     override fun onSuggestionWordClicked(suggestionWord: String) {
-        sharedViewModel.setCurrentWordId(suggestionWord)
+        sharedViewModel.setCurrentWord(suggestionWord)
     }
 
     override fun onSynonymChipClicked(synonym: String) {
-        sharedViewModel.setCurrentWordId(synonym)
+        sharedViewModel.setCurrentWord(synonym)
     }
 
     override fun onAudioClipError(message: String) {

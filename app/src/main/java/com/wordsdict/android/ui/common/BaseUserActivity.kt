@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.wordsdict.android.App
@@ -12,6 +14,7 @@ import com.wordsdict.android.Navigator
 import com.wordsdict.android.data.analytics.NavigationMethod
 import com.wordsdict.android.data.prefs.Orientation
 import com.wordsdict.android.data.prefs.Preferences
+import com.wordsdict.android.util.doOnNextResume
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -24,11 +27,12 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    // listen for orientation changes and explicity set the apps orientation
+    // listen for local broadcasts that should trigger changes in resumed activities
     private val localBroadcastReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 App.RESET_ORIENTATION_BROADCAST -> setOrientation()
+                App.RESET_NIGHT_MODE_BROADCAST -> setLocalNightMode()
             }
         }
     }
@@ -84,6 +88,27 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
                 .getInt(Preferences.ORIENTATION_LOCK, Orientation.UNSPECIFIED.value)
 
         requestedOrientation = orientation
+    }
+
+    private fun setLocalNightMode() {
+
+        val nightMode = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getInt(Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+        // Make sure we are at least in the resumed state so we can properly handle the config
+        // change which this will trigger. Some methods like [HomeFragment.setUpReachabilityParams
+        // will not set proper values if this is run while paused.
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            delegate.setLocalNightMode(nightMode)
+        } else {
+            lifecycle.doOnNextResume {
+                delegate.setLocalNightMode(nightMode)
+            }
+        }
+
+
+
     }
 }
 

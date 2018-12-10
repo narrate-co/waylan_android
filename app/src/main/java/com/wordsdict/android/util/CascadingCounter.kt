@@ -9,7 +9,10 @@ object CascadingCounter {
         cascadeToDayCount(dayCounter, weekCounter)
     }
 
-    private fun cascadeToDayCount(dayCounter: MutableMap<Date, Int>, weekCounter: MutableMap<Date, Int>) {
+    private fun cascadeToDayCount(
+            dayCounter: MutableMap<Date, Int>,
+            weekCounter: MutableMap<Date, Int>
+    ) {
         val today = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
         var lastDayCounted: Calendar? = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
         today.time = Date()

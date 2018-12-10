@@ -19,7 +19,6 @@ import com.google.firebase.auth.*
 import com.wordsdict.android.App
 import com.wordsdict.android.R
 import com.wordsdict.android.Navigator
-import com.wordsdict.android.util.FirebaseAuthWordException
 import com.wordsdict.android.util.getColorFromAttr
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_auth.*

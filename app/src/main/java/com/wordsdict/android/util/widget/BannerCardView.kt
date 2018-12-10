@@ -47,7 +47,8 @@ class BannerCardView @JvmOverloads constructor(
                 bannerTopButtonText = a.getString(R.styleable.BannerCardView_bannerTopButtonText)
             }
             if (a.hasValue(R.styleable.BannerCardView_bannerBottomButtonText)) {
-                bannerBottomButtonText = a.getString(R.styleable.BannerCardView_bannerBottomButtonText)
+                bannerBottomButtonText =
+                        a.getString(R.styleable.BannerCardView_bannerBottomButtonText)
             }
         }
 

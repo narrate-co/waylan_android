@@ -1,6 +1,5 @@
 package com.wordsdict.android
 
-import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
@@ -13,22 +12,28 @@ import com.wordsdict.android.di.DaggerAppComponent
 import com.wordsdict.android.di.UserComponent
 import com.wordsdict.android.ui.auth.Auth
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.DaggerApplication
 import javax.inject.Inject
 
 /**
- * //TODO move to using [DaggerApplication]
+ * Base [Application] class which handles disptaching application wide event and the creation and
+ * destruction of [UserComponent].
  */
-class App: Application(), HasActivityInjector {
+class App: DaggerApplication() {
 
     companion object {
-        const val REINJECT_USER_BROADCAST = "reinject_user_broadcast"
+
+        const val RESET_USER_BROADCAST = "reset_user_broadcast"
+
+        // A broadcast to indicate that [AppCompatDelegate.getDefaultNightMode] has changed and
+        // Activities should use [AppCompatDelegate.setLocalNightMode] to trigger a configuration
+        //change
+        const val RESET_NIGHT_MODE_BROADCAST = "reset_night_mode_broadcast"
+
+        // A broadcast to indicate that [Preferences.ORIENTATION_LOCK] has changed and Activities
+        // should request the new orientation found in the preference
         const val RESET_ORIENTATION_BROADCAST = "reset_orientation_broadcast"
     }
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     @Inject
     lateinit var userComponentBuilder: UserComponent.Builder
@@ -36,16 +41,30 @@ class App: Application(), HasActivityInjector {
     @Inject
     lateinit var analyticsRepository: AnalyticsRepository
 
-    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
-
+    /**
+     * A helper variable to be used in user-dependent objects to ensure that a valid user is present
+     * and user dependent objects are available to be injected.
+     *
+     * The system occasionally attempts to restart the Words process inside a [UserScope]d
+     * components. This variable can confirm this has happened and signal the need to kick out
+     * to the AuthActivity.
+     */
     var hasUser: Boolean = false
 
     override fun onCreate() {
-        updateDefaultNightMode()
+        updateNightMode()
         super.onCreate()
-        DaggerAppComponent.builder().application(this).build().inject(this)
     }
 
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
+    }
+
+    /**
+     * Set the current user an inject a new [UserComponent] to provide all user dependent objects.
+     * [auth] is an optional [Auth] object. Passing null will "log out" and user dependent objects
+     * may not function properly.
+     */
     fun setUser(auth: Auth?) {
         analyticsRepository.setUserId(auth?.firebaseUser?.uid)
         userComponentBuilder
@@ -53,41 +72,65 @@ class App: Application(), HasActivityInjector {
                 .firebaseUser(auth?.firebaseUser)
                 .build()
                 .inject(this)
-        hasUser = true
+        hasUser = auth != null
         dispatchReinjectUserBroadcast()
     }
 
+    /**
+     * Helper method to "log out" the user by passing null to [setUser]
+     */
     fun clearUser() {
         setUser(null)
-        DaggerAppComponent.builder().application(this).build().inject(this)
         dispatchReinjectUserBroadcast()
-        hasUser = false
     }
 
-    fun updateDefaultNightMode() {
+    /**
+     * Set the app's default night mode to the value found in [Preferences.NIGHT_MODE]. This
+     * will trigger a LocalBroadcast which can be received by any Activity that wishes to set
+     * its use [AppCompatDelegate.setLocalNightMode] to force a configuration change.
+     */
+    fun updateNightMode() {
         val nightMode = PreferenceManager.getDefaultSharedPreferences(this).getInt(Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         if (AppCompatDelegate.getDefaultNightMode() != nightMode) {
+            dispatchResetNightModeBroadcast()
             AppCompatDelegate.setDefaultNightMode(nightMode)
         }
     }
 
+    /**
+     * Trigger a LocalBroadcast indicating the value of [Preferences.ORIENTATION_LOCK] has changed.
+     * This broadcast can be received by any Activity who wishes to handle manually calling
+     * [AppCompatActivity.requestOrientation] and setting the value to the value found in
+     * [Preferences.ORIENTATION_LOCK].
+     */
     fun updateOrientation() {
         dispatchResetOrientationBroadcast()
     }
 
+    /**
+     * A centralized function to get an IntentFilter which includes all action filters for
+     * local Words broadcasts.
+     *
+     * @return an [IntentFilter] that includes all actions locally dispatched by [App]
+     */
     fun getLocalBroadcastIntentFilter(): IntentFilter {
         val filter = IntentFilter()
-        filter.addAction(REINJECT_USER_BROADCAST)
+        filter.addAction(RESET_USER_BROADCAST)
         filter.addAction(RESET_ORIENTATION_BROADCAST)
+        filter.addAction(RESET_NIGHT_MODE_BROADCAST)
         return filter
     }
 
     private fun dispatchReinjectUserBroadcast() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(REINJECT_USER_BROADCAST))
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_USER_BROADCAST))
     }
 
     private fun dispatchResetOrientationBroadcast() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_ORIENTATION_BROADCAST))
+    }
+
+    private fun dispatchResetNightModeBroadcast() {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_NIGHT_MODE_BROADCAST))
     }
 
 

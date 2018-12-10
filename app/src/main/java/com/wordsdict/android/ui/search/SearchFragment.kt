@@ -33,6 +33,8 @@ import com.wordsdict.android.data.repository.SuggestSource
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.ui.common.HeaderBanner
 import com.wordsdict.android.util.*
+import com.wordsdict.android.util.widget.DelayedLifecycleAction
+import com.wordsdict.android.util.widget.runDelayed
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
@@ -108,13 +110,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         setUpShelfActions(view)
 
-        sharedViewModel.currentWord.observe(this, Observer {
-            viewModel.setWordId(it)
+        sharedViewModel.getCurrentFirestoreUserWord().observe(this, Observer {
+            setShelfActions(it.userWord)
         })
 
-        viewModel.firestoreUserSource.observe(this, Observer { source ->
-            setShelfActions(source.userWord)
-        })
     }
 
     // Set up text watchers and on focus changed listeners to help control the
@@ -207,9 +206,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         // getOrientationPrompt broadcasts a value once and then immediately broadcasts a null
         // value to avoid observers re-receiving the last value emitted. Listen for broadcasts
         // and display the smart shelf if not null
-        viewModel.getOrientationPrompt().observe(this, Observer {
+        viewModel.orientationPrompt.observe(this, Observer {
             if (it != null) {
-                runDelayed(500) {
+                DelayedLifecycleAction(this, 500) {
                     expandSmartShelf(it)
                 }
             }
@@ -314,7 +313,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                     //TODO create a custom smartLabel view that is able to change bounds
                     smartSuggestion.smartLabel.text = getString(prompt.checkedText)
 
-                    viewModel.orientation = prompt.orientationToRequest
+                    viewModel.setOrientationPreference(prompt.orientationToRequest)
                     (activity?.application as? App)?.updateOrientation()
 
                 }
@@ -347,7 +346,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 smartSuggestion.setOnClickListener {
                     smartSuggestion.smartLabel.text = getString(prompt.checkedText)
 
-                    viewModel.orientation = prompt.orientationToRequest
+                    viewModel.setOrientationPreference(prompt.orientationToRequest)
                     (activity?.application as? App)?.updateOrientation()
                 }
             }
@@ -445,7 +444,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             is SuggestSource -> word.item.term
             else -> ""
         }
-        sharedViewModel.setCurrentWordId(id)
+        sharedViewModel.setCurrentWord(id)
         viewModel.logSearchWordEvent(id, word)
         (activity as MainActivity).showDetails()
     }

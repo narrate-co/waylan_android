@@ -1,4 +1,4 @@
-package com.wordsdict.android.util
+package com.wordsdict.android.ui.auth
 
 import com.google.firebase.auth.FirebaseAuthException
 import com.wordsdict.android.R

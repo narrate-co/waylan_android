@@ -15,21 +15,29 @@ import kotlinx.android.synthetic.main.fragment_third_party_libraries.view.*
 import com.wordsdict.android.Navigator
 import com.wordsdict.android.util.emptyDiffItemCallback
 
-
-class ThirdPartyLibrariesFragment: BaseUserFragment(), ThirdPartyLibraryViewHolder.ThirdPartyListener {
-
+/**
+ * A simple fragment that displays a static list of [ThirdPartyLibrary]
+ */
+class ThirdPartyLibrariesFragment :
+        BaseUserFragment(),
+        ThirdPartyLibraryViewHolder.ThirdPartyListener {
 
     companion object {
+        // A tag used for back stack tracking
         const val FRAGMENT_TAG = "third_party_library_fragment_tag"
+
         fun newInstance() = ThirdPartyLibrariesFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_third_party_libraries, container, false)
         view.navigationIcon.setOnClickListener {
             activity?.onBackPressed()
         }
-
         return view
     }
 
@@ -39,10 +47,17 @@ class ThirdPartyLibrariesFragment: BaseUserFragment(), ThirdPartyLibraryViewHold
     }
 
     private fun setUpList() {
-        view?.recycler?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        view?.recycler?.layoutManager =
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
-        val adapter = object : ListAdapter<ThirdPartyLibrary, ThirdPartyLibraryViewHolder>(emptyDiffItemCallback()) {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThirdPartyLibraryViewHolder {
+        // Create a simple adapter
+        val adapter = object : ListAdapter<ThirdPartyLibrary, ThirdPartyLibraryViewHolder>(
+                emptyDiffItemCallback()
+        ) {
+            override fun onCreateViewHolder(
+                    parent: ViewGroup,
+                    viewType: Int
+            ): ThirdPartyLibraryViewHolder {
                 return ThirdPartyLibraryViewHolder(
                         LayoutInflater
                                 .from(parent.context!!)

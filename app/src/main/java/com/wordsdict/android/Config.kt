@@ -1,9 +1,12 @@
 package com.wordsdict.android
 
+/**
+ * Global configuration constants
+ */
 object Config {
+    // An additional parameter to indicate extra logging should be run
+    // TODO move into a gradle variable
     const val DEBUG_VERBOSE = false
-    const val DEBUG_USER_IS_MERRIAM_WEBSTER_PURCHASED = true
-
     const val SUPPORT_EMAIL_ADDRESS = "words@wordsdict.com"
 }
 

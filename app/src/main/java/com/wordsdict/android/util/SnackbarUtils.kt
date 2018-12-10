@@ -11,20 +11,50 @@ import androidx.core.widget.TextViewCompat
 import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.R
 
+/**
+ * Helper method to style a [Snackbar] which contains content which is informative, descriptive
+ * or accessory in nature.
+ *
+ * Call this method after [Snackbar.make] and before [Snackbar.show]
+ *
+ * @param abovePeekedSheet true if this sheet will be displayed on a screen that contains
+ *  the [SearchFragment] and should be given additional vertical offset to show above the peeked
+ *  bottom search sheet.
+ */
 fun Snackbar.configInformative(context: Context, abovePeekedSheet: Boolean): Snackbar {
     return config(SnackbarType.INFORMATIVE, context, abovePeekedSheet)
 }
 
+/**
+ * Helper method to style a [Snackbar] which contains content about an error or invalid state.
+ *
+ * Call this method after [Snackbar.make] and before [Snackbar.show]
+ *
+ * @param abovePeekedSheet true if this sheet will be displayed on a screen that contains
+ *  the [SearchFragment] and should be given additional vertical offset to show above the peeked
+ *  bottom search sheet.
+ */
 fun Snackbar.configError(context: Context, abovePeekedSheet: Boolean): Snackbar {
     return config(SnackbarType.ERROR, context, abovePeekedSheet)
 }
 
+/**
+ * Possible ways in which a Words [Snackbar] can be styled
+ */
 private enum class SnackbarType {
     INFORMATIVE, ERROR
 }
 
+/**
+ * Given a Snackbar, alter it's background, message text appearance, button text appearance and
+ * margins to create a floating card with rounded corners.
+ */
 @SuppressLint("ResourceType")
-private fun Snackbar.config(type: SnackbarType, context: Context, abovePeekedSheet: Boolean): Snackbar {
+private fun Snackbar.config(
+        type: SnackbarType,
+        context: Context,
+        abovePeekedSheet: Boolean
+): Snackbar {
     val params = view.layoutParams as ViewGroup.MarginLayoutParams
     val keyline3 = context.resources.getDimensionPixelSize(R.dimen.keyline_3)
     val bottomOffset = if (abovePeekedSheet) context.resources.getDimensionPixelOffset(R.dimen.search_min_peek_height) else 0

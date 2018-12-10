@@ -83,6 +83,7 @@ class HomeFragment: BaseUserFragment() {
                     view.statusBarScrim.height,
                     totalHeight - menuContainerHeight - resources.getDimensionPixelSize(R.dimen.search_min_peek_height) - resources.getDimensionPixelSize(R.dimen.home_menu_bottom_offset_min)
             )
+            println("HomeFragment::setUpReachabilityParams - totalHeight $totalHeight, menuContainerHeight = $menuContainerHeight, topOffset = $topOffset")
             view.scrollContainer.updatePadding(top = topOffset)
         }
     }

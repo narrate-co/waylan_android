@@ -96,7 +96,10 @@ fun <T> TrimmedStack<T>.hasPattern(pattern: List<T>): Boolean {
 
 //[1, 0, 8, x, x, x]
 //[8, 0, 1]
-fun <T, P> TrimmedStack<T>.copyMatchedPattern(pattern: List<P>, areEqual: (T, P) -> Boolean): List<T>? {
+fun <T, P> TrimmedStack<T>.copyMatchedPattern(
+        pattern: List<P>,
+        areEqual: (T, P) -> Boolean
+): List<T>? {
     if (capacity < pattern.size) return null
 
     val copy: MutableList<T> = mutableListOf()

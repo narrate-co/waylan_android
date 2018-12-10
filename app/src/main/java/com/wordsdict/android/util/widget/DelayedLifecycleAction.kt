@@ -1,5 +1,6 @@
 package com.wordsdict.android.util.widget
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -10,10 +11,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * A class that invokes a function after a delay only if the LifecycleOwner
- * is in a valid state
+ * A class that invokes a function after a delay only if the LifecycleOwner is in a valid state
  *
- * Useful for delayed UI functions
+ * Useful for delayed UI functions such as animations.
  */
 open class DelayedLifecycleAction(
         owner: LifecycleOwner,
@@ -50,6 +50,5 @@ open class DelayedLifecycleAction(
         canceled = true
         job?.cancel()
     }
-
-
 }
+

@@ -17,8 +17,16 @@ import com.wordsdict.android.R
 import com.wordsdict.android.data.disk.wordset.Synonym
 import com.wordsdict.android.util.widget.DelayedLifecycleAction
 
-fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: Synonym) -> Unit)? = null): Chip {
-    val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_chip_layout, chipGroup, false) as Chip
+fun Synonym.toChip(
+        context: Context,
+        chipGroup: ChipGroup?,
+        onClick: ((synonym: Synonym) -> Unit)? = null
+): Chip {
+    val chip: Chip = LayoutInflater.from(context).inflate(
+            R.layout.details_chip_layout,
+            chipGroup,
+            false
+    ) as Chip
     chip.chipText = this.synonym
     chip.setOnClickListener {
         if (onClick != null) onClick(this)
@@ -26,8 +34,16 @@ fun Synonym.toChip(context: Context, chipGroup: ChipGroup?, onClick: ((synonym: 
     return chip
 }
 
-fun String.toRelatedChip(context: Context, chipGroup: ChipGroup?, onClick: ((word: String) -> Unit)? = null): Chip {
-    val chip: Chip = LayoutInflater.from(context).inflate(R.layout.details_related_chip_layout, chipGroup, false) as Chip
+fun String.toRelatedChip(
+        context: Context,
+        chipGroup: ChipGroup?,
+        onClick: ((word: String) -> Unit)? = null
+): Chip {
+    val chip: Chip = LayoutInflater.from(context).inflate(
+            R.layout.details_related_chip_layout,
+            chipGroup,
+            false
+    ) as Chip
     val underlinedString = SpannableString(this)
     underlinedString.setSpan(UnderlineSpan(),0,this.length,0)
     chip.text = underlinedString
@@ -71,13 +87,6 @@ val Context.displayHeightPx: Int
 val Activity.displayHeightDp: Float
     get() = resources.displayMetrics.heightPixels / resources.displayMetrics.density
 
-fun AppCompatImageButton.setChecked(value: Boolean) {
-    if (value) {
-        setImageResource(R.drawable.ic_round_check_circle_24px)
-    } else {
-        setImageResource(R.drawable.ic_round_check_circle_outline_24px)
-    }
-}
 
 fun View.gone() {
     if (visibility != View.GONE) visibility = View.GONE
@@ -89,26 +98,4 @@ fun View.invisible() {
 
 fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
-}
-
-fun View.runTransitionDrawable(duration: Int, reverse: Boolean = false, isCrossFadeEnabled: Boolean = true) {
-    (background as? TransitionDrawable)?.let {
-        it.isCrossFadeEnabled = isCrossFadeEnabled
-        if (!reverse) {
-            it.startTransition(duration)
-        } else {
-            it.reverseTransition(duration)
-        }
-    }
-}
-
-fun View.setLeftTopRightBottom(left: Int? = null, top: Int? = null, right: Int? = null, bottom: Int? = null) {
-    this.left = left ?: this.left
-    this.top = left ?: this.top
-    this.right = left ?: this.right
-    this.bottom = left ?: this.bottom
-}
-
-fun Fragment.runDelayed(delay: Long, block: () -> Unit): DelayedLifecycleAction {
-    return DelayedLifecycleAction(this, delay, block).run()
 }

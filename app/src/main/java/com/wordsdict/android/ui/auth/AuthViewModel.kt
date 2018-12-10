@@ -9,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.wordsdict.android.data.firestore.util.users
 import com.wordsdict.android.data.firestore.users.User
-import com.wordsdict.android.util.FirebaseAuthWordErrorType
 import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume

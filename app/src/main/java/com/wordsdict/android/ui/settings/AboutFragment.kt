@@ -11,10 +11,20 @@ import com.wordsdict.android.ui.common.BaseUserFragment
 import kotlinx.android.synthetic.main.fragment_about.view.*
 
 
+/**
+ * A Fragment to display a short about copy as well as miscellaneous items about the Words
+ * application and software
+ *
+ * [R.id.aboutBody] A copy explaining what Words is as a product/company
+ * [R.id.version] The build's version name and type
+ * [R.id.thirdPartyLibraries] Leads to [ThirdPartyLibrariesFragment]
+ */
 class AboutFragment: BaseUserFragment() {
 
     companion object {
+        // A tag used for back stack tracking
         const val FRAGMENT_TAG = "about_fragment_tag"
+
         fun newInstance() = AboutFragment()
     }
 
@@ -24,16 +34,14 @@ class AboutFragment: BaseUserFragment() {
             activity?.onBackPressed()
         }
 
-        //version
+        // Version preference
         view.version.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
 
-        //third part libs
+        // Third Party Libs preference
         view.thirdPartyLibraries.setOnClickListener {
             Navigator.showThirdPartyLibraries(activity!!)
         }
 
         return view
     }
-
-
 }

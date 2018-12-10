@@ -4,6 +4,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.settings_check_preference_list_item.view.*
 
+/**
+ * A simple ViewHolder to hold and bind a [ThirdPartyLibrary] to a RecyclerView item view.
+ */
 class ThirdPartyLibraryViewHolder(
         private val view: View,
         private val listener: ThirdPartyListener
