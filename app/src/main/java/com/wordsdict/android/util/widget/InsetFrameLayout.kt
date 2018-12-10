@@ -6,6 +6,9 @@ import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.wordsdict.android.util.children
 
+/**
+ * A FrameLayout that enables child views to optionally consume window insets.
+ */
 class InsetFrameLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

@@ -10,6 +10,20 @@ import com.wordsdict.android.util.invisible
 import com.wordsdict.android.util.visible
 import kotlinx.android.synthetic.main.check_preference_view_layout.view.*
 
+/**
+ * A compound ViewGroup which displays an preference item containing a title, a description and
+ * an optional checkbox.
+ *
+ * @property title The main title of the preference.
+ * @property desc A short sentence describing what the preference does or the current value of the
+ *  preference (ie. a preference with the title Orientation might choose to use the description to
+ *  show the currently set value - unlocked, portrait, landscape)
+ * @property checkable If this preferences checkbox should be displayed. Use for true/false
+ *  preferences
+ * @property checked If the checkbox should be set to checked or not checked
+ * @property showDivider true if this preference should draw a divider below itself to visually
+ *  separate any preferences which follow it.
+ */
 class CheckPreferenceView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -59,11 +73,19 @@ class CheckPreferenceView @JvmOverloads constructor(
         setShowDivider(showDivider)
     }
 
+    /**
+     * Set this preferences title
+     */
     fun setTitle(title: String) {
         this.title = title
         titleTextView.text = title
     }
 
+    /**
+     * Set this preferences description.
+     *
+     * @param desc A short sentence describing what this preference does.
+     */
     fun setDesc(desc: String?) {
         this.desc = desc
         if (desc != null) {
@@ -75,6 +97,11 @@ class CheckPreferenceView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set whether or not this preference should display it's right-aligned checkbox
+     *
+     * @param checkable true if this preference's checkbox should be visible
+     */
     fun setCheckable(checkable: Boolean) {
         this.checkable = checkable
         if (checkable) {
@@ -84,6 +111,11 @@ class CheckPreferenceView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the state of this preference's checkbox/
+     *
+     * @param checked true if the checkbox should be marked as checked
+     */
     fun setChecked(checked: Boolean) {
         this.checked = checked
         if (checked) {
@@ -93,6 +125,11 @@ class CheckPreferenceView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set whether or not a divider (a hairline) should be shown below this preference/
+     *
+     * @param showDivider true if this preference should show a divider
+     */
     fun setShowDivider(showDivider: Boolean) {
         this.showDivider = showDivider
         if (showDivider) {
@@ -102,11 +139,16 @@ class CheckPreferenceView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Register a [View.OnClickListener] for this preference. This will be called for any click
+     * events on either the preference view as a whole or its checkbox.
+     */
     override fun setOnClickListener(l: OnClickListener?) {
         setPreferenceClickListener(l)
     }
 
     private fun setPreferenceClickListener(listener: OnClickListener?) {
         container.setOnClickListener(listener)
+        checkbox.setOnClickListener(listener)
     }
 }

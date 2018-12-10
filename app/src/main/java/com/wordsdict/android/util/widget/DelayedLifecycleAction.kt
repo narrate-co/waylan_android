@@ -11,9 +11,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * A class that invokes a function after a delay only if the LifecycleOwner is in a valid state
+ * A class that invokes a function after a delay only if the LifecycleOwner has not passed through
+ * [Lifecycle.Event.ON_STOP]
  *
  * Useful for delayed UI functions such as animations.
+ *
+ * TODO extend to support an action to be run when canceled
  */
 open class DelayedLifecycleAction(
         owner: LifecycleOwner,

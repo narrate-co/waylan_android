@@ -11,35 +11,67 @@ import androidx.transition.TransitionValues
 import com.wordsdict.android.R
 
 
-class ElasticTransition(private val up: Boolean) : Fade() {
+/**
+ * A Transition that animates a Fragment with a root view that acts as a scrim and a single child
+ * CoordinatorLayout holding its content.
+ *
+ * When a Fragment that is elastic is being dragged to dismiss, the Fragment below it often shares
+ * the same windowBackground color, making the dragging Fragment and the Fragment beneath it's
+ * border visually indistinguishable. To solve this problem, either a shadow along the top of the
+ * elastic Fragment could be used or a scrim behind the elastic Fragment could be used. Due to the
+ * way Android's material light source works, shadows near the top of the window are not visible
+ * (the light source lives near the top of the window and points towards the bottom, casting shadows
+ * along the bottom and sides of views but being basically non existent along the top of views when
+ * near the top of the window). For this reason, Fragments that are elastic are wrapped in an
+ * [InsetFrameLayout] that acts as a scrim behind the Fragments main content.
+ *
+ * For this transition, we want to animate the elastic Fragment's scrim and main contents
+ * seperately. This Transition requires the Elastic fragment to have a CoordinatorLayout with the
+ * id R.id.coordinator as the only child of an [InsetFrameLayout]. On enter, we animate the
+ * translationY of the main contents CoordinatorLayout, creating the slide up animation and animate
+ * the alpha of the [InsetFrameLayout], effectively animating in the entire Fragment's view.
+ */
+class ElasticTransition : Fade() {
 
     companion object {
         private const val TAG = "ElasticTransition"
 
-        private const val PROPNAME_TRANSLATION_Y = "com.wordsdict.android.ExitTransition:translationY"
+        private const val PROPNAME_TRANSLATION_Y =
+                "com.wordsdict.android.ExitTransition:translationY"
 
         private const val DEFAULT_DURATION = 300L
         private const val TRANSLATION_DISTANCE = 500F
     }
 
     override fun captureStartValues(transitionValues: TransitionValues) {
-        val coordinatorLayout: CoordinatorLayout? = transitionValues.view.findViewById(R.id.coordinator)
-        transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
+        captureValues(transitionValues)
         super.captureStartValues(transitionValues)
     }
 
     override fun captureEndValues(transitionValues: TransitionValues) {
-        val coordinatorLayout: CoordinatorLayout? = transitionValues.view.findViewById(R.id.coordinator)
-        transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
+        captureValues(transitionValues)
         super.captureEndValues(transitionValues)
     }
 
+    private fun captureValues(transitionValues: TransitionValues) {
+        val coordinatorLayout: CoordinatorLayout? =
+                transitionValues.view.findViewById(R.id.coordinator)
+        transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
+    }
 
-    override fun onAppear(sceneRoot: ViewGroup?, view: View?, startValues: TransitionValues?, endValues: TransitionValues?): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator) ?: return null
+
+    override fun onAppear(
+            sceneRoot: ViewGroup?,
+            view: View?,
+            startValues: TransitionValues?,
+            endValues: TransitionValues?
+    ): Animator? {
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+                ?: return null
 
         val set = AnimatorSet()
 
+        // Animate the root view's translationY, creating the slide effect
         val coordinatorAnim = ObjectAnimator.ofFloat(
                 coordinatorLayout,
                 "translationY",
@@ -48,6 +80,7 @@ class ElasticTransition(private val up: Boolean) : Fade() {
         )
         coordinatorAnim.duration = DEFAULT_DURATION
 
+        // Animate the alpha
         val scrimAnim = ObjectAnimator.ofFloat(
                 view,
                 "alpha",
@@ -60,8 +93,14 @@ class ElasticTransition(private val up: Boolean) : Fade() {
         return set
     }
 
-    override fun onDisappear(sceneRoot: ViewGroup?, view: View?, startValues: TransitionValues?, endValues: TransitionValues?): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator) ?: return null
+    override fun onDisappear(
+            sceneRoot: ViewGroup?,
+            view: View?,
+            startValues: TransitionValues?,
+            endValues: TransitionValues?
+    ): Animator? {
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+                ?: return null
 
         val startY = startValues?.values?.get(PROPNAME_TRANSLATION_Y) as? Float ?: 0F
         val endY = startY + TRANSLATION_DISTANCE

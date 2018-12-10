@@ -10,6 +10,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.huma.room_for_asset.defaultSharedPreferences
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper
 
+/**
+ * A fork of <a>https://github.com/humazed/RoomAsset</a> that copies a Room database file into the
+ * storage when the app is first run.
+ */
 class RoomAsset {
 
     companion object {
@@ -19,14 +23,14 @@ class RoomAsset {
          * Creates a RoomDatabase.Builder for a  persistent database. Once a database is built, you
          * should keep a reference to it and re-use it.
          *
-         * @param context          The context for the database. This is usually the Application context.
-         * @param klass            The abstract class which is annotated with @[Database] and extends
-         *                         [RoomDatabase].
-         * @param name             The name of the database file.
-         * @param storageDirectory To store the database file upon creation; caller must ensure that
-         *                         the specified absolute path is available and can be written to;
-         *                         not needed if the database is the default location :assets/database.
-         * @param factory          to use for creating cursor objects, or null for the default.
+         * @param context The context for the database. This is usually the Application context.
+         * @param klass The abstract class which is annotated with @[Database] and
+         *  extends [RoomDatabase].
+         * @param name The name of the database file.
+         * @param storageDirectory To store the database file upon creation; caller must ensure
+         *  that the specified absolute path is available and can be written to; not needed if the
+         *  database is the default location :assets/database.
+         * @param factory To use for creating cursor objects, or null for the default.
          * @return A [RoomDatabase.Builder<T>] which you can use to create the database.
          */
         @JvmStatic
@@ -53,12 +57,19 @@ class RoomAsset {
         /**
          * Open the database and copy it to data folder using [SQLiteAssetHelper]
          */
-        private fun openDb(context: Context, name: String, storageDirectory: String?, factory: SQLiteDatabase.CursorFactory?) {
+        private fun openDb(
+                context: Context,
+                name: String,
+                storageDirectory: String?,
+                factory: SQLiteDatabase.CursorFactory?
+        ) {
             val instantiated = "instantiated"
             val sharedPref = context.defaultSharedPreferences
 
             if (!sharedPref.getBoolean(instantiated, false)) {
-                SQLiteAssetHelper(context, name, storageDirectory, factory, 1).writableDatabase.close()
+                SQLiteAssetHelper(context, name, storageDirectory, factory, 1)
+                        .writableDatabase
+                        .close()
                 sharedPref.edit().putBoolean(instantiated, true).apply()
                 Log.w(TAG, "RoomAsset is ready ")
             }

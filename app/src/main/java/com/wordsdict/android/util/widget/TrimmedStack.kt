@@ -9,6 +9,11 @@ import java.util.*
  */
 class TrimmedStack<T>(private var array: MutableList<T?>): Iterable<T?> {
 
+    /**
+     * @param capacity the max number of items which should be held. Adding new items will
+     *  remove the oldest.
+     * @param init a function used to create each initial item in the stack
+     */
     constructor(capacity: Int, init: (index: Int) -> T?) : this(MutableList(capacity, init))
 
     val capacity: Int = array.size
@@ -70,6 +75,8 @@ fun <T> trimmedStackOf(vararg elements: T): TrimmedStack<T> =
 fun <T> emptyTrimmedStack(capacity: Int): TrimmedStack<T> = TrimmedStack(capacity) { null }
 
 /**
+ * Determine whether the given pattern matches the most recently pushed items in this TrimmedStack
+ *
  * @param pattern The pattern to match in chronological order from least recent to most recent
  *
  * pattern -> portrait, landscape, reverse portrait
@@ -94,8 +101,18 @@ fun <T> TrimmedStack<T>.hasPattern(pattern: List<T>): Boolean {
     return matches
 }
 
-//[1, 0, 8, x, x, x]
-//[8, 0, 1]
+/**
+ * Determine whether the given pattern matches the most recently pushed items in this TrimmedStack,
+ * using [areEqual] to compare items. If the pattern is present, a list of this TrimmedStack (in
+ * order of most recent to least recent) will be returned. Otherwise, null will be returned.
+ *
+ * @param pattern The pattern to check for in order of most recently to least recent
+ * @param areEqual A function to compare items in [pattern] against items in this TrimmedStack. This
+ *  is helpful if items are of different types.
+ *
+ * @return A list, exactly the same as [pattern], but of [T], the type of the TrimmedStack. If the
+ *  pattern is not present, null will be returned.
+ */
 fun <T, P> TrimmedStack<T>.copyMatchedPattern(
         pattern: List<P>,
         areEqual: (T, P) -> Boolean

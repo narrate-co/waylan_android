@@ -84,7 +84,7 @@ object Navigator {
             val detailsFragment = DetailsFragment.newInstance()
 
             // Add an ElasticTransition for this fragment's enter, sliding up and alpha'ing in
-            val enterTransition = ElasticTransition(true)
+            val enterTransition = ElasticTransition()
             enterTransition.interpolator = FastOutSlowInInterpolator()
             // TODO come up with a more robust transition listener solution that doesn't depend
             // TODO as heavily on the transition call site
@@ -104,7 +104,7 @@ object Navigator {
             detailsFragment.reenterTransition = enterTransition
 
             // Add an ElasticTransition for this fragment's exist, sliding down and alpha'ing out
-            val exitTransition = ElasticTransition(false)
+            val exitTransition = ElasticTransition()
             exitTransition.interpolator = FastOutSlowInInterpolator()
             detailsFragment.exitTransition = exitTransition
             detailsFragment.returnTransition = exitTransition
@@ -139,7 +139,7 @@ object Navigator {
         }
 
         // Add an ElasticTransition for this fragment's enter, sliding up and alpha'ing in
-        val enterTransition = ElasticTransition(true)
+        val enterTransition = ElasticTransition()
         enterTransition.interpolator = FastOutSlowInInterpolator()
         // TODO come up with a more robust transition listener solution that doesn't depend
         // TODO as heavily on the transition call site
@@ -159,7 +159,7 @@ object Navigator {
         listFragment.enterTransition = enterTransition
         listFragment.reenterTransition = enterTransition
 
-        val exitTransition = ElasticTransition(false)
+        val exitTransition = ElasticTransition()
         exitTransition.interpolator = FastOutSlowInInterpolator()
         listFragment.exitTransition = exitTransition
         listFragment.returnTransition = exitTransition
