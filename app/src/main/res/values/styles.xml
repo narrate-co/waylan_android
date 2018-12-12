@@ -27,14 +27,14 @@
 
         <item name="colorAccentDark">@color/colorWhite900</item>
         <item name="colorPrimaryLight">@color/colorBlack700</item>
-        <item name="colorHairline">@color/dark_colorWhite25a</item>
-        <item name="colorDivider">@color/dark_colorWhite05a</item>
-        <item name="colorScrim">@color/light_colorBlack25a</item>
-        <item name="colorError">@color/colorMauve200</item>
+        <item name="colorHairline">@color/colorWhiteAlpha025</item>
+        <item name="colorDivider">@color/colorWhiteAlpha005</item>
+        <item name="colorScrim">@color/colorBlackAlpha025</item>
+        <item name="colorError">@color/colorMauve300</item>
         <item name="colorInformative">@color/colorBlack300</item>
         <item name="colorBrand">@color/colorPink200</item>
         <item name="colorBrandSecondary">@color/colorBlue500</item>
-        <item name="textColorError">@color/dark_colorTextError</item>
+        <item name="textColorError">@color/colorMauve300</item>
         <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
         <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
         <item name="textColorOnInformative">@color/colorTextLightHighEmphasis</item>
@@ -49,11 +49,11 @@
 
     <style name="Base.Theme.Words.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/colorIvory50</item>
-        <item name="colorPrimaryDark">@color/colorIvory100</item>
+        <item name="colorPrimary">@color/colorIvory100</item>
+        <item name="colorPrimaryDark">@color/colorIvory200</item>
         <item name="colorAccent">@color/colorTextDarkMediumEmphasis</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/colorIvory50</item>
+        <item name="android:windowBackground">@color/colorIvory100</item>
 
         <item name="android:textColorPrimary">@color/colorTextDarkHighEmphasis</item>
         <item name="android:textColorSecondary">@color/colorTextDarkMediumEmphasis</item>
@@ -63,21 +63,21 @@
         <item name="android:textColorSecondaryInverse">@color/colorTextLightMediumEmphasis</item>
         <item name="android:textColorTertiaryInverse">@color/colorTextLightLowEmphasis</item>
 
-        <item name="surfaceAColor">@color/colorIvory50</item>
-        <item name="surfaceASubsurfaceAColor">@color/colorIvory100</item>
-        <item name="surfaceBColor">@color/colorIvory50</item>
-        <item name="surfaceBSubsurfaceAColor">@color/colorIvory100</item>
+        <item name="surfaceAColor">@color/colorIvory100</item>
+        <item name="surfaceASubsurfaceAColor">@color/colorIvory200</item>
+        <item name="surfaceBColor">@color/colorIvory100</item>
+        <item name="surfaceBSubsurfaceAColor">@color/colorIvory200</item>
 
         <item name="colorAccentDark">@color/colorBlack900</item>
-        <item name="colorPrimaryLight">@color/colorIvory25</item>
-        <item name="colorHairline">@color/light_colorBlack25a</item>
-        <item name="colorDivider">@color/light_colorBlack05a</item>
-        <item name="colorScrim">@color/light_colorBlack05a</item>
-        <item name="colorError">@color/colorMauve50</item>
-        <item name="colorInformative">@color/colorIvory600</item>
+        <item name="colorPrimaryLight">@color/colorIvory50</item>
+        <item name="colorHairline">@color/colorBlackAlpha025</item>
+        <item name="colorDivider">@color/colorBlackAlpha005</item>
+        <item name="colorScrim">@color/colorBlackAlpha005</item>
+        <item name="colorError">@color/colorMauve100</item>
+        <item name="colorInformative">@color/colorIvory700</item>
         <item name="colorBrand">@color/colorPink400</item>
         <item name="colorBrandSecondary">@color/colorBlue800</item>
-        <item name="textColorError">@color/light_colorTextError</item>
+        <item name="textColorError">@color/colorMauve300</item>
         <item name="textColorOnError">@color/colorTextDarkHighEmphasis</item>
         <item name="textColorHintOnError">@color/colorTextDarkLowEmphasis</item>
         <item name="textColorOnInformative">@color/colorTextDarkHighEmphasis</item>

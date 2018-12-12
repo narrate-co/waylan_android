@@ -34,7 +34,6 @@ import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.ui.common.HeaderBanner
 import com.wordsdict.android.util.*
 import com.wordsdict.android.util.widget.DelayedLifecycleAction
-import com.wordsdict.android.util.widget.runDelayed
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*

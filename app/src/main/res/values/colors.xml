@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Words Common Colors-->
-    <color name="colorTextDarkLowEmphasis">#61000000</color>
-    <color name="colorTextDarkMediumEmphasis">#99000000</color>
-    <color name="colorTextDarkHighEmphasis">#de000000</color>
+    <!--Words Theme Colors-->
+    <!--TODO move to new color palette values-->
+    <color name="colorTextDarkLowEmphasis">@color/colorBlackAlpha038</color> <!--38% alpha-->
+    <color name="colorTextDarkMediumEmphasis">@color/colorBlackAlpha060</color> <!--60% alpha-->
+    <color name="colorTextDarkHighEmphasis">@color/colorBlackAlpha087</color> <!--87% alpha-->
 
-    <color name="colorTextLightLowEmphasis">#61f7f3ed</color>
-    <color name="colorTextLightMediumEmphasis">#99f7f3ed</color>
-    <color name="colorTextLightHighEmphasis">#def7f3ed</color>
+    <color name="colorTextLightLowEmphasis">@color/colorWhiteAlpha038</color> <!--38% alpha-->
+    <color name="colorTextLightMediumEmphasis">@color/colorWhiteAlpha060</color> <!--60% alpha-->
+    <color name="colorTextLightHighEmphasis">@color/colorWhiteAlpha087</color> <!--87% alpha-->
 
+
+
+    <!--Words Palette-->
     <color name="colorPink50">#fce2eb</color>
     <color name="colorPink100">#f7b5ce</color>
     <color name="colorPink200">#f387b0</color>
@@ -32,45 +36,45 @@
     <color name="colorBlue800">#354a56</color>
     <color name="colorBlue900">#24353e</color>
 
+    <color name="colorIvory50">#faf8f2</color>
+    <color name="colorIvory100">#f8f5ee</color>
+    <color name="colorIvory200">#f2efea</color>
+    <color name="colorIvory300">#efeee9</color>
+    <color name="colorIvory400">#eae9e5</color>
+    <color name="colorIvory500">#e7e6e1</color>
+    <color name="colorIvory600">#e2e1dd</color>
+    <color name="colorIvory700">#deddda</color>
 
-    <color name="colorIvory25">#faf8f2</color>
-    <color name="colorIvory50">#f8f5ee</color>
-    <color name="colorIvory100">#f2efea</color>
-    <color name="colorIvory200">#efeee9</color>
-    <color name="colorIvory300">#eae9e5</color>
-    <color name="colorIvory400">#e7e6e1</color>
-    <color name="colorIvory500">#e2e1dd</color>
-    <color name="colorIvory600">#deddda</color>
+    <color name="colorMauve50">#f6e7e9</color>
+    <color name="colorMauve100">#edd1d1</color>
+    <color name="colorMauve200">#eac6cb</color>
+    <color name="colorMauve300">#ce8e8f</color>
+    <color name="colorMauve400">#bb6366</color>
 
-    <color name="colorBlack900">#131314</color>
-    <color name="colorBlack800">#181819</color>
-    <color name="colorBlack700">#1c1c1e</color>
-    <color name="colorBlack600">#212021</color>
-    <color name="colorBlack500">#242424</color>
-    <color name="colorBlack400">#272727</color>
     <color name="colorBlack300">#2a292a</color>
+    <color name="colorBlack400">#272727</color>
+    <color name="colorBlack500">#242424</color>
+    <color name="colorBlack600">#212021</color>
+    <color name="colorBlack700">#1c1c1e</color>
+    <color name="colorBlack800">#181819</color>
+    <color name="colorBlack900">#131314</color>
+
+    <color name="colorBlackAlpha002">#05000000</color> <!--2% alpha-->
+    <color name="colorBlackAlpha005">#0D000000</color> <!--5% alpha-->
+    <color name="colorBlackAlpha025">#40000000</color> <!--25% alpha-->
+    <color name="colorBlackAlpha038">#61000000</color> <!--38% alpha-->
+    <color name="colorBlackAlpha060">#99000000</color> <!--60% alpha-->
+    <color name="colorBlackAlpha087">#de000000</color> <!--87% alpha-->
 
     <color name="colorWhite900">#F2FFFFFF</color>
 
-    <color name="colorMauve50">#edd1d1</color>
-    <color name="colorMauve100">#eac6cb</color>
-    <color name="colorMauve200">#ce8e8f</color>
-    <color name="colorMauve300">#bb6366</color>
+    <color name="colorWhiteAlpha002">#05ffffff</color> <!--2% alpha-->
+    <color name="colorWhiteAlpha005">#0Dffffff</color> <!--5% alpha-->
+    <color name="colorWhiteAlpha025">#40ffffff</color> <!--25% alpha-->
+    <color name="colorWhiteAlpha038">#61f7f3ed</color> <!--38% alpha-->
+    <color name="colorWhiteAlpha060">#99f7f3ed</color> <!--60% alpha-->
+    <color name="colorWhiteAlpha087">#def7f3ed</color> <!--87% alpha-->
 
 
-    <!--Words Light Colors-->
-    <color name="light_colorTextError">#99ff0000</color>
-
-    <color name="light_colorBlack02a">#05000000</color>
-    <color name="light_colorBlack05a">#0D000000</color>
-    <color name="light_colorBlack25a">#40000000</color>
-
-
-    <!--Words Dark Colors-->
-    <color name="dark_colorTextError">#e57373</color>
-
-    <color name="dark_colorWhite02a">#05ffffff</color>
-    <color name="dark_colorWhite05a">#0Dffffff</color>
-    <color name="dark_colorWhite25a">#40ffffff</color>
 
 </resources>
