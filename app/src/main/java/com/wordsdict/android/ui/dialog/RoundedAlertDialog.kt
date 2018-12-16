@@ -50,7 +50,7 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
         //TODO should this be a surface C? (see color attrs)
         d.window.setBackgroundDrawable(
-                createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.surfaceBColor)
+                createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.colorSurface)
         )
 
         return d

@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Words.DayNight" parent="Theme.Words.Dark"/>
+
+    <!--Dark Theme-->
+    <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark"/>
+    <style name="Base.Theme.Words.Dark" parent="Base.Theme.Words">
+        <!--Words Color Theme-->
+        <!--Brand Colors-->
+        <item name="colorBrand">@color/words_dark_color_brand</item>
+        <item name="colorBrandVariant">@color/words_dark_color_brand_variant</item>
+        <!--Plane Colors-->
+        <item name="colorBackground">@color/words_dark_color_background</item>
+        <item name="colorSurface">@color/words_dark_color_surface</item>
+        <item name="colorAccentSurface">@color/words_dark_color_accent_surface</item>
+        <item name="colorBackgroundArea">@color/words_dark_color_background_area</item>
+        <item name="colorBackgroundAreaVariant">@color/words_dark_color_background_area_variant</item>
+        <item name="colorSurfaceArea">@color/words_dark_color_surface_area</item>
+        <item name="colorSurfaceAreaVariant">@color/words_dark_color_surface_area_variant</item>
+        <item name="colorAccentSurfaceArea">@color/words_dark_color_accent_surface_area</item>
+        <item name="colorAccentSurfaceAreaVariant">@color/words_dark_color_accent_surface_area_variant</item>
+        <item name="colorError">@color/words_dark_color_error</item>
+        <item name="colorErrorVariant">@color/words_dark_color_error_variant</item>
+        <item name="colorInformative">@color/words_dark_color_informative</item>
+        <!--On Colors-->
+        <item name="colorPrimaryOnDefault">@color/words_dark_color_primary_on_default</item>
+        <item name="colorSecondaryOnDefault">@color/words_dark_color_secondary_on_default</item>
+        <item name="colorTertiaryOnDefault">@color/words_dark_color_tertiary_on_default</item>
+        <item name="colorErrorOnDefault">@color/words_dark_color_error_on_default</item>
+        <item name="colorPrimaryOnError">@color/words_dark_color_primary_on_error</item>
+        <item name="colorSecondaryOnError">@color/words_dark_color_secondary_on_error</item>
+        <item name="colorTertiaryOnError">@color/words_dark_color_tertiary_on_error</item>
+        <item name="colorOnInformative">@color/words_dark_color_on_informative</item>
+        <!--Misc Colors-->
+        <item name="colorScrim">@color/words_dark_color_scrim</item>
+        <item name="colorDivider">@color/words_dark_color_divider</item>
+        <item name="colorHairline">@color/words_dark_color_hairline</item>
+    </style>
 </resources>

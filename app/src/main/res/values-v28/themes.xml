@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Light v28-->
+    <style name="Theme.Words" parent="Base.Theme.Words">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">?colorAccentSurface</item>
+    </style>
+
+</resources>

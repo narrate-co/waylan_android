@@ -293,8 +293,8 @@ class AuthActivity : DaggerAppCompatActivity() {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
-                val errorTextColor = getColorFromAttr(R.attr.textColorOnError)
-                val errorHintColor = getColorFromAttr(R.attr.textColorHintOnError)
+                val errorTextColor = getColorFromAttr(R.attr.colorPrimaryOnError)
+                val errorHintColor = getColorFromAttr(R.attr.colorTertiaryOnError)
                 TransitionManager.beginDelayedTransition(container)
                 email.setTextColor(errorTextColor)
                 email.setHintTextColor(errorHintColor)
@@ -323,8 +323,8 @@ class AuthActivity : DaggerAppCompatActivity() {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
 
-                val textColor = getColorFromAttr(android.R.attr.textColorPrimary)
-                val hintColor = getColorFromAttr(android.R.attr.textColorTertiary)
+                val textColor = getColorFromAttr(R.attr.colorPrimaryOnDefault)
+                val hintColor = getColorFromAttr(R.attr.colorTertiaryOnDefault)
                 TransitionManager.beginDelayedTransition(container)
                 email.setTextColor(textColor)
                 email.setHintTextColor(hintColor)

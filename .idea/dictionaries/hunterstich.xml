@@ -4,8 +4,10 @@
       <w>bindable</w>
       <w>firebase</w>
       <w>firestore</w>
+      <w>overline</w>
       <w>propname</w>
       <w>reachability</w>
+      <w>snackbar</w>
       <w>undispatched</w>
       <w>upsert</w>
     </words>

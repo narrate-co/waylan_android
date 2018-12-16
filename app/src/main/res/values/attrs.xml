@@ -1,31 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Additional TextAppearances-->
-    <attr name="textAppearanceBody1Inverse" format="reference"/>
-    <attr name="textAppearanceButtonInverse" format="reference"/>
+    
+    <!--Color Theme-->
+    <!--Brand Colors-->
+    <attr name="colorBrand" format="color"/>
+    <attr name="colorBrandVariant" format="color"/>
+    <!--Plane Colors-->
+    <attr name="colorBackground" format="color"/>
+    <attr name="colorSurface" format="color"/>
+    <attr name="colorAccentSurface" format="color"/>
+    <attr name="colorBackgroundArea" format="color"/>
+    <attr name="colorBackgroundAreaVariant" format="color"/>
+    <attr name="colorSurfaceArea" format="color"/>
+    <attr name="colorSurfaceAreaVariant" format="color"/>
+    <attr name="colorAccentSurfaceArea" format="color"/>
+    <attr name="colorAccentSurfaceAreaVariant" format="color"/>
+    <attr name="colorError" format="color"/>
+    <attr name="colorErrorVariant" format="color"/>
+    <attr name="colorInformative" format="color"/>
+    <!--On Colors-->
+    <attr name="colorPrimaryOnDefault" format="color"/>
+    <attr name="colorSecondaryOnDefault" format="color"/>
+    <attr name="colorTertiaryOnDefault" format="color"/>
+    <attr name="colorErrorOnDefault" format="color"/>
+    <attr name="colorPrimaryOnError" format="color"/>
+    <attr name="colorSecondaryOnError" format="color"/>
+    <attr name="colorTertiaryOnError" format="color"/>
+    <attr name="colorOnInformative" format="color"/>
+    <!--Misc Colors-->
+    <attr name="colorScrim" format="color"/>
+    <attr name="colorDivider" format="color"/>
+    <attr name="colorHairline" format="color"/>
+
+
 
     <!--Additional Colors-->
-    <attr name="colorAccentDark" format="color"/>
-    <attr name="colorPrimaryLight" format="color"/>
-    <attr name="colorHairline" format="color"/>
-    <attr name="colorDivider" format="color"/>
-    <attr name="colorScrim" format="color"/>
-    <attr name="colorError" format="color"/>
-    <attr name="colorInformative" format="color"/>
-    <attr name="colorBrand" format="color"/>
-    <attr name="colorBrandSecondary" format="color"/>
-    <attr name="textColorError" format="color"/>
-    <attr name="textColorOnError" format="color"/>
-    <attr name="textColorHintOnError" format="color"/>
-    <attr name="textColorOnInformative" format="color"/>
+    <!--<attr name="colorAccentDark" format="color"/>-->
+    <!--<attr name="colorPrimaryLight" format="color"/>-->
+    <!--<attr name="colorHairline" format="color"/>-->
+    <!--<attr name="colorInformative" format="color"/>-->
+    <!--<attr name="colorBrandSecondary" format="color"/>-->
+    <!--<attr name="textColorError" format="color"/>-->
+    <!--<attr name="textColorOnError" format="color"/>-->
+    <!--<attr name="textColorHintOnError" format="color"/>-->
+    <!--<attr name="textColorOnInformative" format="color"/>-->
 
-    <attr name="surfaceAColor" format="color"/>
-    <attr name="surfaceASubsurfaceAColor" format="color"/>
-    <attr name="surfaceBColor" format="color"/>
-    <attr name="surfaceBSubsurfaceAColor" format="color"/>
+    <!--<attr name="surfaceAColor" format="color"/>-->
+    <!--<attr name="surfaceASubsurfaceAColor" format="color"/>-->
+    <!--<attr name="surfaceBColor" format="color"/>-->
+    <!--<attr name="surfaceBSubsurfaceAColor" format="color"/>-->
 
-    <attr name="textLabelBackgroundColor" format="color"/>
-    <attr name="textLabelTextColor" format="color"/>
+    <!--<attr name="textLabelBackgroundColor" format="color"/>-->
+    <!--<attr name="textLabelTextColor" format="color"/>-->
+
+
+    <!--Additional TextAppearances-->
+    <!--<attr name="textAppearanceBody1Inverse" format="reference"/>-->
+    <!--<attr name="textAppearanceButtonInverse" format="reference"/>-->
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>
@@ -34,10 +65,9 @@
     <attr name="styleEditTextArea" format="reference"/>
     <attr name="styleTextLabel" format="reference"/>
 
-    <!--Shape Drawables-->
+    <!--Drawables-->
+    <!--TODO move to using MaterialShapeDrawables-->
     <attr name="drawableSnackbarErrorBackground" format="reference"/>
-    <attr name="drawableSnackbarInformativeBackground" format="reference"/>
-
-    <!--Icons-->
+    <attr name="drawableSnackbarBackground" format="reference"/>
 
 </resources>

@@ -1,4 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Words.DayNight" parent="Theme.Words.Light"/>
+    <style name="Theme.Words.DayNight" parent="Theme.Words"/>
+
+    <!--Default/Light Theme-->
+    <style name="Theme.Words" parent="Base.Theme.Words"/>
+    <style name="Base.Theme.Words" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--Words Color Theme-->
+        <!--Brand Colors-->
+        <item name="colorBrand">@color/words_color_brand</item>
+        <item name="colorBrandVariant">@color/words_color_brand_variant</item>
+        <!--Plane Colors-->
+        <item name="colorBackground">@color/words_color_background</item>
+        <item name="colorSurface">@color/words_color_surface</item>
+        <item name="colorAccentSurface">@color/words_color_accent_surface</item>
+        <item name="colorBackgroundArea">@color/words_color_background_area</item>
+        <item name="colorBackgroundAreaVariant">@color/words_color_background_area_variant</item>
+        <item name="colorSurfaceArea">@color/words_color_surface_area</item>
+        <item name="colorSurfaceAreaVariant">@color/words_color_surface_area_variant</item>
+        <item name="colorAccentSurfaceArea">@color/words_color_accent_surface_area</item>
+        <item name="colorAccentSurfaceAreaVariant">@color/words_color_accent_surface_area_variant</item>
+        <item name="colorError">@color/words_color_error</item>
+        <item name="colorErrorVariant">@color/words_color_error_variant</item>
+        <item name="colorInformative">@color/words_color_informative</item>
+        <!--On Colors-->
+        <item name="colorPrimaryOnDefault">@color/words_color_primary_on_default</item>
+        <item name="colorSecondaryOnDefault">@color/words_color_secondary_on_default</item>
+        <item name="colorTertiaryOnDefault">@color/words_color_tertiary_on_default</item>
+        <item name="colorErrorOnDefault">@color/words_color_error_on_default</item>
+        <item name="colorPrimaryOnError">@color/words_color_primary_on_error</item>
+        <item name="colorSecondaryOnError">@color/words_color_secondary_on_error</item>
+        <item name="colorTertiaryOnError">@color/words_color_tertiary_on_error</item>
+        <item name="colorOnInformative">@color/words_color_on_informative</item>
+        <!--Misc Colors-->
+        <item name="colorScrim">@color/words_color_scrim</item>
+        <item name="colorDivider">@color/words_color_divider</item>
+        <item name="colorHairline">@color/words_color_hairline</item>
+
+        <!--Android & Material Theme Colors-->
+        <item name="colorPrimary">?colorBackground</item>
+        <item name="colorPrimaryDark">?colorBackgroundArea</item>
+        <item name="colorAccent">?colorSecondaryOnDefault</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">?colorBackground</item>
+
+        <!--Text Appearances-->
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Words.Headline2</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Words.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Words.Headline5</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Words.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Words.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Words.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Words.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Words.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Words.Overline</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Words.Button</item>
+
+        <!--Styles-->
+        <item name="styleTextButton">@style/Widget.Words.TextView.Button</item>
+        <item name="styleChipOutlined">@style/Widget.Words.Chip.Outlined</item>
+        <item name="styleChipOpen">@style/Widget.Words.Chip.Open</item>
+        <item name="styleEditTextArea">@style/Widget.Words.EditText.Area</item>
+        <item name="styleTextLabel">@style/Widget.Words.TextLabel</item>
+
+        <!--Drawables-->
+        <item name="drawableSnackbarErrorBackground">@drawable/snackbar_background_error</item>
+        <item name="drawableSnackbarBackground">@drawable/snackbar_background_informative</item>
+    </style>
 </resources>

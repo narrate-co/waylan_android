@@ -1,15 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!--Words Day-->
+    <!--Brand colors-->
+    <color name="words_color_brand">@color/colorPink400</color>
+    <color name="words_color_brand_variant">@color/colorBlue800</color>
+    <!--Plane colors-->
+    <color name="words_color_background">@color/colorIvory100</color>
+    <color name="words_color_surface">@color/colorIvory100</color>
+    <color name="words_color_accent_surface">@color/colorIvory100</color>
+    <color name="words_color_background_area">@color/colorIvory200</color>
+    <color name="words_color_background_area_variant">@color/colorIvory300</color>
+    <color name="words_color_surface_area">@color/colorIvory200</color>
+    <color name="words_color_surface_area_variant">@color/colorIvory300</color>
+    <color name="words_color_accent_surface_area">@color/colorIvory200</color>
+    <color name="words_color_accent_surface_area_variant">@color/colorIvory300</color>
+    <color name="words_color_error">@color/colorMauve100</color>
+    <color name="words_color_error_variant">@color/colorMauve200</color>
+    <color name="words_color_informative">@color/colorPink50</color>
+    <!--On Colors-->
+    <color name="words_color_primary_on_default">@color/colorBlackAlpha087</color>
+    <color name="words_color_secondary_on_default">@color/colorBlackAlpha060</color>
+    <color name="words_color_tertiary_on_default">@color/colorBlackAlpha038</color>
+    <color name="words_color_error_on_default">@color/colorMauve300</color>
+    <color name="words_color_primary_on_error">@color/colorBlackAlpha087</color>
+    <color name="words_color_secondary_on_error">@color/colorBlackAlpha060</color>
+    <color name="words_color_tertiary_on_error">@color/colorBlackAlpha038</color>
+    <color name="words_color_on_informative">@color/colorPink800</color>
+    <!--Miscellaneous-->
+    <color name="words_color_scrim">@color/colorBlackAlpha005</color>
+    <color name="words_color_divider">@color/colorBlackAlpha005</color>
+    <color name="words_color_hairline">@color/colorBlackAlpha025</color>
 
-    <!--Words Theme Colors-->
-    <!--TODO move to new color palette values-->
-    <color name="colorTextDarkLowEmphasis">@color/colorBlackAlpha038</color> <!--38% alpha-->
-    <color name="colorTextDarkMediumEmphasis">@color/colorBlackAlpha060</color> <!--60% alpha-->
-    <color name="colorTextDarkHighEmphasis">@color/colorBlackAlpha087</color> <!--87% alpha-->
 
-    <color name="colorTextLightLowEmphasis">@color/colorWhiteAlpha038</color> <!--38% alpha-->
-    <color name="colorTextLightMediumEmphasis">@color/colorWhiteAlpha060</color> <!--60% alpha-->
-    <color name="colorTextLightHighEmphasis">@color/colorWhiteAlpha087</color> <!--87% alpha-->
+    <!--Words Night-->
+    <!--Brand colors-->
+    <color name="words_dark_color_brand">@color/colorPink200</color>
+    <color name="words_dark_color_brand_variant">@color/colorBlue500</color>
+    <!--Plane colors-->
+    <color name="words_dark_color_background">@color/colorGray900</color>
+    <color name="words_dark_color_surface">@color/colorGray700</color>
+    <color name="words_dark_color_accent_surface">@color/colorGray700</color>
+    <color name="words_dark_color_background_area">@color/colorGray800</color>
+    <color name="words_dark_color_background_area_variant">@color/colorGray600</color>
+    <color name="words_dark_color_surface_area">@color/colorGray600</color>
+    <color name="words_dark_color_surface_area_variant">@color/colorGray500</color>
+    <color name="words_dark_color_accent_surface_area">@color/colorGray600</color>
+    <color name="words_dark_color_accent_surface_area_variant">@color/colorGray500</color>
+    <color name="words_dark_color_error">@color/colorMauve300</color>
+    <color name="words_dark_color_error_variant">@color/colorMauve400</color>
+    <color name="words_dark_color_informative">@color/colorPink900</color>
+    <!--On Colors-->
+    <color name="words_dark_color_primary_on_default">@color/colorWhiteAlpha087</color>
+    <color name="words_dark_color_secondary_on_default">@color/colorWhiteAlpha060</color>
+    <color name="words_dark_color_tertiary_on_default">@color/colorWhiteAlpha038</color>
+    <color name="words_dark_color_error_on_default">@color/colorMauve400</color>
+    <color name="words_dark_color_primary_on_error">@color/colorBlackAlpha087</color>
+    <color name="words_dark_color_secondary_on_error">@color/colorBlackAlpha060</color>
+    <color name="words_dark_color_tertiary_on_error">@color/colorBlackAlpha038</color>
+    <color name="words_dark_color_on_informative">@color/colorPink200</color>
+    <!--Miscellaneous-->
+    <color name="words_dark_color_scrim">@color/colorBlackAlpha025</color>
+    <color name="words_dark_color_divider">@color/colorWhiteAlpha005</color>
+    <color name="words_dark_color_hairline">@color/colorWhiteAlpha025</color>
+
 
 
 
@@ -51,13 +105,13 @@
     <color name="colorMauve300">#ce8e8f</color>
     <color name="colorMauve400">#bb6366</color>
 
-    <color name="colorBlack300">#2a292a</color>
-    <color name="colorBlack400">#272727</color>
-    <color name="colorBlack500">#242424</color>
-    <color name="colorBlack600">#212021</color>
-    <color name="colorBlack700">#1c1c1e</color>
-    <color name="colorBlack800">#181819</color>
-    <color name="colorBlack900">#131314</color>
+    <color name="colorGray300">#2a292a</color>
+    <color name="colorGray400">#272727</color>
+    <color name="colorGray500">#242424</color>
+    <color name="colorGray600">#212021</color>
+    <color name="colorGray700">#1c1c1e</color>
+    <color name="colorGray800">#181819</color>
+    <color name="colorGray900">#131314</color>
 
     <color name="colorBlackAlpha002">#05000000</color> <!--2% alpha-->
     <color name="colorBlackAlpha005">#0D000000</color> <!--5% alpha-->
@@ -66,15 +120,11 @@
     <color name="colorBlackAlpha060">#99000000</color> <!--60% alpha-->
     <color name="colorBlackAlpha087">#de000000</color> <!--87% alpha-->
 
-    <color name="colorWhite900">#F2FFFFFF</color>
-
     <color name="colorWhiteAlpha002">#05ffffff</color> <!--2% alpha-->
     <color name="colorWhiteAlpha005">#0Dffffff</color> <!--5% alpha-->
     <color name="colorWhiteAlpha025">#40ffffff</color> <!--25% alpha-->
     <color name="colorWhiteAlpha038">#61f7f3ed</color> <!--38% alpha-->
     <color name="colorWhiteAlpha060">#99f7f3ed</color> <!--60% alpha-->
     <color name="colorWhiteAlpha087">#def7f3ed</color> <!--87% alpha-->
-
-
 
 </resources>
