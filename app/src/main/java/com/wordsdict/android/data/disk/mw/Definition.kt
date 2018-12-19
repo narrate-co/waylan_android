@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.threeten.bp.OffsetDateTime
 
 @Entity(
         tableName = "mw_definitions",
@@ -23,7 +24,8 @@ data class Definition(
         val parentId: String,
         val parentWord: String,
         val date: String,
-        val definitions: List<OrderedDefinitionItem>
+        val definitions: List<OrderedDefinitionItem>,
+        val lastFetch: OffsetDateTime
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == null) return false

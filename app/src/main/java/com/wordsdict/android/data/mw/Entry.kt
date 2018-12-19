@@ -75,6 +75,8 @@ class Entry {
     @field:ElementList(entry = "art", inline = true, required = false)
     var art: MutableList<Art> = mutableListOf()
 
+    // TODO add 'pt' (https://www.dictionaryapi.com/api/v1/references/collegiate/xml/empty?key=d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2)
+
     @field:Element(name = "dro", required = false)
     var dro: Dro = Dro()
 

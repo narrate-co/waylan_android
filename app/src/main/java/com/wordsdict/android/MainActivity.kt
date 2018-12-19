@@ -38,7 +38,6 @@ class MainActivity : BaseUserActivity() {
                 .get(MainViewModel::class.java)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Tell the system that we'd like to be laid out behind the system bars and handle insets
         // ourselves. This is used because MainActivity's child Fragments use

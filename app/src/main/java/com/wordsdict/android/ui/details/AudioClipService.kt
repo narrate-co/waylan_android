@@ -9,7 +9,6 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.wordsdict.android.BuildConfig
-import com.wordsdict.android.Config
 import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
@@ -181,8 +180,8 @@ class AudioClipService :
             mediaPlayer?.setOnErrorListener(this)
             mediaPlayer?.prepareAsync()
 
-            // let the media player time out itself if debugging to catch errors
-            if (!BuildConfig.DEBUG || !Config.DEBUG_VERBOSE) {
+            // let the media player timeout if debugging to catch errors
+            if (!BuildConfig.DEBUG) {
                 // Set our own custom timeout time and task
                 prepareTimeoutTimer = Timer("media_prepare_timer", false)
                         .schedule(MEDIA_PREPARE_TIMEOUT) {

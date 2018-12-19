@@ -21,6 +21,9 @@ interface MwDao {
     @Query("SELECT * FROM mw_words WHERE word = :word")
     fun getWord(word: String): Word?
 
+    @Query("SELECT * FROM mw_definitions WHERE parentId = :word")
+    fun getDefinitions(word: String): List<Definition>
+
     @Transaction
     @Query("SELECT * FROM mw_words WHERE word = :word")
     fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>>

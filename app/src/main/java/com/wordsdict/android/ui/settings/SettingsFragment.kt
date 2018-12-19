@@ -52,6 +52,8 @@ class SettingsFragment : BaseUserFragment() {
         const val FRAGMENT_TAG = "settings_fragment_tag"
 
         fun newInstance() = SettingsFragment()
+
+        const val SUPPORT_EMAIL_ADDRESS = "words@wordsdict.com"
     }
 
     // This SettingsFragment's own ViewModel
@@ -155,7 +157,7 @@ class SettingsFragment : BaseUserFragment() {
         view.contact.setShowDivider(BuildConfig.DEBUG)
         view.contact.setOnClickListener {
             try {
-                Navigator.launchEmail(context!!, Config.SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
+                Navigator.launchEmail(context!!, SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
             } catch (e: ActivityNotFoundException) {
                 Snackbar.make(
                         view.settingsRoot,

@@ -4,7 +4,7 @@ import java.util.*
 
 private val User.totalStateDuration: Long
     get() = when {
-        isMerriamWebsterSubscriber -> 365L
+        merriamWebsterPurchaseToken.isNotBlank() -> 365L
         isAnonymous -> 7L
         else -> 30L
     }
@@ -12,7 +12,7 @@ private val User.totalStateDuration: Long
 val User.merriamWebsterState: PluginState
     get() {
         return when {
-            isMerriamWebsterSubscriber -> PluginState.Purchased(merriamWebsterStarted, merriamWebsterPurchaseToken)
+            merriamWebsterPurchaseToken.isNotBlank() -> PluginState.Purchased(merriamWebsterStarted, merriamWebsterPurchaseToken)
             else -> PluginState.FreeTrial(isAnonymous, merriamWebsterStarted)
         }
     }

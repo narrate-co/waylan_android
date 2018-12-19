@@ -183,8 +183,8 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
 
     private fun setAudio(word: Word?) {
-//        if (word == null || word.sounds.wav.isBlank()) return
-        val wavFile = word?.sound?.wav ?: ""
+        // TODO create a way to pass multiple wavs's trying until one plays
+        val wavFile = word?.sound?.map { it.wavs }?.flatten()?.firstOrNull() ?: ""
 
         audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
 

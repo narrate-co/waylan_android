@@ -2,6 +2,8 @@ package com.wordsdict.android.data.disk.mw
 
 import com.wordsdict.android.data.mw.Entry
 import com.wordsdict.android.data.mw.EntryList
+import org.threeten.bp.OffsetDateTime
+import java.util.*
 
 /**
  * Utilities to help convert [EntryList]s and [Entry]s to [Word], [Definition] and all
@@ -21,16 +23,15 @@ fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Wor
             this.word,
             this.subj,
             this.phonetic,
-            Sound(this.sounds.map { it.wav }.firstOrNull()?.firstOrNull()
-                    ?: "", this.sounds.map { it.wpr }.firstOrNull()?.firstOrNull()
-                    ?: ""), //TODO restructure db
-            this.pronunciations.firstOrNull()?.value ?: "",
+            this.sounds.map { Sound(it.wav, it.wpr) },
+            this.pronunciations.map { it.toString() },
             this.partOfSpeech,
             this.etymology.value,
             relatedWords.filterNot { it == this.word },
             suggestions.filterNot { it == this.word },
-            Uro(this.uro.firstOrNull()?.ure
-                    ?: "", this.uro.firstOrNull()?.fl ?: ""))
+            uro.map { Uro(it.ure, it.fl) },
+            OffsetDateTime.now()
+    )
 }
 
 val Entry.toDbMwDefinitions: List<Definition>
@@ -45,7 +46,8 @@ val Entry.toDbMwDefinitions: List<Definition>
                         this.id,
                         this.word,
                         this.def.date,
-                        orderedDefs
+                        orderedDefs,
+                        OffsetDateTime.now()
                 )
         )
     }
@@ -56,12 +58,13 @@ fun toDbMwSuggestionWord(id: String, suggestions: List<String>): Word {
             id,
             "",
             "",
-            Sound("", ""),
-            "",
+            emptyList(),
+            emptyList(),
             "",
             "",
             emptyList(),
             suggestions,
-            Uro("", "")
+            emptyList(),
+            OffsetDateTime.now()
     )
 }

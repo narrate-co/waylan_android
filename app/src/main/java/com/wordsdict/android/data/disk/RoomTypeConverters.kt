@@ -100,6 +100,32 @@ object RoomTypeConverters {
 
     @TypeConverter
     @JvmStatic
+    fun toUroList(value: String): List<Uro> {
+        val type = object : TypeToken<List<Uro>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromUroList(value: List<Uro>): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toSoundList(value: String): List<Sound> {
+        val type = object : TypeToken<List<Sound>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromSoundList(value: List<Sound>): String {
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
     fun toStringList(value: String): List<String> {
         val type = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(value, type)

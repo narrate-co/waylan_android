@@ -68,10 +68,6 @@ dependencies {
 
     implementation "android.arch.paging:runtime:$paging_version"
 
-    // Navigation - TODO move to androidx when available
-    implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
-
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -99,7 +95,6 @@ dependencies {
     // Google Play Billing
     implementation 'com.android.billingclient:billing:1.2'
 
-
     // Dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation "com.google.dagger:dagger-android:$daggerVersion"
@@ -107,18 +102,15 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
-    testImplementation "androidx.room:room-testing:$room_version"
-
-
-
+    // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
-
-
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    testImplementation "androidx.room:room-testing:$room_version"
     androidTestImplementation "androidx.test:runner:$androidx_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "android.arch.navigation:navigation-testing-ktx:$nav_version"

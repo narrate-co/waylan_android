@@ -6,7 +6,10 @@ import com.crashlytics.android.Crashlytics
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.mw.*
 import com.wordsdict.android.util.contentEquals
+import com.wordsdict.android.util.daysElapsed
 import kotlinx.coroutines.launch
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.temporal.ChronoUnit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,12 +45,20 @@ class MerriamWebsterStore(
      */
     fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>> {
 
-        //TODO only luanch this if the word needs to be updated.
-        //asynchronously get the word from the mw service
+        // Asynchronously get the word from the mw service if it either does not contain any
+        // definitions (ie. has never been fetched) or the last time it was fetched was long
+        // enough ago to be considered expired and qualifies for a refresh
         launch {
-            merriamWebsterService
-                    .getWord(word, DEV_KEY)
-                    .enqueue(getMerriamWebsterApiWordCallback(word))
+            val definitions = mwDao.getDefinitions(word)
+            if (definitions.isNullOrEmpty()
+                    || definitions.any {
+                        ChronoUnit.DAYS.between(it.lastFetch, OffsetDateTime.now()) > 7L
+                    }
+            ) {
+                merriamWebsterService
+                        .getWord(word, DEV_KEY)
+                        .enqueue(getMerriamWebsterApiWordCallback(word))
+            }
         }
 
         //TODO possible create a "SuspendableLiveData" object that can suspend updates to observers

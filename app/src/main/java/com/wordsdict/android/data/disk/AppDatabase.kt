@@ -37,7 +37,7 @@ import com.wordsdict.android.util.widget.RoomAsset
     (Meaning::class),
     (com.wordsdict.android.data.disk.mw.Word::class),
     (Definition::class)
-], version = 2)
+], version = 1)
 @TypeConverters(RoomTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
 

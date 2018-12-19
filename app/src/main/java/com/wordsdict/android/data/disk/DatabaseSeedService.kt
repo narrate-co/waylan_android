@@ -23,8 +23,8 @@ import org.threeten.bp.OffsetDateTime
  * After the database has been seeded, use the following command to extract the .db file and copy
  * it to assets/databases/:
  *
- * //TODO double check that this is correct
- * adb -d shell "run-as com.wordsdict.android cat databases/words-db" > words-db.db
+ * TODO double check that this is correct
+ * adb -d shell "run-as com.wordsdict.android cat databases/word-db" > word-db.db
  *
  * To toggle whether this Service is run, use [AppDatabase.SHOULD_SEED_DATABASE].
  */
@@ -77,12 +77,12 @@ class DatabaseSeedService: Service() {
 
         //Seed all data from JSON
         val gson = Gson()
-        val files = assets.list("")
+        val files = assets.list("wordset")
 
         for (file in files) {
             // Get json string from asset file
             try {
-                val jsonString = getJsonFromAsset(file)
+                val jsonString = getJsonFromAsset("wordset/$file")
                 // Parse into BaseWord object map
                 val letter: Map<String, BaseWord> = gson.fromJson(jsonString, object: TypeToken<Map<String, BaseWord>>() {}.type)
 
