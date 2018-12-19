@@ -150,6 +150,7 @@ class RotationManager constructor(
     data class OrientationPair(val old: RotationEvent, val new: RotationEvent)
 
     private val lastDispatchedOrientations: HashMap<String, OrientationPair> = hashMapOf()
+
     //TODO do we need this or can we use [orientation]?
     private val lastUndispatchedOrientations: HashMap<String, RotationEvent> = hashMapOf()
 
@@ -273,8 +274,6 @@ class RotationManager constructor(
             rotation = OrientationPair(old, new)
             history.push(new)
             maybeDispatchRotationChanged(old, new)
-            //TODO set a timeout to clear [history] to only capture rotation events
-            //TODO that happen in succession
             clearHistoryOnDelayJob?.cancel()
             clearHistoryOnDelayJob = launch {
                 delay(CLEAR_ROTATION_HISTORY_DELAY)

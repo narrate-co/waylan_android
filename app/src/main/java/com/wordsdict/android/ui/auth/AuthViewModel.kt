@@ -19,11 +19,11 @@ import kotlin.coroutines.suspendCoroutine
  * A ViewModel that handles the manipulation of [FirebaseUser] and [User] to create
  * valid [Auth] objects.
  *
- * //TODO possibly move FirebaseAuth calls into a data store
+ * // TODO possibly move FirebaseAuth calls into a data store
  */
 class AuthViewModel @Inject constructor(): ViewModel() {
 
-    //TODO use Kotlin backing field style guide underscore
+    // TODO use Kotlin backing field style guide underscore
     private val isLoading: MutableLiveData<Boolean> by lazy {
         val ld = MutableLiveData<Boolean>()
         ld.value = false

@@ -140,8 +140,8 @@ class WordRepository(
      * Get a list of [FirestoreGlobalSource] words that are "trending" (aka have the highest
      * [GlobalWord.totalViewCount].
      *
-     * //TODO create a cascading counter to hold view counts for different intervals (now, hour,
-     * //TODO day, week, month, quater, year, all_time)
+     * TODO create a cascading counter to hold view counts for different intervals (now, hour,
+     * TODO day, week, month, quater, year, all_time)
      *
      * @param limit The max number of items to return
      */

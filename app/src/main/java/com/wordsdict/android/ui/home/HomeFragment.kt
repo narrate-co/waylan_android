@@ -54,7 +54,7 @@ class HomeFragment: BaseUserFragment() {
         }
         view.settings.setOnClickListener { launchSettings() }
 
-        //TODO this call to [setUpStatusBarScrim] is not necessary
+        // TODO this call to [setUpStatusBarScrim] is not necessary
         setUpStatusBarScrim(view.statusBarScrim)
 
         setUpReachabilityParams(view)

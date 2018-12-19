@@ -180,8 +180,8 @@ class ListFragment:
     private fun setUpReachabilityAppBar(view: View) {
 
         view.appBar.doOnPreDraw {
-            //TODO set height of expanded toolbar based on view height. Set collapsed if
-            //TODO under a certain limit
+            // TODO set height of expanded toolbar based on view height. Set collapsed if
+            // TODO under a certain limit
 
             // set min height
             val minCollapsedHeight = underline.bottom - navigationIcon.top

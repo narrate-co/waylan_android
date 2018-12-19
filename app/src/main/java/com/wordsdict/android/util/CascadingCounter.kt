@@ -2,7 +2,7 @@ package com.wordsdict.android.util
 
 import java.util.*
 
-//TODO implement and test
+//TODO implement, test and move into Cloud Functions
 object CascadingCounter {
 
     fun plus(dayCounter: MutableMap<Date, Int>, weekCounter: MutableMap<Date, Int>) {

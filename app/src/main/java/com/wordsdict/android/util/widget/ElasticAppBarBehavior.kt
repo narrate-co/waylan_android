@@ -202,14 +202,14 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         a?.recycle()
 
 
-        //TODO support custom corner and edge shapes, set through xml/allow setting of a client's
-        //TODO own MaterialShapeDrawable as a background
+        // TODO support custom corner and edge shapes, set through xml/allow setting of a client's
+        // TODO own MaterialShapeDrawable as a background
         val cornerTreatment = SquareToRoundCornerTreatment(context!!.resources.getDimension(R.dimen.elastic_view_behavior_max_corner_radius))
         materialShapeDrawable.shapedViewModel?.topRightCorner = cornerTreatment
         materialShapeDrawable.shapedViewModel?.topLeftCorner = cornerTreatment
 
-        //TODO update to MDC 1.1.0 and use compat shadows to get shadows on the very top of
-        //TODO this view
+        // TODO update to MDC 1.1.0 and use compat shadows to get shadows on the very top of
+        // TODO this view
         // Shadows do not currently show due to how the Android framework handles its material
         // light source. Shadows are only rendered on the sides and bottom of views with a light
         // source coming from the top of the screen
@@ -217,8 +217,8 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         materialShapeDrawable.shadowElevation = context.resources.getDimensionPixelSize(R.dimen.elastic_view_behavior_background_elevation)
         materialShapeDrawable.paintStyle = Paint.Style.FILL
 
-        //TODO possibly allow tagging other child views with a custom attr to have them included in
-        //TODO property animations
+        // TODO possibly allow tagging other child views with a custom attr to have them included in
+        // TODO property animations
     }
 
     // Helper to read flag attrs

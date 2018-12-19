@@ -51,7 +51,7 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
      * more likely) the back event originated from the navigation bar back button, which is only
      * reported to the current Activity.
      *
-     * //TODO delegate this to a Consumable that nulls out the value after a get()
+     * TODO delegate this to a Consumable that nulls out the value after a get()
      */
     var unconsumedNavigationMethod: NavigationMethod? = null
 
@@ -59,7 +59,7 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
         setOrientation()
         val app = application as App
 
-        //TODO rework Dagger configuration to avoid this?
+        // TODO rework Dagger configuration to avoid this?
         // When the app's process is killed and restarted, the system occasionally attempts
         // to restore the app directly into a UserScope'ed state. If this happens, injecting
         // will fail. This check avoids injection crashing by setting a null user and setting

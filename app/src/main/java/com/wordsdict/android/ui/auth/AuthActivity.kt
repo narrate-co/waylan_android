@@ -62,7 +62,8 @@ class AuthActivity : DaggerAppCompatActivity() {
          * and this activity finishes.
          *
          * No UI is shown during this route other than the logo
-         * //TODO handle a poor/no network connection state
+         *
+         * TODO handle a poor/no network connection state
          */
         ANONYMOUS,
 
@@ -158,7 +159,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         val firebaseUser: FirebaseUser? = auth.currentUser
 
         // If the user is not null, allow them to hit cancel to return to an authorized session
-        //TODO properly log a user out and remove this functionality
+        // TODO properly log a user out and remove this functionality
         if (firebaseUser != null) {
             cancel.setOnClickListener {
                 getCurrentAuthAndReturnToMain(firebaseUser)
@@ -195,7 +196,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
 
     // Alter the UI to allow login
-    //TODO use a ChangeBounds Transition
+    // TODO use a ChangeBounds Transition
     private fun setToLoginUi() {
         confirmPassword.visibility = View.GONE
         alternateCredentialType.text = getString(R.string.auth_sign_up_button)
@@ -217,7 +218,7 @@ class AuthActivity : DaggerAppCompatActivity() {
     }
 
     // Alter the UI to allow sign up
-    //TODO use a ChangeBounds Transition
+    // TODO use a ChangeBounds Transition
     private fun setToSignUpUi() {
         confirmPassword.visibility = View.VISIBLE
         alternateCredentialType.text = getString(R.string.auth_log_in_button)
@@ -270,7 +271,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
     private var lastErrorStateIsShown = false
 
-    //TODO use a Transition and clean up
+    // TODO use a Transition and clean up
     private fun showErrorMessage(e: Exception) {
         e.printStackTrace()
 

@@ -50,6 +50,7 @@
 
         </FrameLayout>
 
+        <!--TODO this is a hack-ey proof of concept and should be rewritten as a custom view-->
         <FrameLayout
             android:id="@+id/undlerlineContainer"
             android:layout_width="72dp"

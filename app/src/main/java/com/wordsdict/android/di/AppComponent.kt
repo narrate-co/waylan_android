@@ -37,9 +37,9 @@ import javax.inject.Singleton
  * |                                                        |
  * |________________________________________________________|
  *
- * //TODO refine this since it doesn't make perfect sense (ie. AuthActivity should have @ActivityScope
- * //TODO but not @UserScope like MainActivity. @ActivityScope might need to be a scope that overlaps
- * //TODO @UserScope and @ApplicationScope
+ * TODO Refine this since it doesn't make perfect sense (ie. AuthActivity should have @ActivityScope
+ * TODO but not @UserScope like MainActivity. @ActivityScope might need to be a scope that overlaps
+ * TODO @UserScope and @ApplicationScope
  */
 @Component(
         modules = [

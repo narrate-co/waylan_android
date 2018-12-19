@@ -183,7 +183,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun setUpSmartShelf(view: View?) {
         if (view == null) return
 
-        //TODO remove and replace with automated UI tests
+        // TODO remove and replace with automated UI tests
         // If this is a debug build, set the share button to show the smart shelf, alternating the
         // prompt each with each click
         if (BuildConfig.DEBUG) {
@@ -309,7 +309,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                         ContextCompat.getDrawable(context!!, prompt.icon)
                 )
                 smartSuggestion.setOnClickListener {
-                    //TODO create a custom smartLabel view that is able to change bounds
+                    // TODO create a custom smartLabel view that is able to change bounds
                     smartSuggestion.smartLabel.text = getString(prompt.checkedText)
 
                     viewModel.setOrientationPreference(prompt.orientationToRequest)
@@ -423,15 +423,14 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         favorite.setOnClickListener {
             sharedViewModel.setCurrentWordFavorited(!isFavorited)
         }
-        //TODO create an AVD
+        // TODO create an AVD
         favorite.setImageResource(if (isFavorited) {
             R.drawable.ic_round_favorite_24px
         } else {
             R.drawable.ic_round_favorite_border_24px
         })
 
-
-        //TODO add share button setup
+        // TODO add share button setup
     }
 
 
