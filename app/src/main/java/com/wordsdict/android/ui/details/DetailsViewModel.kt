@@ -12,7 +12,6 @@ import javax.inject.Inject
 /**
  * ViewModel for [DetailsFragment]
  */
-@UserScope
 class DetailsViewModel @Inject constructor(
         private val wordRepository: WordRepository
 ): ViewModel() {

@@ -19,7 +19,6 @@ import javax.inject.Inject
  * To observe a variable and react to its underlying SharedPreference changes, observe it's
  * exposed LiveData variable.
  */
-@UserScope
 class SettingsViewModel @Inject constructor(
         private val userRepository: UserRepository,
         private val userPreferenceStore: UserPreferenceStore

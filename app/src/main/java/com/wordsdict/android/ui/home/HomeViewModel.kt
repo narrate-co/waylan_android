@@ -13,7 +13,6 @@ import javax.inject.Inject
 /**
  * ViewModel for [HomeFragment]
  */
-@UserScope
 class HomeViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
 
     /**

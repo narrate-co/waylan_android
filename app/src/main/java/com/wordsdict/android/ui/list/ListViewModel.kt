@@ -11,7 +11,6 @@ import javax.inject.Inject
 /**
  * ViewModel for [ListFragment]
  */
-@UserScope
 class ListViewModel @Inject constructor(
         private val wordRepository: WordRepository,
         private val userPreferenceStore: UserPreferenceStore

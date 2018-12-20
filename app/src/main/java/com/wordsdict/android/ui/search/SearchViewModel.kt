@@ -12,7 +12,6 @@ import javax.inject.Inject
 /**
  * A ViewModel for [SearchFragment]
  */
-@UserScope
 class SearchViewModel @Inject constructor(
         private val wordRepository: WordRepository,
         private val userPreferenceStore: UserPreferenceStore,
