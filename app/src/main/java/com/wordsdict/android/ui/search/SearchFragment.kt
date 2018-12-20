@@ -4,12 +4,14 @@ import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -121,6 +123,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         if (view == null) return
 
         view.searchEditText.addTextChangedListener(this)
+
+        // intercept clicks to IME done to avoid taking any action
+        view.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            // TODO do something useful if the user is intentionally clicking done
+            actionId == EditorInfo.IME_ACTION_DONE
+        }
 
         view.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
