@@ -7,7 +7,6 @@ import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Provider
 
-@UserScope
 class WordsViewModelFactory @Inject constructor(
         private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ): ViewModelProvider.Factory {

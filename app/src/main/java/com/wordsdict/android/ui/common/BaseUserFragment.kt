@@ -26,6 +26,7 @@ abstract class BaseUserFragment: DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+
     /**
      * If using fragment Transaction animations, set an AnimationListener on the enter transition
      * and provide an overridable method to be called once the transaction has ended.

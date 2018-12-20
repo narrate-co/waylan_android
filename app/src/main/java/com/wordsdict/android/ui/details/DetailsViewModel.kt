@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wordsdict.android.data.repository.*
+import com.wordsdict.android.di.FragmentScope
 import com.wordsdict.android.di.UserScope
 import javax.inject.Inject
 
