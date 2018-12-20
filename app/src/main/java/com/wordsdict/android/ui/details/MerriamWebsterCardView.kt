@@ -55,7 +55,7 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     init {
         View.inflate(context, R.layout.merriam_webster_card_layout, this)
         visibility = View.GONE
-        progressBar.visibility = View.INVISIBLE
+        underline.visibility = View.INVISIBLE
         textLabel.setOnClickListener {
             Navigator.launchSettings(context)
         }
@@ -149,7 +149,7 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
     private fun setFieldsDenied(user: User?) {
         audioImageView.visibility = View.GONE
-        undlerlineContainer.visibility = View.GONE
+        underline.visibility = View.GONE
         definitionsContainer.visibility = View.GONE
         relatedWordsHeader.visibility = View.GONE
         relatedWordsHorizontalScrollView.visibility = View.GONE
@@ -195,7 +195,7 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
         audioImageView.setOnClickListener(audioPlayClickListener)
         audioImageView.visibility = View.VISIBLE
-        undlerlineContainer.visibility = View.VISIBLE
+        underline.visibility = View.VISIBLE
     }
 
 
@@ -204,21 +204,18 @@ class MerriamWebsterCardView @JvmOverloads constructor(
             AudioClipService.AudioState.LOADING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
-                progressBar.visibility = View.VISIBLE
-                underline.visibility = View.INVISIBLE
+                underline.startProgress()
             }
             AudioClipService.AudioState.PREPARED,
             AudioClipService.AudioState.PLAYING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
-                progressBar.visibility = View.INVISIBLE
-                underline.visibility = View.VISIBLE
+                underline.stopProgress()
             }
             AudioClipService.AudioState.STOPPED -> {
                 audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
-                progressBar.visibility = View.INVISIBLE
-                underline.visibility = View.VISIBLE
+                underline.stopProgress()
             }
         }
     }

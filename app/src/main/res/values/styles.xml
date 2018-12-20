@@ -110,4 +110,11 @@
         <item name="android:textColor">?colorPrimaryOnDefault</item>
     </style>
 
+
+    <!--Default Res Values-->
+    <style name="Widget.Words.ProgressUnderlineView" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="trackColor">?colorControlNormal</item>
+        <item name="indicatorColor">?colorAccent</item>
+    </style>
+
 </resources>
