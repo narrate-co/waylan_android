@@ -20,5 +20,76 @@ fun Calendar.isSameDayAs(other: Calendar): Boolean {
 val Date.daysElapsed: Long
     get() = ChronoUnit.DAYS.between(DateTimeUtils.toInstant(this), DateTimeUtils.toInstant(Date()))
 
+val Date.minutesElapsed: Long
+    get() = ChronoUnit.MINUTES.between(DateTimeUtils.toInstant(this), DateTimeUtils.toInstant(Date()))
+
+val nearestMinute: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
+
+val nearestHour: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
+
+val nearestDay: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
+
+
+val nearestWeek: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.DAY_OF_WEEK, 0)
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
+
+val nearestMonth: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.DAY_OF_MONTH, 0)
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
+
+
+val nearestYear: Date
+    get() {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.set(Calendar.MONTH, 0)
+        cal.set(Calendar.DAY_OF_MONTH, 0)
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        return cal.time
+    }
 
 

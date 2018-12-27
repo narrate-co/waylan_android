@@ -1,5 +1,7 @@
 package com.wordsdict.android.data.firestore.users
 
+import androidx.core.view.ViewCompat
+import com.wordsdict.android.data.firestore.ViewCountDocument
 import java.util.*
 
 /**
@@ -27,9 +29,8 @@ data class UserWord(
     var partOfSpeechPreview: MutableMap<String, String> = mutableMapOf(),
     var defPreview: MutableMap<String, String> = mutableMapOf(),
     var synonymPreview: MutableMap<String, String> = mutableMapOf(),
-    var labelsPreview: MutableMap<String, String> = mutableMapOf(),
-    var totalViewCount: Long = 1
-)
+    var labelsPreview: MutableMap<String, String> = mutableMapOf()
+) : ViewCountDocument()
 
 
 
