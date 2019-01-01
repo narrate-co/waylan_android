@@ -165,7 +165,8 @@ class FirestoreStore(
                     partOfSpeech.toMutableMap(),
                     defs.toMutableMap(),
                     synonyms.toMutableMap(),
-                    labels.toMutableMap())
+                    labels.toMutableMap()
+            )
 
             userWord
         }
@@ -224,7 +225,6 @@ class FirestoreStore(
 
                 userWord.types[UserWordType.RECENT.name] = true
                 userWord.modified = Date()
-                userWord.totalViewCount = userWord.totalViewCount + 1
                 setUserWord(userWord)
             }
         } catch (e: Exception) {

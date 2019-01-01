@@ -15,7 +15,7 @@ import java.util.*
  * alternative big data table.
  */
 open class ViewCountDocument(
-        var totalViewCount: Long = 1L,
+        var totalViewCount: Long = 0L,
         var yearViewCount: Long = 0L,
         var yearViewCountStarted: Date = Date(),
         var monthViewCount: Long = 0L,
