@@ -9,6 +9,7 @@
     <attr name="colorBackground" format="color"/>
     <attr name="colorSurface" format="color"/>
     <attr name="colorAccentSurface" format="color"/>
+    <attr name="colorAccentSurfaceVariant" format="color"/>
     <attr name="colorBackgroundArea" format="color"/>
     <attr name="colorBackgroundAreaVariant" format="color"/>
     <attr name="colorSurfaceArea" format="color"/>

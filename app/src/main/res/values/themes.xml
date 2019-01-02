@@ -13,6 +13,7 @@
         <item name="colorBackground">@color/words_color_background</item>
         <item name="colorSurface">@color/words_color_surface</item>
         <item name="colorAccentSurface">@color/words_color_accent_surface</item>
+        <item name="colorAccentSurfaceVariant">@color/words_color_accent_surface_variant</item>
         <item name="colorBackgroundArea">@color/words_color_background_area</item>
         <item name="colorBackgroundAreaVariant">@color/words_color_background_area_variant</item>
         <item name="colorSurfaceArea">@color/words_color_surface_area</item>

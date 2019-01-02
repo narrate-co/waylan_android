@@ -30,6 +30,15 @@
         android:background="?colorScrim"/>
 
     <fragment
+        android:id="@+id/contextualFragment"
+        android:name="com.wordsdict.android.ui.search.ContextualFragment"
+        android:layout_width="match_parent"
+        android:layout_height="502dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="132dp"/>
+
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.wordsdict.android.ui.search.SearchFragment"
         android:layout_width="match_parent"
