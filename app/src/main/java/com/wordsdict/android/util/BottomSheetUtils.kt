@@ -5,7 +5,7 @@ import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 fun <V: View?> BottomSheetBehavior<V>.hide(activity: Activity? = null): Boolean {
-    if (state != BottomSheetBehavior.STATE_HIDDEN) {
+    if (state != BottomSheetBehavior.STATE_HIDDEN && isHideable) {
         state = BottomSheetBehavior.STATE_HIDDEN
         activity?.hideSoftKeyboard()
         return true

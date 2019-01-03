@@ -9,6 +9,7 @@ import com.wordsdict.android.data.disk.AppDatabase
 import com.wordsdict.android.data.firestore.users.*
 import com.wordsdict.android.data.firestore.util.*
 import com.wordsdict.android.data.firestore.words.GlobalWord
+import com.wordsdict.android.ui.search.Period
 import com.wordsdict.android.util.isMoreThanOneMinuteAgo
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -172,9 +173,10 @@ class FirestoreStore(
         }
     }
 
-    fun getTrending(limit: Long? = null): LiveData<List<GlobalWord>> {
+    fun getTrending(limit: Long? = null, filter: List<Period>): LiveData<List<GlobalWord>> {
+        val period = filter.firstOrNull()?.viewCountProp ?: Period.ALL_TIME.viewCountProp
         val query = firestore.words
-                .orderBy("totalViewCount", Query.Direction.DESCENDING)
+                .orderBy(period, Query.Direction.DESCENDING)
                 .limit(limit ?: 25)
 
         return query.liveData(GlobalWord::class.java)

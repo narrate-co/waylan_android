@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(private val wordRepository: WordReposito
      */
     fun getListPreview(type: ListFragment.ListType): LiveData<String> {
         return Transformations.map(when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getTrending(4L)
+            ListFragment.ListType.TRENDING -> wordRepository.getTrending(4L, emptyList())
             ListFragment.ListType.RECENT -> wordRepository.getRecents(4L)
             ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(4L)
         }) { list ->

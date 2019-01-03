@@ -110,12 +110,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         setUpSmartShelf(view)
 
-        setUpShelfActions(view)
 
         sharedViewModel.getCurrentFirestoreUserWord().observe(this, Observer {
             setShelfActionsForDetails(it.userWord)
         })
 
+        setUpShelfActions(view)
     }
 
     // Set up text watchers and on focus changed listeners to help control the

@@ -146,9 +146,13 @@ class ListFragment:
         )
         view?.recyclerView?.addItemDecoration(itemDivider)
 
-        viewModel.getList(type).observe(this, Observer {
-            adapter.submitList(it)
-            setBanner(it.isEmpty())
+        viewModel.getListFilter(type).observe(this, Observer { filter ->
+            adapter.submitList(emptyList())
+            viewModel.getList(type, filter).observe(this, Observer {
+                adapter.submitList(it)
+                setBanner((it.isEmpty()))
+
+            })
         })
     }
 

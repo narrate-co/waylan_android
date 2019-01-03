@@ -33,7 +33,7 @@
         android:id="@+id/contextualFragment"
         android:name="com.wordsdict.android.ui.search.ContextualFragment"
         android:layout_width="match_parent"
-        android:layout_height="502dp"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"

@@ -116,5 +116,14 @@
     <string name="auth_sign_up_button">Sign up</string>
     <string name="auth_log_in_button">Log in</string>
 
+    <!--Contextual Fragment-->
+    <string name="period_label_minute">minute</string>
+    <string name="period_label_hour">hour</string>
+    <string name="period_label_day">day</string>
+    <string name="period_label_week">week</string>
+    <string name="period_label_month">month</string>
+    <string name="period_label_year">year</string>
+    <string name="period_label_all_time">all time</string>
+
 
 </resources>

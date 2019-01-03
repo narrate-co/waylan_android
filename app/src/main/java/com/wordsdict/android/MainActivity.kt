@@ -12,7 +12,6 @@ import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.BottomSheetCallbackCollection
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_search.*
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -150,6 +149,7 @@ class MainActivity : BaseUserActivity() {
         // collapse the search sheet if it's scrim is touched
         bottomSheetSkrim.setOnClickListener {
             searchSheetBehavior.collapse(this)
+            contextualSheetBehavior.collapse(this)
         }
 
         // add the search sheet callback to the bottom sheet (note we are still able to add
@@ -160,11 +160,13 @@ class MainActivity : BaseUserActivity() {
 
     fun setUpContextualSheet() {
 
+        contextualSheetBehavior.isFitToContents = true
+
         // Set max expanded height to 60% of screen height plus a 52dp offset to be visible
         // above the search sheet when both sheets are peeking
-        contextualFragment.view?.layoutParams?.height = Math.round(
-                displayHeightPx * .60F + resources.getDimensionPixelSize(R.dimen.contextual_top_bar_height)
-        )
+//        contextualFragment.view?.layoutParams?.height = Math.round(
+//                displayHeightPx * .60F + resources.getDimensionPixelSize(R.dimen.contextual_peek_bar_height)
+//        )
 
         // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
         // when either bottom sheet is not resting, hence the use of Math.max

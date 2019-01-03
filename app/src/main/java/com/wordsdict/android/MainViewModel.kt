@@ -3,9 +3,11 @@ package com.wordsdict.android
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.analytics.NavigationMethod
+import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.di.UserScope
+import com.wordsdict.android.ui.search.Period
 import java.util.*
 import javax.inject.Inject
 
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @UserScope
 class MainViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val analyticsRepository: AnalyticsRepository
+        private val analyticsRepository: AnalyticsRepository,
+        private val userPreferenceStore: UserPreferenceStore
 ) : ViewModel() {
 
     // An internal representation of MainActivity's current Fragment backstack. This is used
@@ -33,9 +36,9 @@ class MainViewModel @Inject constructor(
 
     val currentWord: LiveData<String> = _currentWord
 
-    private var _appliedListFilter = MutableLiveData<List<String>>()
+//    private var _appliedListFilter = MutableLiveData<List<Period>>()
 
-    val appliedListFilter: LiveData<List<String>> = _appliedListFilter
+    val appliedListFilter: LiveData<List<Period>> = userPreferenceStore.trendingListFilterLive
 
     /**
      * Get a LiveData which observes [currentWord]'s [FirestoreUserSource].
@@ -115,8 +118,9 @@ class MainViewModel @Inject constructor(
         if (stack != null) backStack.value = stack
     }
 
-    fun setAppliedListFilter(filter: List<String>) {
-        _appliedListFilter.value = filter
+    fun setAppliedListFilter(filter: List<Period>) {
+        userPreferenceStore.setTrendingListFilter(filter)
+//        _appliedListFilter.value = filter
     }
 
 }

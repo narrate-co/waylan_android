@@ -24,6 +24,7 @@ class PreferenceDelegate<T>(
             is Int -> sharedPrefs.getInt(key, default)
             is Float -> sharedPrefs.getFloat(key, default)
             is Long -> sharedPrefs.getLong(key, default)
+            is Set<*> -> sharedPrefs.getStringSet(key, default as Set<String>)
             else -> throw RuntimeException("Unsupported preference type")
         } as T
     }
@@ -36,6 +37,7 @@ class PreferenceDelegate<T>(
             is Int -> sharedPrefs.edit { putInt(key, value) }
             is Float -> sharedPrefs.edit { putFloat(key, value) }
             is Long -> sharedPrefs.edit { putLong(key, value) }
+            is Set<*> -> sharedPrefs.edit { putStringSet(key, value as Set<String>) }
             else -> throw RuntimeException("Unsupported preference type")
         }
     }

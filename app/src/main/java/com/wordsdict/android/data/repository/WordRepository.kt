@@ -11,6 +11,7 @@ import com.wordsdict.android.data.firestore.users.UserWord
 import com.wordsdict.android.data.firestore.words.GlobalWord
 import com.wordsdict.android.data.mw.MerriamWebsterStore
 import com.wordsdict.android.data.spell.SymSpellStore
+import com.wordsdict.android.ui.search.Period
 import com.wordsdict.android.util.LiveDataHelper
 import com.wordsdict.android.util.widget.MergedLiveData
 import kotlinx.coroutines.launch
@@ -145,9 +146,9 @@ class WordRepository(
      *
      * @param limit The max number of items to return
      */
-    fun getTrending(limit: Long? = null): LiveData<List<FirestoreGlobalSource>> {
+    fun getTrending(limit: Long? = null, filter: List<Period>): LiveData<List<FirestoreGlobalSource>> {
         if (firestoreStore == null) return LiveDataHelper.empty()
-        return Transformations.map(firestoreStore.getTrending(limit)) { globalWords ->
+        return Transformations.map(firestoreStore.getTrending(limit, filter)) { globalWords ->
             globalWords.map { FirestoreGlobalSource(it) }
         }
     }

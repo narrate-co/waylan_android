@@ -1,11 +1,13 @@
 package com.wordsdict.android.ui.list
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.repository.WordSource
 import com.wordsdict.android.di.UserScope
+import com.wordsdict.android.ui.search.Period
 import javax.inject.Inject
 
 /**
@@ -39,13 +41,21 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    fun getListFilter(type: ListFragment.ListType): LiveData<List<Period>> {
+        return when (type) {
+            ListFragment.ListType.TRENDING -> userPreferenceStore.trendingListFilterLive
+            ListFragment.ListType.RECENT -> userPreferenceStore.recentsListFilterLive
+            ListFragment.ListType.FAVORITE -> userPreferenceStore.favoritesListFilterLive
+        }
+    }
+
     /**
      * Get a list of either [FirestoreUserSource] or [FirestoreGlobalSource] items which
      * correspond to the given [type]
      */
-    fun getList(type: ListFragment.ListType): LiveData<List<WordSource>> {
+    fun getList(type: ListFragment.ListType, filter: List<Period>): LiveData<List<WordSource>> {
         return when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L)
+            ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L, filter)
             ListFragment.ListType.RECENT -> wordRepository.getRecents(25L)
             ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(25L)
         } as LiveData<List<WordSource>>
