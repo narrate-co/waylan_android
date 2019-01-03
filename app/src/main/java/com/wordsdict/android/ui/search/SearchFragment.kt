@@ -271,9 +271,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
-            if (currentDest == Navigator.HomeDestination.DETAILS) {
-                setSheetSlideOffsetForActions(offset)
-            }
+            setSheetSlideOffsetForActions(offset, (activity as MainActivity).contextualSheetCallback.currentSlide)
         }
 
         filter.setOnClickListener {
@@ -285,12 +283,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
             if (currentDest == Navigator.HomeDestination.LIST) {
-                setSheetSlideOffsetForActions(offset)
+                setSheetSlideOffsetForActions((activity as MainActivity).searchSheetCallback.currentSlide, offset)
             }
         }
     }
 
-    private fun setSheetSlideOffsetForActions(offset: Float) {
+    private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {
         val zeroActions = numberOfShelfActionsShowing == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
         val hiddenMargin = keyline2
@@ -298,7 +296,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         val params = search.layoutParams  as ConstraintLayout.LayoutParams
 
         params.rightMargin = getScaleBetweenRange(
-                offset,
+                Math.max(searchOffset, contextualOffset),
                 0F,
                 1F,
                 showingMargin.toFloat(),

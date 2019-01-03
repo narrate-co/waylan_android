@@ -70,8 +70,14 @@ class ContextualFragment : BaseUserFragment() {
         })
 
         sharedViewModel.appliedListFilter.observe(this, Observer {
+            bottomSheetBehavior.peekHeight = if (it.isEmpty()) {
+                0
+            } else {
+                resources.getDimensionPixelSize(R.dimen.contextual_min_peek_height)
+            }
+
             if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.LIST) {
-                if (sharedViewModel.appliedListFilter.value?.isEmpty() == true) {
+                if (it.isEmpty()) {
                     hide()
                 } else {
                     peek()
