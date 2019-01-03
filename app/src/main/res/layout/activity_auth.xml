@@ -14,12 +14,12 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="127dp"
+            android:layout_height="127dp"
             android:layout_marginTop="150dp"
             android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/ic_words_logo_color_48px" />
+            app:srcCompat="@drawable/ic_words_logo" />
 
         <LinearLayout
             android:id="@+id/credentialsContainer"

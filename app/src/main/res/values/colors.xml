@@ -3,8 +3,8 @@
     
     <!--Words Day-->
     <!--Brand colors-->
-    <color name="words_color_brand">@color/colorPink400</color>
-    <color name="words_color_brand_variant">@color/colorBlue800</color>
+    <color name="words_color_brand">@color/colorPink900</color>
+    <color name="words_color_brand_variant">@color/colorPink900</color>
     <!--Plane colors-->
     <color name="words_color_background">@color/colorIvory100</color>
     <color name="words_color_surface">@color/colorIvory100</color>
@@ -35,8 +35,8 @@
 
     <!--Words Night-->
     <!--Brand colors-->
-    <color name="words_dark_color_brand">@color/colorPink200</color>
-    <color name="words_dark_color_brand_variant">@color/colorBlue500</color>
+    <color name="words_dark_color_brand">@color/colorPink100</color>
+    <color name="words_dark_color_brand_variant">@color/colorPink100</color>
     <!--Plane colors-->
     <color name="words_dark_color_background">@color/colorGray900</color>
     <color name="words_dark_color_surface">@color/colorGray700</color>
