@@ -26,7 +26,7 @@
     <color name="words_color_primary_on_error">@color/colorBlackAlpha087</color>
     <color name="words_color_secondary_on_error">@color/colorBlackAlpha060</color>
     <color name="words_color_tertiary_on_error">@color/colorBlackAlpha038</color>
-    <color name="words_color_on_informative">@color/colorPink800</color>
+    <color name="words_color_on_informative">@color/colorPink900</color>
     <!--Miscellaneous-->
     <color name="words_color_scrim">@color/colorBlackAlpha005</color>
     <color name="words_color_divider">@color/colorBlackAlpha005</color>
@@ -58,7 +58,7 @@
     <color name="words_dark_color_primary_on_error">@color/colorBlackAlpha087</color>
     <color name="words_dark_color_secondary_on_error">@color/colorBlackAlpha060</color>
     <color name="words_dark_color_tertiary_on_error">@color/colorBlackAlpha038</color>
-    <color name="words_dark_color_on_informative">@color/colorPink200</color>
+    <color name="words_dark_color_on_informative">@color/colorPink100</color>
     <!--Miscellaneous-->
     <color name="words_dark_color_scrim">@color/colorBlackAlpha025</color>
     <color name="words_dark_color_divider">@color/colorWhiteAlpha005</color>
