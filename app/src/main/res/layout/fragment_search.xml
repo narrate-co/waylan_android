@@ -78,37 +78,27 @@
         app:layout_constraintTop_toTopOf="@+id/search">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/filter"
+            android:id="@+id/action1"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="@dimen/keyline_1"
+            android:layout_marginRight="@dimen/keyline_2"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_round_filter_list_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favorite"
+            android:id="@+id/action2"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="@dimen/keyline_1"
+            android:layout_marginRight="@dimen/keyline_2"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_favorite_border_24px"
+            app:srcCompat="@drawable/ic_round_share_24px"
             android:visibility="visible"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/share"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:scaleType="centerInside"
-            android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="12dp"
-            android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_share_24px" />
 
     </LinearLayout>
 

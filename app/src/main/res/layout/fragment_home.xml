@@ -105,7 +105,7 @@
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/favorite"
+                    android:id="@+id/action2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_favorite"

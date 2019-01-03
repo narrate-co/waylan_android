@@ -1,5 +1,9 @@
 package com.wordsdict.android.util
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
@@ -8,8 +12,12 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -98,4 +106,28 @@ fun View.invisible() {
 
 fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
+}
+
+fun AppCompatImageView.swapImageResource(imgRes: Int) {
+    // Check if the drawbale being set is the same as what is already present
+    val currantDrawableState = drawable.constantState
+    val newDrawableState = ContextCompat.getDrawable(context, imgRes)?.constantState
+    if (currantDrawableState == newDrawableState) return
+
+    val alphaOut = ObjectAnimator.ofFloat(this, "alpha", 0F)
+    alphaOut.duration = 100
+    alphaOut.interpolator = AccelerateInterpolator()
+    alphaOut.addListener(object: AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator?) {
+            setImageResource(imgRes)
+        }
+    })
+
+    val alphaIn = ObjectAnimator.ofFloat(this, "alpha", 1F)
+    alphaIn.duration = 100
+    alphaIn.interpolator = DecelerateInterpolator()
+
+    val set = AnimatorSet()
+    set.playSequentially(alphaOut, alphaIn)
+    set.start()
 }

@@ -36,7 +36,8 @@
         android:layout_height="502dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/contextual_min_peek_height"/>
+        app:behavior_peekHeight="0dp"
+        />
 
     <fragment
         android:id="@+id/searchFragment"

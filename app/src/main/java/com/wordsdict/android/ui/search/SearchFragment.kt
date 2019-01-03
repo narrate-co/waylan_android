@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,7 +113,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         setUpShelfActions(view)
 
         sharedViewModel.getCurrentFirestoreUserWord().observe(this, Observer {
-            setShelfActions(it.userWord)
+            setShelfActionsForDetails(it.userWord)
         })
 
     }
@@ -195,7 +194,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         // If this is a debug build, set the share button to show the smart shelf, alternating the
         // prompt each with each click
         if (BuildConfig.DEBUG) {
-            view.share.setOnClickListener(object : View.OnClickListener {
+            view.action2.setOnClickListener(object : View.OnClickListener {
                 var clicks = 0
                 override fun onClick(v: View?) {
                     val prompt = if (clicks % 2 == 0) {
@@ -252,9 +251,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                         // need to know: if current list has a filter applied
                         val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
                         runShelfActionsAnimation(if (hasAppliedFilter) 0 else 1)
+                        setShelfActionsForList()
                     }
                     Navigator.HomeDestination.DETAILS -> {
                         runShelfActionsAnimation(2)
+                        // setShelfActionsForDetails will be called by the observer of
+                        // MainViewModel's getCurrentFirestoreUserword()
                     }
                 }
             }
@@ -274,7 +276,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             setSheetSlideOffsetForActions(offset, (activity as MainActivity).contextualSheetCallback.currentSlide)
         }
 
-        filter.setOnClickListener {
+        action1.setOnClickListener {
             (activity as MainActivity).openContextualFragment()
         }
 
@@ -292,7 +294,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         val zeroActions = numberOfShelfActionsShowing == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
         val hiddenMargin = keyline2
-        val showingMargin = (((filter.width + keyline2) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
+        val showingMargin = (((action1.width + keyline2) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
         val params = search.layoutParams  as ConstraintLayout.LayoutParams
 
         params.rightMargin = getScaleBetweenRange(
@@ -429,7 +431,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         numberOfShelfActionsShowing = numberOfActions
         val zeroActions = numberOfActions == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-        val showMargin = (((filter.width + keyline2) * numberOfActions) + (if (zeroActions) keyline2 else 0)) + keyline2
+        val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
+        val showMargin = (((action1.width + keyline3) * numberOfActions) + (if (zeroActions) keyline2 else 0)) + keyline2
         val currentMargin = (search.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
@@ -457,22 +460,31 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     /**
      * Set shelf actions according to [userWord]
      */
-    private fun setShelfActions(userWord: UserWord?) {
+    private fun setShelfActionsForDetails(userWord: UserWord?) {
         if (userWord == null)  return
 
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-        favorite.setOnClickListener {
+
+        action1.setOnClickListener {
             sharedViewModel.setCurrentWordFavorited(!isFavorited)
         }
+
         // TODO create an AVD
-        favorite.setImageResource(if (isFavorited) {
+        action1.swapImageResource(if (isFavorited) {
             R.drawable.ic_round_favorite_24px
         } else {
             R.drawable.ic_round_favorite_border_24px
         })
 
         // TODO add share button setup
+    }
 
+    private fun setShelfActionsForList() {
+        action1.setOnClickListener {
+            (activity as MainActivity).openContextualFragment()
+        }
+
+        action1.swapImageResource(R.drawable.ic_round_filter_list_24px)
     }
 
     override fun onWordClicked(word: WordSource) {
