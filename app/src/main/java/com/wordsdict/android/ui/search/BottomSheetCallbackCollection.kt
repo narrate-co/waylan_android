@@ -18,11 +18,17 @@ typealias OnStateChangedAction = (View, Int) -> Unit
  * All added [OnStateChangedAction]s will be run when
  * [BottomSheetBehavior.BottomSheetCallback.onStateChanged] is called
  */
-class SearchSheetCallback: BottomSheetBehavior.BottomSheetCallback() {
+class BottomSheetCallbackCollection: BottomSheetBehavior.BottomSheetCallback() {
 
     private val onStateChangedActions: MutableList<OnStateChangedAction> = mutableListOf()
 
     private val onSlideActions: MutableList<OnSlideAction> = mutableListOf()
+
+    var currentSlide: Float = 0.0F
+        private set
+
+    var currentState: Int = BottomSheetBehavior.STATE_HIDDEN
+        private set
 
     /**
      * Add an [OnStateChangedAction] to be run when this [BottomSheetBehavior.BottomSheetCallback]'s
@@ -55,10 +61,12 @@ class SearchSheetCallback: BottomSheetBehavior.BottomSheetCallback() {
     }
 
     override fun onSlide(view: View, offset: Float) {
+        currentSlide = offset
         onSlideActions.forEach { it(view, offset) }
     }
 
     override fun onStateChanged(view: View, newState: Int) {
+        currentState = newState
         onStateChangedActions.forEach { it(view, newState) }
     }
 

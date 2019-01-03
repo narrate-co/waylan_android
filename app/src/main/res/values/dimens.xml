@@ -7,6 +7,7 @@
 
     <dimen name="search_min_peek_height">80dp</dimen>
     <dimen name="search_max_peek_height">200dp</dimen>
+    <dimen name="contextual_top_bar_height">52dp</dimen>
 
     <dimen name="elastic_view_behavior_max_corner_radius">42dp</dimen>
     <dimen name="elastic_view_behavior_background_elevation">24dp</dimen>

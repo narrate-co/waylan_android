@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.ui.common.BaseUserActivity
 import com.wordsdict.android.ui.list.ListFragment
+import com.wordsdict.android.ui.search.ContextualFragment
 import com.wordsdict.android.ui.search.SearchFragment
-import com.wordsdict.android.ui.search.SearchSheetCallback
+import com.wordsdict.android.ui.search.BottomSheetCallbackCollection
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_search.*
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -24,12 +26,19 @@ class MainActivity : BaseUserActivity() {
      * changed can use this property instead of themselves finding the correct
      * [BottomSheetBehavior] and adding a new [BottomSheetBehavior.BottomSheetCallback]
      */
-    val searchSheetCallback = SearchSheetCallback()
+    val searchSheetCallback = BottomSheetCallbackCollection()
 
     // SearchFragment's BottomSheetBehavior
     private val searchSheetBehavior by lazy {
         BottomSheetBehavior.from(searchFragment.view)
     }
+
+    // ContextualFragments's BottomSheetBehavior
+    private val contextualSheetBehavior by lazy {
+        BottomSheetBehavior.from(contextualFragment.view)
+    }
+
+    val contextualSheetCallback = BottomSheetCallbackCollection()
 
     // MainActivity's ViewModel which is also used by its child Fragments to share data
     private val sharedViewModel by lazy {
@@ -58,6 +67,8 @@ class MainActivity : BaseUserActivity() {
         processText(intent)
 
         setUpSearchSheet()
+
+        setUpContextualSheet()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -117,17 +128,14 @@ class MainActivity : BaseUserActivity() {
 
         // Show a scrim behind the search sheet when it is expanded by setting the scrims
         // alpha to match the bottom sheet's slide offset.
-        searchSheetCallback.addOnSlideAction { _, fl -> bottomSheetSkrim.alpha = fl }
+        searchSheetCallback.addOnSlideAction { _, searchSlide ->
+            setBottomSheetScrimAlpha(searchSlide, contextualSheetCallback.currentSlide)
+        }
 
         // Set the scrims visibility to gone if the search sheet is collapsed, otherwise make it
         // visible
         searchSheetCallback.addOnStateChangedAction { _, newState ->
-            when (newState) {
-                BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN -> {
-                    bottomSheetSkrim.gone()
-                }
-                else -> bottomSheetSkrim.visible()
-            }
+            setBottomSheetScrimVisibility(newState, contextualSheetCallback.currentState)
         }
 
         // Hide keyboard if sheet is manually dragged and collapsed
@@ -150,6 +158,49 @@ class MainActivity : BaseUserActivity() {
         searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
     }
 
+    fun setUpContextualSheet() {
+
+        // Set max expanded height to 60% of screen height plus a 52dp offset to be visible
+        // above the search sheet when both sheets are peeking
+        contextualFragment.view?.layoutParams?.height = Math.round(
+                displayHeightPx * .60F + resources.getDimensionPixelSize(R.dimen.contextual_top_bar_height)
+        )
+
+        // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
+        // when either bottom sheet is not resting, hence the use of Math.max
+        contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
+            setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
+        }
+
+        contextualSheetCallback.addOnStateChangedAction { _, newState ->
+            setBottomSheetScrimVisibility(searchSheetCallback.currentState, newState)
+        }
+
+        contextualSheetBehavior.setBottomSheetCallback(contextualSheetCallback)
+    }
+
+    /**
+     * Set the bottomSheetScrim's visibility depending on the state of both the search and
+     * contextual bottom sheet. If both <= [BottomSheetBehavior.STATE_COLLAPSED], the scrim will
+     * be set to gone. otherwise, it will be visible.
+     */
+    private fun setBottomSheetScrimVisibility(searchSheetState: Int, contextualSheetState: Int) {
+        if ((searchSheetState == BottomSheetBehavior.STATE_COLLAPSED
+                        || searchSheetState == BottomSheetBehavior.STATE_HIDDEN)
+                && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
+                        || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
+        ) {
+            bottomSheetSkrim.gone()
+        } else {
+            bottomSheetSkrim.visible()
+        }
+    }
+
+    private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
+        bottomSheetSkrim.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
+    }
+
+
     /**
      * Any child Fragment of this Activity can call this method to have the SearchFragment
      * bottom sheet expanded, the SearchFragment's search input field focused and the IME opened to
@@ -159,11 +210,16 @@ class MainActivity : BaseUserActivity() {
      * "Get Started" searching for words.
      */
     fun focusAndOpenSearch() {
-        val searchFragment =
-                supportFragmentManager.findFragmentById(R.id.searchFragment) as? SearchFragment
+        val searchFragment = supportFragmentManager
+                .findFragmentById(R.id.searchFragment) as? SearchFragment
         searchFragment?.focusAndOpenSearch()
     }
 
+    fun openContextualFragment() {
+        val contextualFragment = supportFragmentManager
+                .findFragmentById(R.id.contextualFragment) as? ContextualFragment
+        contextualFragment?.expand()
+    }
 
     private fun showHome() {
         if (Navigator.showHome(this)) {

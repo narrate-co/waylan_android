@@ -70,12 +70,23 @@
         android:id="@+id/actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="@dimen/keyline_2"
-        android:paddingLeft="@dimen/keyline_2"
         android:orientation="horizontal"
+        android:paddingLeft="@dimen/keyline_2"
+        android:paddingRight="@dimen/keyline_2"
         app:layout_constraintBottom_toBottomOf="@+id/search"
         app:layout_constraintStart_toEndOf="@+id/search"
         app:layout_constraintTop_toTopOf="@+id/search">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/filter"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/keyline_1"
+            android:layout_marginRight="@dimen/keyline_1"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_round_filter_list_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/favorite"
@@ -86,7 +97,8 @@
             android:layout_marginLeft="@dimen/keyline_1"
             android:layout_marginRight="@dimen/keyline_1"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_favorite_border_24px" />
+            app:srcCompat="@drawable/ic_round_favorite_border_24px"
+            android:visibility="visible"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/share"
@@ -94,7 +106,7 @@
             android:layout_height="42dp"
             android:scaleType="centerInside"
             android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="@dimen/keyline_1"
+            android:layout_marginRight="12dp"
             android:background="?selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_round_share_24px" />
 

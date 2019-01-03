@@ -93,6 +93,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     @Inject
     lateinit var rotationManager: RotationManager
 
+    private var numberOfShelfActionsShowing: Int = 0
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -143,8 +145,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 bottomSheetBehavior.expand()
             }
         }
-
-
     }
 
     // Set up the recycler view which holds recently viewed words when the search input field
@@ -239,37 +239,72 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun setUpShelfActions(view: View?) {
         if (view == null) return
 
-        // Hide actions when not DetailsFragment is not the current Fragment, otherwise show
+        // Hide actions when DetailsFragment is not the current Fragment, otherwise show
         sharedViewModel.getBackStack().observe(this, Observer {
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             // wait for the next layout step to grantee the actions.width is correctly captured
             view.post {
                 when (dest) {
-                    Navigator.HomeDestination.HOME, Navigator.HomeDestination.LIST -> {
-                        runShelfActionsAnimation(false)
+                    Navigator.HomeDestination.HOME -> {
+                        runShelfActionsAnimation(0)
+                    }
+                    Navigator.HomeDestination.LIST -> {
+                        // need to know: if current list has a filter applied
+                        val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
+                        runShelfActionsAnimation(if (hasAppliedFilter) 0 else 1)
                     }
                     Navigator.HomeDestination.DETAILS -> {
-                        runShelfActionsAnimation(true)
+                        runShelfActionsAnimation(2)
                     }
                 }
             }
         })
 
+        sharedViewModel.appliedListFilter.observe(this, Observer {
+            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.LIST) {
+                // Show the filter action if there is no filter applied
+                runShelfActionsAnimation(if (it.isEmpty()) 1 else 0)
+            }
+        })
+
         // Hide actions if sheet is expanded
-        (activity as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+        (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
             if (currentDest == Navigator.HomeDestination.DETAILS) {
-                val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-                val hideMargin = keyline2
-                val showMargin = actions.width + keyline2
-                val params = search.layoutParams as ConstraintLayout.LayoutParams
-                val adjustedInterpolatedTime = 1.0F - offset
-                params.rightMargin = Math.max(hideMargin, (showMargin * adjustedInterpolatedTime).toInt())
-                search.layoutParams = params
+                setSheetSlideOffsetForActions(offset)
             }
         }
 
+        filter.setOnClickListener {
+            (activity as MainActivity).openContextualFragment()
+        }
+
+        // Hide filter action if contextual sheet is expanded
+        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
+            val currentDest = sharedViewModel.getBackStack().value?.peek()
+                    ?: Navigator.HomeDestination.HOME
+            if (currentDest == Navigator.HomeDestination.LIST) {
+                setSheetSlideOffsetForActions(offset)
+            }
+        }
+    }
+
+    private fun setSheetSlideOffsetForActions(offset: Float) {
+        val zeroActions = numberOfShelfActionsShowing == 0
+        val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
+        val hiddenMargin = keyline2
+        val showingMargin = (((filter.width + keyline2) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
+        val params = search.layoutParams  as ConstraintLayout.LayoutParams
+
+        params.rightMargin = getScaleBetweenRange(
+                offset,
+                0F,
+                1F,
+                showingMargin.toFloat(),
+                hiddenMargin.toFloat()
+        ).toInt()
+        search.layoutParams = params
     }
 
     /**
@@ -390,28 +425,28 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
      * Animate in or out the shelf actions (the actions which live to the right of the search
      * input field) by animating the right margin of the search input layout.
      */
-    private fun runShelfActionsAnimation(show: Boolean) {
+    private fun runShelfActionsAnimation(numberOfActions: Int) {
         if (!isAdded) return
 
+        numberOfShelfActionsShowing = numberOfActions
+        val zeroActions = numberOfActions == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-        val showMargin = actions.width + keyline2
+        val showMargin = (((filter.width + keyline2) * numberOfActions) + (if (zeroActions) keyline2 else 0)) + keyline2
         val currentMargin = (search.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
-        if ((show && currentMargin == showMargin) || (!show && currentMargin == keyline2)) return
+        if ((!zeroActions && currentMargin == showMargin) || (zeroActions && currentMargin == keyline2)) return
 
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
                 val params = search.layoutParams as ConstraintLayout.LayoutParams
-                val adjustedInterpolatedTime: Float = if (show) {
-                    interpolatedTime
-                } else {
-                    1.0F - interpolatedTime
-                }
-                params.rightMargin = Math.max(
-                        keyline2,
-                        (showMargin * adjustedInterpolatedTime).toInt()
-                )
+                params.rightMargin = getScaleBetweenRange(
+                        interpolatedTime,
+                        0F,
+                        1F,
+                        currentMargin.toFloat(),
+                        showMargin.toFloat()
+                ).toInt()
                 search.layoutParams = params
             }
         }
@@ -439,8 +474,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         })
 
         // TODO add share button setup
-    }
 
+    }
 
     override fun onWordClicked(word: WordSource) {
         bottomSheetBehavior.collapse(activity)

@@ -33,6 +33,10 @@ class MainViewModel @Inject constructor(
 
     val currentWord: LiveData<String> = _currentWord
 
+    private var _appliedListFilter = MutableLiveData<List<String>>()
+
+    val appliedListFilter: LiveData<List<String>> = _appliedListFilter
+
     /**
      * Get a LiveData which observes [currentWord]'s [FirestoreUserSource].
      *
@@ -109,6 +113,10 @@ class MainViewModel @Inject constructor(
 
         stack?.pop()
         if (stack != null) backStack.value = stack
+    }
+
+    fun setAppliedListFilter(filter: List<String>) {
+        _appliedListFilter.value = filter
     }
 
 }

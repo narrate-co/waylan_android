@@ -42,7 +42,7 @@
     <color name="words_dark_color_background">@color/colorGray900</color>
     <color name="words_dark_color_surface">@color/colorGray700</color>
     <color name="words_dark_color_accent_surface">@color/colorGray700</color>
-    <color name="words_dark_color_accent_surface_variant">@color/colorGray600</color>
+    <color name="words_dark_color_accent_surface_variant">@color/colorGray500</color>
     <color name="words_dark_color_background_area">@color/colorGray800</color>
     <color name="words_dark_color_background_area_variant">@color/colorGray600</color>
     <color name="words_dark_color_surface_area">@color/colorGray600</color>

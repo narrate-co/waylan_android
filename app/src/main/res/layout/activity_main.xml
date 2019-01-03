@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="502dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_hideable="false"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="132dp"/>
 
     <fragment
