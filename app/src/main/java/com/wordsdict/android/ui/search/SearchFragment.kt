@@ -247,7 +247,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                     Navigator.HomeDestination.HOME -> {
                         runShelfActionsAnimation(0)
                     }
-                    Navigator.HomeDestination.LIST -> {
+                    Navigator.HomeDestination.TRENDING -> {
                         // need to know: if current list has a filter applied
                         val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
                         runShelfActionsAnimation(if (hasAppliedFilter) 0 else 1)
@@ -258,12 +258,13 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                         // setShelfActionsForDetails will be called by the observer of
                         // MainViewModel's getCurrentFirestoreUserword()
                     }
+                    else -> runShelfActionsAnimation(0)
                 }
             }
         })
 
         sharedViewModel.appliedListFilter.observe(this, Observer {
-            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.LIST) {
+            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
                 // Show the filter action if there is no filter applied
                 runShelfActionsAnimation(if (it.isEmpty()) 1 else 0)
             }
@@ -271,8 +272,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         // Hide actions if sheet is expanded
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = sharedViewModel.getBackStack().value?.peek()
-                    ?: Navigator.HomeDestination.HOME
             setSheetSlideOffsetForActions(offset, (activity as MainActivity).contextualSheetCallback.currentSlide)
         }
 
@@ -284,7 +283,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
             val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
-            if (currentDest == Navigator.HomeDestination.LIST) {
+            if (currentDest == Navigator.HomeDestination.TRENDING) {
                 setSheetSlideOffsetForActions((activity as MainActivity).searchSheetCallback.currentSlide, offset)
             }
         }

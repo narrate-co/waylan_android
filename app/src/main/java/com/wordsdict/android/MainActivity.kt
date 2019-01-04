@@ -164,9 +164,6 @@ class MainActivity : BaseUserActivity() {
 
         // Set max expanded height to 60% of screen height plus a 52dp offset to be visible
         // above the search sheet when both sheets are peeking
-//        contextualFragment.view?.layoutParams?.height = Math.round(
-//                displayHeightPx * .60F + resources.getDimensionPixelSize(R.dimen.contextual_peek_bar_height)
-//        )
 
         // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
         // when either bottom sheet is not resting, hence the use of Math.max
@@ -177,6 +174,7 @@ class MainActivity : BaseUserActivity() {
         contextualSheetCallback.addOnStateChangedAction { _, newState ->
             setBottomSheetScrimVisibility(searchSheetCallback.currentState, newState)
         }
+
 
         contextualSheetBehavior.setBottomSheetCallback(contextualSheetCallback)
     }
@@ -237,7 +235,7 @@ class MainActivity : BaseUserActivity() {
 
     fun showListFragment(type: ListFragment.ListType) {
         if (Navigator.showListFragment(this, type)) {
-            sharedViewModel.pushToBackStack(Navigator.HomeDestination.LIST)
+            sharedViewModel.pushToBackStack(type.homeDestination)
         }
     }
 

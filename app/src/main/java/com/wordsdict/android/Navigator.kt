@@ -45,7 +45,10 @@ object Navigator {
      * [R.id.fragmentContainer]
      */
     enum class HomeDestination {
-        HOME, LIST, DETAILS
+        HOME, TRENDING, RECENT, FAVORITE, DETAILS;
+
+        val isListDestination: Boolean
+            get() = this == TRENDING || this == RECENT || this == FAVORITE
     }
 
     /**

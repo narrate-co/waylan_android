@@ -76,7 +76,7 @@ class ContextualFragment : BaseUserFragment() {
             setSheetHideable()
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             when (dest) {
-                Navigator.HomeDestination.LIST -> {
+                Navigator.HomeDestination.TRENDING -> {
                     val hasAppliedFilter =
                             sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
                     if (hasAppliedFilter) {
@@ -93,7 +93,6 @@ class ContextualFragment : BaseUserFragment() {
             setSheetHideable()
             peekChipGroup.removeAllViews()
             if (it.isEmpty()) {
-                bottomSheetBehavior.isHideable = true
                 bottomSheetBehavior.peekHeight = 0
             } else {
                 it.forEach { period ->
@@ -105,11 +104,10 @@ class ContextualFragment : BaseUserFragment() {
                     chip.text = getString(period.label)
                     peekChipGroup.addView(chip)
                 }
-                bottomSheetBehavior.isHideable = false
                 bottomSheetBehavior.peekHeight = resources.getDimensionPixelSize(R.dimen.contextual_min_peek_height)
             }
 
-            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.LIST) {
+            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
                 if (it.isEmpty()) {
                     hide()
                 } else {
@@ -134,7 +132,7 @@ class ContextualFragment : BaseUserFragment() {
         val dest = sharedViewModel.getBackStack().value?.peek() ?: Navigator.HomeDestination.HOME
         val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() == true
 
-        if (dest == Navigator.HomeDestination.LIST && hasAppliedFilter) {
+        if (dest == Navigator.HomeDestination.TRENDING && hasAppliedFilter) {
             bottomSheetBehavior.isHideable = false
         } else {
             bottomSheetBehavior.isHideable = true
