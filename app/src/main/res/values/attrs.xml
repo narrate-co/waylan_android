@@ -16,6 +16,8 @@
     <attr name="colorSurfaceAreaVariant" format="color"/>
     <attr name="colorAccentSurfaceArea" format="color"/>
     <attr name="colorAccentSurfaceAreaVariant" format="color"/>
+    <attr name="colorAccentSurfaceVariantArea" format="color"/>
+    <attr name="colorAccentSurfaceVariantAreaVariant" format="color"/>
     <attr name="colorError" format="color"/>
     <attr name="colorErrorVariant" format="color"/>
     <attr name="colorInformative" format="color"/>
@@ -32,32 +34,9 @@
     <attr name="colorScrim" format="color"/>
     <attr name="colorDivider" format="color"/>
     <attr name="colorHairline" format="color"/>
+    <attr name="colorAccentSurfaceHairlineShadow" format="color"/>
+    <attr name="colorAccentSurfaceVariantHairlineShadow" format="color"/>
 
-
-
-    <!--Additional Colors-->
-    <!--<attr name="colorAccentDark" format="color"/>-->
-    <!--<attr name="colorPrimaryLight" format="color"/>-->
-    <!--<attr name="colorHairline" format="color"/>-->
-    <!--<attr name="colorInformative" format="color"/>-->
-    <!--<attr name="colorBrandSecondary" format="color"/>-->
-    <!--<attr name="textColorError" format="color"/>-->
-    <!--<attr name="textColorOnError" format="color"/>-->
-    <!--<attr name="textColorHintOnError" format="color"/>-->
-    <!--<attr name="textColorOnInformative" format="color"/>-->
-
-    <!--<attr name="surfaceAColor" format="color"/>-->
-    <!--<attr name="surfaceASubsurfaceAColor" format="color"/>-->
-    <!--<attr name="surfaceBColor" format="color"/>-->
-    <!--<attr name="surfaceBSubsurfaceAColor" format="color"/>-->
-
-    <!--<attr name="textLabelBackgroundColor" format="color"/>-->
-    <!--<attr name="textLabelTextColor" format="color"/>-->
-
-
-    <!--Additional TextAppearances-->
-    <!--<attr name="textAppearanceBody1Inverse" format="reference"/>-->
-    <!--<attr name="textAppearanceButtonInverse" format="reference"/>-->
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>

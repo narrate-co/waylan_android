@@ -10,5 +10,5 @@
     android:layout_marginBottom="8dp"
     android:text="all time"
     android:textColor="?colorSecondaryOnDefault"
-    app:chipBackgroundColor="@color/colorIvory400"
+    app:chipBackgroundColor="?colorAccentSurfaceVariantArea"
     />

@@ -16,6 +16,8 @@
     <color name="words_color_surface_area_variant">@color/colorIvory300</color>
     <color name="words_color_accent_surface_area">@color/colorIvory200</color>
     <color name="words_color_accent_surface_area_variant">@color/colorIvory300</color>
+    <color name="words_color_accent_surface_variant_area">@color/colorIvory400</color>
+    <color name="words_color_accent_surface_variant_area_variant">@color/colorIvory500</color>
     <color name="words_color_error">@color/colorMauve100</color>
     <color name="words_color_error_variant">@color/colorMauve200</color>
     <color name="words_color_informative">@color/colorPink50</color>
@@ -32,6 +34,8 @@
     <color name="words_color_scrim">@color/colorBlackAlpha005</color>
     <color name="words_color_divider">@color/colorBlackAlpha005</color>
     <color name="words_color_hairline">@color/colorBlackAlpha025</color>
+    <color name="words_color_accent_surface_hairline_shadow">@color/colorIvory400</color>
+    <color name="words_color_accent_surface_variant_hairline_shadow">@color/colorIvory500</color>
 
 
     <!--Words Night-->
@@ -49,6 +53,8 @@
     <color name="words_dark_color_surface_area_variant">@color/colorGray500</color>
     <color name="words_dark_color_accent_surface_area">@color/colorGray600</color>
     <color name="words_dark_color_accent_surface_area_variant">@color/colorGray500</color>
+    <color name="words_dark_color_accent_surface_variant_area">@color/colorGray400</color>
+    <color name="words_dark_color_accent_surface_variant_area_variant">@color/colorGray300</color>
     <color name="words_dark_color_error">@color/colorMauve300</color>
     <color name="words_dark_color_error_variant">@color/colorMauve400</color>
     <color name="words_dark_color_informative">@color/colorPink900</color>
@@ -65,7 +71,8 @@
     <color name="words_dark_color_scrim">@color/colorBlackAlpha025</color>
     <color name="words_dark_color_divider">@color/colorWhiteAlpha005</color>
     <color name="words_dark_color_hairline">@color/colorWhiteAlpha025</color>
-
+    <color name="words_dark_color_accent_surface_hairline_shadow">@android:color/transparent</color>
+    <color name="words_dark_color_accent_surface_variant_hairline_shadow">@android:color/transparent</color>
 
 
 

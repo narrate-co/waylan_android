@@ -22,7 +22,7 @@
                 android:bottomRightRadius="0dp"/>
             <stroke
                 android:width=".5dp"
-                android:color="@color/colorIvory400" />
+                android:color="?colorAccentSurfaceHairlineShadow" />
         </shape>
     </item>
 

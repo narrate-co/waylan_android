@@ -110,9 +110,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         setUpSmartShelf(view)
 
-
         sharedViewModel.getCurrentFirestoreUserWord().observe(this, Observer {
-            setShelfActionsForDetails(it.userWord)
+            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.DETAILS) {
+                setShelfActionsForDetails(it.userWord)
+            }
         })
 
         setUpShelfActions(view)
