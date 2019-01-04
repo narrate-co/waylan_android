@@ -12,6 +12,7 @@ import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.BottomSheetCallbackCollection
 import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_search.*
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -113,7 +114,16 @@ class MainActivity : BaseUserActivity() {
      *  to the back stack should take place.
      */
     private fun maybeConsumeOnBackPressed(): Boolean {
-        return searchSheetBehavior.collapse(this)
+        var consumed = false
+        if (searchSheetBehavior.collapse(this)) {
+            consumed = true
+        }
+        if (contextualSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED &&
+                contextualSheetBehavior.collapse(this)) {
+            consumed = true
+        }
+
+        return consumed
     }
 
     /**
