@@ -59,15 +59,15 @@ class ContextualFragment : BaseUserFragment() {
     private fun setUpSheet(view: View?) {
         if (view == null) return
 
-        setUpExpandedContainer()
+        setUpExpandedContainer("Filter")
 
-        // When the current destination changes, update the sheet's state depending on
-        // the new destination and whether or not it has an applied filter
+        // When the current destination changes, update the sheet's state
         sharedViewModel.getBackStack().observe(this, Observer {
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             when (dest) {
                 Navigator.HomeDestination.TRENDING -> {
-                    // Do nothing. Let the current list filter observer handle peeking/hiding
+                    // Set the expanded sheet up for trending
+                    setUpExpandedContainer("Filter trending")
                 }
                 else -> hide()
             }
@@ -103,7 +103,9 @@ class ContextualFragment : BaseUserFragment() {
         }
     }
 
-    private fun setUpExpandedContainer() {
+    private fun setUpExpandedContainer(title: String) {
+        this.title.text = title
+        chipGroup.removeAllViews()
         Period.values().forEach { period ->
             val chip = LayoutInflater.from(context).inflate(
                     R.layout.contextual_chip_layout,
