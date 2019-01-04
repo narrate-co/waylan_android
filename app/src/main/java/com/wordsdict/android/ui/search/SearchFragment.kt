@@ -250,7 +250,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                     }
                     Navigator.HomeDestination.TRENDING -> {
                         // need to know: if current list has a filter applied
-                        val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
+                        val hasAppliedFilter = sharedViewModel.getCurrentListFilter().isNotEmpty()
                         runShelfActionsAnimation(if (hasAppliedFilter) 0 else 1)
                         setShelfActionsForList()
                     }
@@ -264,7 +264,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             }
         })
 
-        sharedViewModel.appliedListFilter.observe(this, Observer {
+        // Show the filter action if the current HomeDestination has an applied filter and
+        // it is filterable (only TRENDING is filterable currently)
+        sharedViewModel.getCurrentListFilterLive().observe(this, Observer {
             if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
                 // Show the filter action if there is no filter applied
                 runShelfActionsAnimation(if (it.isEmpty()) 1 else 0)
@@ -273,11 +275,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         // Hide actions if sheet is expanded
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
-            setSheetSlideOffsetForActions(offset, (activity as MainActivity).contextualSheetCallback.currentSlide)
-        }
-
-        action1.setOnClickListener {
-            (activity as MainActivity).openContextualFragment()
+            setSheetSlideOffsetForActions(
+                    offset,
+                    (activity as MainActivity).contextualSheetCallback.currentSlide
+            )
         }
 
         // Hide filter action if contextual sheet is expanded
@@ -285,7 +286,10 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
             val currentDest = sharedViewModel.getBackStack().value?.peek()
                     ?: Navigator.HomeDestination.HOME
             if (currentDest == Navigator.HomeDestination.TRENDING) {
-                setSheetSlideOffsetForActions((activity as MainActivity).searchSheetCallback.currentSlide, offset)
+                setSheetSlideOffsetForActions(
+                        (activity as MainActivity).searchSheetCallback.currentSlide,
+                        offset
+                )
             }
         }
     }
@@ -293,8 +297,9 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
     private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {
         val zeroActions = numberOfShelfActionsShowing == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
+        val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
         val hiddenMargin = keyline2
-        val showingMargin = (((action1.width + keyline2) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
+        val showingMargin = (((action1.width + keyline3) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
         val params = search.layoutParams  as ConstraintLayout.LayoutParams
 
         params.rightMargin = getScaleBetweenRange(
@@ -436,7 +441,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         val currentMargin = (search.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
-        if ((!zeroActions && currentMargin == showMargin) || (zeroActions && currentMargin == keyline2)) return
+        if ((!zeroActions && currentMargin == showMargin)
+                || (zeroActions && currentMargin == keyline2)) return
 
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {

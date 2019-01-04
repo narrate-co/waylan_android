@@ -1,5 +1,6 @@
 package com.wordsdict.android
 
+import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.analytics.NavigationMethod
@@ -7,7 +8,9 @@ import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.FirestoreUserSource
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.di.UserScope
+import com.wordsdict.android.ui.list.ListFragment
 import com.wordsdict.android.ui.search.Period
+import com.wordsdict.android.util.LiveDataHelper
 import java.util.*
 import javax.inject.Inject
 
@@ -35,10 +38,6 @@ class MainViewModel @Inject constructor(
     private var _currentWord = MutableLiveData<String>()
 
     val currentWord: LiveData<String> = _currentWord
-
-//    private var _appliedListFilter = MutableLiveData<List<Period>>()
-
-    val appliedListFilter: LiveData<List<Period>> = userPreferenceStore.trendingListFilterLive
 
     /**
      * Get a LiveData which observes [currentWord]'s [FirestoreUserSource].
@@ -118,9 +117,38 @@ class MainViewModel @Inject constructor(
         if (stack != null) backStack.value = stack
     }
 
-    fun setAppliedListFilter(filter: List<Period>) {
-        userPreferenceStore.setTrendingListFilter(filter)
-//        _appliedListFilter.value = filter
+    fun getCurrentListFilter(): List<Period> {
+        val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
+
+        return when (dest) {
+            Navigator.HomeDestination.TRENDING -> userPreferenceStore.getTrendingListFilter()
+            Navigator.HomeDestination.RECENT -> userPreferenceStore.getRecentsListFilter()
+            Navigator.HomeDestination.FAVORITE -> userPreferenceStore.getFavoritesListFilter()
+            else -> emptyList()
+        }
+    }
+
+    fun getCurrentListFilterLive(): LiveData<List<Period>> {
+        return Transformations.switchMap(getBackStack()) {
+            val dest = if (it.isEmpty()) Navigator.HomeDestination.HOME else it.peek()
+            when (dest) {
+                Navigator.HomeDestination.TRENDING -> userPreferenceStore.trendingListFilterLive
+                Navigator.HomeDestination.RECENT -> userPreferenceStore.recentsListFilterLive
+                Navigator.HomeDestination.FAVORITE -> userPreferenceStore.favoritesListFilterLive
+                else -> LiveDataHelper.empty()
+            }
+        }
+    }
+
+
+    fun setListFilter(filter: List<Period>) {
+        val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
+
+        when (dest) {
+            Navigator.HomeDestination.TRENDING -> userPreferenceStore.setTrendingListFilter(filter)
+            Navigator.HomeDestination.RECENT -> userPreferenceStore.setRecentsListFilter(filter)
+            Navigator.HomeDestination.FAVORITE -> userPreferenceStore.setFavoritesListFilter(filter)
+        }
     }
 
 }

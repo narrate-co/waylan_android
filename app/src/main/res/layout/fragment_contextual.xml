@@ -15,7 +15,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/peekBarContainer"
+        android:id="@+id/collapsedContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contextual_peek_bar_height"
         android:layout_gravity="top"
@@ -24,7 +24,7 @@
         >
 
         <HorizontalScrollView
-            android:id="@+id/peekHorizontalScrollView"
+            android:id="@+id/collapsedHorizontalScrollView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/peekChipGroup"
+                android:id="@+id/collapsedChipGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -80,7 +80,7 @@
             android:layout_marginBottom="8dp"
             android:text="Filter"
             android:textAppearance="?textAppearanceSubtitle2"
-            app:layout_constraintBottom_toTopOf="@+id/peekBarGuideline"
+            app:layout_constraintBottom_toTopOf="@+id/collapsedBarGuideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,17 +93,17 @@
             android:text="Period"
             android:textAppearance="?textAppearanceCaption"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/peekBarGuideline" />
+            app:layout_constraintTop_toTopOf="@+id/collapsedBarGuideline" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/peekBarGuideline"
+            android:id="@+id/collapsedBarGuideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="52dp" />
 
         <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
+            android:id="@+id/expandedHorizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

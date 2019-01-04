@@ -48,64 +48,38 @@ class ContextualFragment : BaseUserFragment() {
     }
 
     override fun onEnterTransactionEnded() {
+
         setUpSheet(view)
 
         close.setOnClickListener {
-            sharedViewModel.setAppliedListFilter(emptyList())
+            sharedViewModel.setListFilter(emptyList())
         }
     }
 
     private fun setUpSheet(view: View?) {
         if (view == null) return
 
-        Period.values().forEach { period ->
-            val chip = LayoutInflater.from(context).inflate(
-                    R.layout.contextual_chip_layout,
-                    chipGroup,
-                    false
-            ) as Chip
-            val label = getString(period.label)
-            chip.text = label
-            chip.setOnClickListener {
-                sharedViewModel.setAppliedListFilter(listOf(period))
-            }
-            chipGroup.addView(chip)
-        }
+        setUpExpandedContainer()
 
+        // When the current destination changes, update the sheet's state depending on
+        // the new destination and whether or not it has an applied filter
         sharedViewModel.getBackStack().observe(this, Observer {
-            setSheetHideable()
             val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
             when (dest) {
                 Navigator.HomeDestination.TRENDING -> {
-                    val hasAppliedFilter =
-                            sharedViewModel.appliedListFilter.value?.isNotEmpty() ?: false
-                    if (hasAppliedFilter) {
-                        peek()
-                    } else {
-                        hide()
-                    }
+                    // Do nothing. Let the current list filter observer handle peeking/hiding
                 }
                 else -> hide()
             }
         })
 
-        sharedViewModel.appliedListFilter.observe(this, Observer {
-            setSheetHideable()
-            peekChipGroup.removeAllViews()
-            if (it.isEmpty()) {
-                bottomSheetBehavior.peekHeight = 0
-            } else {
-                it.forEach { period ->
-                    val chip = LayoutInflater.from(context).inflate(
-                            R.layout.contextual_chip_layout,
-                            peekChipGroup,
-                            false
-                    ) as Chip
-                    chip.text = getString(period.label)
-                    peekChipGroup.addView(chip)
-                }
-                bottomSheetBehavior.peekHeight = resources.getDimensionPixelSize(R.dimen.contextual_min_peek_height)
-            }
+        // When the current list's filter changes, remove the collapsed bar's chips and replace
+        // them with the new items (if any)
+        sharedViewModel.getCurrentListFilterLive().observe(this, Observer {
+
+            setSheetPeekable(it.isNotEmpty())
+
+            replaceCollapsedContainerChips(it)
 
             if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
                 if (it.isEmpty()) {
@@ -118,20 +92,63 @@ class ContextualFragment : BaseUserFragment() {
             }
         })
 
+        // Animate the switching of containers between the collapsed (peeked) state and the
+        // expanded state. Peeking should just show the top collapsedContainer and the expanded
+        // state should just show the expandedContainer
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val peekBarAlpha =
-                    getScaleBetweenRange(offset, 0.0F, 0.5F, 1.0F, 0.0F)
-            val expandedContainerAlpha =
-                    getScaleBetweenRange(offset, 0.5F, 1.0F, 0.0F, 1.0F)
-            peekBarContainer.alpha = peekBarAlpha
+            val peekBarAlpha = getScaleBetweenRange(offset, 0.0F, 0.5F, 1.0F, 0.0F)
+            val expandedContainerAlpha = getScaleBetweenRange(offset, 0.5F, 1.0F, 0.0F, 1.0F)
+            collapsedContainer.alpha = peekBarAlpha
             expandedContainer.alpha = expandedContainerAlpha
         }
     }
 
+    private fun setUpExpandedContainer() {
+        Period.values().forEach { period ->
+            val chip = LayoutInflater.from(context).inflate(
+                    R.layout.contextual_chip_layout,
+                    chipGroup,
+                    false
+            ) as Chip
+            val label = getString(period.label)
+            chip.text = label
+            chip.setOnClickListener {
+                sharedViewModel.setListFilter(listOf(period))
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
+    private fun replaceCollapsedContainerChips(list: List<Period>) {
+        collapsedChipGroup.removeAllViews()
+        list.forEach { period ->
+            val chip = LayoutInflater.from(context).inflate(
+                    R.layout.contextual_chip_layout,
+                    collapsedChipGroup,
+                    false
+            ) as Chip
+            chip.text = getString(period.label)
+            collapsedChipGroup.addView(chip)
+        }
+    }
+
+    private fun setSheetPeekable(peekable: Boolean) {
+        if (peekable) {
+            bottomSheetBehavior.peekHeight = resources.getDimensionPixelSize(R.dimen.contextual_min_peek_height)
+        } else {
+            bottomSheetBehavior.peekHeight = 0
+        }
+    }
+
+    /**
+     * Determine whether the sheet should be able to be hidden or not depending on the current
+     * HomeDestination and whether or not we have a filter applied for it.
+     */
     private fun setSheetHideable() {
         val dest = sharedViewModel.getBackStack().value?.peek() ?: Navigator.HomeDestination.HOME
-        val hasAppliedFilter = sharedViewModel.appliedListFilter.value?.isNotEmpty() == true
+        val hasAppliedFilter = sharedViewModel.getCurrentListFilter().isNotEmpty()
 
+        // if we're at Trending and there is a non empty filter, don't allow the sheet to be hidden
         if (dest == Navigator.HomeDestination.TRENDING && hasAppliedFilter) {
             bottomSheetBehavior.isHideable = false
         } else {
@@ -148,6 +165,7 @@ class ContextualFragment : BaseUserFragment() {
     }
 
     private fun hide() {
+        setSheetHideable()
         bottomSheetBehavior.hide()
     }
 }

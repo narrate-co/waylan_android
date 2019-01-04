@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
+        app:behavior_peekHeight="@dimen/contextual_min_peek_height"
         />
 
     <fragment
