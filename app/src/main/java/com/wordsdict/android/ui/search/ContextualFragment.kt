@@ -19,6 +19,11 @@ import com.wordsdict.android.util.getScaleBetweenRange
 import com.wordsdict.android.util.hide
 import kotlinx.android.synthetic.main.fragment_contextual.*
 
+/**
+ * A second bottom sheet that lives behind the SearchFragment sheet. This is used to give
+ * secondary content about what is in the main fragment container. This Fragment presents
+ * things like a filter for filtering a list.
+ */
 class ContextualFragment : BaseUserFragment() {
 
     companion object {

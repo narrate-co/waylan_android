@@ -168,7 +168,10 @@ class MainActivity : BaseUserActivity() {
         searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
     }
 
-    fun setUpContextualSheet() {
+    /**
+     * Configure [ContextualFragment] and its [BottomSheetBehavior]
+     */
+    private fun setUpContextualSheet() {
 
         contextualSheetBehavior.isFitToContents = true
 
