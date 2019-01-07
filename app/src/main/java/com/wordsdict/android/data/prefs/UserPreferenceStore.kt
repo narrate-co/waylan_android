@@ -34,15 +34,24 @@ class UserPreferenceStore(
         }
     }
 
+    /**
+     * Reset all preferences to their default state
+     */
     fun resetAll() {
         hasSeenRecentsBanner = false
         hasSeenFavoritesBanner = false
         hasSeenTrendingBanner = false
+        hasSeenDragDismissOverlay = false
+        setRecentsListFilter(emptyList())
+        setTrendingListFilter(emptyList())
+        setFavoritesListFilter(emptyList())
+        useTestSkus = false
         portraitToLandscapeOrientationChangeCount = 0L
         landscapeToPortraitOrientationChangeCount = 0L
     }
 
-    //Globally scoped preference pass-through helpers
+    /** Globally scoped preference pass-through helpers */
+
     var orientationLock: Int
         get() = preferenceStore.orientationLock
         set(value) {
@@ -63,8 +72,9 @@ class UserPreferenceStore(
         get() = preferenceStore.nightModeLive
 
 
-    // User scoped preferences
-    // recents banner
+    /** User scoped preferences */
+
+    // Recents banner
     var hasSeenRecentsBanner: Boolean by PreferenceDelegate(
             sharedPrefs,
             UserPreferences.HAS_SEEN_RECENTS_BANNER,
@@ -73,7 +83,9 @@ class UserPreferenceStore(
     val hasSeenRecentsBannerLive: LiveData<Boolean> =
         PreferenceLiveData(sharedPrefs, UserPreferences.HAS_SEEN_RECENTS_BANNER, false)
 
-    // favorites banner
+
+
+    // Favorites banner
     var hasSeenFavoritesBanner: Boolean by PreferenceDelegate(
             sharedPrefs,
             UserPreferences.HAS_SEEN_FAVORITES_BANNER,
@@ -82,7 +94,9 @@ class UserPreferenceStore(
     val hasSeenFavoritesBannerLive: LiveData<Boolean> =
         PreferenceLiveData(sharedPrefs, UserPreferences.HAS_SEEN_FAVORITES_BANNER, false)
 
-    // trending banner
+
+
+    // Trending banner
     var hasSeenTrendingBanner: Boolean by PreferenceDelegate(
             sharedPrefs,
             UserPreferences.HAS_SEEN_TRENDING_BANNER,
@@ -90,6 +104,16 @@ class UserPreferenceStore(
     )
     val hasSeenTrendingBannerLive: LiveData<Boolean> =
         PreferenceLiveData(sharedPrefs, UserPreferences.HAS_SEEN_TRENDING_BANNER, false)
+
+
+    // Drag dismiss overlay
+    var hasSeenDragDismissOverlay: Boolean by PreferenceDelegate(
+            sharedPrefs,
+            UserPreferences.HAS_SEEN_DRAG_DISMISS_OVERLAY,
+            false
+    )
+
+
 
     // Recents list filter
     private var recentsListFilter: Set<String> by PreferenceDelegate(
@@ -100,9 +124,11 @@ class UserPreferenceStore(
     fun setRecentsListFilter(list: List<Period>) {
         recentsListFilter = list.map { it.prefString }.toSet()
     }
+
     fun getRecentsListFilter(): List<Period> {
         return recentsListFilter.toList().map { Period.fromPrefString(it) }
     }
+
     val recentsListFilterLive: LiveData<List<Period>> =
             Transformations.map(PreferenceLiveData<Set<String>>(
                     sharedPrefs,
@@ -112,18 +138,23 @@ class UserPreferenceStore(
                 set.toList().map { Period.fromPrefString(it) }
             }
 
+
+
     // Trending list filter
     private var trendingListFilter: Set<String> by PreferenceDelegate(
             sharedPrefs,
             UserPreferences.TRENDING_LIST_FILTER,
             emptySet()
     )
+
     fun getTrendingListFilter(): List<Period> {
         return trendingListFilter.toList().map { Period.fromPrefString(it) }
     }
+
     fun setTrendingListFilter(list: List<Period>) {
         trendingListFilter = list.map { it.prefString }.toSet()
     }
+
     val trendingListFilterLive: LiveData<List<Period>> =
             Transformations.map(PreferenceLiveData<Set<String>>(
                     sharedPrefs,
@@ -132,6 +163,8 @@ class UserPreferenceStore(
             ) { set ->
                 set.toList().map { Period.fromPrefString(it) }
             }
+
+
 
     // Favorites list filter
     private var favoritesListFilter: Set<String> by PreferenceDelegate(
@@ -154,6 +187,9 @@ class UserPreferenceStore(
                 set.toList().map { Period.fromPrefString(it) }
             }
 
+
+
+    // Billing test sku
     var useTestSkus: Boolean by PreferenceDelegate(
             sharedPrefs,
             UserPreferences.USE_TEST_SKUS,
@@ -161,6 +197,8 @@ class UserPreferenceStore(
     )
     val useTestSkusLive: LiveData<Boolean> =
             PreferenceLiveData(sharedPrefs, UserPreferences.USE_TEST_SKUS, false)
+
+
 
 
     // portrait to landscape orientation change

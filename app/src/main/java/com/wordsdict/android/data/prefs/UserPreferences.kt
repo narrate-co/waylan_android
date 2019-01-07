@@ -12,6 +12,7 @@ object UserPreferences {
     const val HAS_SEEN_RECENTS_BANNER = "has_seen_recents_banner"
     const val HAS_SEEN_TRENDING_BANNER = "has_seen_trending_banner"
     const val HAS_SEEN_FAVORITES_BANNER = "has_seen_favorites_banner"
+    const val HAS_SEEN_DRAG_DISMISS_OVERLAY = "has_seen_drag_dismiss_overlay"
 
     const val RECENTS_LIST_FILTER = "recents_list_filter"
     const val TRENDING_LIST_FILTER = "trending_list_filter"

@@ -97,7 +97,8 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     // changes.
 
     // The scroll amount needed to trigger a vertical dismissal
-    private var dragDismissDistanceVertical =  300F //200F
+    var dragDismissDistanceVertical =  300F //200F
+        private set
     // The scroll amount needed to trigger a horizontal dismissal
     private var dragDismissDistanceHorizontal = 300F
     // The fraction of the total height of the CoordinatorLayout that should trigger a dismissal
@@ -613,6 +614,25 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         //TODO dispatch drag event
     }
 
+    fun simulateDragDown(interpolation: Float) {
+        val view = parentCoordinatorLayout ?: return
+
+        val totalDrag = dragDismissDistanceVertical * interpolation
+
+        val dragFractionY: Float = Math.log10(
+                ((1 + (Math.abs(totalDrag) / dragDismissDistanceVertical)).toDouble())
+        ).toFloat()
+        val dragToY: Float = dragFractionY * dragDismissDistanceVertical * dragElasticity
+
+        scalePropertiesY(view, dragFractionY, dragToY)
+
+        dispatchDragCallback(
+                dragFractionY,
+                dragToY,
+                Math.min(1F, Math.abs(totalDrag) / dragDismissDistanceVertical),
+                totalDrag
+        )
+    }
 
     private fun scalePropertiesY(view: View, dragFraction: Float, dragTo: Float) {
         view.translationY = dragTo

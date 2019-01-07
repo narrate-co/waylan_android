@@ -15,6 +15,7 @@ import com.wordsdict.android.data.analytics.NavigationMethod
 import com.wordsdict.android.data.repository.MerriamWebsterSource
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.util.*
+import com.wordsdict.android.util.widget.EducationalOverlayView
 import com.wordsdict.android.util.widget.ElasticAppBarBehavior
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_details.view.*
@@ -113,6 +114,11 @@ class DetailsFragment: BaseUserFragment(),
         viewModel.merriamWebsterSource.observe(this, Observer {
             adapter.submitWordSource(it)
         })
+
+        if (!viewModel.hasSeenDragDismissOverlay) {
+            EducationalOverlayView.pullDownEducator(appBar).show()
+            viewModel.hasSeenDragDismissOverlay = true
+        }
     }
 
     private fun setUpRecyclerView() {

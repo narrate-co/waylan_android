@@ -13,6 +13,8 @@
     <dimen name="elastic_view_behavior_background_elevation">24dp</dimen>
     <dimen name="elastic_view_dismiss_distance">100dp</dimen>
 
+    <dimen name="educational_overlay_dot_diameter">36dp</dimen>
+
     <dimen name="home_menu_bottom_offset_min">52dp</dimen>
 
 </resources>
