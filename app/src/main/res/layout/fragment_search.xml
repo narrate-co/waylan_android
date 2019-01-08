@@ -45,12 +45,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginStart="@dimen/keyline_2"
-            android:layout_marginEnd="48dp"
+            android:layout_marginEnd="@dimen/keyline_2"
             android:focusable="true"
             android:hint="Search Words"
             android:imeOptions="actionDone"
             android:maxLines="1"
             android:paddingStart="8dp"
+            android:paddingEnd="@dimen/keyline_2"
             android:singleLine="true" />
 
         <androidx.appcompat.widget.AppCompatImageView
