@@ -48,7 +48,7 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
         val d = builder.create()
 
-        d.window.setBackgroundDrawable(
+        d.window?.setBackgroundDrawable(
                 createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.colorSurface)
         )
 

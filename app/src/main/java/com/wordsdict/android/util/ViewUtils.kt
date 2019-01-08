@@ -35,7 +35,7 @@ fun Synonym.toChip(
             chipGroup,
             false
     ) as Chip
-    chip.chipText = this.synonym
+    chip.text = this.synonym
     chip.setOnClickListener {
         if (onClick != null) onClick(this)
     }

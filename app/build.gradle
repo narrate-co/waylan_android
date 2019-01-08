@@ -13,8 +13,8 @@ android {
         applicationId "com.wordsdict.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 14
-        versionName "0.0.14.debug"
+        versionCode 16
+        versionName "0.0.16.debug"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

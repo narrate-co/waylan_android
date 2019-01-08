@@ -97,11 +97,11 @@ class MerriamWebsterStore(
 
                     // Insert or replace all words
                     entryList.entries.forEach {
-                        val word = it.toDbMwWord(
+                        val w = it.toDbMwWord(
                                 entryList.synthesizedRelatedWords,
                                 entryList.synthesizedSuggestions
                         )
-                        mwDao.insert(word)
+                        mwDao.insert(w)
                     }
 
                     // Insert (or reinsert) all definitions

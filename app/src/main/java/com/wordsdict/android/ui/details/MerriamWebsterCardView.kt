@@ -85,7 +85,6 @@ class MerriamWebsterCardView @JvmOverloads constructor(
             if (intent == null) return
 
             val audioState: AudioClipService.AudioState = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioState
-            val url = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_URL)
             val message = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
 
             setAudioIcon(audioState)

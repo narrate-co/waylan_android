@@ -10,6 +10,7 @@ import kotlin.reflect.KProperty
 /**
  * A delegate that handles reading and writing from SharedPreferences
  */
+@Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
 class PreferenceDelegate<T>(
         private val sharedPrefs: SharedPreferences,
         private val key: String,
