@@ -86,6 +86,11 @@ class WordSourceList {
     /**
      * Remove the [WordSource] [type] from the list. The next time [getComponentsList] is
      * called, the corresponding [DetailsComponent] for [type] will not be present
+     *
+     * *
+     * @return true if the call has changed something which will alter the returned value
+     *  of [getComponentsList], indicating a new [DetailsComponent] list should be submitted
+     *  to [DetailsAdapter]
      */
     fun remove(type: KClass<out WordSource>): Boolean {
         return when (type) {

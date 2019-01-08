@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.wordsdict.android.MainViewModel
 import com.wordsdict.android.R
 import com.wordsdict.android.data.analytics.NavigationMethod
+import com.wordsdict.android.data.firestore.users.merriamWebsterState
 import com.wordsdict.android.data.repository.MerriamWebsterSource
 import com.wordsdict.android.ui.common.BaseUserFragment
 import com.wordsdict.android.util.*
@@ -112,7 +113,10 @@ class DetailsFragment: BaseUserFragment(),
             adapter.submitWordSource(it)
         })
         viewModel.merriamWebsterSource.observe(this, Observer {
-            adapter.submitWordSource(it)
+            if (it.wordsDefinitions.user?.merriamWebsterState?.isValid == true
+                    || !viewModel.hasSeenMerriamWebsterPermissionsPane) {
+                adapter.submitWordSource(it)
+            }
         })
 
         if (!viewModel.hasSeenDragDismissOverlay) {
@@ -146,7 +150,7 @@ class DetailsFragment: BaseUserFragment(),
     }
 
     override fun onMerriamWebsterDismissClicked() {
-        //TODO set user setting
+        viewModel.hasSeenMerriamWebsterPermissionsPane = true
         adapter.removeWordSource(MerriamWebsterSource::class)
     }
 

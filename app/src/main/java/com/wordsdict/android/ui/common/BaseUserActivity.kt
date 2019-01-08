@@ -106,9 +106,8 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
                 delegate.setLocalNightMode(nightMode)
             }
         }
-
-
-
     }
+
+
 }
 

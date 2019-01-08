@@ -42,6 +42,7 @@ class UserPreferenceStore(
         hasSeenFavoritesBanner = false
         hasSeenTrendingBanner = false
         hasSeenDragDismissOverlay = false
+        hasSeenMerriamWebsterPermissionPane = false
         setRecentsListFilter(emptyList())
         setTrendingListFilter(emptyList())
         setFavoritesListFilter(emptyList())
@@ -114,6 +115,12 @@ class UserPreferenceStore(
     )
 
 
+    // Merriam-Webster Permission Pane
+    var hasSeenMerriamWebsterPermissionPane: Boolean by PreferenceDelegate(
+            sharedPrefs,
+            UserPreferences.HAS_SEEN_MERRIAM_WEBSTER_PERMISSION_PANE,
+            false
+    )
 
     // Recents list filter
     private var recentsListFilter: Set<String> by PreferenceDelegate(

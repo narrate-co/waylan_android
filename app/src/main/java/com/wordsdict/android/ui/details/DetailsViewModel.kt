@@ -52,6 +52,11 @@ class DetailsViewModel @Inject constructor(
             userPreferenceStore.hasSeenDragDismissOverlay = value
         }
 
+    var hasSeenMerriamWebsterPermissionsPane: Boolean
+        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane
+        set(value) {
+            userPreferenceStore.hasSeenMerriamWebsterPermissionPane = value
+        }
 
     /**
      * Set the current word (as it appears in the dictionary) that is to be displayed

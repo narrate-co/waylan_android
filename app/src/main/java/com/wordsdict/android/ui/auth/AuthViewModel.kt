@@ -223,8 +223,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
         firestore.users.document(newUser.uid).set(newUser)
                 .addOnSuccessListener {
-                    cont.resume(Auth(firebaseUser, newUser))
-                    isLoading.value = false
+                    cont.resumeWithValidUser(firebaseUser, newUser)
                 }
                 .addOnFailureListener {
                     cont.resumeWithException(it)
@@ -244,8 +243,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
         firestore.users.document(user.uid).set(user)
                 .addOnSuccessListener {
-                    cont.resume(Auth(firebaseUser, user))
-                    isLoading.value = false
+                    cont.resumeWithValidUser(firebaseUser, user)
                 }
                 .addOnFailureListener {
                     cont.resumeWithException(it)
@@ -253,13 +251,21 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 }
     }
 
+    private fun Continuation<Auth>.resumeWithValidUser(
+            firebaseUser: FirebaseUser,
+            user: User
+    ) {
+        resume(Auth(firebaseUser, user))
+        isLoading.value = false
+    }
+
     // Helper function to resume a continuation with a firebase auth exception
     private fun <T> Continuation<T>.resumeWithFirebaseAuthException(
             type: FirebaseAuthWordErrorType,
             task: Task<AuthResult>? = null
     ) {
-        isLoading.value = false
         resumeWithException(task?.exception ?: type.exception)
+        isLoading.value = false
     }
 
 }

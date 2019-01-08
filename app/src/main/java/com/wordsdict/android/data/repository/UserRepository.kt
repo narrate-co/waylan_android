@@ -24,6 +24,7 @@ class UserRepository(
 
     fun setUserMerriamWebsterState(state: PluginState) {
         launch {
+            userPreferenceStore.hasSeenMerriamWebsterPermissionPane = false
             firestoreStore?.setUserMerriamWebsterState(state)
         }
     }
