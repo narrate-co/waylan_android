@@ -57,11 +57,6 @@
         <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
-    <style name="Widget.Words.TextView.Button" parent="Theme.Words">
-        <item name="android:textAppearance">@style/TextAppearance.Words.Button</item>
-        <item name="android:fontFamily">@font/source_code_pro_medium</item>
-        <item name="android:background">?selectableItemBackground</item>
-    </style>
     <style name="TextAppearance.Words.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="fontFamily">@font/source_code_pro_medium</item>
         <item name="android:textColor">?colorPrimaryOnDefault</item>
@@ -70,8 +65,22 @@
     </style>
 
 
-
     <!--Components-->
+    <!--Buttons-->
+    <style name="Widget.Words.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textSize">18sp</item>
+        <item name="cornerRadius">@dimen/keyline_2</item>
+        <item name="android:textColor">?colorPrimaryOnDefault</item>
+        <item name="rippleColor">?colorRipple</item>
+    </style>
+    <!--<style name="Widget.Words.TextView.Button" parent="Theme.Words">-->
+        <!--<item name="android:textAppearance">@style/TextAppearance.Words.Button</item>-->
+        <!--<item name="android:fontFamily">@font/source_code_pro_medium</item>-->
+        <!--<item name="android:background">?selectableItemBackground</item>-->
+    <!--</style>-->
+
+
+
     <!--Chips-->
     <style name="Widget.Words.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">@style/TextAppearance.Words.Body2</item>

@@ -35,6 +35,7 @@
         <item name="colorTertiaryOnError">@color/words_dark_color_tertiary_on_error</item>
         <item name="colorOnInformative">@color/words_dark_color_on_informative</item>
         <!--Misc Colors-->
+        <item name="colorRipple">@color/colorGray500</item>
         <item name="colorScrim">@color/words_dark_color_scrim</item>
         <item name="colorDivider">@color/words_dark_color_divider</item>
         <item name="colorHairline">@color/words_dark_color_hairline</item>

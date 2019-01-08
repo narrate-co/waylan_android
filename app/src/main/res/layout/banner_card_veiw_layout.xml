@@ -28,7 +28,7 @@
             android:text="Favorites is where all of your saved words will appear."
             />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.button.MaterialButton
             style="?attr/styleTextButton"
             android:id="@+id/bannerTopButton"
             android:layout_width="wrap_content"
@@ -39,11 +39,10 @@
             android:paddingRight="@dimen/keyline_3"
             android:paddingLeft="@dimen/keyline_3"
             android:text="Get Started"
-            android:gravity="right"
             android:layout_gravity="right"
             />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.button.MaterialButton
             style="?attr/styleTextButton"
             android:id="@+id/bannerBottomButton"
             android:layout_width="wrap_content"
@@ -53,7 +52,6 @@
             android:paddingRight="@dimen/keyline_3"
             android:paddingLeft="@dimen/keyline_3"
             android:text="Dismiss"
-            android:gravity="right"
             android:layout_gravity="right"
             />
 

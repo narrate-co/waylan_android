@@ -31,6 +31,7 @@
     <attr name="colorTertiaryOnError" format="color"/>
     <attr name="colorOnInformative" format="color"/>
     <!--Misc Colors-->
+    <attr name="colorRipple" format="color"/>
     <attr name="colorScrim" format="color"/>
     <attr name="colorDivider" format="color"/>
     <attr name="colorHairline" format="color"/>

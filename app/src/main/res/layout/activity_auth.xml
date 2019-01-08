@@ -134,7 +134,7 @@
                 android:layout_marginTop="@dimen/keyline_2"
                 >
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.button.MaterialButton
                     style="?attr/styleTextButton"
                     android:id="@+id/alternateCredentialType"
                     android:layout_width="wrap_content"
@@ -146,11 +146,10 @@
                     android:text="@string/auth_log_in_button"
                     android:textSize="14sp"
                     android:textColor="?colorSecondaryOnDefault"
-                    android:gravity="left"
                     android:layout_gravity="left|center_vertical"
-                    android:background="?selectableItemBackground"
                     />
-                <androidx.appcompat.widget.AppCompatTextView
+
+                <com.google.android.material.button.MaterialButton
                     style="?attr/styleTextButton"
                     android:id="@+id/done"
                     android:layout_width="wrap_content"
@@ -160,16 +159,13 @@
                     android:paddingRight="@dimen/keyline_3"
                     android:paddingLeft="@dimen/keyline_3"
                     android:text="@string/auth_sign_up_button"
-                    android:textSize="18sp"
-                    android:gravity="right|center_vertical"
                     android:layout_gravity="right|center_vertical"
-                    android:background="?selectableItemBackground"
                     />
             </FrameLayout>
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="?attr/styleTextButton"
+            <com.google.android.material.button.MaterialButton
+                style="?styleTextButton"
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,10 +174,7 @@
                 android:paddingRight="@dimen/keyline_3"
                 android:paddingLeft="@dimen/keyline_3"
                 android:text="@string/auth_cancel_button"
-                android:textSize="18sp"
-                android:gravity="right"
                 android:layout_gravity="right"
-                android:background="?selectableItemBackground"
                 />
 
 

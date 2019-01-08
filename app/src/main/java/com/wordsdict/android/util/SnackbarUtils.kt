@@ -73,15 +73,7 @@ private fun Snackbar.config(
 
     val background = a.getDrawable(0)
     val textAppearance = R.style.TextAppearance_Words_Body1
-//    val textAppearance = when (type) {
-//        SnackbarType.ERROR -> R.style.TextAppearance_Words_Light_Body1 //black text
-//        SnackbarType.INFORMATIVE -> R.style.TextAppearance_Words_Light_Body1 //white text
-//    }
     val buttonTextAppearance = R.style.TextAppearance_Words_Button
-//    val buttonTextAppearance = when (type) {
-//        SnackbarType.ERROR -> R.style.TextAppearance_Words_Light_Button //black text
-//        SnackbarType.INFORMATIVE -> R.style.TextAppearance_Words_Light_Button //white text
-//    }
     val textColor = when (type) {
         SnackbarType.ERROR -> context.getColorFromAttr(R.attr.colorPrimaryOnError)
         SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.colorPrimaryOnDefault)
