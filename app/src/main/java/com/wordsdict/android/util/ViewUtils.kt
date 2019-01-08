@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -108,7 +109,7 @@ fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
 }
 
-fun AppCompatImageView.swapImageResource(imgRes: Int) {
+fun ImageView.swapImageResource(imgRes: Int) {
     // Check if the drawbale being set is the same as what is already present
     val currantDrawableState = drawable.constantState
     val newDrawableState = ContextCompat.getDrawable(context, imgRes)?.constantState

@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import com.wordsdict.android.R
 import com.wordsdict.android.util.gone
 import com.wordsdict.android.util.invisible
+import com.wordsdict.android.util.swapImageResource
 import com.wordsdict.android.util.visible
 import kotlinx.android.synthetic.main.check_preference_view_layout.view.*
 
@@ -119,9 +120,9 @@ class CheckPreferenceView @JvmOverloads constructor(
     fun setChecked(checked: Boolean) {
         this.checked = checked
         if (checked) {
-            checkbox.setImageResource(R.drawable.ic_round_check_circle_24px)
+            checkbox.swapImageResource(R.drawable.ic_round_check_circle_24px)
         } else {
-            checkbox.setImageResource(R.drawable.ic_round_check_circle_outline_24px)
+            checkbox.swapImageResource(R.drawable.ic_round_check_circle_outline_24px)
         }
     }
 
