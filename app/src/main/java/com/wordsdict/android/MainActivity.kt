@@ -3,6 +3,7 @@ package com.wordsdict.android
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wordsdict.android.ui.common.BaseUserActivity
@@ -11,8 +12,8 @@ import com.wordsdict.android.ui.search.ContextualFragment
 import com.wordsdict.android.ui.search.SearchFragment
 import com.wordsdict.android.ui.search.BottomSheetCallbackCollection
 import com.wordsdict.android.util.*
+import com.wordsdict.android.util.widget.KeyboardManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_search.*
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -76,6 +77,7 @@ class MainActivity : BaseUserActivity() {
         processText(intent)
     }
 
+
     /**
      * Handle an intent that contains [Intent.ACTION_PROCESS_TEXT] given to this Activity either
      * in [onCreate] or [onNewIntent]. A process text extra represents an intent fired after the
@@ -133,7 +135,28 @@ class MainActivity : BaseUserActivity() {
 
         // Set max expanded height to 60% of screen height, the max height it can be expected that
         // a person can reach with their thumb
-        searchFragment.view?.layoutParams?.height = Math.round(displayHeightPx * .60F)
+        val maxReachableExpandedHeight = Math.round(displayHeightPx * .60F)
+        val searchItemHeight = getDimensionPixelSizeFromAttr(android.R.attr.listPreferredItemHeight)
+        val minPeekHeight = resources.getDimensionPixelSize(R.dimen.search_min_peek_height)
+        val minVisibleHeightAboveKeyboard = minPeekHeight + (1.5 * searchItemHeight)
+
+        searchFragment.view?.layoutParams?.height = maxReachableExpandedHeight
+
+        // Observe the height of the keyboard. If it is taller than the search bar + 1.5 search
+        // result list items (keep a few list items visible so the user knows there are immediate
+        // results), reset the height of the search sheet.
+        KeyboardManager(this, content)
+                .getKeyboardHeightData()
+                .observe(this, Observer {
+                    val minHeight = Math.max(
+                            maxReachableExpandedHeight,
+                            (it.height + minVisibleHeightAboveKeyboard).toInt()
+                    )
+                    if (it.height != 0 && minHeight != searchFragment.view?.layoutParams?.height) {
+                        searchFragment.view?.layoutParams?.height = minHeight
+                    }
+                })
+
 
         // Show a scrim behind the search sheet when it is expanded by setting the scrims
         // alpha to match the bottom sheet's slide offset.
@@ -166,6 +189,7 @@ class MainActivity : BaseUserActivity() {
         // [onStateChangedAction] and [onSlideActions] after adding if needs, as are other
         // clients)
         searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
+
     }
 
     /**

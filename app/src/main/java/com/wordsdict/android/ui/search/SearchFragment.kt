@@ -50,7 +50,7 @@ import javax.inject.Inject
  * user journey is to search and define a word. This journey should be as ergonomic, quick and
  * seamless as possible.
  */
-class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher{
+class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, TextWatcher {
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -125,12 +125,6 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         if (view == null) return
 
         view.searchEditText.addTextChangedListener(this)
-
-        // intercept clicks to IME done to avoid taking any action
-        view.searchEditText.setOnEditorActionListener { _, actionId, _ ->
-            // TODO do something useful if the user is intentionally clicking done
-            actionId == EditorInfo.IME_ACTION_DONE
-        }
 
         view.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
