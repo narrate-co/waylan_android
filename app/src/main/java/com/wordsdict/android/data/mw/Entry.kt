@@ -110,8 +110,8 @@ class Variants {
     @field:Element(name = "pr", required = false)
     var pr: String = ""
 
-    @field:Element(name = "il", required = false)
-    var il: String = ""
+    @field:ElementList(entry = "il", inline = true, required = false)
+    var il: MutableList<String> = mutableListOf()
 }
 
 class Art {
