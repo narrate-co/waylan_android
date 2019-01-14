@@ -4,6 +4,10 @@ A dictionary that focuses on execution, ergonomics and experience concepts
 
 ![Light banner](assets/board_light.png?raw=true "Light banner")
 
+## Download
+
+Get the beta on the Google Play Store here: (https://play.google.com/apps/testing/com.wordsdict.android)
+
 ## Notes
 
 For more detailed info, see the documentation under app/build/javadoc.
