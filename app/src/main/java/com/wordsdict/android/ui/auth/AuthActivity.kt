@@ -14,6 +14,7 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.firebase.auth.*
 import com.wordsdict.android.App
@@ -196,8 +197,8 @@ class AuthActivity : DaggerAppCompatActivity() {
 
 
     // Alter the UI to allow login
-    // TODO use a ChangeBounds Transition
     private fun setToLoginUi() {
+        TransitionManager.beginDelayedTransition(root)
         confirmPassword.visibility = View.GONE
         alternateCredentialType.text = getString(R.string.auth_sign_up_button)
         done.text = getString(R.string.auth_log_in_button)
@@ -218,8 +219,8 @@ class AuthActivity : DaggerAppCompatActivity() {
     }
 
     // Alter the UI to allow sign up
-    // TODO use a ChangeBounds Transition
     private fun setToSignUpUi() {
+        TransitionManager.beginDelayedTransition(root)
         confirmPassword.visibility = View.VISIBLE
         alternateCredentialType.text = getString(R.string.auth_log_in_button)
         done.text = getString(R.string.auth_sign_up_button)
@@ -238,6 +239,7 @@ class AuthActivity : DaggerAppCompatActivity() {
             }
         }
         alternateCredentialType.setOnClickListener { setToLoginUi() }
+
     }
 
     // Transition from the splash screen to the credentials layout
@@ -271,7 +273,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
     private var lastErrorStateIsShown = false
 
-    // TODO use a Transition and clean up
+
     private fun showErrorMessage(e: Exception) {
         e.printStackTrace()
 
@@ -308,7 +310,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         }
     }
 
-    //TODO use a Transition and clean up
+
     private fun hideErrorMessage() {
         if (lastErrorStateIsShown) {
             synchronized(lastErrorStateIsShown) {
