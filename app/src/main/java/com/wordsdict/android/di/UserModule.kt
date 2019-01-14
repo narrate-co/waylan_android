@@ -49,22 +49,23 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideUserPreferenceRepository(application: Application, preferenceStore: PreferenceStore, user: User?): UserPreferenceStore {
-        return UserPreferenceStore(application, preferenceStore, user?.uid)
+    fun provideUserPreferenceRepository(application: Application, user: User?): UserPreferenceStore {
+        return UserPreferenceStore(application, user?.uid)
     }
 
     @UserScope
     @Provides
     fun provideUserRepository(
             firestoreStore: FirestoreStore?,
-            userPreferenceStore: UserPreferenceStore): UserRepository {
-        return UserRepository(firestoreStore, userPreferenceStore)
+            userPreferenceStore: UserPreferenceStore,
+            preferenceStore: PreferenceStore): UserRepository {
+        return UserRepository(firestoreStore, userPreferenceStore, preferenceStore)
     }
 
     @UserScope
     @Provides
-    fun provideBillingManager(application: Application, userPreferenceStore: UserPreferenceStore, userRepository: UserRepository): BillingManager {
-        return BillingManager(application, userPreferenceStore, userRepository)
+    fun provideBillingManager(application: Application, userRepository: UserRepository): BillingManager {
+        return BillingManager(application, userRepository)
     }
 
 }

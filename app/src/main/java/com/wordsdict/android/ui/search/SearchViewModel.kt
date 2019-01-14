@@ -3,10 +3,9 @@ package com.wordsdict.android.ui.search
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.prefs.*
-import com.wordsdict.android.data.repository.FirestoreUserSource
+import com.wordsdict.android.data.repository.UserRepository
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.di.UserScope
 import javax.inject.Inject
 
 /**
@@ -14,7 +13,7 @@ import javax.inject.Inject
  */
 class SearchViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val userPreferenceStore: UserPreferenceStore,
+        private val userRepository: UserRepository,
         private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
@@ -77,7 +76,7 @@ class SearchViewModel @Inject constructor(
      * @param orientation The orientation the app should be set to
      */
     fun setOrientationPreference(orientation: Orientation) {
-        userPreferenceStore.orientationLock = orientation.value
+        userRepository.orientationLock = orientation.value
     }
 
     /**
@@ -105,16 +104,16 @@ class SearchViewModel @Inject constructor(
             new: RotationManager.RotationEvent
     ) {
         if (isPortraitToLandscape(old, new)) {
-            userPreferenceStore.portraitToLandscapeOrientationChangeCount++
-            if (userPreferenceStore.portraitToLandscapeOrientationChangeCount == 2L) {
+            userRepository.portraitToLandscapeOrientationChangeCount++
+            if (userRepository.portraitToLandscapeOrientationChangeCount == 2L) {
                 _orientationPrompt.value = OrientationPrompt.LockToLandscape(
                         Orientation.fromActivityInfoScreenOrientation(new.orientation)
                 )
                 _orientationPrompt.value = null
             }
         } else if (isLandscapeToPortrait(old, new)) {
-            userPreferenceStore.landscapeToPortraitOrientationChangeCount++
-            if (userPreferenceStore.landscapeToPortraitOrientationChangeCount == 1L) {
+            userRepository.landscapeToPortraitOrientationChangeCount++
+            if (userRepository.landscapeToPortraitOrientationChangeCount == 1L) {
                 _orientationPrompt.value = OrientationPrompt.LockToPortrait(
                         Orientation.fromActivityInfoScreenOrientation(new.orientation)
                 )

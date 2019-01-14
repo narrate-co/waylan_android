@@ -8,7 +8,7 @@ package com.wordsdict.android.data.prefs
  * [AppCompatDelegates.setDefaultNightMde] to avoid flashing day or night mode changes.
  *
  * While these Preferences are read outside of [UserScope], they should not be written to
- * directly. For consistency, prefer using [UserPreferenceStore], which surfaces
+ * directly. For consistency, prefer using [UserRepository], which surfaces
  * limited [PreferenceStore] functionality, to write to these values. It should not be necessary
  * to write to [Preferences] outside of [UserScope].
  */

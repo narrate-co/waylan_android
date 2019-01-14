@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.*
-import com.wordsdict.android.di.FragmentScope
-import com.wordsdict.android.di.UserScope
 import javax.inject.Inject
 
 /**
@@ -15,7 +12,7 @@ import javax.inject.Inject
  */
 class DetailsViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val userPreferenceStore: UserPreferenceStore
+        private val userRepository: UserRepository
 ): ViewModel() {
 
     // The current word being displayed (as it appears in the dictionary)
@@ -47,15 +44,15 @@ class DetailsViewModel @Inject constructor(
     }
 
     var hasSeenDragDismissOverlay: Boolean
-        get() = userPreferenceStore.hasSeenDragDismissOverlay
+        get() = userRepository.hasSeenDragDismissOverlay
         set(value) {
-            userPreferenceStore.hasSeenDragDismissOverlay = value
+            userRepository.hasSeenDragDismissOverlay = value
         }
 
     var hasSeenMerriamWebsterPermissionsPane: Boolean
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane
+        get() = userRepository.hasSeenMerriamWebsterPermissionPane
         set(value) {
-            userPreferenceStore.hasSeenMerriamWebsterPermissionPane = value
+            userRepository.hasSeenMerriamWebsterPermissionPane = value
         }
 
     /**

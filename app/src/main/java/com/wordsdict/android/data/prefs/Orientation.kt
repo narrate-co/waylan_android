@@ -6,7 +6,7 @@ import com.wordsdict.android.R
 
 /**
  * All possible screen orientations Words supports by allowing the user to explicitly set via
- * [UserPreferenceStore]
+ * [UserRepository]
  */
 enum class Orientation(val value: Int, val title: Int, val desc: Int) {
     UNSPECIFIED(

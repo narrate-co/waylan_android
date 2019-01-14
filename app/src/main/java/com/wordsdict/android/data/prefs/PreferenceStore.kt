@@ -13,11 +13,11 @@ import androidx.lifecycle.Transformations
  * Some preferences need to be accessible outside of [UserScope]. [Preferences] and
  * [PreferenceStore] are for those variables.
  *
- * It should <b>not</b> be necessary to write directly [Preferences] directly using
- * [PreferenceStore]. This should be a class that is only read from and used to simply separate
+ * It should <b>not</b> be necessary to write to [Preferences] directly using
+ * [PreferenceStore]. This should be a class that is only read from and used to separate
  * where preferences are stored (either in default [SharedPreferences] or a user tied
- * instance), aiding code/function clarity. To write to these preferences, do so using
- * [UserPreferenceStore].
+ * instance), aiding code clarity. To write to these preferences, do so using
+ * [UserRepository].
  */
 class PreferenceStore(
         private val applicationContext: Context
@@ -25,6 +25,11 @@ class PreferenceStore(
 
     private val defaultPrefs: SharedPreferences by lazy {
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
+    }
+
+    fun resetAll() {
+        nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        orientationLock = Orientation.UNSPECIFIED.value
     }
 
     var nightMode: Int by PreferenceDelegate(

@@ -1,14 +1,12 @@
 package com.wordsdict.android
 
-import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.analytics.NavigationMethod
-import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.FirestoreUserSource
+import com.wordsdict.android.data.repository.UserRepository
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.di.UserScope
-import com.wordsdict.android.ui.list.ListFragment
 import com.wordsdict.android.ui.search.Period
 import com.wordsdict.android.util.LiveDataHelper
 import java.util.*
@@ -22,7 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
         private val wordRepository: WordRepository,
         private val analyticsRepository: AnalyticsRepository,
-        private val userPreferenceStore: UserPreferenceStore
+        private val userRepository: UserRepository
 ) : ViewModel() {
 
     // An internal representation of MainActivity's current Fragment backstack. This is used
@@ -121,9 +119,9 @@ class MainViewModel @Inject constructor(
         val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
 
         return when (dest) {
-            Navigator.HomeDestination.TRENDING -> userPreferenceStore.getTrendingListFilter()
-            Navigator.HomeDestination.RECENT -> userPreferenceStore.getRecentsListFilter()
-            Navigator.HomeDestination.FAVORITE -> userPreferenceStore.getFavoritesListFilter()
+            Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter
+            Navigator.HomeDestination.RECENT -> userRepository.recentsListFilter
+            Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilter
             else -> emptyList()
         }
     }
@@ -132,9 +130,9 @@ class MainViewModel @Inject constructor(
         return Transformations.switchMap(getBackStack()) {
             val dest = if (it.isEmpty()) Navigator.HomeDestination.HOME else it.peek()
             when (dest) {
-                Navigator.HomeDestination.TRENDING -> userPreferenceStore.trendingListFilterLive
-                Navigator.HomeDestination.RECENT -> userPreferenceStore.recentsListFilterLive
-                Navigator.HomeDestination.FAVORITE -> userPreferenceStore.favoritesListFilterLive
+                Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilterLive
+                Navigator.HomeDestination.RECENT -> userRepository.recentsListFilterLive
+                Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilterLive
                 else -> LiveDataHelper.empty()
             }
         }
@@ -145,9 +143,9 @@ class MainViewModel @Inject constructor(
         val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
 
         when (dest) {
-            Navigator.HomeDestination.TRENDING -> userPreferenceStore.setTrendingListFilter(filter)
-            Navigator.HomeDestination.RECENT -> userPreferenceStore.setRecentsListFilter(filter)
-            Navigator.HomeDestination.FAVORITE -> userPreferenceStore.setFavoritesListFilter(filter)
+            Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter = filter
+            Navigator.HomeDestination.RECENT -> userRepository.recentsListFilter = filter
+            Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilter = filter
         }
     }
 

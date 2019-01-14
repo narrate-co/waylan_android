@@ -13,15 +13,13 @@ import com.wordsdict.android.ui.search.Period
  * A top-level store for user-tied [SharedPreferences]. This makes it simpler to support multiple
  * users on a single device.
  *
- * In addition to user specific preferences, this class also provides surfacings for preferences
- * in [PreferenceStore]. [Preferences] need to be available to read outside of [UserScope],
- * but should only be written through [UserPreferenceStore]. [UserPreferences] don't need to
- * be initialized available to read or write until a valid user is available and can be both
- * read to and written from [UserPreferenceStore].
+ * This class should not be used directly by ViewModels. Instead, user [UserRepository], which
+ * further abstracts Preferences. Where these specific settings could change in the future (ie.
+ * be moved into Firestore). If that happens, using [UserRepository] will ensure no UI/ViewModel
+ * logic needs to change.
  */
 class UserPreferenceStore(
         private val applicationContext: Context,
-        private val preferenceStore: PreferenceStore,
         userId: String? = null
 ) {
 
@@ -50,28 +48,6 @@ class UserPreferenceStore(
         portraitToLandscapeOrientationChangeCount = 0L
         landscapeToPortraitOrientationChangeCount = 0L
     }
-
-    /** Globally scoped preference pass-through helpers */
-
-    var orientationLock: Int
-        get() = preferenceStore.orientationLock
-        set(value) {
-            preferenceStore.orientationLock = value
-        }
-
-    val orientationLockLive: LiveData<Orientation>
-        get() = preferenceStore.orientationLive
-
-
-    var nightMode: Int
-        get() = preferenceStore.nightMode
-        set(value) {
-            preferenceStore.nightMode = value
-        }
-
-    val nightModeLive: LiveData<Int>
-        get() = preferenceStore.nightModeLive
-
 
     /** User scoped preferences */
 

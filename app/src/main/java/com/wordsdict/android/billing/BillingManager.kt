@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
 import com.wordsdict.android.data.firestore.users.PluginState
-import com.wordsdict.android.data.prefs.UserPreferenceStore
 import com.wordsdict.android.data.repository.UserRepository
 import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.util.*
 
 /**
@@ -33,7 +31,6 @@ import java.util.*
  */
 class BillingManager(
         private val context: Context,
-        private val userPreferenceStore: UserPreferenceStore,
         private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
@@ -66,7 +63,7 @@ class BillingManager(
             skuId: String,
             @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
     ) {
-        val sku = if (userPreferenceStore.useTestSkus) {
+        val sku = if (userRepository.useTestSkus) {
             when (skuId) {
                 BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
                 else -> BillingConfig.TEST_SKU_PURCHASED

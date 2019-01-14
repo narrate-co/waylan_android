@@ -1,12 +1,10 @@
 package com.wordsdict.android.ui.list
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wordsdict.android.data.prefs.UserPreferenceStore
+import com.wordsdict.android.data.repository.UserRepository
 import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.data.repository.WordSource
-import com.wordsdict.android.di.UserScope
 import com.wordsdict.android.ui.search.Period
 import javax.inject.Inject
 
@@ -15,7 +13,7 @@ import javax.inject.Inject
  */
 class ListViewModel @Inject constructor(
         private val wordRepository: WordRepository,
-        private val userPreferenceStore: UserPreferenceStore
+        private val userRepository: UserRepository
 ): ViewModel() {
 
     /**
@@ -24,9 +22,9 @@ class ListViewModel @Inject constructor(
      */
     fun getHasSeenBanner(type: ListFragment.ListType): Boolean =
             when (type) {
-                ListFragment.ListType.TRENDING -> userPreferenceStore.hasSeenTrendingBanner
-                ListFragment.ListType.RECENT -> userPreferenceStore.hasSeenRecentsBanner
-                ListFragment.ListType.FAVORITE -> userPreferenceStore.hasSeenFavoritesBanner
+                ListFragment.ListType.TRENDING -> userRepository.hasSeenTrendingBanner
+                ListFragment.ListType.RECENT -> userRepository.hasSeenRecentsBanner
+                ListFragment.ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner
             }
 
     /**
@@ -35,17 +33,17 @@ class ListViewModel @Inject constructor(
      */
     fun setHasSeenBanner(type: ListFragment.ListType, value: Boolean) {
         when (type) {
-            ListFragment.ListType.TRENDING -> userPreferenceStore.hasSeenTrendingBanner = value
-            ListFragment.ListType.RECENT -> userPreferenceStore.hasSeenRecentsBanner = value
-            ListFragment.ListType.FAVORITE -> userPreferenceStore.hasSeenFavoritesBanner = value
+            ListFragment.ListType.TRENDING -> userRepository.hasSeenTrendingBanner = value
+            ListFragment.ListType.RECENT -> userRepository.hasSeenRecentsBanner = value
+            ListFragment.ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner = value
         }
     }
 
     fun getListFilter(type: ListFragment.ListType): LiveData<List<Period>> {
         return when (type) {
-            ListFragment.ListType.TRENDING -> userPreferenceStore.trendingListFilterLive
-            ListFragment.ListType.RECENT -> userPreferenceStore.recentsListFilterLive
-            ListFragment.ListType.FAVORITE -> userPreferenceStore.favoritesListFilterLive
+            ListFragment.ListType.TRENDING -> userRepository.trendingListFilterLive
+            ListFragment.ListType.RECENT -> userRepository.recentsListFilterLive
+            ListFragment.ListType.FAVORITE -> userRepository.favoritesListFilterLive
         }
     }
 
