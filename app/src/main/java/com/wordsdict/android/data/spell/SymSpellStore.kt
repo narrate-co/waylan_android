@@ -13,12 +13,14 @@ import java.io.FileNotFoundException
  * For details on SymSpell, see <a>https://github.com/wolfgarbe/SymSpell</a>
  * For details on JavaSymSpell, see <a>https://github.com/Lundez/JavaSymSpell</a>
  *
- * //TODO port JavaSymSpell to Kotlin
+ * TODO port JavaSymSpell to Kotlin
  *
- * //TODO further optimize memory use and corpus data for Words-specific use case.
- * //TODO this could include the ability to learn the most common word frequency range a user
- * //TODO typically searches for and initialize in-memory SymSpell instances targeting those
- * //TODO ranges.
+ * TODO further optimize memory use and corpus data for Words-specific use case.
+ * TODO this could include the ability to learn the most common word frequency range a user
+ * TODO typically searches for and initialize in-memory SymSpell instances targeting those
+ * TODO ranges.
+ *
+ * TODO check available memory and don't init SymSpell if there is not enough available
  */
 class SymSpellStore(context: Context) {
 

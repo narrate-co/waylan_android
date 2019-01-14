@@ -60,7 +60,7 @@ class MerriamWebsterStore(
             }
         }
 
-        //TODO possible create a "SuspendableLiveData" object that can suspend updates to observers
+        //TODO possibly create a "SuspendableLiveData" object that can suspend updates to observers
         //TODO while db data is updated. This would avoid the situation of data being present in
         //TODO the db which is returned and then deleting it and receiving a null update and then
         //TODO inserting it and again receiving new (and often times the same) data.

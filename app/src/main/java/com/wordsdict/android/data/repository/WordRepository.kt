@@ -49,7 +49,7 @@ class WordRepository(
         }
 
         return MergedLiveData(wordsetSource, suggestionsSource) { d1, d2 ->
-            //TODO deduplicate/sort smartly. Make WordSource comparable?
+            //TODO de-duplicate/sort smartly. Make WordSource comparable?
             (d1 + d2).distinctBy {
                 val t = if (it is SimpleWordSource) it.word.word else if (it is SuggestSource) it.item.term else ""
                 t
