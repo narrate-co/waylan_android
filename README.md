@@ -2,8 +2,7 @@
 
 A dictionary that focuses on execution, ergonomics and experience concepts
 
-![alt text](http://assets/board_light.png)
-
+![Light banner](assets/board_light.png?raw=true "Light banner")
 
 ## Notes
 
