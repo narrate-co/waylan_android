@@ -51,7 +51,7 @@ abstract class BaseUserActivity: DaggerAppCompatActivity() {
      * more likely) the back event originated from the navigation bar back button, which is only
      * reported to the current Activity.
      *
-     * TODO delegate this to a Consumable that nulls out the value after a get()
+     * TODO delegate this to a "Consumable" that nulls out the value after a get()
      */
     var unconsumedNavigationMethod: NavigationMethod? = null
 

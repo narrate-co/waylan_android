@@ -23,7 +23,6 @@ import org.threeten.bp.OffsetDateTime
  * After the database has been seeded, use the following command to extract the .db file and copy
  * it to assets/databases/:
  *
- * TODO double check that this is correct
  * adb -d shell "run-as com.wordsdict.android cat databases/word-db" > word-db.db
  *
  * To toggle whether this Service is run, use [AppDatabase.SHOULD_SEED_DATABASE].

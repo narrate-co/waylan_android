@@ -26,8 +26,8 @@ class MainViewModel @Inject constructor(
     // An internal representation of MainActivity's current Fragment backstack. This is used
     // a) by [SearchFragment] when determining when it should show shelf actions and b) to better
     // track and understand user navigation patterns.
-    // TODO move backStack into a BackStackViewModel to hold a default implementation to be reused
-    // TODO across other host Activity VieWModels
+    // TODO move backStack into a BackStackViewModel or separate impl to hold a default
+    // TODO implementation to be reused across other host Activity VieWModels
     private var backStack: MutableLiveData<Stack<Navigator.HomeDestination>> = MutableLiveData()
 
     // A backing field for the word (as it appears in the dictionary) which should currently be

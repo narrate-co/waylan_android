@@ -116,10 +116,9 @@ sealed class DetailsComponent(
             if (this == newOther) return true
             if (source !is WordsetSource || newOther.source !is WordsetSource) return false
 
-            //TODO make full checks
-
             // Contents should be considered equal if all the definitions in the new component
             // are also present in the old component
+
             return source.wordAndMeaning.meanings
                     .map { it.def }
                     .toTypedArray()
@@ -151,9 +150,6 @@ sealed class DetailsComponent(
             // do items point to the same address
             if (this == newOther) return true
             if (source !is WordsetSource || newOther.source !is WordsetSource) return false
-
-            //TODO make full checks
-
 
             // Contents should be considered equal if all examples present in the new component
             // are also present in the old component

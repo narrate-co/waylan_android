@@ -147,16 +147,11 @@ sealed class DetailsComponentViewHolder(
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
 
-        private var currentMeanings: List<Meaning> = emptyList()
 
         override fun bind(t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings
-
-                //TODO this diffing should have been done in [DetailsComponent]. Check and remove
-                if (currentMeanings.containsAll(meanings)) return
-                currentMeanings = meanings
 
                 //remove all views
                 view.detailsComponentWordsetDefinitionsContainer?.removeAllViews()
@@ -219,16 +214,10 @@ sealed class DetailsComponentViewHolder(
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
 
-        private var currentMeanings: List<Meaning> = emptyList()
-
         override fun bind(t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings
-
-                //TODO this diffing should have been done in [DetailsComponent]. Check and remove
-                if (currentMeanings.containsAll(meanings)) return
-                currentMeanings = meanings
 
                 view.detailsComponentExamplesContainer?.removeAllViews()
 
