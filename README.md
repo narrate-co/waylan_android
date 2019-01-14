@@ -2,6 +2,9 @@
 
 A dictionary that focuses on execution, ergonomics and experience concepts
 
+![alt text](http://assets/board_light.png)
+
+
 ## Notes
 
 For more detailed info, see the documentation under app/build/javadoc.
