@@ -249,7 +249,6 @@ class FirestoreStore(
         try {
             val user = getUser()
             user.merriamWebsterStarted = state.started
-//            user.isMerriamWebsterSubscriber = state is PluginState.Purchased
             user.merriamWebsterPurchaseToken = state.purchaseToken
             setUser(user)
         } catch (e: Exception) {
@@ -268,8 +267,8 @@ class FirestoreStore(
     }
 
 
+    //allow users to add, edit and delete their own definitions, set to either public or private
     //TODO add meaning
-    //allow users to add their own definitions, set to either public or private
 
     //TODO edit meaning (synonyms, examples, part of speech, labels)
 

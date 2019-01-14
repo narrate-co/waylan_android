@@ -3,10 +3,10 @@ package com.wordsdict.android.data.mw
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.crashlytics.android.Crashlytics
+import com.wordsdict.android.BuildConfig
 import com.wordsdict.android.data.analytics.AnalyticsRepository
 import com.wordsdict.android.data.disk.mw.*
 import com.wordsdict.android.util.contentEquals
-import com.wordsdict.android.util.daysElapsed
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.temporal.ChronoUnit
@@ -30,8 +30,7 @@ class MerriamWebsterStore(
     companion object {
         private const val TAG = "MerriamWebsterStore"
 
-        //TODO obfuscate
-        private const val DEV_KEY = "d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2"
+        private const val DEV_KEY = BuildConfig.MERRIAM_WEBSTER_KEY
     }
 
     /**

@@ -187,16 +187,14 @@ class BillingManager(
                 handlePurchase(it)
             }
         } else if (resultCode == BillingClient.BillingResponse.USER_CANCELED) {
-            //TODO
             // the user canceled the purchase flow
         } else {
-            //TODO
             // a different response was returned
         }
     }
 
     private fun handlePurchase(purchase: Purchase) {
-        //TODO add security checks
+        //TODO make sure we're verifying purchase tokens in a Cloud Function
 
         val startedDate = Date(purchase.purchaseTime)
 
@@ -228,16 +226,6 @@ class BillingManager(
             }
         } else {
             onPurchasesUpdated(BillingClient.BillingResponse.OK, result.purchasesList)
-        }
-    }
-
-
-    //TODO this should happen in Cloud Function
-    private fun verifyValidSignature(signedData: String, signature: String): Boolean {
-        return try {
-            Security.verifyPurchase(BASE_64_ENCODED_PUBLIC_KEY, signedData, signature)
-        } catch (e: IOException) {
-            false
         }
     }
 

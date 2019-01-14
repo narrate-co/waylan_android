@@ -75,7 +75,10 @@ class Entry {
     @field:ElementList(entry = "art", inline = true, required = false)
     var art: MutableList<Art> = mutableListOf()
 
-    // TODO add 'pt' (https://www.dictionaryapi.com/api/v1/references/collegiate/xml/empty?key=d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2)
+    // TODO use 'pt' to get synonyms (https://www.dictionaryapi.com/api/v1/references/collegiate/xml/empty?key=d0eece12-48a6-47e3-bcbe-6a4eec0ed3c2)
+    @field:ElementList(entry = "pt", inline = true, required = false)
+    @field:Convert(FormattedStringConverter::class)
+    var pt: MutableList<FormattedString> = mutableListOf()
 
     @field:ElementList(entry = "dro", inline = true, required = false)
     var dro: MutableList<Dro> = mutableListOf()

@@ -8,3 +8,9 @@
 /build
 /captures
 .externalNativeBuild
+
+# Keys & Secrets
+keys.properties
+
+# Google Services
+app/google-services.json
