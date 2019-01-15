@@ -9,7 +9,7 @@ A dictionary that focuses on execution, ergonomics and experience concepts
 
 ## Notes
 
-For documentation, run .gradlew dokka and view the javadoc under app/build/javadoc.
+For documentation, run ./gradlew dokka and view the javadoc under app/build/javadoc.
 
 ## Build
 
