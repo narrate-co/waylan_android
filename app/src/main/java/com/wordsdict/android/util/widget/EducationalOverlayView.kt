@@ -70,7 +70,7 @@ class EducationalOverlayView private constructor(
     private val showAnimator = ValueAnimator.ofFloat(0.0F, 1.0F).apply {
         duration = 200L
         interpolator = FastOutSlowInInterpolator()
-        startDelay = 350L
+        startDelay = 500L
         addUpdateListener {
             val interp = it.animatedValue as Float
             dotScale = interp

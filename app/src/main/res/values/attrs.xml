@@ -4,20 +4,19 @@
     <!--Color Theme-->
     <!--Brand Colors-->
     <attr name="colorBrand" format="color"/>
-    <attr name="colorBrandVariant" format="color"/>
     <!--Plane Colors-->
     <attr name="colorBackground" format="color"/>
     <attr name="colorSurface" format="color"/>
     <attr name="colorAccentSurface" format="color"/>
-    <attr name="colorAccentSurfaceVariant" format="color"/>
+    <attr name="colorSubAccentSurface" format="color"/>
     <attr name="colorBackgroundArea" format="color"/>
     <attr name="colorBackgroundAreaVariant" format="color"/>
     <attr name="colorSurfaceArea" format="color"/>
     <attr name="colorSurfaceAreaVariant" format="color"/>
     <attr name="colorAccentSurfaceArea" format="color"/>
     <attr name="colorAccentSurfaceAreaVariant" format="color"/>
-    <attr name="colorAccentSurfaceVariantArea" format="color"/>
-    <attr name="colorAccentSurfaceVariantAreaVariant" format="color"/>
+    <attr name="colorSubAccentSurfaceArea" format="color"/>
+    <attr name="colorSubAccentSurfaceAreaVariant" format="color"/>
     <attr name="colorError" format="color"/>
     <attr name="colorErrorVariant" format="color"/>
     <attr name="colorInformative" format="color"/>
@@ -35,8 +34,8 @@
     <attr name="colorScrim" format="color"/>
     <attr name="colorDivider" format="color"/>
     <attr name="colorHairline" format="color"/>
-    <attr name="colorAccentSurfaceHairlineShadow" format="color"/>
-    <attr name="colorAccentSurfaceVariantHairlineShadow" format="color"/>
+    <attr name="colorAccentSurfaceHairline" format="color"/>
+    <attr name="colorSubAccentSurfaceHairline" format="color"/>
 
 
     <!--Widget Styles-->

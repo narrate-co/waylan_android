@@ -4,20 +4,19 @@
     <!--Words Day-->
     <!--Brand colors-->
     <color name="words_color_brand">@color/colorPink900</color>
-    <color name="words_color_brand_variant">@color/colorPink900</color>
     <!--Plane colors-->
     <color name="words_color_background">@color/colorIvory100</color>
     <color name="words_color_surface">@color/colorIvory100</color>
     <color name="words_color_accent_surface">@color/colorIvory100</color>
-    <color name="words_color_accent_surface_variant">@color/colorIvory200</color>
+    <color name="words_color_sub_accent_surface">@color/colorIvory200</color>
     <color name="words_color_background_area">@color/colorIvory200</color>
     <color name="words_color_background_area_variant">@color/colorIvory300</color>
     <color name="words_color_surface_area">@color/colorIvory200</color>
     <color name="words_color_surface_area_variant">@color/colorIvory300</color>
     <color name="words_color_accent_surface_area">@color/colorIvory200</color>
     <color name="words_color_accent_surface_area_variant">@color/colorIvory300</color>
-    <color name="words_color_accent_surface_variant_area">@color/colorIvory400</color>
-    <color name="words_color_accent_surface_variant_area_variant">@color/colorIvory500</color>
+    <color name="words_color_sub_accent_surface_area">@color/colorIvory400</color>
+    <color name="words_color_sub_accent_surface_area_variant">@color/colorIvory500</color>
     <color name="words_color_error">@color/colorMauve100</color>
     <color name="words_color_error_variant">@color/colorMauve200</color>
     <color name="words_color_informative">@color/colorPink50</color>
@@ -31,30 +30,30 @@
     <color name="words_color_tertiary_on_error">@color/colorBlackAlpha038</color>
     <color name="words_color_on_informative">@color/colorPink900</color>
     <!--Miscellaneous-->
+    <color name="words_color_ripple">@color/colorIvory700</color>
     <color name="words_color_scrim">@color/colorBlackAlpha005</color>
     <color name="words_color_divider">@color/colorBlackAlpha005</color>
     <color name="words_color_hairline">@color/colorBlackAlpha025</color>
-    <color name="words_color_accent_surface_hairline_shadow">@color/colorIvory400</color>
-    <color name="words_color_accent_surface_variant_hairline_shadow">@color/colorIvory500</color>
+    <color name="words_color_accent_surface_hairline">@color/colorIvory400</color>
+    <color name="words_color_sub_accent_surface_hairline">@color/colorIvory500</color>
 
 
     <!--Words Night-->
     <!--Brand colors-->
     <color name="words_dark_color_brand">@color/colorPink100</color>
-    <color name="words_dark_color_brand_variant">@color/colorPink100</color>
     <!--Plane colors-->
     <color name="words_dark_color_background">@color/colorGray900</color>
     <color name="words_dark_color_surface">@color/colorGray700</color>
     <color name="words_dark_color_accent_surface">@color/colorGray700</color>
-    <color name="words_dark_color_accent_surface_variant">@color/colorGray500</color>
+    <color name="words_dark_color_sub_accent_surface">@color/colorGray500</color>
     <color name="words_dark_color_background_area">@color/colorGray800</color>
     <color name="words_dark_color_background_area_variant">@color/colorGray600</color>
     <color name="words_dark_color_surface_area">@color/colorGray600</color>
     <color name="words_dark_color_surface_area_variant">@color/colorGray500</color>
     <color name="words_dark_color_accent_surface_area">@color/colorGray600</color>
     <color name="words_dark_color_accent_surface_area_variant">@color/colorGray500</color>
-    <color name="words_dark_color_accent_surface_variant_area">@color/colorGray400</color>
-    <color name="words_dark_color_accent_surface_variant_area_variant">@color/colorGray300</color>
+    <color name="words_dark_color_sub_accent_surface_area">@color/colorGray400</color>
+    <color name="words_dark_color_sub_accent_surface_area_variant">@color/colorGray300</color>
     <color name="words_dark_color_error">@color/colorMauve300</color>
     <color name="words_dark_color_error_variant">@color/colorMauve400</color>
     <color name="words_dark_color_informative">@color/colorPink900</color>
@@ -68,11 +67,12 @@
     <color name="words_dark_color_tertiary_on_error">@color/colorBlackAlpha038</color>
     <color name="words_dark_color_on_informative">@color/colorPink100</color>
     <!--Miscellaneous-->
+    <color name="words_dark_color_ripple">@color/colorGray500</color>
     <color name="words_dark_color_scrim">@color/colorBlackAlpha025</color>
     <color name="words_dark_color_divider">@color/colorWhiteAlpha005</color>
     <color name="words_dark_color_hairline">@color/colorWhiteAlpha025</color>
-    <color name="words_dark_color_accent_surface_hairline_shadow">@android:color/transparent</color>
-    <color name="words_dark_color_accent_surface_variant_hairline_shadow">@android:color/transparent</color>
+    <color name="words_dark_color_accent_surface_hairline">@android:color/transparent</color>
+    <color name="words_dark_color_sub_accent_surface_hairline">@android:color/transparent</color>
 
 
 

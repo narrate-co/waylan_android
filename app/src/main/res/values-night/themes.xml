@@ -8,20 +8,19 @@
         <!--Words Color Theme-->
         <!--Brand Colors-->
         <item name="colorBrand">@color/words_dark_color_brand</item>
-        <item name="colorBrandVariant">@color/words_dark_color_brand_variant</item>
         <!--Plane Colors-->
         <item name="colorBackground">@color/words_dark_color_background</item>
         <item name="colorSurface">@color/words_dark_color_surface</item>
         <item name="colorAccentSurface">@color/words_dark_color_accent_surface</item>
-        <item name="colorAccentSurfaceVariant">@color/words_dark_color_accent_surface_variant</item>
+        <item name="colorSubAccentSurface">@color/words_dark_color_sub_accent_surface</item>
         <item name="colorBackgroundArea">@color/words_dark_color_background_area</item>
         <item name="colorBackgroundAreaVariant">@color/words_dark_color_background_area_variant</item>
         <item name="colorSurfaceArea">@color/words_dark_color_surface_area</item>
         <item name="colorSurfaceAreaVariant">@color/words_dark_color_surface_area_variant</item>
         <item name="colorAccentSurfaceArea">@color/words_dark_color_accent_surface_area</item>
         <item name="colorAccentSurfaceAreaVariant">@color/words_dark_color_accent_surface_area_variant</item>
-        <item name="colorAccentSurfaceVariantArea">@color/words_dark_color_accent_surface_variant_area</item>
-        <item name="colorAccentSurfaceVariantAreaVariant">@color/words_dark_color_accent_surface_variant_area_variant</item>
+        <item name="colorSubAccentSurfaceArea">@color/words_dark_color_sub_accent_surface_area</item>
+        <item name="colorSubAccentSurfaceAreaVariant">@color/words_dark_color_sub_accent_surface_area_variant</item>
         <item name="colorError">@color/words_dark_color_error</item>
         <item name="colorErrorVariant">@color/words_dark_color_error_variant</item>
         <item name="colorInformative">@color/words_dark_color_informative</item>
@@ -35,11 +34,11 @@
         <item name="colorTertiaryOnError">@color/words_dark_color_tertiary_on_error</item>
         <item name="colorOnInformative">@color/words_dark_color_on_informative</item>
         <!--Misc Colors-->
-        <item name="colorRipple">@color/colorGray500</item>
+        <item name="colorRipple">@color/words_dark_color_ripple</item>
         <item name="colorScrim">@color/words_dark_color_scrim</item>
         <item name="colorDivider">@color/words_dark_color_divider</item>
         <item name="colorHairline">@color/words_dark_color_hairline</item>
-        <item name="colorAccentSurfaceHairlineShadow">@color/words_dark_color_accent_surface_hairline_shadow</item>
-        <item name="colorAccentSurfaceVariantHairlineShadow">@color/words_dark_color_accent_surface_variant_hairline_shadow</item>
+        <item name="colorAccentSurfaceHairline">@color/words_dark_color_accent_surface_hairline</item>
+        <item name="colorSubAccentSurfaceHairline">@color/words_dark_color_sub_accent_surface_hairline</item>
     </style>
 </resources>
