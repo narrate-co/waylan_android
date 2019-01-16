@@ -346,13 +346,13 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                         shelfContainer,
                         false
                 )
-                smartSuggestion.smartLabel.text = getString(prompt.message)
-                smartSuggestion.smartImage.setImageDrawable(
-                        ContextCompat.getDrawable(context!!, prompt.icon)
+                smartSuggestion.smartButton.text = getString(prompt.message)
+                smartSuggestion.smartButton.setIconResource(
+                        prompt.icon
                 )
-                smartSuggestion.setOnClickListener {
+                smartSuggestion.smartButton.setOnClickListener {
                     // TODO create a custom smartLabel view that is able to change bounds
-                    smartSuggestion.smartLabel.text = getString(prompt.checkedText)
+                    smartSuggestion.smartButton.text = getString(prompt.checkedText)
 
                     viewModel.setOrientationPreference(prompt.orientationToRequest)
                     (activity?.application as? App)?.updateOrientation()
@@ -380,12 +380,12 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
                 smartShelfExpanded = true
             } else {
                 // if the shelf is added, use it to manipulate it's existing prompt
-                smartSuggestion.smartLabel.text = getString(prompt.message)
-                smartSuggestion.smartImage.setImageDrawable(
-                        ContextCompat.getDrawable(context!!, prompt.icon)
+                smartSuggestion.smartButton.text = getString(prompt.message)
+                smartSuggestion.smartButton.setIconResource(
+                        prompt.icon
                 )
-                smartSuggestion.setOnClickListener {
-                    smartSuggestion.smartLabel.text = getString(prompt.checkedText)
+                smartSuggestion.smartButton.setOnClickListener {
+                    smartSuggestion.smartButton.text = getString(prompt.checkedText)
 
                     viewModel.setOrientationPreference(prompt.orientationToRequest)
                     (activity?.application as? App)?.updateOrientation()
