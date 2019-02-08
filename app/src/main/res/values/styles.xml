@@ -73,12 +73,6 @@
         <item name="android:textColor">?colorPrimaryOnDefault</item>
         <item name="rippleColor">?colorRipple</item>
     </style>
-    <!--<style name="Widget.Words.TextView.Button" parent="Theme.Words">-->
-        <!--<item name="android:textAppearance">@style/TextAppearance.Words.Button</item>-->
-        <!--<item name="android:fontFamily">@font/source_code_pro_medium</item>-->
-        <!--<item name="android:background">?selectableItemBackground</item>-->
-    <!--</style>-->
-
 
 
     <!--Chips-->

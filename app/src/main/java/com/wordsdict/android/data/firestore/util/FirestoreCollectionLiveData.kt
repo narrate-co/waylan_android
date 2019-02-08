@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 
 
 /**
- * A helper class to turn a [QuerySnapshot] [EventListener] into a [LiveData] object
+ * A helper class to turn a Firestore [QuerySnapshot]
+ * [EventListener] into a [LiveData] object
  */
 class FirestoreCollectionLiveData<T>(
         private val query: Query,

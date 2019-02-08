@@ -54,7 +54,7 @@
             android:id="@+id/underline"
             android:layout_width="72dp"
             android:layout_height="2dp"
-            app:trackColor="?colorTertiaryOnDefault"
+            app:trackColor="?colorDivider"
             app:indicatorColor="?colorBrand"
             android:layout_marginTop="@dimen/keyline_2"
             android:layout_marginBottom="@dimen/keyline_2"

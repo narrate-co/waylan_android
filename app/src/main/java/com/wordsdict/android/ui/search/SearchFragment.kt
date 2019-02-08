@@ -38,6 +38,9 @@ import com.wordsdict.android.util.widget.DelayedLifecycleAction
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -117,6 +120,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         })
 
         setUpShelfActions(view)
+
     }
 
     // Set up text watchers and on focus changed listeners to help control the
@@ -464,6 +468,8 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         if (userWord == null)  return
 
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
+
+
 
         action1.setOnClickListener {
             sharedViewModel.setCurrentWordFavorited(!isFavorited)

@@ -123,6 +123,7 @@ class DetailsFragment: BaseUserFragment(),
             EducationalOverlayView.pullDownEducator(appBar).show()
             viewModel.hasSeenDragDismissOverlay = true
         }
+
     }
 
     private fun setUpRecyclerView() {

@@ -24,6 +24,9 @@ import com.wordsdict.android.util.fromHtml
 import com.wordsdict.android.util.toRelatedChip
 import kotlinx.android.synthetic.main.merriam_webster_card_layout.view.*
 
+/**
+ * TODO refactor/rewrite
+ */
 class MerriamWebsterCardView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -189,7 +192,7 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
         var fileName = wavFile.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "https://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
-//        val url = "error" //error url
+//        val url = "https://media.merriam-webster.com/audio/prons/en/us/mp3/e/example.mp3" //error url
         audioPlayClickListener = OnClickListener { AudioClipController.play(context, url) }
 
         audioImageView.setOnClickListener(audioPlayClickListener)

@@ -108,6 +108,12 @@ class ContextualFragment : BaseUserFragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        // Set default values before observables emit values.
+        setSheetPeekable(false)
+    }
+
     private fun setUpExpandedContainer(title: String) {
         this.title.text = title
         chipGroup.removeAllViews()

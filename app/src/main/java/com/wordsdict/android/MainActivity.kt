@@ -180,7 +180,7 @@ class MainActivity : BaseUserActivity() {
         }
 
         // collapse the search sheet if it's scrim is touched
-        bottomSheetSkrim.setOnClickListener {
+        bottomSheetScrim.setOnClickListener {
             searchSheetBehavior.collapse(this)
             contextualSheetBehavior.collapse(this)
         }
@@ -227,14 +227,14 @@ class MainActivity : BaseUserActivity() {
                 && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
                         || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
         ) {
-            bottomSheetSkrim.gone()
+            bottomSheetScrim.gone()
         } else {
-            bottomSheetSkrim.visible()
+            bottomSheetScrim.visible()
         }
     }
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
-        bottomSheetSkrim.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
+        bottomSheetScrim.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
     }
 
 
