@@ -13,8 +13,8 @@ android {
         applicationId "com.wordsdict.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 18
-        versionName "0.0.18.debug"
+        versionCode 19
+        versionName "0.0.19.debug"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Merriam Webster Key
