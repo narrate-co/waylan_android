@@ -6,6 +6,7 @@ import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.util.TypedValue
+import java.util.*
 
 
 val isNougat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -25,4 +26,7 @@ fun Context.getDimensionPixelSizeFromAttr(attr: Int): Int {
     a.recycle()
     return dimen
 }
+
+val <T> Stack<T>?.peekOrNull: T?
+    get() = if (this == null || isEmpty()) null else peek()
 

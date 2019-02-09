@@ -13,10 +13,7 @@ import com.wordsdict.android.MainViewModel
 import com.wordsdict.android.Navigator
 import com.wordsdict.android.R
 import com.wordsdict.android.ui.common.BaseUserFragment
-import com.wordsdict.android.util.collapse
-import com.wordsdict.android.util.expand
-import com.wordsdict.android.util.getScaleBetweenRange
-import com.wordsdict.android.util.hide
+import com.wordsdict.android.util.*
 import kotlinx.android.synthetic.main.fragment_contextual.*
 
 /**
@@ -68,7 +65,7 @@ class ContextualFragment : BaseUserFragment() {
 
         // When the current destination changes, update the sheet's state
         sharedViewModel.getBackStack().observe(this, Observer {
-            val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
+            val dest = it.peekOrNull ?: Navigator.HomeDestination.HOME
             when (dest) {
                 Navigator.HomeDestination.TRENDING -> {
                     // Set the expanded sheet up for trending
@@ -86,8 +83,7 @@ class ContextualFragment : BaseUserFragment() {
 
             replaceCollapsedContainerChips(it)
 
-            // TODO Add check to see if backStack is empty. Add a Stack extension method!
-            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
+            if (sharedViewModel.getBackStack().value?.peekOrNull == Navigator.HomeDestination.TRENDING) {
                 if (it.isEmpty()) {
                     hide()
                 } else {
@@ -159,7 +155,7 @@ class ContextualFragment : BaseUserFragment() {
      * HomeDestination and whether or not we have a filter applied for it.
      */
     private fun setSheetHideable() {
-        val dest = sharedViewModel.getBackStack().value?.peek() ?: Navigator.HomeDestination.HOME
+        val dest = sharedViewModel.getBackStack().value?.peekOrNull ?: Navigator.HomeDestination.HOME
         val hasAppliedFilter = sharedViewModel.getCurrentListFilter().isNotEmpty()
 
         // if we're at Trending and there is a non empty filter, don't allow the sheet to be hidden

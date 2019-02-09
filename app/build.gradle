@@ -6,15 +6,14 @@ apply plugin: 'io.fabric'
 apply plugin: 'org.jetbrains.dokka-android'
 
 
-
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.wordsdict.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 19
-        versionName "0.0.19.debug"
+        versionCode 20
+        versionName "0.0.20.debug"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Merriam Webster Key
