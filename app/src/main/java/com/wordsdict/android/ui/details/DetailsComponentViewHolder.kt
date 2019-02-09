@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.wordsdict.android.R
 import com.wordsdict.android.data.disk.wordset.Example
@@ -82,7 +83,7 @@ sealed class DetailsComponentViewHolder(
      * classes should expect [t] to be a subclass of [DetailsComponent] which corresponds with their
      * expected data. Set view data as you normally would in [RecyclerView.onBindViewHolder] here.
      */
-    abstract fun bind(t: DetailsComponent)
+    abstract fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent)
 
     /**
      * The ViewHolder for [DetailsComponent.TitleComponent]. Handles setting data for the
@@ -92,7 +93,7 @@ sealed class DetailsComponentViewHolder(
             view: View,
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
-        override fun bind(t: DetailsComponent) {
+        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
             (t.source as? WordPropertiesSource)?.let {
                 view.detailsComponentTitleText.text = it.word
             }
@@ -114,7 +115,7 @@ sealed class DetailsComponentViewHolder(
             view.detailsComponentMerriamWebsterCard.addListener(this)
         }
 
-        override fun bind(t: DetailsComponent) {
+        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
             (t.source as? MerriamWebsterSource)?.let {
                 view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsDefinitions)
             }
@@ -148,7 +149,7 @@ sealed class DetailsComponentViewHolder(
     ): DetailsComponentViewHolder(view, listener) {
 
 
-        override fun bind(t: DetailsComponent) {
+        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings
@@ -214,7 +215,7 @@ sealed class DetailsComponentViewHolder(
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
 
-        override fun bind(t: DetailsComponent) {
+        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings

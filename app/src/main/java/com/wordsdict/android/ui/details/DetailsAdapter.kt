@@ -25,7 +25,7 @@ import kotlin.reflect.KClass
  * or remove [DetailsComponent]s. Diffing is handled by [DetailsComponent]s, each
  * implementing the [Diffable] interface.
  */
-class DetailsAdapter(private val listener: DetailsAdapter.Listener) : ListAdapter<DetailsComponent,
+class DetailsAdapter(private val detailsFragment: DetailsFragment) : ListAdapter<DetailsComponent,
         DetailsComponentViewHolder>(diffCallback),
         DetailsComponentListener {
 
@@ -60,6 +60,8 @@ class DetailsAdapter(private val listener: DetailsAdapter.Listener) : ListAdapte
             }
         }
     }
+
+    private val listener: DetailsAdapter.Listener = detailsFragment
 
     private val sourceHolder = WordSourceList()
 

@@ -86,6 +86,7 @@ class ContextualFragment : BaseUserFragment() {
 
             replaceCollapsedContainerChips(it)
 
+            // TODO Add check to see if backStack is empty. Add a Stack extension method!
             if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
                 if (it.isEmpty()) {
                     hide()

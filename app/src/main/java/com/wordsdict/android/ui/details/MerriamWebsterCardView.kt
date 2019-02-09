@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.card.MaterialCardView
 import com.wordsdict.android.Navigator
@@ -70,9 +71,9 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
         currentWordId = ""
         unregisterAudioStateDispatchReceiver()
+        super.onDetachedFromWindow()
     }
 
     fun clear() {
