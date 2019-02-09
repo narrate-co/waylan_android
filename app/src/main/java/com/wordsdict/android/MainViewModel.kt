@@ -9,6 +9,7 @@ import com.wordsdict.android.data.repository.WordRepository
 import com.wordsdict.android.di.UserScope
 import com.wordsdict.android.ui.search.Period
 import com.wordsdict.android.util.LiveDataHelper
+import com.wordsdict.android.util.peekOrNull
 import java.util.*
 import javax.inject.Inject
 
@@ -116,7 +117,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getCurrentListFilter(): List<Period> {
-        val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
+        val dest = backStack.value?.peekOrNull ?: Navigator.HomeDestination.HOME
 
         return when (dest) {
             Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter
@@ -128,7 +129,7 @@ class MainViewModel @Inject constructor(
 
     fun getCurrentListFilterLive(): LiveData<List<Period>> {
         return Transformations.switchMap(getBackStack()) {
-            val dest = if (it.isEmpty()) Navigator.HomeDestination.HOME else it.peek()
+            val dest = it.peekOrNull ?: Navigator.HomeDestination.HOME
             when (dest) {
                 Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilterLive
                 Navigator.HomeDestination.RECENT -> userRepository.recentsListFilterLive
@@ -140,7 +141,7 @@ class MainViewModel @Inject constructor(
 
 
     fun setListFilter(filter: List<Period>) {
-        val dest = backStack.value?.peek() ?: Navigator.HomeDestination.HOME
+        val dest = backStack.value?.peekOrNull ?: Navigator.HomeDestination.HOME
 
         when (dest) {
             Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter = filter

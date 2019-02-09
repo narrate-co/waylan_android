@@ -114,7 +114,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         setUpSmartShelf(view)
 
         sharedViewModel.getCurrentFirestoreUserWord().observe(this, Observer {
-            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.DETAILS) {
+            if (sharedViewModel.getBackStack().value?.peekOrNull == Navigator.HomeDestination.DETAILS) {
                 setShelfActionsForDetails(it.userWord)
             }
         })
@@ -239,7 +239,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
         sharedViewModel.getBackStack().observe(this, Observer {
-            val dest = if (it.empty()) Navigator.HomeDestination.HOME else it.peek()
+            val dest = it.peekOrNull ?: Navigator.HomeDestination.HOME
             // wait for the next layout step to grantee the actions.width is correctly captured
             view.post {
                 when (dest) {
@@ -265,7 +265,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
         // Show the filter action if the current HomeDestination has an applied filter and
         // it is filterable (only TRENDING is filterable currently)
         sharedViewModel.getCurrentListFilterLive().observe(this, Observer {
-            if (sharedViewModel.getBackStack().value?.peek() == Navigator.HomeDestination.TRENDING) {
+            if (sharedViewModel.getBackStack().value?.peekOrNull == Navigator.HomeDestination.TRENDING) {
                 // Show the filter action if there is no filter applied
                 runShelfActionsAnimation(if (it.isEmpty()) 1 else 0)
             }
@@ -281,7 +281,7 @@ class SearchFragment : BaseUserFragment(), SearchAdapter.WordAdapterHandlers, Te
 
         // Hide filter action if contextual sheet is expanded
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = sharedViewModel.getBackStack().value?.peek()
+            val currentDest = sharedViewModel.getBackStack().value?.peekOrNull
                     ?: Navigator.HomeDestination.HOME
             if (currentDest == Navigator.HomeDestination.TRENDING) {
                 setSheetSlideOffsetForActions(
