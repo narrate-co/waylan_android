@@ -41,6 +41,8 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     interface MerriamWebsterViewListener {
         fun onRelatedWordClicked(word: String)
         fun onSuggestionWordClicked(word: String)
+        fun onAudioPlayClicked(url: String?)
+        fun onAudioStopClicked()
         fun onAudioClipError(message: String)
         fun onDismissCardClicked()
     }
@@ -71,9 +73,9 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
         currentWordId = ""
         unregisterAudioStateDispatchReceiver()
-        super.onDetachedFromWindow()
     }
 
     fun clear() {
@@ -88,27 +90,26 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
 
-            val audioState: AudioClipService.AudioState = intent.getSerializableExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipService.AudioState
-            val message = intent.getStringExtra(AudioClipService.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
+            val audioState: AudioClipHelper.AudioState = intent.getSerializableExtra(AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_STATE) as AudioClipHelper.AudioState
+            val message = intent.getStringExtra(AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE)
 
             setAudioIcon(audioState)
 
             when (audioState) {
-                AudioClipService.AudioState.ERROR -> listener?.onAudioClipError(message)
-                AudioClipService.AudioState.LOADING,
-                AudioClipService.AudioState.STOPPED,
-                AudioClipService.AudioState.PREPARED,
-                AudioClipService.AudioState.PLAYING -> setAudioIcon(audioState)
+                AudioClipHelper.AudioState.ERROR -> listener?.onAudioClipError(message)
+                AudioClipHelper.AudioState.LOADING,
+                AudioClipHelper.AudioState.STOPPED,
+                AudioClipHelper.AudioState.PREPARED,
+                AudioClipHelper.AudioState.PLAYING -> setAudioIcon(audioState)
             }
         }
     }
 
     private fun registerAudioStateDispatchReceiver() {
-        LocalBroadcastManager.getInstance(context).registerReceiver(audioStateDispatchReceiver, IntentFilter(AudioClipService.BROADCAST_AUDIO_STATE_DISPATCH))
+        LocalBroadcastManager.getInstance(context).registerReceiver(audioStateDispatchReceiver, IntentFilter(AudioClipHelper.BROADCAST_AUDIO_STATE_DISPATCH))
     }
 
     private fun unregisterAudioStateDispatchReceiver() {
-        AudioClipController.stop(context)
         LocalBroadcastManager.getInstance(context).unregisterReceiver(audioStateDispatchReceiver)
     }
 
@@ -180,7 +181,9 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         return entries.asSequence().map { it.word?.word }.firstOrNull() ?: ""
     }
 
-    private val audioStopClickListener = OnClickListener { AudioClipController.stop(context) }
+    private val audioStopClickListener = OnClickListener {
+        listener?.onAudioStopClicked()
+    }
 
     private var audioPlayClickListener = OnClickListener {  }
 
@@ -194,7 +197,9 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         var fileName = wavFile.removeSuffix(".wav")
         val url = if (fileName.isNotBlank()) "https://media.merriam-webster.com/audio/prons/en/us/mp3/${fileName.toCharArray().firstOrNull() ?: "a"}/$fileName.mp3" else ""
 //        val url = "https://media.merriam-webster.com/audio/prons/en/us/mp3/e/example.mp3" //error url
-        audioPlayClickListener = OnClickListener { AudioClipController.play(context, url) }
+        audioPlayClickListener = OnClickListener {
+            listener?.onAudioPlayClicked(url)
+        }
 
         audioImageView.setOnClickListener(audioPlayClickListener)
         audioImageView.visibility = View.VISIBLE
@@ -202,20 +207,20 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     }
 
 
-    private fun setAudioIcon(state: AudioClipService.AudioState) {
+    private fun setAudioIcon(state: AudioClipHelper.AudioState) {
         when (state) {
-            AudioClipService.AudioState.LOADING -> {
+            AudioClipHelper.AudioState.LOADING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 underline.startProgress()
             }
-            AudioClipService.AudioState.PREPARED,
-            AudioClipService.AudioState.PLAYING -> {
+            AudioClipHelper.AudioState.PREPARED,
+            AudioClipHelper.AudioState.PLAYING -> {
                 audioImageView.setImageResource(R.drawable.ic_round_stop_24px)
                 audioImageView.setOnClickListener(audioStopClickListener)
                 underline.stopProgress()
             }
-            AudioClipService.AudioState.STOPPED -> {
+            AudioClipHelper.AudioState.STOPPED -> {
                 audioImageView.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 audioImageView.setOnClickListener(audioPlayClickListener)
                 underline.stopProgress()

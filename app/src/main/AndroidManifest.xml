@@ -46,10 +46,6 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".ui.settings.SettingsActivity"></activity>
-
-        <service
-            android:name=".ui.details.AudioClipService"
-            android:exported="false"/>
     </application>
 
 </manifest>

@@ -83,7 +83,7 @@ sealed class DetailsComponentViewHolder(
      * classes should expect [t] to be a subclass of [DetailsComponent] which corresponds with their
      * expected data. Set view data as you normally would in [RecyclerView.onBindViewHolder] here.
      */
-    abstract fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent)
+    abstract fun bind(t: DetailsComponent)
 
     /**
      * The ViewHolder for [DetailsComponent.TitleComponent]. Handles setting data for the
@@ -93,7 +93,7 @@ sealed class DetailsComponentViewHolder(
             view: View,
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
-        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
+        override fun bind(t: DetailsComponent) {
             (t.source as? WordPropertiesSource)?.let {
                 view.detailsComponentTitleText.text = it.word
             }
@@ -115,7 +115,7 @@ sealed class DetailsComponentViewHolder(
             view.detailsComponentMerriamWebsterCard.addListener(this)
         }
 
-        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
+        override fun bind(t: DetailsComponent) {
             (t.source as? MerriamWebsterSource)?.let {
                 view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsDefinitions)
             }
@@ -127,6 +127,14 @@ sealed class DetailsComponentViewHolder(
 
         override fun onSuggestionWordClicked(word: String) {
             listener.onSuggestionWordClicked(word)
+        }
+
+        override fun onAudioPlayClicked(url: String?) {
+            listener.onAudioPlayClicked(url)
+        }
+
+        override fun onAudioStopClicked() {
+            listener.onAudioStopClicked()
         }
 
         override fun onAudioClipError(message: String) {
@@ -149,7 +157,7 @@ sealed class DetailsComponentViewHolder(
     ): DetailsComponentViewHolder(view, listener) {
 
 
-        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
+        override fun bind(t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings
@@ -215,7 +223,7 @@ sealed class DetailsComponentViewHolder(
             listener: DetailsComponentListener
     ): DetailsComponentViewHolder(view, listener) {
 
-        override fun bind(hostLifecycle: LifecycleOwner, t: DetailsComponent) {
+        override fun bind(t: DetailsComponent) {
             val source = t.source
             if (source is WordsetSource) {
                 val meanings = source.wordAndMeaning.meanings

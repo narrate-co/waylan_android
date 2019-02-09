@@ -56,6 +56,10 @@ class DetailsFragment: BaseUserFragment(),
 
     private val adapter: DetailsAdapter = DetailsAdapter(this)
 
+    private val audioClipHelper by lazy {
+        AudioClipHelper(requireContext(), this)
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -142,6 +146,14 @@ class DetailsFragment: BaseUserFragment(),
 
     override fun onSynonymChipClicked(synonym: String) {
         sharedViewModel.setCurrentWord(synonym)
+    }
+
+    override fun onPlayAudioClicked(url: String?) {
+        audioClipHelper.play(url)
+    }
+
+    override fun onStopAudioClicked() {
+        audioClipHelper.stop()
     }
 
     override fun onAudioClipError(message: String) {

@@ -25,7 +25,7 @@ import kotlin.reflect.KClass
  * or remove [DetailsComponent]s. Diffing is handled by [DetailsComponent]s, each
  * implementing the [Diffable] interface.
  */
-class DetailsAdapter(private val detailsFragment: DetailsFragment) : ListAdapter<DetailsComponent,
+class DetailsAdapter(private val listener: DetailsAdapter.Listener) : ListAdapter<DetailsComponent,
         DetailsComponentViewHolder>(diffCallback),
         DetailsComponentListener {
 
@@ -34,6 +34,8 @@ class DetailsAdapter(private val detailsFragment: DetailsFragment) : ListAdapter
         fun onSuggestionWordClicked(suggestionWord: String)
         fun onSynonymChipClicked(synonym: String)
         fun onAudioClipError(message: String)
+        fun onPlayAudioClicked(url: String?)
+        fun onStopAudioClicked()
         fun onMerriamWebsterDismissClicked()
     }
 
@@ -60,8 +62,6 @@ class DetailsAdapter(private val detailsFragment: DetailsFragment) : ListAdapter
             }
         }
     }
-
-    private val listener: DetailsAdapter.Listener = detailsFragment
 
     private val sourceHolder = WordSourceList()
 
@@ -102,6 +102,14 @@ class DetailsAdapter(private val detailsFragment: DetailsFragment) : ListAdapter
 
     override fun onSuggestionWordClicked(suggestionWord: String) {
         listener.onSuggestionWordClicked(suggestionWord)
+    }
+
+    override fun onAudioPlayClicked(url: String?) {
+        listener.onPlayAudioClicked(url)
+    }
+
+    override fun onAudioStopClicked() {
+        listener.onStopAudioClicked()
     }
 
     override fun onAudioClipError(message: String) {

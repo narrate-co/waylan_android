@@ -23,12 +23,7 @@ class AudioClipHelper(
         MediaPlayer.OnCompletionListener,
         AudioManager.OnAudioFocusChangeListener, LifecycleObserver {
 
-
     companion object {
-        // Key constants used to build a valid Command Intent
-        const val INTENT_KEY_COMMAND = "KEY_COMMAND"
-        const val INTENT_KEY_URL = "KEY_URL"
-
         // Key constants for audio state broadcasting
         // The name of the broadcast intent
         const val BROADCAST_AUDIO_STATE_DISPATCH = "audio_state_dispatch_broadcast"
@@ -46,25 +41,7 @@ class AudioClipHelper(
         // Milliseconds to wait for audio to load before throwing a timeout error
         const val MEDIA_PREPARE_TIMEOUT = 8000L // 8 seconds
 
-        const val TAG = "AudioClipService"
-    }
-
-
-    /**
-     * An enumeration of commands which this Service is able to handle
-     */
-    enum class Command {
-        /**
-         * Commands [AudioClipService] to stream a url audio clip. If a clip is already playing,
-         * it will be stopped and the new url will be played.
-         */
-        PLAY,
-
-        /**
-         * Commands [AudioClipService] to stop any playing audi clip. Once stopped,
-         * [AudioClipService] will be destroyed
-         */
-        STOP
+        const val TAG = "AudioClipHelper"
     }
 
     /**
@@ -109,38 +86,36 @@ class AudioClipHelper(
         lifecycleOwner.lifecycle.addObserver(this)
     }
 
-    fun run(comm: Command?, url: String?) {
+    fun play(url: String?) {
+        start(url)
+    }
 
-    // All commands (whether the service is being started for the first time or not) will
-    // be received here.
-        // Get the intent's [Command], default to STOP
-        val command = comm ?: Command.STOP.name
-
-        // Handle the command
-        when (command) {
-            Command.PLAY -> play(url)
-            Command.STOP -> {
-                stop()
-                destroy()
-            }
-        }
+    fun stop() {
+        end()
+        destroy()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    private fun onStop() {
-        mediaPlayer?.release()
-        mediaPlayer = null
+    fun onStop() {
+        stop()
     }
 
-    private fun play(url: String?) {
+    private fun start(url: String?) {
+        if (!lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            end()
+            dispatchError(url, "Unable to play clip.")
+            destroy()
+            return
+        }
+
         playWhenLoaded = true
 
-        //if there's something playing, stop everything and then continue
-        if (currentUrl != null) stop()
+        //if there's something playing, end everything and then continue
+        if (currentUrl != null) end()
 
         //if the given url is null, dispatch an error and destroy
         if (url == null || url.isEmpty()) {
-            stop()
+            end()
             dispatchError(url, "No available pronunciations")
             destroy()
             return
@@ -150,7 +125,7 @@ class AudioClipHelper(
 
         //handle no network by stopping and dispatching an error and destory
         if (!networkIsAvailable) {
-            stop()
+            end()
             dispatchError(url, "No network available")
             destroy()
             return
@@ -180,21 +155,21 @@ class AudioClipHelper(
                 // Set our own custom timeout time and task
                 prepareTimeoutTimer = Timer("media_prepare_timer", false)
                         .schedule(MEDIA_PREPARE_TIMEOUT) {
-                            dispatchError(currentUrl, "Unable to play audio")
-                            stop()
+                            dispatchError(currentUrl, "Unable to start audio")
+                            end()
                             destroy()
                         }
             }
         } catch (e: IOException) {
             e.printStackTrace()
             dispatchError(url, "No pronunciations available")
-            stop()
+            end()
             destroy()
         }
 
     }
 
-    private fun stop() {
+    private fun end() {
         prepareTimeoutTimer?.cancel()
         audioManager.abandonAudioFocus(this)
         mediaPlayer?.release()
@@ -204,7 +179,8 @@ class AudioClipHelper(
     }
 
     private fun destroy() {
-        onStop()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     override fun onPrepared(player: MediaPlayer?) {
@@ -221,20 +197,20 @@ class AudioClipHelper(
                 mediaPlayer?.start()
             }
         } else {
-            dispatchError(currentUrl, "Unable to play pronunciations")
-            stop()
+            dispatchError(currentUrl, "Unable to start pronunciations")
+            end()
             destroy()
         }
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
-        stop()
+        end()
         destroy()
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
         dispatchError(currentUrl, "An error occurred playing pronunciations")
-        stop()
+        end()
         destroy()
         return true
     }

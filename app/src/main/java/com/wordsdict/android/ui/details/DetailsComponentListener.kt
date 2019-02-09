@@ -8,6 +8,8 @@ interface DetailsComponentListener {
     fun onSynonymChipClicked(synonym: String)
     fun onRelatedWordClicked(relatedWord: String)
     fun onSuggestionWordClicked(suggestionWord: String)
+    fun onAudioPlayClicked(url: String?)
+    fun onAudioStopClicked()
     fun onAudioClipError(message: String)
     fun onMerriamWebsterDismissClicked()
 }
