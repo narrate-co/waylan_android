@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.wordsdict.android.util.widget.BannerCardView
+            <space.narrate.words.android.util.widget.BannerCardView
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,14 +36,14 @@
                 app:cardBackgroundColor="?colorSurface"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/nightMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_night_mode_title"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/orientation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 />
 
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/signOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 app:desc="@string/settings_sign_out_default_desc"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 app:desc="@string/settings_about_desc"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 app:desc="@string/settings_contact_desc"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/developer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

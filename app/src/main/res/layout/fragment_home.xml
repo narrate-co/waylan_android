@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.wordsdict.android.util.widget.InsetFrameLayout
+<space.narrate.words.android.util.widget.InsetFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame"
     android:layout_height="match_parent"
@@ -137,7 +137,7 @@
                 <!--app:layout_constraintVertical_chainStyle="packed" -->
                 <!--/>-->
 
-            <com.wordsdict.android.util.widget.ProgressUnderlineView
+            <space.narrate.words.android.util.widget.ProgressUnderlineView
                 android:id="@+id/view"
                 android:layout_width="72dp"
                 android:layout_height="2dp"
@@ -179,4 +179,4 @@
         android:background="?android:windowBackground"
         android:layout_gravity="top"/>
 
-</com.wordsdict.android.util.widget.InsetFrameLayout>
+</space.narrate.words.android.util.widget.InsetFrameLayout>

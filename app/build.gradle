@@ -9,11 +9,11 @@ apply plugin: 'org.jetbrains.dokka-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.wordsdict.android"
+        applicationId "space.narrate.words.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 21
-        versionName "0.0.21.debug"
+        versionCode 1
+        versionName "0.0.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Merriam Webster Key

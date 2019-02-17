@@ -4,7 +4,7 @@ A dictionary that focuses on execution, ergonomics and experience concepts
 
 ![Light banner](assets/board_light.png?raw=true "Light banner")
 
-<a href="https://play.google.com/apps/testing/com.wordsdict.android" target="_blank">
+<a href="https://play.google.com/apps/testing/space.narrate.words.android" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/></a>
 
 ## Notes

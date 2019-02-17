@@ -27,14 +27,14 @@
                 android:padding="@dimen/keyline_3"
                 android:text="@string/about_header_body" />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Version"
                 />
 
-            <com.wordsdict.android.util.widget.CheckPreferenceView
+            <space.narrate.words.android.util.widget.CheckPreferenceView
                 android:id="@+id/thirdPartyLibraries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
