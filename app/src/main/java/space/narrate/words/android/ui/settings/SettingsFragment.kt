@@ -53,7 +53,7 @@ class SettingsFragment : BaseUserFragment() {
 
         fun newInstance() = SettingsFragment()
 
-        const val SUPPORT_EMAIL_ADDRESS = "words@wordsdict.com"
+        const val SUPPORT_EMAIL_ADDRESS = "words@narrate.space"
     }
 
     // This SettingsFragment's own ViewModel
