@@ -1,6 +1,8 @@
 package space.narrate.words.android.data.repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.firestore.FirestoreStore
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
@@ -10,6 +12,7 @@ import space.narrate.words.android.data.prefs.UserPreferenceStore
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataHelper
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A repository for all data access to all User data.
@@ -21,7 +24,10 @@ class UserRepository(
         private val firestoreStore: FirestoreStore?,
         private val userPreferenceStore: UserPreferenceStore,
         private val preferenceStore: PreferenceStore
-) {
+) : CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     /** Firestore User */
 

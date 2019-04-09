@@ -5,10 +5,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A class that invokes a function after a delay only if the LifecycleOwner has not passed through
@@ -22,22 +24,22 @@ open class DelayedLifecycleAction(
         owner: LifecycleOwner,
         private val delay: Long,
         private val action: () -> Unit
-): LifecycleObserver {
+): LifecycleObserver, CoroutineScope {
 
-    private var job: Job? = null
-    private var canceled: Boolean = false
+    private var job: Job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     init {
         owner.lifecycle.addObserver(this)
     }
 
     fun run(): DelayedLifecycleAction {
-        if (!canceled) {
-            job = launch(UI) {
+        if (!job.isCancelled) {
+            launch {
                 delay(delay)
-                if (!canceled) {
-                    action()
-                }
+                action()
             }
         }
 
@@ -50,8 +52,7 @@ open class DelayedLifecycleAction(
     }
 
     open fun cancel() {
-        canceled = true
-        job?.cancel()
+        job.cancel()
     }
 }
 

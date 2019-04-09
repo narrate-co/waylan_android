@@ -3,6 +3,8 @@ package space.narrate.words.android.data.mw
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.crashlytics.android.Crashlytics
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.BuildConfig
 import space.narrate.words.android.data.analytics.AnalyticsRepository
 import space.narrate.words.android.util.contentEquals
@@ -13,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import space.narrate.words.android.data.disk.mw.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * The top-most store for access to Merriam-Webster data. This class abstracts details of where
@@ -25,13 +28,16 @@ class MerriamWebsterStore(
         private val merriamWebsterService: MerriamWebsterService,
         private val mwDao: MwDao,
         private val analyticsRepository: AnalyticsRepository
-) {
+) : CoroutineScope {
 
     companion object {
         private const val TAG = "MerriamWebsterStore"
 
         private const val DEV_KEY = BuildConfig.MERRIAM_WEBSTER_KEY
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     /**
      * Immediately returns a LiveData object observing the local Merriam-Webster Room db

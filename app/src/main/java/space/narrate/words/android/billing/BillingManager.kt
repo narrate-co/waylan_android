@@ -3,11 +3,13 @@ package space.narrate.words.android.billing
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.repository.UserRepository
-import kotlinx.coroutines.android.UI
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A class to handle all communication between Words and Google Play Billing
@@ -32,7 +34,7 @@ import java.util.*
 class BillingManager(
         private val context: Context,
         private val userRepository: UserRepository
-): PurchasesUpdatedListener {
+): PurchasesUpdatedListener, CoroutineScope {
 
     companion object {
         private val TAG = BillingManager::class.java.simpleName
@@ -40,6 +42,9 @@ class BillingManager(
         private const val BILLING_MANAGER_NOT_INITIALIZED = -1
         private const val BASE_64_ENCODED_PUBLIC_KEY = "EMPTY_FOR_NOW"
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     private val billingClient by lazy {
         BillingClient.newBuilder(context).setListener(this).build()
@@ -52,7 +57,7 @@ class BillingManager(
 
     init {
         doWithServiceConnection {
-            launch(UI) {
+            launch {
                 it.queryPurchasesAndSubscription(true)
             }
         }
@@ -81,7 +86,7 @@ class BillingManager(
             @BillingClient.SkuType billingType: String
     ) {
         doWithServiceConnection {
-            launch(UI) {
+            launch {
                 val purchaseParams = BillingFlowParams.newBuilder()
                         .setSku(skuId)
                         .setType(billingType)
@@ -104,7 +109,7 @@ class BillingManager(
             listener: SkuDetailsResponseListener
     ) {
         doWithServiceConnection {
-            launch(UI) {
+            launch {
                 val params = SkuDetailsParams.newBuilder()
                         .setSkusList(skuList)
                         .setType(itemType)
@@ -117,7 +122,7 @@ class BillingManager(
 
     private fun doWithServiceConnection(work: (BillingClient) -> Unit) {
         if (isServiceConnected) {
-            launch(UI) {
+            launch {
                 work(billingClient)
             }
         } else {
@@ -125,7 +130,7 @@ class BillingManager(
                 override fun onBillingSetupFinished(responseCode: Int) {
                     if (responseCode == BillingClient.BillingResponse.OK) {
                         isServiceConnected = true
-                        launch(UI) {
+                        launch {
                             work(billingClient)
                         }
                         billingClientResponseCode = responseCode
@@ -151,7 +156,7 @@ class BillingManager(
         }
 
         doWithServiceConnection {
-            launch(UI) {
+            launch {
                 it.consumeAsync(purchaseToken, onConsumeListener)
             }
         }

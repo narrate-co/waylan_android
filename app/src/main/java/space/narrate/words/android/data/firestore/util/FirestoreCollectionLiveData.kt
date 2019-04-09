@@ -2,9 +2,10 @@ package space.narrate.words.android.data.firestore.util
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.*
-import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -14,11 +15,11 @@ import kotlinx.coroutines.launch
 class FirestoreCollectionLiveData<T>(
         private val query: Query,
         private val clazz: Class<T>
-): LiveData<List<T>>() {
+): LiveData<List<T>>(), CoroutineScope {
 
-    companion object {
-        private const val TAG = "FirestoreCollectionLiveData"
-    }
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     private var listenerRegistration: ListenerRegistration? = null
 
     private val eventListener =
@@ -28,7 +29,7 @@ class FirestoreCollectionLiveData<T>(
             firebaseFirestoreException.printStackTrace()
         } else {
             // move parsing off the main thread
-            launch(UI) {
+            launch {
                 value = querySnapshot?.documents?.map { it.toObject(clazz)!! }
             }
         }

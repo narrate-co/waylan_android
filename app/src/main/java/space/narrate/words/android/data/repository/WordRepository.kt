@@ -3,7 +3,8 @@ package space.narrate.words.android.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import space.narrate.words.android.data.repository.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.disk.AppDatabase
 import space.narrate.words.android.data.disk.mw.PermissiveWordsDefinitions
 import space.narrate.words.android.data.firestore.FirestoreStore
@@ -15,6 +16,7 @@ import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataHelper
 import space.narrate.words.android.util.widget.MergedLiveData
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A repository for all data access to all underlying dictionaries, including from WordSet,
@@ -26,7 +28,10 @@ class WordRepository(
         private val firestoreStore: FirestoreStore?,
         private val merriamWebsterStore: MerriamWebsterStore?,
         private val symSpellStore: SymSpellStore
-) {
+) : CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     /**
      * Query for a simple list of [SimpleWordSource] and [SuggestSource] that possibly match

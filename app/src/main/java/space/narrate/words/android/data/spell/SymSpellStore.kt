@@ -3,10 +3,11 @@ package space.narrate.words.android.data.spell
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import space.narrate.words.android.data.spell.SymConfig
 import java.io.FileNotFoundException
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A top-level store to access an in-memory instance of JavaSymSpell, a Java port of SymSpell.
@@ -23,7 +24,10 @@ import java.io.FileNotFoundException
  *
  * TODO check available memory and don't init SymSpell if there is not enough available
  */
-class SymSpellStore(context: Context) {
+class SymSpellStore(context: Context) : CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     private var symSpell: SymSpell = SymSpell(-1, 3, -1, SymConfig.defaultTargetCount, Long.MAX_VALUE)
 
@@ -49,7 +53,7 @@ class SymSpellStore(context: Context) {
      */
     fun lookupLive(input: String): LiveData<List<SuggestItem>> {
         val liveData = MutableLiveData<List<SuggestItem>>()
-        launch(UI) {
+        launch(Dispatchers.Main) {
             val results = lookup(input)
             liveData.value = results
         }

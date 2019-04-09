@@ -3,8 +3,10 @@ package space.narrate.words.android.data.firestore.util
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
-import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -12,11 +14,10 @@ import kotlinx.coroutines.launch
  */
 class FirestoreDocumentLiveData<T>(
         private val documentReference: DocumentReference,
-        private val clazz: Class<T>): LiveData<T>() {
+        private val clazz: Class<T>): LiveData<T>(), CoroutineScope {
 
-    companion object {
-        private const val TAG = "FirestoreDocumentLiveData"
-    }
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     private var listenerRegistration: ListenerRegistration? = null
 
@@ -26,7 +27,7 @@ class FirestoreDocumentLiveData<T>(
             if (firebaseFirestoreException == null) {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     // move parsing off the main thread
-                    launch(UI) {
+                    launch {
                         value = documentSnapshot.toObject(clazz)
                     }
                 }
