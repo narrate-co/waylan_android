@@ -22,16 +22,19 @@ import space.narrate.words.android.Navigator
 import space.narrate.words.android.util.getColorFromAttr
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 
 /**
  * An Activity which acts as a splash screen, an [Auth] getter/setter and a Login or Sign up
  * screen.
  */
-class AuthActivity : DaggerAppCompatActivity() {
+class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
 
     companion object {
         const val TAG = "AuthActivity"
@@ -89,6 +92,11 @@ class AuthActivity : DaggerAppCompatActivity() {
         LOG_IN
     }
 
+    private val job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
     private val authViewModel by lazy {
         ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
@@ -119,6 +127,11 @@ class AuthActivity : DaggerAppCompatActivity() {
         // Get the intended AuthRoute and configure accordingly
         val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
         initAuthState(authRoute)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -170,7 +183,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         when (authRoute) {
             // Sign up and log in AuthRoute
             AuthRoute.SIGN_UP.name, AuthRoute.LOG_IN.name -> {
-                launch (UI) {
+                launch {
                     delay(500)
                     if (authRoute == AuthRoute.LOG_IN.name) setToLoginUi() else setToSignUpUi()
                     showCredentialsUi()
@@ -181,7 +194,7 @@ class AuthActivity : DaggerAppCompatActivity() {
                 if (firebaseUser != null ) {
                     getCurrentAuthAndReturnToMain(firebaseUser)
                 } else {
-                    launch(UI) {
+                    launch {
                         try {
                             val user = authViewModel.signUpAnonymously()
                             launchMain(user, true)
@@ -202,7 +215,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         alternateCredentialType.text = getString(R.string.auth_sign_up_button)
         done.text = getString(R.string.auth_log_in_button)
         done.setOnClickListener {
-            launch(UI) {
+            launch {
                 try {
                     val loggedInUser = authViewModel.logIn(
                             email.text.toString(),
@@ -224,7 +237,7 @@ class AuthActivity : DaggerAppCompatActivity() {
         alternateCredentialType.text = getString(R.string.auth_log_in_button)
         done.text = getString(R.string.auth_sign_up_button)
         done.setOnClickListener {
-            launch(UI) {
+            launch {
                 try {
                     val newlyLinkedUser = authViewModel.signUp(
                             email.text.toString(),
@@ -340,7 +353,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
     // A helper function to create an Auth object and then call launchMain
     private fun getCurrentAuthAndReturnToMain(firebaseUser: FirebaseUser) {
-        launch(UI) {
+        launch {
             try {
                 val auth = authViewModel.getCurrentAuth(firebaseUser)
                 launchMain(auth, true)
@@ -353,8 +366,8 @@ class AuthActivity : DaggerAppCompatActivity() {
     // Set the user and go to MainActivity
     private fun launchMain(auth: Auth?, clearStack: Boolean, delayMillis: Long = 0L) {
         (application as App).setUser(auth)
-        launch(UI) {
-            delay(delayMillis, TimeUnit.MILLISECONDS)
+        launch {
+            delay(delayMillis)
 
             Navigator.launchMain(this@AuthActivity, clearStack, filterIntent)
 

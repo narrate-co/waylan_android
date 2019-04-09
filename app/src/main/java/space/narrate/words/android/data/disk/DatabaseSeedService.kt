@@ -11,9 +11,12 @@ import space.narrate.words.android.R
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import space.narrate.words.android.data.disk.wordset.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A helper [Service] that loads, converts and inserts WordSet json dictionary files into
@@ -27,7 +30,7 @@ import space.narrate.words.android.data.disk.wordset.*
  *
  * To toggle whether this Service is run, use [AppDatabase.SHOULD_SEED_DATABASE].
  */
-class DatabaseSeedService: Service() {
+class DatabaseSeedService: Service(), CoroutineScope {
 
     companion object {
         const val DATA_SEED_NOTIFICATION_ID = 12345
@@ -36,6 +39,8 @@ class DatabaseSeedService: Service() {
         const val TAG = "DatabaseSeedService"
     }
 
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     override fun onBind(p0: Intent?): IBinder? {
         return null

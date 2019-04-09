@@ -7,6 +7,8 @@ import android.provider.Settings
 import android.view.OrientationEventListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.util.widget.TrimmedStack
 import space.narrate.words.android.util.widget.copyMatchedPattern
 import space.narrate.words.android.util.widget.emptyTrimmedStack
@@ -16,6 +18,7 @@ import space.narrate.words.android.util.doOnResume
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A helper typealias definition to aid in readability. A pattern is a list of
@@ -37,7 +40,7 @@ typealias Pattern = List<Int>
  */
 class RotationManager constructor(
         private val context: Context
-): OrientationEventListener(context) {
+): OrientationEventListener(context), CoroutineScope {
 
     companion object {
         // An unknown orientation
@@ -142,6 +145,9 @@ class RotationManager constructor(
             val patternObserver: PatternObserver,
             val patterns: Set<Pattern>
     )
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     private val lastUndispatchedPatterns: HashMap<String, TrimmedStack<RotationEvent>> = hashMapOf()
 

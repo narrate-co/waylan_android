@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.CoroutineScope
 import space.narrate.words.android.data.disk.AppDatabase
 import space.narrate.words.android.data.firestore.users.*
 import space.narrate.words.android.data.firestore.util.*
@@ -12,6 +13,7 @@ import space.narrate.words.android.data.firestore.words.GlobalWord
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.isMoreThanOneMinuteAgo
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import space.narrate.words.android.data.firestore.users.PluginState
@@ -20,6 +22,7 @@ import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.users.UserWordType
 import space.narrate.words.android.data.firestore.util.*
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -35,12 +38,14 @@ class FirestoreStore(
         private val firestore: FirebaseFirestore,
         private val db: AppDatabase,
         private val firestoreUser: FirebaseUser
-) {
+) : CoroutineScope {
 
     companion object {
         private const val TAG = "FirestoreStore"
     }
 
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
         return firestore.words
