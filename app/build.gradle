@@ -12,8 +12,8 @@ android {
         applicationId "space.narrate.words.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.0.03.debug"
+        versionCode 4
+        versionName "0.0.04.debug"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Merriam Webster Key
@@ -67,6 +67,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "com.github.humazed:RoomAsset:$room_asset_version"
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 
     // KTX
     implementation "androidx.core:core-ktx:$androidx_version"
