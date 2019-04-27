@@ -103,7 +103,7 @@ class SearchViewModel @Inject constructor(
             old: RotationManager.RotationEvent,
             new: RotationManager.RotationEvent
     ) {
-        if (isPortraitToLandscape(old, new)) {
+        if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
             if (userRepository.portraitToLandscapeOrientationChangeCount == 2L) {
                 _orientationPrompt.value = OrientationPrompt.LockToLandscape(
@@ -111,7 +111,7 @@ class SearchViewModel @Inject constructor(
                 )
                 _orientationPrompt.value = null
             }
-        } else if (isLandscapeToPortrait(old, new)) {
+        } else if (RotationUtils.isLandscapeToPortrait(old, new)) {
             userRepository.landscapeToPortraitOrientationChangeCount++
             if (userRepository.landscapeToPortraitOrientationChangeCount == 1L) {
                 _orientationPrompt.value = OrientationPrompt.LockToPortrait(
@@ -127,7 +127,12 @@ class SearchViewModel @Inject constructor(
             lockedTo: Int,
             observedSince: Long
     ) {
-        if (isLikelyUnlockDesiredScenario(pattern, lockedTo, observedSince, System.nanoTime())) {
+        if (RotationUtils.isLikelyUnlockDesiredScenario(
+                        pattern,
+                        lockedTo,
+                        observedSince,
+                        System.nanoTime()
+                )) {
             //should suggest unlocking
             _orientationPrompt.value = OrientationPrompt.UnlockOrientation(Orientation.UNSPECIFIED)
             _orientationPrompt.value = null

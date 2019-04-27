@@ -356,7 +356,8 @@ class RotationManager constructor(
         }
 
 
-        if (ownerObserver.first?.lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) == true) {
+        if (ownerObserver.first?.lifecycle
+                        ?.currentState?.isAtLeast(Lifecycle.State.RESUMED) == true) {
             //the activity has already called onResume. dispatch orientation change ourselves
             dispatchUnconsumedOrientationChange(key, ownerObserver, old, new)
         } else {
@@ -387,7 +388,8 @@ class RotationManager constructor(
                 event.orientation == orientation
             }
             if (copy != null) {
-                if (ownedPatternObserver.owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                if (ownedPatternObserver.owner.lifecycle
+                                .currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                     dispatchUnconsumedPattern(ownedPatternObserver, copy)
                 } else {
                     ownedPatternObserver.owner.lifecycle.doOnNextResume {
@@ -415,7 +417,10 @@ class RotationManager constructor(
 
     private fun systemIsOrientationLocked(): Boolean {
         return try {
-            Settings.System.getInt(context.contentResolver, Settings.System.ACCELEROMETER_ROTATION) != 1
+            Settings.System.getInt(
+                    context.contentResolver,
+                    Settings.System.ACCELEROMETER_ROTATION
+            ) != 1
         } catch (e: Settings.SettingNotFoundException) {
             false
         }
