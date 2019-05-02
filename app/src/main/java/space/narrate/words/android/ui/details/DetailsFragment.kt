@@ -20,6 +20,7 @@ import space.narrate.words.android.util.widget.EducationalOverlayView
 import space.narrate.words.android.util.widget.ElasticAppBarBehavior
 import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_details.view.*
+import space.narrate.words.android.Navigator
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
@@ -160,6 +161,10 @@ class DetailsFragment: BaseUserFragment(),
         Snackbar.make(coordinator, message, Snackbar.LENGTH_SHORT)
                 .configError(context!!, true)
                 .show()
+    }
+
+    override fun onMerriamWebsterDetailsClicked() {
+        Navigator.launchSettings(requireContext())
     }
 
     override fun onMerriamWebsterDismissClicked() {

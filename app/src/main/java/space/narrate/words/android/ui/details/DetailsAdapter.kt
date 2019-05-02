@@ -37,6 +37,7 @@ class DetailsAdapter(private val listener: Listener) : ListAdapter<DetailsCompon
         fun onAudioClipError(message: String)
         fun onPlayAudioClicked(url: String?)
         fun onStopAudioClicked()
+        fun onMerriamWebsterDetailsClicked()
         fun onMerriamWebsterDismissClicked()
     }
 
@@ -46,13 +47,13 @@ class DetailsAdapter(private val listener: Listener) : ListAdapter<DetailsCompon
                     oldItem: DetailsComponent,
                     newItem: DetailsComponent
             ) : Boolean {
-                return oldItem.equalTo(newItem)
+                return oldItem.isSameAs(newItem)
             }
             override fun areContentsTheSame(
                     oldItem: DetailsComponent,
                     newItem: DetailsComponent
             ): Boolean {
-                return oldItem.contentsSameAs(newItem)
+                return oldItem.isContentSameAs(newItem)
             }
 
             override fun getChangePayload(
@@ -115,6 +116,10 @@ class DetailsAdapter(private val listener: Listener) : ListAdapter<DetailsCompon
 
     override fun onAudioClipError(message: String) {
         listener.onAudioClipError(message)
+    }
+
+    override fun onMerriamWebsterDetailsClicked() {
+        listener.onMerriamWebsterDetailsClicked()
     }
 
     override fun onMerriamWebsterDismissClicked() {

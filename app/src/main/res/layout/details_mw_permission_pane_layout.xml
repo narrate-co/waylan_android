@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/banner"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/permissionContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/keyline_3"
-    android:paddingBottom="@dimen/keyline_3"
-    android:layout_marginTop="@dimen/keyline_3"
-    android:layout_marginBottom="32dp"
+    android:layout_marginTop="@dimen/keyline_2"
+    android:layout_marginStart="@dimen/keyline_3"
+    android:layout_marginEnd="@dimen/keyline_3"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:textAppearance="?textAppearanceBody1"
-        android:id="@+id/body"
+    <View
+        android:layout_width="100dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:layout_marginBottom="@dimen/keyline_1"
+        android:background="@drawable/permission_pane_background"/>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/list_banner_trending_body"
-        />
+        android:layout_height="56dp"
+        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginBottom="@dimen/keyline_2"
+        android:background="@drawable/permission_pane_background"/>
+
 
     <com.google.android.material.button.MaterialButton
         style="?attr/styleTextButton"
         android:id="@+id/details_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_2"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:paddingRight="@dimen/keyline_3"
         android:paddingLeft="@dimen/keyline_3"
-        android:text="Got it"
+        android:layout_marginTop="@dimen/keyline_1"
+        android:text="@string/details_merriam_webster_card_details_button"
         android:layout_gravity="right"
         />
+
 
     <com.google.android.material.button.MaterialButton
         style="?attr/styleTextButton"
@@ -42,9 +48,8 @@
         android:paddingBottom="12dp"
         android:paddingRight="@dimen/keyline_3"
         android:paddingLeft="@dimen/keyline_3"
-        android:text="Dismiss"
+        android:text="@string/details_merriam_webster_card_dismiss_button"
         android:layout_gravity="right"
-        android:visibility="gone"
         />
 
 </LinearLayout>

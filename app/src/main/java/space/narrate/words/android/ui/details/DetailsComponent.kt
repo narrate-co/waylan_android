@@ -25,12 +25,12 @@ sealed class DetailsComponent(
      * in the dictionary)
      */
     class TitleComponent(source: WordPropertiesSource): DetailsComponent(source, VIEW_TYPE_TITLE) {
-        override fun equalTo(newOther: DetailsComponent): Boolean {
+        override fun isSameAs(newOther: DetailsComponent): Boolean {
             // Are items of the same type
             return newOther is TitleComponent
         }
 
-        override fun contentsSameAs(newOther: DetailsComponent): Boolean {
+        override fun isContentSameAs(newOther: DetailsComponent): Boolean {
             // do items point to the same address
             if (this == newOther) return true
             if (source !is WordPropertiesSource || newOther.source !is WordPropertiesSource) {
@@ -54,12 +54,12 @@ sealed class DetailsComponent(
     class MerriamWebsterComponent(
             source: MerriamWebsterSource
     ) : DetailsComponent(source, VIEW_TYPE_MERRIAM_WEBSTER) {
-        override fun equalTo(newOther: DetailsComponent): Boolean {
+        override fun isSameAs(newOther: DetailsComponent): Boolean {
             // Are items of the same type
             return newOther is MerriamWebsterComponent
         }
 
-        override fun contentsSameAs(newOther: DetailsComponent): Boolean {
+        override fun isContentSameAs(newOther: DetailsComponent): Boolean {
             // do items point to the same address
             if (this == newOther) return true
             if (source !is MerriamWebsterSource || newOther.source !is MerriamWebsterSource) {
@@ -106,12 +106,12 @@ sealed class DetailsComponent(
      * all of a word's WordSet definitions.
      */
     class WordsetComponent(source: WordsetSource): DetailsComponent(source, VIEW_TYPE_WORDSET) {
-        override fun equalTo(newOther: DetailsComponent): Boolean {
+        override fun isSameAs(newOther: DetailsComponent): Boolean {
             // Are items of the same type
             return newOther is WordsetComponent
         }
 
-        override fun contentsSameAs(newOther: DetailsComponent): Boolean {
+        override fun isContentSameAs(newOther: DetailsComponent): Boolean {
             // do items point to the same address
             if (this == newOther) return true
             if (source !is WordsetSource || newOther.source !is WordsetSource) return false
@@ -141,12 +141,12 @@ sealed class DetailsComponent(
      * Note: This will likely represent the user added examples in the future also
      */
     class ExamplesComponent(source: WordsetSource): DetailsComponent(source, VIEW_TYPE_EXAMPLE) {
-        override fun equalTo(newOther: DetailsComponent): Boolean {
+        override fun isSameAs(newOther: DetailsComponent): Boolean {
             // Are items of the same type
             return newOther is ExamplesComponent
         }
 
-        override fun contentsSameAs(newOther: DetailsComponent): Boolean {
+        override fun isContentSameAs(newOther: DetailsComponent): Boolean {
             // do items point to the same address
             if (this == newOther) return true
             if (source !is WordsetSource || newOther.source !is WordsetSource) return false

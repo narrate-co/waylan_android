@@ -11,6 +11,7 @@ interface DetailsComponentListener {
     fun onAudioPlayClicked(url: String?)
     fun onAudioStopClicked()
     fun onAudioClipError(message: String)
+    fun onMerriamWebsterDetailsClicked()
     fun onMerriamWebsterDismissClicked()
 }
 

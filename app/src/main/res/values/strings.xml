@@ -25,6 +25,16 @@
     <string name="details_merriam_webster_card_details_button">Details</string>
     <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
 
+    <!--MerriamWebsterCardView-->
+    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
+    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
+    <string name="mw_card_view_plugin_expired">Plugin expired</string>
+    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
+
+    <!--MerriamWebsterAudioView-->
+    <string name="mw_audio_view_no_audio_available_error">No audio available</string>
+    <string name="mw_audio_view_requires_mw_plugin_error">Audio pronunciation requires the Merriam-Webster plugin</string>
+
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
     <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
@@ -48,7 +58,7 @@
     <!--Auth Screen-->
     <string name="auth_email_hint">Email</string>
     <string name="auth_password_hint">Password</string>
-    <string name="auth_confirm_passsword_hint">Confirm Password</string>
+    <string name="auth_confirm_password_hint">Confirm Password</string>
     <string name="auth_cancel_button">Cancel</string>
     <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
     <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>

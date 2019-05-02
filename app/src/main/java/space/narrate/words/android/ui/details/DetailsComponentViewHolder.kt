@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.words.android.R
-import space.narrate.words.android.ui.details.MerriamWebsterCardView
 import space.narrate.words.android.data.disk.wordset.Example
 import space.narrate.words.android.data.repository.MerriamWebsterSource
 import space.narrate.words.android.data.repository.WordPropertiesSource
@@ -116,7 +115,7 @@ sealed class DetailsComponentViewHolder(
 
         override fun bind(t: DetailsComponent) {
             (t.source as? MerriamWebsterSource)?.let {
-                view.detailsComponentMerriamWebsterCard.setWordAndDefinitions(it.wordsDefinitions)
+                view.detailsComponentMerriamWebsterCard.setSource(it.wordsDefinitions)
             }
         }
 
@@ -140,7 +139,11 @@ sealed class DetailsComponentViewHolder(
             listener.onAudioClipError(message)
         }
 
-        override fun onDismissCardClicked() {
+        override fun onPermissionPaneDetailsClicked() {
+            listener.onMerriamWebsterDetailsClicked()
+        }
+
+        override fun onPermissionPaneDismissClicked() {
             listener.onMerriamWebsterDismissClicked()
         }
     }
