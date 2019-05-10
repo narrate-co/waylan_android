@@ -11,25 +11,25 @@ import org.threeten.bp.OffsetDateTime
         indices = [(Index("parentId", "parentWord"))],
         foreignKeys = [
                 ForeignKey(
-                        entity = Word::class,
+                        entity = MwWord::class,
                         parentColumns = ["id"],
                         childColumns = ["parentId"],
                         deferred = true
                 )
         ]
 )
-data class Definition(
+data class MwDefinitionGroup(
         @PrimaryKey
         var id: String = "",
         val parentId: String,
         val parentWord: String,
         val date: String,
-        val definitions: List<OrderedDefinitionItem>,
+        val definitions: List<MwDefinition>,
         val lastFetch: OffsetDateTime
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == null) return false
-        if (other !is Definition) return false
+        if (other !is MwDefinitionGroup) return false
         if (this === other) return true
 
         return id == other.id &&

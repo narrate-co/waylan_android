@@ -9,20 +9,20 @@ import org.threeten.bp.OffsetDateTime
  * A Merriam-Webster word
  *
  * @param id A unique identifier for each word. This is often the same as [word] except for
- *      when multiple entries exist for a word. For example, <i>quiet</i> might return
- *      3 entries from the Merriam-Webster API. In such a case the ids will often look like
+ *      when multiple entry exist for a word. For example, <i>quiet</i> might return
+ *      3 entry from the Merriam-Webster API. In such a case the ids will often look like
  *      [quiet, quiet[1], quiet[2]]. When querying for a String, id should be ignored in favor
  *      of [word].
  * @param word The String value of the word as it appears in the dictionary
  * @param relatedWords A list of words (as they appear in the dictionary), which are slight
- *      variations of this [Word]. This is different from [suggestions] as [relatedWords] are
+ *      variations of this [MwWord]. This is different from [suggestions] as [relatedWords] are
  *      returned for Merriam-Webster API requests that have non-empty responses
  * @param suggestions A list of words (as they appear in the dictionary), which are related to
- *      this [Word]. This field is usually only populated when a Merriam-Webster API request
+ *      this [MwWord]. This field is usually only populated when a Merriam-Webster API request
  *      returns empty responses and instead return alternatives.
  */
 @Entity(tableName = "mw_words")
-data class Word(
+data class MwWord(
         @PrimaryKey
         val id: String,
         val word: String,
@@ -39,7 +39,7 @@ data class Word(
 ) {
         override fun equals(other: Any?): Boolean {
             if (other == null) return false
-            if (other !is Word) return false
+            if (other !is MwWord) return false
             if (this === other) return true
 
             return id == other.id &&

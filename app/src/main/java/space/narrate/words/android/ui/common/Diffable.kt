@@ -1,10 +1,10 @@
-package space.narrate.words.android.ui.details
+package space.narrate.words.android.ui.common
 
 interface Diffable<T> {
     /**
-     * Are [T] and [newOther] of the same type
+     * Are [T] and [newOther] of the same listType
      *
-     * @return true if [T] and [newOther] are of the same type
+     * @return true if [T] and [newOther] are of the same listType
      */
     fun isSameAs(newOther: T): Boolean
 
@@ -22,6 +22,6 @@ interface Diffable<T> {
      *
      * @return an Object representing what has changed from [T] to [newOther]
      */
-    fun getChangePayload(newOther: T): Any?
+    fun getChangePayload(newOther: T): Any? = null
 }
 

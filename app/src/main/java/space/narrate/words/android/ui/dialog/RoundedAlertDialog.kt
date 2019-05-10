@@ -40,7 +40,7 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
         val builder = AlertDialog.Builder(activity!!)
 
-        val v = activity!!.layoutInflater.inflate(R.layout.dialog_rounded_alert, null)
+        val v = requireActivity().layoutInflater.inflate(R.layout.dialog_rounded_alert, null)
 
         setBuilderView(v.container)
 
@@ -49,7 +49,7 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
         val d = builder.create()
 
         d.window?.setBackgroundDrawable(
-                createBackgroundDrawable(activity!!, R.dimen.keyline_2, R.attr.colorSurface)
+                createBackgroundDrawable(requireActivity(), R.dimen.keyline_2, R.attr.colorSurface)
         )
 
         return d
@@ -87,13 +87,28 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
      * A helper method common to multiple Words subclasses to inflate and add a list item
      * that contains a radio button, a title and a description
      */
-    fun ViewGroup.addRadioItemView(title: String, desc: String, checked: Boolean, listener: View.OnClickListener) {
-        val item = activity!!.layoutInflater.inflate(R.layout.radio_list_item_layout, this, false)
+    fun ViewGroup.addRadioItemView(
+        title: String,
+        desc: String,
+        checked: Boolean,
+        listener: View.OnClickListener
+    ) {
+        val item = requireActivity().layoutInflater.inflate(
+            R.layout.radio_list_item_layout,
+            this,
+            false
+        )
         item.radioTitle.text = title
         item.radioDesc.text = desc
 
-        val checkedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_round_radio_checked_24px)
-        val uncheckedDrawable = ContextCompat.getDrawable(activity!!, R.drawable.ic_round_check_circle_outline_24px)
+        val checkedDrawable = ContextCompat.getDrawable(
+            requireActivity(),
+            R.drawable.ic_round_radio_checked_24px
+        )
+        val uncheckedDrawable = ContextCompat.getDrawable(
+            requireActivity(),
+            R.drawable.ic_round_check_circle_outline_24px
+        )
         item.radioButton.buttonDrawable = if (checked) checkedDrawable else uncheckedDrawable
         item.setOnClickListener { clickedItem ->
             children.forEach { other ->

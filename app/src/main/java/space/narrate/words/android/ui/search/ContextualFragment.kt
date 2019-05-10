@@ -49,14 +49,20 @@ class ContextualFragment : BaseUserFragment() {
         return inflater.inflate(R.layout.fragment_contextual, container, false)
     }
 
-    override fun onEnterTransactionEnded() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setUpSheet(view)
 
         close.setOnClickListener {
             sharedViewModel.setListFilter(emptyList())
         }
+
+        sharedViewModel.shouldOpenContextualSheet.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { expand() }
+        })
     }
+
 
     private fun setUpSheet(view: View?) {
         if (view == null) return
@@ -97,10 +103,10 @@ class ContextualFragment : BaseUserFragment() {
         // Animate the switching of containers between the collapsed (peeked) state and the
         // expanded state. Peeking should just show the top collapsedContainer and the expanded
         // state should just show the expandedContainer
-        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val peekBarAlpha = getScaleBetweenRange(offset, 0.0F, 0.5F, 1.0F, 0.0F)
-            val expandedContainerAlpha = getScaleBetweenRange(offset, 0.5F, 1.0F, 0.0F, 1.0F)
-            collapsedContainer.alpha = peekBarAlpha
+        (requireActivity() as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
+            val peekBarAlpha = MathUtils.normalize(offset, 0.0F, 0.5F, 1.0F, 0.0F)
+            val expandedContainerAlpha = MathUtils.normalize(offset, 0.5F, 1.0F, 0.0F, 1.0F)
+            collapsed_container.alpha = peekBarAlpha
             expandedContainer.alpha = expandedContainerAlpha
         }
     }
@@ -113,11 +119,11 @@ class ContextualFragment : BaseUserFragment() {
 
     private fun setUpExpandedContainer(title: String) {
         this.title.text = title
-        chipGroup.removeAllViews()
+        chip_group.removeAllViews()
         Period.values().forEach { period ->
             val chip = LayoutInflater.from(context).inflate(
                     R.layout.contextual_chip_layout,
-                    chipGroup,
+                    chip_group,
                     false
             ) as Chip
             val label = getString(period.label)
@@ -125,7 +131,7 @@ class ContextualFragment : BaseUserFragment() {
             chip.setOnClickListener {
                 sharedViewModel.setListFilter(listOf(period))
             }
-            chipGroup.addView(chip)
+            chip_group.addView(chip)
         }
     }
 
@@ -166,11 +172,11 @@ class ContextualFragment : BaseUserFragment() {
         }
     }
 
-    fun expand() {
+    private fun expand() {
         bottomSheetBehavior.expand()
     }
 
-    fun peek() {
+    private fun peek() {
         bottomSheetBehavior.collapse()
     }
 

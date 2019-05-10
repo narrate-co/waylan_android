@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content"
+    android:id="@+id/coordinator_layout"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,7 @@
     <!--clipChildren and clipToPadding are false to make sure -->
     <!--we allow fragments to draw shadows -->
     <space.narrate.words.android.util.widget.InsetFrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
@@ -21,7 +21,7 @@
         />
 
     <View
-        android:id="@+id/bottomSheetScrim"
+        android:id="@+id/bottom_sheet_scrim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
@@ -30,7 +30,7 @@
         android:background="?colorScrim"/>
 
     <fragment
-        android:id="@+id/contextualFragment"
+        android:id="@+id/contextual_fragment"
         android:name="space.narrate.words.android.ui.search.ContextualFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         />
 
     <fragment
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_fragment"
         android:name="space.narrate.words.android.ui.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="450dp"

@@ -12,47 +12,47 @@ import space.narrate.words.android.util.toRelatedChip
  * A sealed class which holds object that know how to bind a [MerriamWebsterList] to the view
  * which holds its data.
  */
-sealed class MerriamWebsterListItemBinder<T : MerriamWebsterListItem> {
+sealed class MerriamWebsterItemBinder<T : MerriamWebsterItemModel> {
 
     abstract val layout: Int
 
-    abstract fun bind(view: View, item: T, listener: MerriamWebsterListAdapter.Listener)
+    abstract fun bind(view: View, item: T, listener: MerriamWebsterItemAdapter.Listener)
 
     object PartOfSpeechBinder :
-            MerriamWebsterListItemBinder<MerriamWebsterListItem.PartOfSpeech>() {
+        MerriamWebsterItemBinder<MerriamWebsterItemModel.PartOfSpeechModel>() {
 
         override val layout: Int = R.layout.details_part_of_speech_layout
 
         override fun bind(
-                view: View,
-                item: MerriamWebsterListItem.PartOfSpeech,
-                listener: MerriamWebsterListAdapter.Listener
+            view: View,
+            item: MerriamWebsterItemModel.PartOfSpeechModel,
+            listener: MerriamWebsterItemAdapter.Listener
         ) {
             (view as? AppCompatTextView)?.text = item.partOfSpeech
         }
     }
 
-    object DefinitionBinder : MerriamWebsterListItemBinder<MerriamWebsterListItem.Definition>() {
+    object DefinitionBinder : MerriamWebsterItemBinder<MerriamWebsterItemModel.DefinitionModel>() {
 
         override val layout: Int = R.layout.details_definition_layout
 
         override fun bind(
-                view: View,
-                item: MerriamWebsterListItem.Definition,
-                listener: MerriamWebsterListAdapter.Listener
+            view: View,
+            item: MerriamWebsterItemModel.DefinitionModel,
+            listener: MerriamWebsterItemAdapter.Listener
         ) {
             (view as? AppCompatTextView)?.text = item.def.fromHtml
         }
     }
 
-    object RelatedBinder : MerriamWebsterListItemBinder<MerriamWebsterListItem.Related>() {
+    object RelatedBinder : MerriamWebsterItemBinder<MerriamWebsterItemModel.RelatedModel>() {
 
         override val layout: Int = R.layout.details_related_layout
 
         override fun bind(
-                view: View,
-                item: MerriamWebsterListItem.Related,
-                listener: MerriamWebsterListAdapter.Listener
+            view: View,
+            item: MerriamWebsterItemModel.RelatedModel,
+            listener: MerriamWebsterItemAdapter.Listener
         ) {
             val chipGroup = view.findViewById<ChipGroup>(R.id.related_chip_group)
             chipGroup.removeAllViews()
@@ -65,14 +65,14 @@ sealed class MerriamWebsterListItemBinder<T : MerriamWebsterListItem> {
     }
 
     object PermissionPaneBinder :
-            MerriamWebsterListItemBinder<MerriamWebsterListItem.PermissionPane>() {
+        MerriamWebsterItemBinder<MerriamWebsterItemModel.PermissionPaneModel>() {
 
         override val layout: Int = R.layout.details_mw_permission_pane_layout
 
         override fun bind(
-                view: View,
-                item: MerriamWebsterListItem.PermissionPane,
-                listener: MerriamWebsterListAdapter.Listener
+            view: View,
+            item: MerriamWebsterItemModel.PermissionPaneModel,
+            listener: MerriamWebsterItemAdapter.Listener
         ) {
             view.findViewById<MaterialButton>(R.id.details_button).setOnClickListener {
                 listener.onDetailsButtonClicked()

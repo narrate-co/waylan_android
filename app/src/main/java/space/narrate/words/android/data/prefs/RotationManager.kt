@@ -350,7 +350,7 @@ class RotationManager constructor(
         val lastDispatch = lastDispatchedOrientations[key]
         if (lastDispatch?.old == old && lastDispatch.new == new) {
             // this is the exact same dispatch.
-            // it's likely that a different type of configuration change has happened
+            // it's likely that a different listType of configuration change has happened
             // and caused the lifecycle owner to be recreated
             return
         }

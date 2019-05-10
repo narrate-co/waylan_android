@@ -12,9 +12,9 @@ import space.narrate.words.android.data.prefs.Orientation
  *  apps orientation [UserPreferenceRepository]
  * @property message A short message to be displayed in the expanded search shelf area
  * @property icon An icon to be displayed to the left of [message] in the expanded search shelf area
- * @property checkedText The text to be displayed in the search shelf after the first click on
+ * @property checkedText The textRes to be displayed in the search shelf after the first click on
  *  the prompt, indicating that the prompt has been "checked" or "completed"
- * @property uncheckedText The text to be displayed in the search shelf if the user clicks on
+ * @property uncheckedText The textRes to be displayed in the search shelf if the user clicks on
  *  [checkedText], indicating that they want to reverse the "checked" or "completed" prompt.
  */
 sealed class OrientationPrompt(

@@ -90,7 +90,8 @@ class App: DaggerApplication() {
      * its use [AppCompatDelegate.setLocalNightMode] to force a configuration change.
      */
     fun updateNightMode() {
-        val nightMode = PreferenceManager.getDefaultSharedPreferences(this).getInt(Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val nightMode = PreferenceManager.getDefaultSharedPreferences(this)
+            .getInt(Preferences.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         if (AppCompatDelegate.getDefaultNightMode() != nightMode) {
             dispatchResetNightModeBroadcast()
             AppCompatDelegate.setDefaultNightMode(nightMode)
@@ -122,15 +123,18 @@ class App: DaggerApplication() {
     }
 
     private fun dispatchReinjectUserBroadcast() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_USER_BROADCAST))
+        LocalBroadcastManager.getInstance(this)
+            .sendBroadcast(Intent(RESET_USER_BROADCAST))
     }
 
     private fun dispatchResetOrientationBroadcast() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_ORIENTATION_BROADCAST))
+        LocalBroadcastManager.getInstance(this)
+            .sendBroadcast(Intent(RESET_ORIENTATION_BROADCAST))
     }
 
     private fun dispatchResetNightModeBroadcast() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(RESET_NIGHT_MODE_BROADCAST))
+        LocalBroadcastManager.getInstance(this)
+            .sendBroadcast(Intent(RESET_NIGHT_MODE_BROADCAST))
     }
 
 

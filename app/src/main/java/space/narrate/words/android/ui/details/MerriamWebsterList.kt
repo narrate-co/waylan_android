@@ -1,23 +1,23 @@
 package space.narrate.words.android.ui.details
 
-import space.narrate.words.android.data.disk.mw.OrderedDefinitionItem
-import space.narrate.words.android.data.disk.mw.Word
-import space.narrate.words.android.data.disk.mw.WordAndDefinitions
+import space.narrate.words.android.data.disk.mw.MwDefinition
+import space.narrate.words.android.data.disk.mw.MwWord
+import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.merriamWebsterState
 
 /**
- * An object which handles generating a list of [MerriamWebsterListItem] which should be displayed
- * according to a given [WordAndDefinitions] list and [User].
+ * An object which handles generating a list of [MerriamWebsterItemModel] which should be displayed
+ * according to a given [MwWordAndDefinitionGroups] list and [User].
  */
 object MerriamWebsterList {
 
-    fun generate(entries: List<WordAndDefinitions>, user: User?): List<MerriamWebsterListItem> {
-        val list = mutableListOf<MerriamWebsterListItem>()
+    fun generate(entries: List<MwWordAndDefinitionGroups>, user: User?): List<MerriamWebsterItemModel> {
+        val list = mutableListOf<MerriamWebsterItemModel>()
 
         // Exit early if user is not valid, showing the permission pane.
         if (user?.merriamWebsterState?.isValid == false) {
-            list.add(MerriamWebsterListItem.PermissionPane())
+            list.add(MerriamWebsterItemModel.PermissionPaneModel())
             return list
         }
 
@@ -43,25 +43,25 @@ object MerriamWebsterList {
         // Add suggestions and related words
         val allRelatedWords = (suggestions + related).distinct()
         if (allRelatedWords.isNotEmpty()) {
-            list.add(MerriamWebsterListItem.Related(
-                    allRelatedWords.hashCode().toString(),
-                    allRelatedWords
+            list.add(MerriamWebsterItemModel.RelatedModel(
+                allRelatedWords.hashCode().toString(),
+                allRelatedWords
             ))
         }
 
         return list
     }
 
-    private fun generatePartOfSpeech(word: Word): MerriamWebsterListItem.PartOfSpeech {
+    private fun generatePartOfSpeech(word: MwWord): MerriamWebsterItemModel.PartOfSpeechModel {
         val sb = StringBuilder()
         sb.append(word.partOfSpeech)
         sb.append("  |  ${word.phonetic.replace("*", " • ")}")
-        return MerriamWebsterListItem.PartOfSpeech(word.id, sb.toString())
+        return MerriamWebsterItemModel.PartOfSpeechModel(word.id, sb.toString())
     }
 
     private fun generateDefinition(
-            definition: OrderedDefinitionItem
-    ): MerriamWebsterListItem.Definition {
-        return MerriamWebsterListItem.Definition(definition.def, definition.def)
+        definition: MwDefinition
+    ): MerriamWebsterItemModel.DefinitionModel {
+        return MerriamWebsterItemModel.DefinitionModel(definition.def, definition.def)
     }
 }

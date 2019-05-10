@@ -1,11 +1,20 @@
 package space.narrate.words.android.ui.settings
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import space.narrate.words.android.R
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
+import space.narrate.words.android.data.firestore.users.merriamWebsterState
+import space.narrate.words.android.data.firestore.users.oneDayPastExpiration
 import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.repository.UserRepository
+import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.auth.AuthActivity
+import space.narrate.words.android.ui.common.SnackbarModel
 import javax.inject.Inject
 
 /**
@@ -21,64 +30,73 @@ class SettingsViewModel @Inject constructor(
         private val userRepository: UserRepository
 ): ViewModel() {
 
-    /**
-     * A LiveData object to observe the current User and configure settings accordingly
-     */
-    val userLive: LiveData<User> = userRepository.getUser()
+    val user: LiveData<User> = userRepository.getUser()
 
-    /**
-     * A property used to get and set [Preferences.NIGHT_MODE]
-     */
-    var nightMode: Int
-        get() = userRepository.nightMode
-        set(value) {
-            userRepository.nightMode = value
-        }
+    val nightMode: LiveData<Int> = userRepository.nightModeLive
 
-    /**
-     * A LiveData object to observe changes to [Preferences.NIGHT_MODE]
-     */
-    val nightModeLive: LiveData<Int> = userRepository.nightModeLive
+    var orientation: LiveData<Orientation> = userRepository.orientationLockLive
 
-    /**
-     * A property to get and set [UserPrferences.USE_TEST_SKUS]
-     */
-    var useTestSkus: Boolean
-        get() = userRepository.useTestSkus
-        set(value) {
-            userRepository.useTestSkus = value
-        }
-
-    /**
-     * A LiveData object to observe changes to [UserPreferences.USE_TEST_SKUS]
-     */
-    var useTestSkusLive: LiveData<Boolean> = userRepository.useTestSkusLive
-
-    /**
-     * A property to get and set [Preferences.ORIENTATION_LOCK]
-     */
-    var orientation: Orientation
-        get() = Orientation.fromActivityInfoScreenOrientation(userRepository.orientationLock)
-        set(value) {
-            userRepository.orientationLock = value.value
-        }
-
-    /**
-     * A LiveData object to observe changes to [Preferences.OREINTATION_LOCK]
-     */
-    var orientationLive: LiveData<Orientation> = userRepository.orientationLockLive
-
-    /**
-     * Reset all [UserPreferences] to their default values
-     */
-    fun clearUserPreferences() = userRepository.resetPreferences()
-
-    /**
-     * Manually alter the PluginState of the current user's Merriam-Webster plugin
-     */
-    fun setMerriamWebsterState(state: PluginState) {
-        userRepository.setUserMerriamWebsterState(state)
+    val bannerModel: LiveData<MwBannerModel> = Transformations.map(userRepository.getUser()) {
+        MwBannerModel.create(it)
     }
+
+    private val _shouldLaunchAuth: MutableLiveData<Event<AuthActivity.AuthRoute>> =
+        MutableLiveData()
+    val shouldLaunchAuth: LiveData<Event<AuthActivity.AuthRoute>>
+        get() = _shouldLaunchAuth
+
+    private val _shouldLaunchMwPurchaseFlow: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldLaunchMwPurchaseFlow: LiveData<Event<Boolean>>
+        get() = _shouldLaunchMwPurchaseFlow
+
+    private val _shouldShowNightModeDialog: MutableLiveData<Event<Int>> = MutableLiveData()
+    val shouldShowNightModeDialog: LiveData<Event<Int>>
+        get() = _shouldShowNightModeDialog
+
+    private val _shouldShowOrientationDialog: MutableLiveData<Event<Orientation>> =
+        MutableLiveData()
+    val shouldShowOrientationDialog: LiveData<Event<Orientation>>
+        get() = _shouldShowOrientationDialog
+
+
+    fun onBannerTopButtonClicked() {
+        if (user.value?.isAnonymous == true) {
+            _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.SIGN_UP)
+        } else {
+            _shouldLaunchMwPurchaseFlow.value = Event(true)
+        }
+    }
+
+    fun onBannerBottomButtonClicked() {
+        if (user.value?.isAnonymous == true) {
+            _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.LOG_IN)
+        } else {
+            _shouldLaunchMwPurchaseFlow.value = Event(true)
+        }
+    }
+
+    fun onNightModePreferenceClicked() {
+        _shouldShowNightModeDialog.value = Event(userRepository.nightMode)
+    }
+
+    fun onNightModeSelected(mode: Int) {
+        userRepository.nightMode = mode
+    }
+
+    fun onOrientationPreferenceClicked() {
+        _shouldShowOrientationDialog.value = Event(
+            Orientation.fromActivityInfoScreenOrientation(userRepository.orientationLock)
+        )
+    }
+
+    fun onOrientationSelected(orientation: Orientation) {
+        userRepository.orientationLock = orientation.value
+    }
+
+    fun onSignOutClicked() {
+        _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.LOG_IN)
+    }
+
 
 }
 

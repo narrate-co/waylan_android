@@ -11,7 +11,7 @@
 
         <com.google.android.material.chip.Chip
             style="?styleTextLabel"
-            android:id="@+id/bannerLabelTextView"
+            android:id="@+id/label_text_view"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginBottom="@dimen/keyline_2"
@@ -21,7 +21,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:textAppearance="?textAppearanceBody1"
-            android:id="@+id/bannerTextView"
+            android:id="@+id/body_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -30,7 +30,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="?attr/styleTextButton"
-            android:id="@+id/bannerTopButton"
+            android:id="@+id/top_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/keyline_2"
@@ -44,7 +44,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="?attr/styleTextButton"
-            android:id="@+id/bannerBottomButton"
+            android:id="@+id/bottom_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="12dp"

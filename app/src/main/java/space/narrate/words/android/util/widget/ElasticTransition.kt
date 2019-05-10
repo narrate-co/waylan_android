@@ -55,7 +55,7 @@ class ElasticTransition : Fade() {
 
     private fun captureValues(transitionValues: TransitionValues) {
         val coordinatorLayout: CoordinatorLayout? =
-                transitionValues.view.findViewById(R.id.coordinator)
+                transitionValues.view.findViewById(R.id.coordinator_layout)
         transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
     }
 
@@ -66,7 +66,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
                 ?: return null
 
         val set = AnimatorSet()
@@ -99,7 +99,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
                 ?: return null
 
         val startY = startValues?.values?.get(PROPNAME_TRANSLATION_Y) as? Float ?: 0F

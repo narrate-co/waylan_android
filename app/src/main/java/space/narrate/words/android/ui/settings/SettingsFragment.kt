@@ -6,24 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.*
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.billing.BillingManager
-import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.ui.auth.AuthActivity
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.configError
-import kotlinx.android.synthetic.main.fragment_settings.view.*
-import space.narrate.words.android.data.firestore.users.PluginState
-import space.narrate.words.android.data.firestore.users.merriamWebsterState
 import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.ui.dialog.NightModeDialog
 import space.narrate.words.android.ui.dialog.OrientationDialog
 import space.narrate.words.android.util.gone
 import space.narrate.words.android.util.visible
+import space.narrate.words.android.util.widget.BannerCardView
+import space.narrate.words.android.util.widget.CheckPreferenceView
 import javax.inject.Inject
 
 /**
@@ -33,275 +32,219 @@ import javax.inject.Inject
  *
  * [R.id.banner] Should show either a prompt to sign up/log in or publish the availability
  *  and status of the user's Merriam-Webster plugin
- * [R.id.nightMode] Allows the user to switch between a light theme, a night theme or optionally
+ * [R.id.night_mode_preference] Allows the user to switch between a light theme, a night theme or optionally
  * allowing the user to have these set by time of day or the OS's settings
- * [R.id.orientation] Allows the user to explicitly lock the app's orientation
- * [R.id.signOut] Should only show for registered users and allows the user to log out and sign in
+ * [R.id.orientation_preference] Allows the user to explicitly lock the app's orientation
+ * [R.id.sign_out_preference] Should only show for registered users and allows the user to log out and sign in
  *  with different credentials or create a new account
- * [R.id.about] Leads to [AboutFragment]
- * [R.id.contact] Calls [Navigator.launchEmail]
- * [R.id.developer] Leads to [DeveloperSettingsFragment] and is only shown for debug builds
+ * [R.id.about_preference] Leads to [AboutFragment]
+ * [R.id.contact_preference] Calls [Navigator.launchEmail]
+ * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug builds
  */
-class SettingsFragment : BaseUserFragment() {
+class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
     @Inject
     lateinit var billingManger: BillingManager
+
+    private lateinit var settingsCoordinatorLayout: CoordinatorLayout
+    private lateinit var navigationIcon: AppCompatImageButton
+    private lateinit var bannerCardView: BannerCardView
+    private lateinit var nightModePreference: CheckPreferenceView
+    private lateinit var orientationPreference: CheckPreferenceView
+    private lateinit var signOutPreference: CheckPreferenceView
+    private lateinit var aboutPreference: CheckPreferenceView
+    private lateinit var contactPreference: CheckPreferenceView
+    private lateinit var developerPreference: CheckPreferenceView
+
+    // This SettingsFragment's own ViewModel
+    private val viewModel by lazy {
+        ViewModelProviders
+            .of(this, viewModelFactory)
+            .get(SettingsViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_settings, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        settingsCoordinatorLayout = view.findViewById(R.id.settings_coordinator)
+        navigationIcon = view.findViewById(R.id.navigation_icon)
+        bannerCardView = view.findViewById(R.id.banner)
+        nightModePreference = view.findViewById(R.id.night_mode_preference)
+        orientationPreference = view.findViewById(R.id.orientation_preference)
+        signOutPreference = view.findViewById(R.id.sign_out_preference)
+        aboutPreference = view.findViewById(R.id.about_preference)
+        contactPreference = view.findViewById(R.id.contact_preference)
+        developerPreference = view.findViewById(R.id.developer_preference)
+
+        navigationIcon.setOnClickListener { activity?.onBackPressed() }
+
+        viewModel.shouldLaunchAuth.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { Navigator.launchAuth(requireContext(), it) }
+        })
+
+        viewModel.shouldLaunchMwPurchaseFlow.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let {
+                billingManger.initiatePurchaseFlow(activity!!, BillingConfig.SKU_MERRIAM_WEBSTER)
+            }
+        })
+
+        setUpBanner()
+
+        setUpNightMode()
+
+        setUpOrientation()
+
+        // Sign out preference
+        signOutPreference.setOnClickListener { viewModel.onSignOutClicked() }
+
+        // About preference
+        aboutPreference.setOnClickListener { (requireActivity() as SettingsActivity).showAbout() }
+
+        // Contact preference
+        // If debug, there will be a developer settings item after this preference. Show divider
+        contactPreference.setShowDivider(BuildConfig.DEBUG)
+        contactPreference.setOnClickListener {
+            try {
+                Navigator.launchEmail(context!!, SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
+            } catch (e: ActivityNotFoundException) {
+                Snackbar.make(
+                    settingsCoordinatorLayout,
+                    getString(R.string.settings_email_compose_no_client_error),
+                    Snackbar.LENGTH_SHORT
+                )
+                    .configError(context!!, false)
+                    .show()
+            }
+        }
+
+        // Developer settings preference, only shown if this is a debug build
+        // TODO further lock this down. Possibly by user?
+        developerPreference.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+        developerPreference.setOnClickListener {
+            (requireActivity() as SettingsActivity).showDeveloperSettings()
+        }
+    }
+
+    private fun setUpBanner() {
+        bannerCardView.setLisenter(this)
+        viewModel.bannerModel.observe(this, Observer { model ->
+            bannerCardView
+                .setText(model.textRes)
+                .setLabel(MwBannerModel.getConcatenatedLabel(
+                    requireContext(),
+                    model.labelRes,
+                    model.daysRemaining
+                ))
+                .setTopButton(model.topButtonRes)
+                .setBottomButton(model.bottomButtonRes)
+
+            if (model.email == null) {
+                signOutPreference.gone()
+            } else {
+                signOutPreference.setDesc(model.email)
+                signOutPreference.visible()
+            }
+        })
+    }
+
+    private fun setUpNightMode() {
+        nightModePreference.setOnClickListener { viewModel.onNightModePreferenceClicked() }
+
+        viewModel.nightMode.observe(this, Observer { mode ->
+            val desc = when (mode) {
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM ->
+                    getString(R.string.settings_night_mode_follows_system_title)
+                AppCompatDelegate.MODE_NIGHT_AUTO ->
+                    getString(R.string.settings_night_mode_auto_title)
+                AppCompatDelegate.MODE_NIGHT_YES ->
+                    getString(R.string.settings_night_mode_yes_title)
+                AppCompatDelegate.MODE_NIGHT_NO ->
+                    getString(R.string.settings_night_mode_no_title)
+                else -> getString(R.string.settings_night_mode_follows_system_title)
+            }
+            nightModePreference.setDesc(desc)
+        })
+
+        viewModel.shouldShowNightModeDialog.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { showNightModeDialog(it) }
+        })
+    }
+
+    private fun setUpOrientation() {
+        orientationPreference.setOnClickListener { viewModel.onOrientationPreferenceClicked() }
+
+        viewModel.orientation.observe(this, Observer {
+            orientationPreference.setDesc(getString(it.title))
+        })
+
+        viewModel.shouldShowOrientationDialog.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { showOrientationDialog(it) }
+        })
+    }
+
+    private fun showNightModeDialog(currentMode: Int) {
+        NightModeDialog
+            .newInstance(currentMode, object : NightModeDialog.NightModeCallback() {
+                private var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                override fun onSelected(nightMode: Int) {
+                    selected = nightMode
+                }
+
+                override fun onDismissed() {
+                    viewModel.onNightModeSelected(selected)
+                    // TODO Make App observe this instead of calling down.
+                    (requireActivity().application as App).updateNightMode()
+                }
+            })
+            .show(requireFragmentManager(), NightModeDialog.TAG)
+    }
+
+    private fun showOrientationDialog(currentOrientation: Orientation) {
+        OrientationDialog
+            .newInstance(currentOrientation, object : OrientationDialog.OrientationCallback() {
+                private var selected = Orientation.UNSPECIFIED
+                override fun onSelected(orientation: Orientation) {
+                    selected = orientation
+                }
+
+                override fun onDismissed() {
+                    viewModel.onOrientationSelected(selected)
+                    // TODO Make App observe this instead of calling down
+                    (requireActivity().application as App).updateOrientation()
+                }
+            })
+            .show(activity?.supportFragmentManager, OrientationDialog.TAG)
+    }
+
+    override fun onBannerClicked() {
+        // Do nothing
+    }
+
+    override fun onBannerLabelClicked() {
+        // Do nothing
+    }
+
+    override fun onBannerTopButtonClicked() {
+        viewModel.onBannerTopButtonClicked()
+    }
+
+    override fun onBannerBottomButtonClicked() {
+        viewModel.onBannerBottomButtonClicked()
+    }
 
     companion object {
         // A tag used for back stack tracking
         const val FRAGMENT_TAG = "settings_fragment_tag"
 
-        fun newInstance() = SettingsFragment()
-
         const val SUPPORT_EMAIL_ADDRESS = "words@narrate.space"
+
+        fun newInstance() = SettingsFragment()
     }
-
-    // This SettingsFragment's own ViewModel
-    private val viewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(SettingsViewModel::class.java)
-    }
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        view.navigationIcon.setOnClickListener {
-            activity?.onBackPressed()
-        }
-        // Observe the user and use value to configure this Fragment's views. This makes it easy
-        // to set [User] properties and have those changes automatically be conusmed by this
-        // observable and update the views as necessary
-        viewModel.userLive.observe(this, Observer {
-            setSettings(view, it)
-        })
-        return view
-    }
-
-    /**
-     * Top-level helper function to parse [user] and set preferences appropriately
-     */
-    private fun setSettings(view: View, user: User?) {
-        // Set state specific settings
-        when {
-            user == null || user.isAnonymous -> setAsAnonymous(view, user)
-            else -> setAsRegistered(view, user)
-        }
-
-        // Set settings common to all states
-
-        // Night mode preference
-        viewModel.nightModeLive.observe(this, Observer {
-            val desc = when (it) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> getString(R.string.settings_night_mode_follows_system_title)
-                AppCompatDelegate.MODE_NIGHT_AUTO -> getString(R.string.settings_night_mode_auto_title)
-                AppCompatDelegate.MODE_NIGHT_YES -> getString(R.string.settings_night_mode_yes_title)
-                AppCompatDelegate.MODE_NIGHT_NO -> getString(R.string.settings_night_mode_no_title)
-                else -> getString(R.string.settings_night_mode_follows_system_title)
-            }
-            view.nightMode.setDesc(desc)
-        })
-
-        val nightModeCallback = object: NightModeDialog.NightModeCallback() {
-            var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            override fun onSelected(nightMode: Int) {
-                selected = nightMode
-            }
-
-            override fun onDismissed() {
-                viewModel.nightMode = selected
-                (activity?.application as? App)?.updateNightMode()
-            }
-        }
-
-        view.nightMode.setOnClickListener {
-            // TODO move into Naviagator
-            NightModeDialog
-                    .newInstance(viewModel.nightMode, nightModeCallback)
-                    .show(activity?.supportFragmentManager, "night_mode")
-        }
-
-        // Orientation lock preference
-        viewModel.orientationLive.observe(this, Observer {
-            view.orientation.setDesc(getString(it.title))
-        })
-
-        val orientationCallback = object: OrientationDialog.OrientationCallback() {
-            var selected = Orientation.UNSPECIFIED
-            override fun onSelected(orientation: Orientation) {
-                selected = orientation
-            }
-            override fun onDismissed() {
-                viewModel.orientation = selected
-                (activity?.application as? App)?.updateOrientation()
-            }
-        }
-
-        view.orientation.setOnClickListener {
-            // TODO move into Navigator
-            OrientationDialog
-                    .newInstance(viewModel.orientation, orientationCallback)
-                    .show(activity?.supportFragmentManager, "orientation")
-        }
-
-        // About preference
-        view.about.setOnClickListener {
-            (activity as? SettingsActivity)?.showAbout()
-        }
-
-        // Contact preference
-        // If debug, there will be a developer settings item after this preference. Show divider
-        view.contact.setShowDivider(BuildConfig.DEBUG)
-        view.contact.setOnClickListener {
-            try {
-                Navigator.launchEmail(context!!, SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
-            } catch (e: ActivityNotFoundException) {
-                Snackbar.make(
-                        view.settingsRoot,
-                        getString(R.string.settings_email_compose_no_client_error),
-                        Snackbar.LENGTH_SHORT
-                )
-                        .configError(context!!, false)
-                        .show()
-            }
-        }
-
-        // Developer settings preference
-        // Only show if this is a debug build
-        // TODO further lock this down. Possibly by [User]?
-        view.developer.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
-        view.developer.setOnClickListener {
-            (activity as? SettingsActivity)?.showDeveloperSettings()
-        }
-    }
-
-    /**
-     * Set preferences specific to a user who is anonymous.
-     *
-     * For example, this includes a banner to urge sign up/log in instead of a banner to promote
-     * plugins
-     */
-    private fun setAsAnonymous(view: View, user: User?) {
-        val state = user?.merriamWebsterState ?: PluginState.None()
-
-        // Banner
-        when (state) {
-            is PluginState.None -> {
-                view.banner.setBannerText(
-                        getString(R.string.settings_header_anonymous_none_body)
-                )
-                view.banner.setBannerLabelText(null)
-            }
-            is PluginState.FreeTrial -> {
-                val label = if (state.isValid) {
-                    "Free Trial: ${state.remainingDays}d"
-                } else {
-                    "Free trial expired"
-                }
-                view.banner.setBannerLabelText(label)
-                view.banner.setBannerText(
-                        getString(R.string.settings_header_anonymous_free_trial_body)
-                )
-            }
-            is PluginState.Purchased -> {
-                //This should never happen
-                view.banner.setBannerText(
-                        getString(R.string.settings_header_anonymous_none_body)
-                )
-                view.banner.setBannerLabelText(null)
-            }
-        }
-
-
-        view.banner.setBannerTopButton(getString(R.string.settings_header_anonymous_create_account_button), View.OnClickListener {
-            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.SIGN_UP)
-        })
-
-        view.banner.setBannerBottomButton(getString(R.string.settings_header_anonymous_log_in_button), View.OnClickListener {
-            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
-        })
-
-        // Sign out preference
-        view.signOut.gone()
-
-        view.banner.visible()
-    }
-
-    /**
-     * Set preferences specific to the [user] who is registered
-     *
-     * For example, this will show a banner promoting plugins since there is no need to urge
-     * the user to register any longer.
-     */
-    private fun setAsRegistered(view: View, user: User) {
-        val state = user.merriamWebsterState
-
-        // Banner
-        when (state) {
-            is PluginState.None -> {
-                view.banner.setBanner(
-                        text = getString(R.string.settings_header_registered_none_body),
-                        topButton = getString(R.string.settings_header_registered_add_button)
-                )
-            }
-            is PluginState.FreeTrial -> {
-                if (state.isValid) {
-                    view.banner.setBanner(
-                            text = getString(R.string.settings_header_registered_free_trial_body),
-                            label = "Free trial: ${state.remainingDays}d",
-                            topButton = getString(R.string.settings_header_registered_add_button),
-                            topButtonListener = View.OnClickListener {
-                                launchMerriamWebsterPurchaseFlow()
-                            }
-                    )
-                } else {
-                    view.banner.setBanner(
-                            text = getString(R.string.settings_header_registered_free_trial_expired_body),
-                            label = "Free trial expired",
-                            topButton = getString(R.string.settings_header_registered_add_button),
-                            topButtonListener = View.OnClickListener {
-                                launchMerriamWebsterPurchaseFlow()
-                            }
-                    )
-                }
-            }
-            is PluginState.Purchased -> {
-                if (state.isValid) {
-                    view.banner.setBanner(
-                            text = getString(R.string.settings_header_registered_subscribed_body),
-                            label = "Added"
-                    )
-                } else {
-                    view.banner.setBanner(
-                            text = getString(R.string.settings_header_registered_subscribed_expired_body),
-                            label = "Plugin expired",
-                            topButton = "Renew",
-                            topButtonListener = View.OnClickListener {
-                                launchMerriamWebsterPurchaseFlow()
-                            }
-                    )
-                }
-
-            }
-        }
-
-        // Sign out preference
-        if (user.email.isNotBlank()) {
-            view.signOut.setDesc(user.email)
-        }
-        view.signOut.setOnClickListener {
-            Navigator.launchAuth(context!!, AuthActivity.AuthRoute.LOG_IN)
-        }
-    }
-
-    /**
-     * Call the Google Play Billing library to launch a new purchase flow
-     */
-    private fun launchMerriamWebsterPurchaseFlow() {
-        billingManger.initiatePurchaseFlow(activity!!, BillingConfig.SKU_MERRIAM_WEBSTER)
-    }
-
 }

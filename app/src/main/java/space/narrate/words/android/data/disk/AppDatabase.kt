@@ -8,7 +8,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import space.narrate.words.android.data.disk.mw.Definition
+import space.narrate.words.android.data.disk.mw.MwDefinitionGroup
 import space.narrate.words.android.data.disk.mw.MwDao
 import space.narrate.words.android.data.disk.wordset.Meaning
 import space.narrate.words.android.data.disk.wordset.MeaningDao
@@ -19,7 +19,7 @@ import space.narrate.words.android.util.widget.RoomAsset
 /**
  *
  * A [RoomDatabase] that provides the two local data sources - WordSet and previously
- * fetched (cached) Merriam-Webster entries
+ * fetched (cached) Merriam-Webster entry
  *
  * WordSet (<a>https://github.com/wordset/wordset-dictionary</a>) is db that is shipped with
  * Words, pre-populated and copied on first access by [RoomAsset]
@@ -35,8 +35,8 @@ import space.narrate.words.android.util.widget.RoomAsset
 @Database(entities = [
     (Word::class),
     (Meaning::class),
-    (space.narrate.words.android.data.disk.mw.Word::class),
-    (Definition::class)
+    (space.narrate.words.android.data.disk.mw.MwWord::class),
+    (MwDefinitionGroup::class)
 ], version = 1)
 @TypeConverters(RoomTypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {

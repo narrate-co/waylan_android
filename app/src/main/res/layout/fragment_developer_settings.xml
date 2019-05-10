@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/settingsRoot"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?android:windowBackground"
-    >
+    android:id="@+id/settings_coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/settingsContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout
-            android:id="@+id/contentContainer"
+            android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/clearUser"
+                android:id="@+id/clear_user_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/developer_settings_clear_user_preferences_title"
@@ -29,14 +29,14 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/merriamWebsterState"
+                android:id="@+id/merriam_webster_state_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/developer_settings_toggle_merriam_webster_state_title"
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/useTestSkus"
+                android:id="@+id/use_test_skus_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/developer_settings_use_test_skus_title"
@@ -45,21 +45,21 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/merriamWebsterBillingResponse"
+                android:id="@+id/merriam_webster_billing_response_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Toggle Merriam-Webster Billing response"
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/informativeSnackbar"
+                android:id="@+id/informative_snackbar_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Informative Snackbar"
                 app:desc="Show a test of an informative snackbar"/>
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/errorSnackbar"
+                android:id="@+id/error_snackbar_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Error Snackbar"
@@ -86,7 +86,7 @@
             >
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navigationIcon"
+                android:id="@+id/navigation_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="14dp"
@@ -97,7 +97,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/keyline_2"

@@ -12,8 +12,8 @@ import java.util.*
  * @property modified Updated each time any field has changed, including values in
  *  [UserWord.types]. This can be used to determine do things like sort by <i>most</i> recently
  *  viewed
- * @property types A map that flags this word as a [UserWordType]. This is useful since Firestore
- *  documents can be queried against values in a map property.
+ * @property types A mapTransform that flags this word as a [UserWordType]. This is useful since Firestore
+ *  documents can be queried against values in a mapTransform property.
  * @property defPreview A short list of definitions which belong to this dictionary word. This is
  *  useful for querying for [UserWord] lists and immediately showing them with definitions
  *  without the need to make a subsequent query or join.

@@ -1,10 +1,11 @@
 package space.narrate.words.android.ui.settings
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -12,13 +13,11 @@ import space.narrate.words.android.R
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.data.firestore.users.merriamWebsterState
-import space.narrate.words.android.data.firestore.users.oneDayPastExpiration
 import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.util.configInformative
-import kotlinx.android.synthetic.main.fragment_developer_settings.*
-import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
+import space.narrate.words.android.util.widget.CheckPreferenceView
 
 
 /**
@@ -26,29 +25,31 @@ import kotlinx.android.synthetic.main.fragment_developer_settings.view.*
  * in conjunction with the current user (ie. directly changing Merriam-Webster PluginState
  * properties, clearing [UserPreferences]) and UI/UX elements (like Snackbar example triggers)
  *
- * [R.id.clearUser] Resets all [UserPreferences] to their defaults
- * [R.id.merriamWebsterState] Changes the [PluginState] of the current user's Merriam-Webster plugin
+ * [R.id.clear_user_preference] Resets all [UserPreferences] to their defaults
+ * [R.id.merriam_webster_state_preference] Changes the [PluginState] of the current user's Merriam-Webster plugin
  *  by manipulating properties on [User]
- * [R.id.useTestSkus] Toggle to run Google Play Billing against test skus defined in [BillingConfig]
- * [R.id.merriamWebsterBillingResponse] Toggle to switch between the three possible "fake" billing
+ * [R.id.use_test_skus_preference] Toggle to run Google Play Billing against test skus defined in [BillingConfig]
+ * [R.id.merriam_webster_billing_response_preference] Toggle to switch between the three possible "fake" billing
  *  skus available for testing Google Play Billing
- * [R.id.informativeSnackbar] Trigger an informative Snackbar to test UI/UX
- * [R.id.errorSnackbar] Trigger an error Snackbar to test UI/UX
+ * [R.id.informative_snackbar_preference] Trigger an informative Snackbar to test UI/UX
+ * [R.id.error_snackbar_preference] Trigger an error Snackbar to test UI/UX
  */
 class DeveloperSettingsFragment : BaseUserFragment() {
 
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "developer_fragment_tag"
-
-        fun newInstance() = DeveloperSettingsFragment()
-    }
+    private lateinit var settingsCoordinatorLayout: CoordinatorLayout
+    private lateinit var navigationIcon: AppCompatImageButton
+    private lateinit var clearUserPreference: CheckPreferenceView
+    private lateinit var mwStatePreference: CheckPreferenceView
+    private lateinit var useTestSkusPreference: CheckPreferenceView
+    private lateinit var mwBillingResponsePreference: CheckPreferenceView
+    private lateinit var informativeSnackbarPreference: CheckPreferenceView
+    private lateinit var errorSnackbarPreference: CheckPreferenceView
 
     // Reuse the SettingsViewView model from SettingsFragment since many of the methods are the same
     private val viewModel by lazy {
         ViewModelProviders
                 .of(this, viewModelFactory)
-                .get(SettingsViewModel::class.java)
+                .get(DeveloperSettingsViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,131 +57,82 @@ class DeveloperSettingsFragment : BaseUserFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_developer_settings, container, false)
-        view.navigationIcon.setOnClickListener {
-            activity?.onBackPressed()
-        }
-        setDeveloperSettings(view)
-        return view
+        return inflater.inflate(R.layout.fragment_developer_settings, container, false)
     }
 
-    private fun setDeveloperSettings(view: View) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        settingsCoordinatorLayout = view.findViewById(R.id.settings_coordinator)
+        navigationIcon = view.findViewById(R.id.navigation_icon)
+        clearUserPreference = view.findViewById(R.id.clear_user_preference)
+        mwStatePreference = view.findViewById(R.id.merriam_webster_state_preference)
+        useTestSkusPreference = view.findViewById(R.id.use_test_skus_preference)
+        mwBillingResponsePreference = view.findViewById(
+            R.id.merriam_webster_billing_response_preference
+        )
+        informativeSnackbarPreference = view.findViewById(R.id.informative_snackbar_preference)
+        errorSnackbarPreference = view.findViewById(R.id.error_snackbar_preference)
 
-        // Clear user preferences preference
-        view.clearUser.setOnClickListener {
-            viewModel.clearUserPreferences()
-            Snackbar.make(view, "All user preferences cleared", Snackbar.LENGTH_SHORT)
-                    .configInformative(context!!, false)
-                    .show()
+        navigationIcon.setOnClickListener { requireActivity().onBackPressed() }
+
+        viewModel.shouldShowSnackbar.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { showSnackbar(it) }
+        })
+
+        clearUserPreference.setOnClickListener { viewModel.onClearPreferencesPreferenceClicked() }
+
+        mwStatePreference.setOnClickListener {
+            viewModel.onMwStatePreferenceClicked()
         }
 
-        // Merriam-Webster state preference
-        viewModel.userLive.observe(this, Observer { user ->
-            val state = user.merriamWebsterState
-            view.merriamWebsterState.setDesc(when (state) {
-                is PluginState.None -> {
-                    "None"
-                }
-                is PluginState.FreeTrial -> {
+        viewModel.mwState.observe(this, Observer { state ->
+            mwStatePreference.setDesc(when (state) {
+                is PluginState.None -> "None"
+                is PluginState.FreeTrial ->
                     "Free trial (${if (state.isValid) "valid" else "expired"})"
-                }
-                is PluginState.Purchased -> {
+                is PluginState.Purchased ->
                     "Purchased (${if (state.isValid) "valid" else "expired"})"
-                }
             })
-            view.merriamWebsterState.setOnClickListener {
-                cycleState(user)
-            }
         })
 
-        // Use test skus preference
-        viewModel.useTestSkusLive.observe(this, Observer {
-            view.useTestSkus.setChecked(it)
+        viewModel.useTestSkus.observe(this, Observer {
+            useTestSkusPreference.setChecked(it)
         })
-        view.useTestSkus.setOnClickListener {
-            viewModel.useTestSkus = !viewModel.useTestSkus
+        useTestSkusPreference.setOnClickListener { viewModel.onUseTestSkusPreferenceClicked() }
+
+        mwBillingResponsePreference.setOnClickListener {
+            viewModel.onMwBillingResponsePreferenceClicked()
+        }
+        viewModel.mwBillingResponse.observe(this, Observer {
+            mwBillingResponsePreference.setDesc(it)
+        })
+
+        informativeSnackbarPreference.setOnClickListener {
+            viewModel.onInformativeSnackbarPreferenceClicked()
         }
 
-        // Merriam-Webster billing response preference
-        view.merriamWebsterBillingResponse.setDesc(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
-        view.merriamWebsterBillingResponse.setOnClickListener {
-            val newResponse = cycleIabTestResponse(BillingConfig.TEST_SKU_MERRIAM_WEBSTER)
-            BillingConfig.TEST_SKU_MERRIAM_WEBSTER = newResponse
-            view.merriamWebsterBillingResponse.setDesc(newResponse)
-        }
-
-        // Informative Snackbar preference
-        view.informativeSnackbar.setOnClickListener {
-            Snackbar.make(settingsRoot, "A test piece of information", Snackbar.LENGTH_LONG)
-                    .setAction("Okay") {
-                        Log.d("DevSettings", "Informative snackbard clicked!")
-                    }
-                    .configInformative(context!!, false)
-                    .show()
-        }
-
-        // Error Snackbar preference
-        view.errorSnackbar.setOnClickListener {
-            Snackbar.make(settingsRoot, "A test error", Snackbar.LENGTH_LONG)
-                    .setAction("Report") {
-                        Log.d("DevSettings", "Error snackbar clicked")
-                    }
-                    .configError(context!!, false)
-                    .show()
+        errorSnackbarPreference.setOnClickListener {
+            viewModel.onErrorSnackbarPreferenceClicked()
         }
     }
 
-    /**
-     * Cycles through the 4 (excluding NONE) different configurations of all PluginStates.
-     *
-     * The cycled states should be:
-     *  FREE_TRIAL (valid)
-     *  FREE_TRIAL (expired)
-     *  SUBSCRIBED (valid)
-     *  SUBSCRIBED (expired)
-     */
-    private fun cycleState(user: User) {
-        val state = user.merriamWebsterState
-        viewModel.setMerriamWebsterState(
-                when {
-                    //None -> Free Trial (valid)
-                    state is PluginState.None -> {
-                        PluginState.FreeTrial(user.isAnonymous)
-                    }
-                    //FreeTrial (valid) -> FreeTrial (expired)
-                    state is PluginState.FreeTrial && state.isValid -> {
-                        PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
-                    }
-                    //FreeTrial (expired) -> Purchased (valid)
-                    state is PluginState.FreeTrial && !state.isValid -> {
-                        PluginState.Purchased(purchaseToken = user.merriamWebsterPurchaseToken)
-                    }
-                    //Purchased (valid) -> Purchased (expired)
-                    state is PluginState.Purchased && state.isValid -> {
-                        PluginState.Purchased(
-                                user.oneDayPastExpiration,
-                                user.merriamWebsterPurchaseToken
-                        )
-                    }
-                    //Purchased (expired) -> FreeTrial (valid)
-                    state is PluginState.Purchased && !state.isValid -> {
-                        PluginState.FreeTrial(user.isAnonymous)
-                    }
-                    //Default
-                    else -> PluginState.None()
-                })
-    }
-
-    /**
-     * Cycles through the 3 available test skus to test Google Play Billing against
-     */
-    private fun cycleIabTestResponse(currentResponse: String): String {
-        return when (currentResponse) {
-            BillingConfig.TEST_SKU_PURCHASED -> BillingConfig.TEST_SKU_CANCELED
-            BillingConfig.TEST_SKU_CANCELED -> BillingConfig.TEST_SKU_ITEM_UNAVAILABLE
-            BillingConfig.TEST_SKU_ITEM_UNAVAILABLE -> BillingConfig.TEST_SKU_PURCHASED
-            else -> BillingConfig.TEST_SKU_PURCHASED
+    private fun showSnackbar(model: SnackbarModel) {
+        val snackbar = Snackbar.make(settingsCoordinatorLayout, model.textRes, when (model.length) {
+            SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
+            SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
+            else -> Snackbar.LENGTH_SHORT
+        })
+        if (model.isError) {
+            snackbar.configError(requireContext(), model.abovePeekedSheet)
+        } else {
+            snackbar.configInformative(requireContext(), model.abovePeekedSheet)
         }
+        snackbar.show()
     }
 
+    companion object {
+        const val FRAGMENT_TAG = "developer_fragment_tag"
+
+        fun newInstance() = DeveloperSettingsFragment()
+    }
 }

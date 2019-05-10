@@ -20,7 +20,7 @@ class EntryList {
     var entries: MutableList<Entry> = mutableListOf()
 
     // A list of possible alternate words (as they appear in the dictionary)
-    // typically only returned when entries are empty
+    // typically only returned when entry are empty
     @field:ElementList(entry = "suggestion", inline = true, required = false)
     var suggestions: MutableList<String> = mutableListOf()
 }

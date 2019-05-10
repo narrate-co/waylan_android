@@ -2,7 +2,7 @@
 <space.narrate.words.android.util.widget.InsetFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrimFrame"
+    android:id="@+id/scrim_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -14,7 +14,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/coordinator"
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -22,7 +22,7 @@
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -30,7 +30,7 @@
             android:clipToPadding="false"/>
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="0dp"
@@ -50,7 +50,7 @@
                 >
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/navigationIcon"
+                    android:id="@+id/navigation_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|left"
@@ -68,7 +68,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <View
-        android:id="@+id/statusBarScrim"
+        android:id="@+id/status_bar_scrim"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?android:windowBackground"

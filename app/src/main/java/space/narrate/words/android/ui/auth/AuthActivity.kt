@@ -27,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -106,7 +105,7 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
     // but has landed here while the user is authorized.
     private var filterIntent: Intent? = null
 
-    // A text watcher that ensures the text area's error state is not shown if the user
+    // A textRes watcher that ensures the textRes area's error state is not shown if the user
     // is typing. This results in an error message that shows on error, but disappears as
     // soon as the user begins correcting (instead of a timeout or other logic)
     private val errorMessageTextWatcher = object : TextWatcher {

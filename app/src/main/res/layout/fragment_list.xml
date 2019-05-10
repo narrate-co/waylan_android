@@ -1,47 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <space.narrate.words.android.util.widget.InsetFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrimFrame"
+    android:id="@+id/scrim_frame"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:background="?colorScrim"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/coordinator"
+        android:id="@+id/coordinator_layout"
         android:fitsSystemWindows="true"
         android:backgroundTint="?android:windowBackground">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/keyline_2"
             android:paddingBottom="@dimen/search_min_peek_height"
             android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down"
             android:background="@android:color/transparent"
-            app:elevation="0dp"
-            >
+            app:elevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/toolbarContainer"
+                android:id="@+id/toolbar_container"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_marginLeft="@dimen/keyline_3"
@@ -51,7 +47,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/toolbarTitle"
+                    android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -65,14 +61,14 @@
                     tools:text="Favorite" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/navigationIcon"
+                    android:id="@+id/navigation_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:layout_gravity="left|center_vertical"
                     android:background="?selectableItemBackgroundBorderless"
-                    app:layout_constraintBottom_toTopOf="@+id/toolbarTitleCollapsed"
+                    app:layout_constraintBottom_toTopOf="@+id/toolbar_title_collapsed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0"
@@ -80,7 +76,7 @@
                     app:srcCompat="@drawable/ic_round_arrow_down_24px" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/toolbarTitleCollapsed"
+                    android:id="@+id/toolbar_title_collapsed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/keyline_2"
@@ -88,7 +84,7 @@
                     android:textAppearance="?textAppearanceHeadline5"
                     app:layout_constraintBottom_toTopOf="@+id/underline"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/navigationIcon" />
+                    app:layout_constraintTop_toBottomOf="@+id/navigation_icon" />
 
                 <View
                     android:id="@+id/underline"
@@ -98,7 +94,7 @@
                     android:background="@drawable/title_underline_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toolbarTitleCollapsed" />
+                    app:layout_constraintTop_toBottomOf="@+id/toolbar_title_collapsed" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -107,7 +103,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <View
-        android:id="@+id/statusBarScrim"
+        android:id="@+id/status_bar_scrim"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?android:windowBackground"

@@ -11,6 +11,7 @@ import space.narrate.words.android.ui.auth.AuthActivity
 import space.narrate.words.android.ui.details.DetailsFragment
 import space.narrate.words.android.ui.home.HomeFragment
 import space.narrate.words.android.ui.list.ListFragment
+import space.narrate.words.android.ui.list.ListType
 import space.narrate.words.android.ui.settings.*
 import space.narrate.words.android.util.widget.ElasticTransition
 
@@ -24,7 +25,7 @@ import space.narrate.words.android.util.widget.ElasticTransition
  * For example, navigating to [SettingsActivity] or opening a link in Chrome.
  *
  * Methods named with show<destination> perform fragment transactions on the current Activity's
- * [R.id.fragmentContainer].
+ * [R.id.fragment_container].
  *
  * Note: When animating Fragments entering and exiting, it's beneficial to wait until after those
  * animations run before calling load intensive initialization work in the Fragment. There are two
@@ -42,7 +43,7 @@ object Navigator {
 
     /**
      * A list of all possible destinations which can be added to [MainActivity]'s
-     * [R.id.fragmentContainer]
+     * [R.id.fragment_container]
      */
     enum class HomeDestination {
         HOME, TRENDING, RECENT, FAVORITE, DETAILS;
@@ -56,14 +57,14 @@ object Navigator {
      * fragment container because [HomeFragment] should be the root destination. Pressing back
      * from [HomeFragment] exists the app.
      *
-     * @return whether the [HomeFragment] was added to [MainActivity]'s [R.id.fragmentContainer]
+     * @return whether the [HomeFragment] was added to [MainActivity]'s [R.id.fragment_container]
      */
     fun showHome(activity: FragmentActivity): Boolean {
         activity.supportFragmentManager
                 .beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(
-                        R.id.fragmentContainer,
+                        R.id.fragment_container,
                         HomeFragment.newInstance(),
                         HomeFragment.FRAGMENT_TAG
                 )
@@ -115,7 +116,7 @@ object Navigator {
             activity.supportFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainer, detailsFragment, DetailsFragment.FRAGMENT_TAG)
+                    .add(R.id.fragment_container, detailsFragment, DetailsFragment.FRAGMENT_TAG)
                     .addToBackStack(DetailsFragment.FRAGMENT_TAG)
                     .commit()
             return true
@@ -128,17 +129,17 @@ object Navigator {
      * Add a [ListFragment] of the specified [type] to [MainActivity]'s fragment container.
      *
      * Note: Unlike [showDetails], this method will add duplicate [ListFragment] if called when
-     * a [ListFragment] is already the current [R.id.fragmentContainer] fragment
+     * a [ListFragment] is already the current [R.id.fragment_container] fragment
      *
      * @param type The [ListFragment.ListType] of the [ListFragment] to be added
      */
-    fun showListFragment(activity: FragmentActivity, type: ListFragment.ListType): Boolean {
+    fun showListFragment(activity: FragmentActivity, type: ListType): Boolean {
 
-        // Determine what type of ListFragment we should be creating
+        // Determine what listType of ListFragment we should be creating
         val listFragment = when (type) {
-            ListFragment.ListType.TRENDING -> ListFragment.newTrendingInstance()
-            ListFragment.ListType.RECENT -> ListFragment.newRecentInstance()
-            ListFragment.ListType.FAVORITE -> ListFragment.newFavoriteInstance()
+            ListType.TRENDING -> ListFragment.newTrendingInstance()
+            ListType.RECENT -> ListFragment.newRecentInstance()
+            ListType.FAVORITE -> ListFragment.newFavoriteInstance()
         }
 
         // Add an ElasticTransition for this fragment's enter, sliding up and alpha'ing in
@@ -170,7 +171,7 @@ object Navigator {
         activity.supportFragmentManager
                 .beginTransaction()
                 .setReorderingAllowed(true)
-                .add(R.id.fragmentContainer, listFragment, type.fragmentTag)
+                .add(R.id.fragment_container, listFragment, type.fragmentTag)
                 .addToBackStack(type.fragmentTag)
                 .commit()
         return true
@@ -188,7 +189,7 @@ object Navigator {
         activity.supportFragmentManager
                 .beginTransaction()
                 .replace(
-                        R.id.fragmentContainer,
+                        R.id.fragment_container,
                         SettingsFragment.newInstance(),
                         SettingsFragment.FRAGMENT_TAG
                 )
@@ -211,7 +212,7 @@ object Navigator {
                         R.anim.fragment_pop_exit
                 )
                 .add(
-                        R.id.fragmentContainer,
+                        R.id.fragment_container,
                         AboutFragment.newInstance(),
                         AboutFragment.FRAGMENT_TAG
                 )
@@ -236,7 +237,7 @@ object Navigator {
                         R.anim.fragment_pop_exit
                 )
                 .add(
-                        R.id.fragmentContainer,
+                        R.id.fragment_container,
                         ThirdPartyLibrariesFragment.newInstance(),
                         ThirdPartyLibrariesFragment.FRAGMENT_TAG
                 )
@@ -261,7 +262,7 @@ object Navigator {
                         R.anim.fragment_pop_exit
                 )
                 .add(
-                        R.id.fragmentContainer,
+                        R.id.fragment_container,
                         DeveloperSettingsFragment.newInstance(),
                         DeveloperSettingsFragment.FRAGMENT_TAG
                 )
@@ -278,7 +279,7 @@ object Navigator {
      * Note: [AuthActivity] and [RouterActivity] are the only two Activities which do not require
      * a [UserScope]/valid user.
      *
-     * @param authRoute The type of action launching this [AuthActivity] should accomplish
+     * @param authRoute The listType of action launching this [AuthActivity] should accomplish
      * @param filterIntent Any intent extras which should be passed through this [AuthActivity]
      *  and on to any subsequent destinations who wish to consume them. (ie. an
      *  Intent.ACTION_PROCESS_TEXT extra)

@@ -26,7 +26,6 @@ abstract class BaseUserFragment: DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-
     /**
      * If using fragment Transaction animations, set an AnimationListener on the enter transition
      * and provide an overridable method to be called once the transaction has ended.
@@ -122,7 +121,7 @@ abstract class BaseUserFragment: DaggerFragment(), Injectable {
      * [AnalyticsRepository.EVENT_NAVIGATE_BACK] events.
      */
     fun setUnconsumedNavigationMethod(method: NavigationMethod) {
-        (activity as? BaseUserActivity)?.unconsumedNavigationMethod = method
+        (requireActivity() as BaseUserActivity).unconsumedNavigationMethod = method
     }
 
 }

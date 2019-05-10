@@ -15,7 +15,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/collapsedContainer"
+        android:id="@+id/collapsed_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contextual_peek_bar_height"
         android:layout_gravity="top"
@@ -114,7 +114,7 @@
             app:layout_constraintTop_toBottomOf="@+id/subtitle">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+                android:id="@+id/chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

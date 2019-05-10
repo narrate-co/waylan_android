@@ -10,7 +10,7 @@ import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.prefs.PreferenceStore
 import space.narrate.words.android.data.prefs.UserPreferenceStore
 import space.narrate.words.android.ui.search.Period
-import space.narrate.words.android.util.LiveDataHelper
+import space.narrate.words.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -32,7 +32,7 @@ class UserRepository(
     /** Firestore User */
 
     fun getUser(): LiveData<User> =
-        firestoreStore?.getUserLive() ?: LiveDataHelper.empty()
+        firestoreStore?.getUserLive() ?: LiveDataUtils.empty()
 
     fun setUserMerriamWebsterState(state: PluginState) {
         launch {
@@ -76,17 +76,26 @@ class UserRepository(
             userPreferenceStore.hasSeenRecentsBanner = value
         }
 
+    val hasSeenRecentsBannerLive: LiveData<Boolean> =
+            userPreferenceStore.hasSeenRecentsBannerLive
+
     var hasSeenFavoritesBanner: Boolean
         get() = userPreferenceStore.hasSeenFavoritesBanner
         set(value) {
             userPreferenceStore.hasSeenFavoritesBanner = value
         }
 
+    val hasSeenFavoritesBannerLive: LiveData<Boolean> =
+            userPreferenceStore.hasSeenFavoritesBannerLive
+
     var hasSeenTrendingBanner: Boolean
         get() = userPreferenceStore.hasSeenTrendingBanner
         set(value) {
             userPreferenceStore.hasSeenTrendingBanner = value
         }
+
+    val hasSeenTrendingBannerLive: LiveData<Boolean> =
+            userPreferenceStore.hasSeenTrendingBannerLive
 
     var hasSeenDragDismissOverlay: Boolean
         get() = userPreferenceStore.hasSeenDragDismissOverlay
@@ -99,6 +108,9 @@ class UserRepository(
         set(value) {
             userPreferenceStore.hasSeenMerriamWebsterPermissionPane = value
         }
+
+    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean> =
+        userPreferenceStore.hasSeenMerriamWebsterPermissionPaneLive
 
     var recentsListFilter: List<Period>
         get() = userPreferenceStore.getRecentsListFilter()

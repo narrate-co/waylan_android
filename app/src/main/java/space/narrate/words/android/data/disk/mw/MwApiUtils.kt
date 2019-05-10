@@ -5,7 +5,7 @@ import space.narrate.words.android.data.mw.EntryList
 import org.threeten.bp.OffsetDateTime
 
 /**
- * Utilities to help convert [EntryList]s and [Entry]s to [Word], [Definition] and all
+ * Utilities to help convert [EntryList]s and [Entry]s to [MwWord], [MwDefinitionGroup] and all
  * related, local, Room objects.
  */
 
@@ -16,8 +16,8 @@ val EntryList.synthesizedRelatedWords: List<String>
 val EntryList.synthesizedSuggestions: List<String>
     get() = (this.entries.map { it.word } + this.suggestions).distinct()
 
-fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Word {
-    return Word(
+fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): MwWord {
+    return MwWord(
             this.id,
             this.word,
             this.subj,
@@ -33,14 +33,14 @@ fun Entry.toDbMwWord(relatedWords: List<String>, suggestions: List<String>): Wor
     )
 }
 
-val Entry.toDbMwDefinitions: List<Definition>
+val Entry.toDbMwDefinitions: List<MwDefinitionGroup>
     get() {
         val orderedDefs = this.def.dts.mapIndexed { index, formattedString ->
             val sn = this.def.sn.getOrNull(index) ?: (index + 1).toString()
-            OrderedDefinitionItem(sn, formattedString.value)
+            MwDefinition(sn, formattedString.value)
         }
         return listOf(
-                Definition(
+                MwDefinitionGroup(
                         "${this.id}${orderedDefs.hashCode()}",
                         this.id,
                         this.word,
@@ -51,8 +51,8 @@ val Entry.toDbMwDefinitions: List<Definition>
         )
     }
 
-fun toDbMwSuggestionWord(id: String, suggestions: List<String>): Word {
-    return Word(
+fun toDbMwSuggestionWord(id: String, suggestions: List<String>): MwWord {
+    return MwWord(
             id,
             id,
             "",

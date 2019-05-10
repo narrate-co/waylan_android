@@ -7,32 +7,32 @@ import android.widget.LinearLayout
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import space.narrate.words.android.R
-import space.narrate.words.android.data.disk.mw.PermissiveWordsDefinitions
+import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.merriamWebsterState
 
 class MerriamWebsterCardView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : MaterialCardView(context, attrs, defStyleAttr),
-        MerriamWebsterListAdapter.Listener,
-        MerriamWebsterAudioView.Listener {
+    MerriamWebsterItemAdapter.Listener,
+    MerriamWebsterAudioView.Listener {
 
-    interface MerriamWebsterViewListener {
-        fun onRelatedWordClicked(word: String)
-        fun onSuggestionWordClicked(word: String)
-        fun onAudioPlayClicked(url: String?)
-        fun onAudioStopClicked()
-        fun onAudioClipError(message: String)
-        fun onPermissionPaneDetailsClicked()
-        fun onPermissionPaneDismissClicked()
+    interface Listener {
+        fun onMwRelatedWordClicked(word: String)
+        fun onMwSuggestionWordClicked(word: String)
+        fun onMwAudioPlayClicked(url: String?)
+        fun onMwAudioStopClicked()
+        fun onMwAudioClipError(messageRes: Int)
+        fun onMwPermissionPaneDetailsClicked()
+        fun onMwPermissionPaneDismissClicked()
     }
 
-    private var listener: MerriamWebsterViewListener? = null
+    private var listener: Listener? = null
 
-    private var adapter: MerriamWebsterListAdapter
+    private var adapter: MerriamWebsterItemAdapter
 
     private val listContainer: LinearLayout
     private val textLabel: Chip
@@ -45,22 +45,21 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         mwAudioView = view.findViewById(R.id.mw_audio_view)
         mwAudioView.listener = this
 
-        adapter = MerriamWebsterListAdapter(listContainer, this)
+        adapter = MerriamWebsterItemAdapter(listContainer, this)
 
         textLabel.setOnClickListener {
-            listener?.onPermissionPaneDetailsClicked()
+            listener?.onMwPermissionPaneDetailsClicked()
         }
 
     }
 
-    fun setSource(wordsAndDefinitions: PermissiveWordsDefinitions?) {
-        setTextLabel(wordsAndDefinitions?.user)
-        val entries = wordsAndDefinitions?.entries ?: emptyList()
-        mwAudioView.setSource(entries, wordsAndDefinitions?.user)
-        adapter.submit(entries, wordsAndDefinitions?.user)
+    fun setSource(entries: List<MwWordAndDefinitionGroups>, user: User?) {
+        setTextLabel(user)
+        mwAudioView.setSource(entries, user)
+        adapter.submit(entries, user)
     }
 
-    fun addListener(listener: MerriamWebsterViewListener) {
+    fun setListener(listener: Listener) {
         this.listener = listener
     }
 
@@ -70,8 +69,8 @@ class MerriamWebsterCardView @JvmOverloads constructor(
             is PluginState.FreeTrial -> {
                 if (state.isValid) {
                     textLabel.text = resources.getString(
-                            R.string.mw_card_view_free_trial_days_remaining,
-                            state.remainingDays.toString()
+                        R.string.mw_card_view_free_trial_days_remaining,
+                        state.remainingDays.toString()
                     )
                 } else {
                     textLabel.text = resources.getString(R.string.mw_card_view_free_trial_expired)
@@ -80,14 +79,14 @@ class MerriamWebsterCardView @JvmOverloads constructor(
             }
             is PluginState.Purchased -> {
                 if (!state.isValid) {
-                    // show label
+                    // show labelRes
                     textLabel.text = resources.getString(R.string.mw_card_view_plugin_expired)
                     textLabel.visibility = View.VISIBLE
                 } else if (state.remainingDays <= 7L) {
-                    // hide label
+                    // hide labelRes
                     textLabel.text = resources.getString(
-                            R.string.mw_card_view_renew_days_remaining,
-                            state.remainingDays.toString()
+                        R.string.mw_card_view_renew_days_remaining,
+                        state.remainingDays.toString()
                     )
                     textLabel.visibility = View.VISIBLE
                 } else {
@@ -99,27 +98,27 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     }
 
     override fun onRelatedWordClicked(word: String) {
-        listener?.onRelatedWordClicked(word)
+        listener?.onMwRelatedWordClicked(word)
     }
 
     override fun onDetailsButtonClicked() {
-        listener?.onPermissionPaneDetailsClicked()
+        listener?.onMwPermissionPaneDetailsClicked()
     }
 
     override fun onDismissButtonClicked() {
-        listener?.onPermissionPaneDismissClicked()
+        listener?.onMwPermissionPaneDismissClicked()
     }
 
     override fun onAudioPlayClicked(url: String) {
-        listener?.onAudioPlayClicked(url)
+        listener?.onMwAudioPlayClicked(url)
     }
 
     override fun onAudioStopClicked() {
-        listener?.onAudioStopClicked()
+        listener?.onMwAudioStopClicked()
     }
 
-    override fun onAudioError(message: String) {
-        listener?.onAudioClipError(message)
+    override fun onAudioError(messageRes: Int) {
+        listener?.onMwAudioClipError(messageRes)
     }
 }
 

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:id="@+id/collapsedContainer"
+    android:id="@+id/collapsed_container"
     android:background="@drawable/search_background"
     android:clickable="true"
     android:focusable="true"
@@ -12,7 +12,7 @@
     >
     
     <FrameLayout
-        android:id="@+id/shelfContainer"
+        android:id="@+id/shelf_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -23,7 +23,7 @@
 
 
     <FrameLayout
-        android:id="@+id/search"
+        android:id="@+id/search_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/keyline_2"
@@ -35,10 +35,10 @@
         android:padding="@dimen/keyline_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shelfContainer">
+        app:layout_constraintTop_toBottomOf="@id/shelf_container">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/searchEditText"
+            android:id="@+id/search_edit_text"
             style="?attr/styleEditTextArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:singleLine="true" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/mic"
+            android:id="@+id/microphone_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -67,18 +67,18 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/actions"
+        android:id="@+id/actions_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/keyline_2"
         android:paddingRight="@dimen/keyline_2"
-        app:layout_constraintBottom_toBottomOf="@+id/search"
-        app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toTopOf="@+id/search">
+        app:layout_constraintBottom_toBottomOf="@+id/search_container"
+        app:layout_constraintStart_toEndOf="@+id/search_container"
+        app:layout_constraintTop_toTopOf="@+id/search_container">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/action1"
+            android:id="@+id/action_one_image_view"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
@@ -89,7 +89,7 @@
             app:srcCompat="@drawable/ic_round_filter_list_24px" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/action2"
+            android:id="@+id/action_two_image_view"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:scaleType="centerInside"
@@ -104,14 +104,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
+        app:layout_constraintTop_toBottomOf="@+id/search_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

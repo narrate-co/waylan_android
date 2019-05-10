@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import space.narrate.words.android.R
-import space.narrate.words.android.data.disk.mw.WordAndDefinitions
+import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.merriamWebsterState
 import space.narrate.words.android.util.widget.ProgressUnderlineView
@@ -19,16 +19,16 @@ import space.narrate.words.android.util.widget.ProgressUnderlineView
  * A composite view which shows a play/stop button above a [ProgressUnderlineView].
  */
 class MerriamWebsterAudioView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0,
-        defStyleRes: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     interface Listener {
         fun onAudioPlayClicked(url: String)
         fun onAudioStopClicked()
-        fun onAudioError(message: String)
+        fun onAudioError(messageRes: Int)
     }
 
     var listener: Listener? = null
@@ -39,21 +39,22 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
     private val playPauseButton: AppCompatImageButton
     private val progressUnderlineView: ProgressUnderlineView
 
-    private var disabledMessage: String = resources.getString(R.string.mw_audio_view_no_audio_available_error)
+    private var disabledMessageRes: Int = R.string.mw_audio_view_no_audio_available_error
 
     private val audioStateDispatchReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
 
             audioState = intent.getSerializableExtra(
-                    AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_STATE
+                AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_STATE
             ) as AudioClipHelper.AudioState
 
             if (audioState == AudioClipHelper.AudioState.ERROR) {
-                val message = intent.getStringExtra(
-                        AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE
+                val messageRes = intent.getIntExtra(
+                    AudioClipHelper.BROADCAST_AUDIO_STATE_EXTRA_MESSAGE,
+                    0
                 )
-                error(message)
+                error(messageRes)
             } else {
                 handleAudioStateReceived(audioState)
             }
@@ -73,8 +74,8 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         LocalBroadcastManager.getInstance(context).registerReceiver(
-                audioStateDispatchReceiver,
-                IntentFilter(AudioClipHelper.BROADCAST_AUDIO_STATE_DISPATCH)
+            audioStateDispatchReceiver,
+            IntentFilter(AudioClipHelper.BROADCAST_AUDIO_STATE_DISPATCH)
         )
     }
     override fun onDetachedFromWindow() {
@@ -88,34 +89,32 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
     }
 
     /**
-     * Set the [WordAndDefinitions]s which this view should play pronunciation for when
+     * Set the [MwWordAndDefinitionGroups]s which this view should play pronunciation for when
      * the play button is clicked.
      */
-    fun setSource(entries: List<WordAndDefinitions>, user: User?) {
+    fun setSource(entries: List<MwWordAndDefinitionGroups>, user: User?) {
         if (user?.merriamWebsterState?.isValid == false) {
             isEnabled = false
-            disabledMessage = resources.getString(
-                    R.string.mw_audio_view_requires_mw_plugin_error
-            )
+            disabledMessageRes = R.string.mw_audio_view_requires_mw_plugin_error
             return
         }
         val sounds = entries.mapNotNull { it.word?.sound }.flatten()
         // Disable audio if the user is not valid or there is no audio
         if (sounds.isEmpty() ) {
             isEnabled = false
-            disabledMessage = resources.getString(R.string.mw_audio_view_no_audio_available_error)
+            disabledMessageRes = R.string.mw_audio_view_no_audio_available_error
             return
         }
 
         isEnabled = true
         audioUrls = sounds.asSequence().map { it.wavs }
-                .flatten()
-                .map { it.removeSuffix(".wav") }
-                .filter { it.isNotBlank() }
-                .map { fileName ->
-                    val firstChar = fileName.toCharArray().firstOrNull() ?: "a"
-                    "$BASE_URL$SEPARATOR$firstChar$SEPARATOR$fileName$DEFAULT_AUDIO_EXTENSION"
-                }.toList()
+            .flatten()
+            .map { it.removeSuffix(".wav") }
+            .filter { it.isNotBlank() }
+            .map { fileName ->
+                val firstChar = fileName.toCharArray().firstOrNull() ?: "a"
+                "$BASE_URL$SEPARATOR$firstChar$SEPARATOR$fileName$DEFAULT_AUDIO_EXTENSION"
+            }.toList()
     }
 
     private fun play() {
@@ -128,8 +127,8 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
         listener?.onAudioStopClicked()
     }
 
-    private fun error(message: String) {
-        listener?.onAudioError(message)
+    private fun error(messageRes: Int) {
+        listener?.onAudioError(messageRes)
     }
 
     private fun handleAudioStateReceived(state: AudioClipHelper.AudioState) {
@@ -152,7 +151,7 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
 
     private fun handlePlayStopButtonClicked(state: AudioClipHelper.AudioState) {
         if (!isEnabled) {
-            listener?.onAudioError(disabledMessage)
+            listener?.onAudioError(disabledMessageRes)
             return
         }
 

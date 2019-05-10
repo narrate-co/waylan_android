@@ -1,8 +1,9 @@
 package space.narrate.words.android.data.repository
 
-import space.narrate.words.android.data.disk.mw.PermissiveWordsDefinitions
+import space.narrate.words.android.data.mw.PermissiveWordsDefinitions
 import space.narrate.words.android.data.disk.wordset.Word
 import space.narrate.words.android.data.disk.wordset.WordAndMeanings
+import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.words.GlobalWord
 import space.narrate.words.android.data.spell.SuggestItem
@@ -42,7 +43,7 @@ class WordsetSource(val wordAndMeaning: WordAndMeanings): WordSource()
 
 /**
  * A wrapper for a [UserWord] which has been saved to a user's /users/{userId}/words collection by
- * containing any type of [UserWordType].
+ * containing any listType of [UserWordType].
  */
 class FirestoreUserSource(val userWord: UserWord): WordSource()
 
@@ -52,7 +53,7 @@ class FirestoreUserSource(val userWord: UserWord): WordSource()
 class FirestoreGlobalSource(val globalWord: GlobalWord): WordSource()
 
 /**
- * A wrapper for both a Merriam-Webster Word and all it's child Definitions and the current User.
+ * A wrapper for both a Merriam-Webster MwWord and all it's child Definitions and the current User.
  * The included User object is useful for determining permissions when setting and displaying
  * UI elements.
  */

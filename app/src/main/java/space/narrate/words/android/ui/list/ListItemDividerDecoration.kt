@@ -12,7 +12,7 @@ import space.narrate.words.android.util.children
  * A [RecyclerView.ItemDecoration] that draws a divider above all items in a RecyclerView
  * except for the first item. Effectively only drawing a divider <i>between</i> items
  */
-class ListItemDivider(private val drawable: Drawable?): RecyclerView.ItemDecoration() {
+class ListItemDividerDecoration(private val drawable: Drawable?): RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
             outRect: Rect,
@@ -31,7 +31,8 @@ class ListItemDivider(private val drawable: Drawable?): RecyclerView.ItemDecorat
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (drawable == null) return
 
-        val dividerLeft = parent.paddingLeft + parent.context.resources.getDimensionPixelOffset(R.dimen.keyline_3)
+        val dividerLeft = parent.paddingLeft +
+                parent.context.resources.getDimensionPixelOffset(R.dimen.keyline_3)
         val dividerRight = parent.width - parent.paddingRight
 
         parent.children.forEach { child ->

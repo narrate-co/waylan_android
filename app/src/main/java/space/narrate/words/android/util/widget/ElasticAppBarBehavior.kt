@@ -337,7 +337,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         // If this is not a touch event from a nested scrolling source, we're touching the ABL
         if (!nestedScrolling) {
-            // Determine gesture type and handle scroll events in our gesture detector
+            // Determine gesture listType and handle scroll events in our gesture detector
             gestureDetector.onTouchEvent(ev)
             when (ev.action) {
                 // Scrolling/touch has stopped. Process any accumulated drag

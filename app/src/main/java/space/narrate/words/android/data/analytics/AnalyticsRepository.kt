@@ -11,7 +11,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
  *  button, the toolbar navigation icon and drag to dismiss. This event hopes to track the
  *  discoverability/usability of drag to dismiss
  * @property EVENT_SEARCH_WORD An event to track when a user searches a word. Things logged are
- *  the text they input, the word they clicked on and where it was populated from
+ *  the textRes they input, the word they clicked on and where it was populated from
  *  ([WordSource]). This hopes to discover how accurate/valuable SymSpell and [SuggestSource]
  *  is and how suggestions might be improved.
  */

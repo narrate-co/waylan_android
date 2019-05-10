@@ -1,12 +1,10 @@
 package space.narrate.words.android.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import space.narrate.words.android.data.repository.FirestoreGlobalSource
-import space.narrate.words.android.data.repository.FirestoreUserSource
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.ui.list.ListFragment
+import space.narrate.words.android.ui.list.ListType
+import space.narrate.words.android.util.mapTransform
 import javax.inject.Inject
 
 /**
@@ -14,32 +12,27 @@ import javax.inject.Inject
  */
 class HomeViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
 
-    /**
-     * Get a LiveData object which queries and observes a user's
-     * [space.narrate.words.android.data.firestore.users.UserWord]'s depending on the [type] given. The
-     * results are transformed into a simple comma separated string for easy display
-     *
-     * @return a comma separated string of the last 4 words (as they appear in the dictionary)
-     *  from the users words of [type]
-     */
-    fun getListPreview(type: ListFragment.ListType): LiveData<String> {
-        return Transformations.map(when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getTrending(4L, emptyList())
-            ListFragment.ListType.RECENT -> wordRepository.getRecents(4L)
-            ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(4L)
-        }) { list ->
-            val previewWords = list.mapNotNull {
-                when (it) {
-                    is FirestoreUserSource -> it.userWord.word
-                    is FirestoreGlobalSource -> it.globalWord.word
-                    else -> ""
-                }
+    fun getPreview(type: ListType): LiveData<String> {
+        return (when (type) {
+            ListType.TRENDING -> wordRepository.getGlobalWordTrending(PREVIEW_LIMIT).mapTransform { trends ->
+                trends.map { it.word }
             }
-            if (previewWords.isNotEmpty()) {
-                previewWords.reduce { acc, word -> "$acc, $word" }
+            ListType.RECENT -> wordRepository.getUserWordRecents(PREVIEW_LIMIT).mapTransform { recs ->
+                recs.map { it.word }
+            }
+            ListType.FAVORITE -> wordRepository.getUserWordFavorites(PREVIEW_LIMIT).mapTransform { favs ->
+                favs.map { it.word }
+            }
+        }).mapTransform { list ->
+            if (list.isNotEmpty()) {
+                list.reduce { acc, word -> "$acc, $word" }
             } else {
                 ""
             }
         }
+    }
+
+    companion object {
+        private const val PREVIEW_LIMIT = 4L
     }
 }

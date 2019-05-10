@@ -1,11 +1,15 @@
 package space.narrate.words.android.ui.search
 
 import androidx.lifecycle.*
+import space.narrate.words.android.R
 import space.narrate.words.android.data.analytics.AnalyticsRepository
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.data.repository.WordSource
 import space.narrate.words.android.data.prefs.*
+import space.narrate.words.android.ui.Event
+import space.narrate.words.android.util.mapTransform
+import space.narrate.words.android.util.switchMapTransform
+import space.narrate.words.android.util.widget.MergedLiveData
 import javax.inject.Inject
 
 /**
@@ -17,36 +21,79 @@ class SearchViewModel @Inject constructor(
         private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
-    /**
-     * The current text of the [SearchFragment]'s search input field. Set this property when
-     * the search input field's EditText changes to have [searchResults] re-query for new
-     * results.
-     *
-     * Client should only need to <i>set</i> this property while getting results from
-     * [searchResults]
-     */
-    var searchInput: String = ""
-        set(value) {
-            if (value == field) return
-            field = value
-            searchInputLive.value = value
-        }
-
     // A live data copy of [searchInput] to be observed by [searchResults]
-    private val searchInputLive: MutableLiveData<String> = MutableLiveData()
+    private val searchInput: MutableLiveData<String> = MutableLiveData()
 
-    /**
-     * A LiveData object that an appropriate list of results based on the value of [searchInput].
-     * When [searchInput], this LiveData's value will be updated to reflect either search results,
-     * if [searchInput] is not blank, or a list of recently viewed words if it is.
-     */
-    val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputLive) {
-        if (it.isEmpty()) {
-            wordRepository.getRecents(25L) as LiveData<List<WordSource>>
-        } else {
-            wordRepository.getSearchWords(it)
+    val searchResults: LiveData<List<SearchItemModel>> = searchInput
+        .switchMapTransform { if (it.isEmpty()) getRecent(it) else getSearch(it) }
+        .mapTransform { if (it.isEmpty()) addHeader(it) else it }
+
+
+    private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
+    val shouldShowDetails: LiveData<Event<String>>
+        get() = _shouldShowDetails
+
+    init {
+        searchInput.value = ""
+    }
+
+    private fun getRecent(input: String): LiveData<List<SearchItemModel>> {
+        return wordRepository.getUserWordRecents(25L)
+            .mapTransform { recents -> recents.map { SearchItemModel.UserWordModel(it) } }
+    }
+
+    private fun getSearch(input: String): LiveData<List<SearchItemModel>> {
+        return MergedLiveData(wordRepository.getWordsetWords(input), wordRepository.getSuggestItems(input)) { words, suggestions ->
+            (words.map { SearchItemModel.WordModel(it) } + suggestions.map { SearchItemModel.SuggestModel(it) }).distinctBy { item ->
+                when (item) {
+                    is SearchItemModel.WordModel -> item.word.word
+                    is SearchItemModel.SuggestModel -> item.suggestItem.term
+                    else -> ""
+                }
+            }
         }
     }
+
+    private fun addHeader(list: List<SearchItemModel>): List<SearchItemModel> {
+        return if (list.isEmpty()) {
+            list.toMutableList().apply {
+                add(0, SearchItemModel.HeaderModel(
+                    R.string.search_banner_body
+                ))
+            }
+        } else {
+            list
+        }
+    }
+
+    fun onSearchInputTextChanged(input: CharSequence?) {
+        searchInput.value = input?.toString() ?: ""
+    }
+
+    fun onWordClicked(item: SearchItemModel) {
+        val id = when (item) {
+            is SearchItemModel.WordModel -> item.word.word
+            is SearchItemModel.UserWordModel -> item.userWord.word
+            is SearchItemModel.SuggestModel -> item.suggestItem.term
+            else -> return
+        }
+
+        logSearchWordEvent(id, item)
+        _shouldShowDetails.value = Event(id)
+    }
+
+//    /**
+//     * A LiveData object that an appropriate list of results based on the value of [searchInput].
+//     * When [searchInput], this LiveData's value will be updated to reflect either search results,
+//     * if [searchInput] is not blank, or a list of recently viewed words if it is.
+//     */
+//    val searchResults: LiveData<List<SearchItemModel>> = Transformations.switchMap(searchInputLive) {
+//        if (it.isEmpty()) {
+//            wordRepository.getUserWordRecents(25L) as LiveData<List<WordSource>>
+//        } else {
+//            wordRepository.getSearchWords(it)
+//        }
+//    }
 
     // A mutable live data backing object to be set when an orientation prompt should be shown
     // TODO create a SingularLiveData class to automatically clear a value after emitting a value
@@ -62,11 +109,6 @@ class SearchViewModel @Inject constructor(
      * longer timely prompt)
      */
     val orientationPrompt: LiveData<OrientationPrompt?> = _orientationPrompt
-
-    // initialize properties to defaults
-    init {
-        searchInputLive.value = ""
-    }
 
     /**
      * Set the users [Orientation] preference. This preferenced is watched by the app, which will
@@ -84,8 +126,10 @@ class SearchViewModel @Inject constructor(
      *
      * @see [AnalyticsRepository.EVENT_SEARCH_WORD] for more details
      */
-    fun logSearchWordEvent(id: String, word: WordSource) {
-        analyticsRepository.logSearchWordEvent(searchInput, id, word::class.java.simpleName)
+    private fun logSearchWordEvent(id: String, item: SearchItemModel) {
+        searchInput.value?.let {
+            analyticsRepository.logSearchWordEvent(it, id, item::class.java.simpleName)
+        }
     }
 
 

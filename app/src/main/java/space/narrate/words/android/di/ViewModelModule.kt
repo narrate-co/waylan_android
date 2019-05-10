@@ -12,6 +12,7 @@ import space.narrate.words.android.ui.settings.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import space.narrate.words.android.ui.settings.DeveloperSettingsViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -43,6 +44,13 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(DeveloperSettingsViewModel::class)
+    internal abstract fun bindDeveloperSettingsViewModel(
+        developerSettingsViewModel: DeveloperSettingsViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(ListViewModel::class)
     internal abstract fun bindListViewModel(listViewModel: ListViewModel): ViewModel
 
@@ -52,7 +60,9 @@ abstract class ViewModelModule {
     internal abstract fun bindDetailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: WordsViewModelFactory): ViewModelProvider.Factory
+    internal abstract fun bindViewModelFactory(
+        factory: WordsViewModelFactory
+    ): ViewModelProvider.Factory
 
 }
 

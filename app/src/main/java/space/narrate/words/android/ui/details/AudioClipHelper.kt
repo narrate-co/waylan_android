@@ -11,17 +11,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import space.narrate.words.android.BuildConfig
+import space.narrate.words.android.R
 import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
 
 class AudioClipHelper(
-        private val context: Context,
-        private val lifecycleOwner: LifecycleOwner
+    private val context: Context,
+    private val lifecycleOwner: LifecycleOwner
 ) : MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener,
-        AudioManager.OnAudioFocusChangeListener, LifecycleObserver {
+    MediaPlayer.OnErrorListener,
+    MediaPlayer.OnCompletionListener,
+    AudioManager.OnAudioFocusChangeListener, LifecycleObserver {
 
     companion object {
         // Key constants for audio state broadcasting
@@ -103,7 +104,7 @@ class AudioClipHelper(
     private fun start(url: String?) {
         if (!lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             end()
-            dispatchError(url, "Unable to play clip.")
+            dispatchError(url, R.string.audio_clip_unable_to_play_generic)
             destroy()
             return
         }
@@ -116,7 +117,7 @@ class AudioClipHelper(
         //if the given url is null, dispatch an error and destroy
         if (url == null || url.isEmpty()) {
             end()
-            dispatchError(url, "No available pronunciations")
+            dispatchError(url, R.string.audio_clip_no_pronunciations_available)
             destroy()
             return
         }
@@ -126,7 +127,7 @@ class AudioClipHelper(
         //handle no network by stopping and dispatching an error and destory
         if (!networkIsAvailable) {
             end()
-            dispatchError(url, "No network available")
+            dispatchError(url, R.string.audio_clip_no_network_available)
             destroy()
             return
         }
@@ -137,9 +138,9 @@ class AudioClipHelper(
         mediaPlayer = MediaPlayer()
         currentUrl = url
         mediaPlayer?.setAudioAttributes(
-                AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build()
         )
 
         try {
@@ -154,15 +155,15 @@ class AudioClipHelper(
             if (!BuildConfig.DEBUG) {
                 // Set our own custom timeout time and task
                 prepareTimeoutTimer = Timer("media_prepare_timer", false)
-                        .schedule(MEDIA_PREPARE_TIMEOUT) {
-                            dispatchError(currentUrl, "Unable to start audio")
-                            end()
-                            destroy()
-                        }
+                    .schedule(MEDIA_PREPARE_TIMEOUT) {
+                        dispatchError(currentUrl, R.string.audio_clip_unable_to_start)
+                        end()
+                        destroy()
+                    }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            dispatchError(url, "No pronunciations available")
+            dispatchError(url, R.string.audio_clip_no_pronunciations_available)
             end()
             destroy()
         }
@@ -186,9 +187,9 @@ class AudioClipHelper(
     override fun onPrepared(player: MediaPlayer?) {
         prepareTimeoutTimer?.cancel()
         val result = audioManager.requestAudioFocus(
-                this,
-                AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+            this,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
         )
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             dispatchPrepared(currentUrl)
@@ -197,7 +198,7 @@ class AudioClipHelper(
                 mediaPlayer?.start()
             }
         } else {
-            dispatchError(currentUrl, "Unable to start pronunciations")
+            dispatchError(currentUrl, R.string.audio_clip_unable_to_start)
             end()
             destroy()
         }
@@ -209,7 +210,7 @@ class AudioClipHelper(
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
-        dispatchError(currentUrl, "An error occurred playing pronunciations")
+        dispatchError(currentUrl, R.string.audio_clip_pay_error)
         end()
         destroy()
         return true
@@ -230,8 +231,8 @@ class AudioClipHelper(
         dispatch(AudioState.STOPPED, url)
     }
 
-    private fun dispatchError(url: String?, message: String) {
-        dispatch(AudioState.ERROR, url, message)
+    private fun dispatchError(url: String?, messageRes: Int) {
+        dispatch(AudioState.ERROR, url, messageRes)
     }
 
     private fun dispatchPrepared(url: String?) {
@@ -246,11 +247,15 @@ class AudioClipHelper(
 
     // Send AudioState events to be received by anyone who needs to update UI to
     // reflect this services state.
-    private fun dispatch(dispatch: AudioState, url: String?, message: String? = null) {
+    private fun dispatch(dispatch: AudioState, url: String?, messageRes: Int? = null) {
         val intent = Intent(BROADCAST_AUDIO_STATE_DISPATCH)
         intent.putExtra(BROADCAST_AUDIO_STATE_EXTRA_STATE, dispatch)
-        intent.putExtra(BROADCAST_AUDIO_STATE_EXTRA_URL, url ?: "")
-        intent.putExtra(BROADCAST_AUDIO_STATE_EXTRA_MESSAGE, message ?: "")
+        if (url != null) {
+            intent.putExtra(BROADCAST_AUDIO_STATE_EXTRA_URL, url)
+        }
+        if (messageRes != null) {
+            intent.putExtra(BROADCAST_AUDIO_STATE_EXTRA_MESSAGE, messageRes)
+        }
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 }

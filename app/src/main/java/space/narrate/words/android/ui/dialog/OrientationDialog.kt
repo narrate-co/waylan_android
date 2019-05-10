@@ -12,7 +12,12 @@ import space.narrate.words.android.data.prefs.Orientation
 class OrientationDialog: RoundedAlertDialog() {
 
     companion object {
-        fun newInstance(orientation: Orientation, orientationCallback: OrientationCallback): RoundedAlertDialog {
+        const val TAG = "orientation_dialog"
+
+        fun newInstance(
+            orientation: Orientation,
+            orientationCallback: OrientationCallback
+        ): RoundedAlertDialog {
             val dialog = OrientationDialog()
             dialog.currentOrientation = orientation
             dialog.orientationCallback = orientationCallback
@@ -34,13 +39,13 @@ class OrientationDialog: RoundedAlertDialog() {
     override fun setBuilderView(container: ViewGroup) {
         Orientation.values().forEach { or ->
             container.addRadioItemView(
-                    getString(or.title),
-                    getString(or.desc),
-                    or == currentOrientation,
-                    View.OnClickListener {
-                        orientationCallback?.onSelected(or)
-                        dismiss()
-                    }
+                getString(or.title),
+                getString(or.desc),
+                or == currentOrientation,
+                View.OnClickListener {
+                    orientationCallback?.onSelected(or)
+                    dismiss()
+                }
             )
         }
     }

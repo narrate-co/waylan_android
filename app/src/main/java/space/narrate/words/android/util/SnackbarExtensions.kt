@@ -11,6 +11,13 @@ import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.R
 
 /**
+ * Possible ways in which a Words [Snackbar] can be styled
+ */
+private enum class SnackbarType {
+    INFORMATIVE, ERROR
+}
+
+/**
  * Helper method to style a [Snackbar] which contains content which is informative, descriptive
  * or accessory in nature.
  *
@@ -38,14 +45,7 @@ fun Snackbar.configError(context: Context, abovePeekedSheet: Boolean): Snackbar 
 }
 
 /**
- * Possible ways in which a Words [Snackbar] can be styled
- */
-private enum class SnackbarType {
-    INFORMATIVE, ERROR
-}
-
-/**
- * Given a Snackbar, alter it's background, message text appearance, button text appearance and
+ * Given a Snackbar, alter it's background, message textRes appearance, button textRes appearance and
  * margins to create a floating card with rounded corners.
  */
 @SuppressLint("ResourceType")
@@ -84,7 +84,7 @@ private fun Snackbar.config(
     view.background = background
     ViewCompat.setElevation(view, 6F)
 
-    //alter text
+    //alter textRes
     val tv = view.findViewById<TextView>(R.id.snackbar_text)
     TextViewCompat.setTextAppearance(tv, textAppearance)
     tv.setTextColor(textColor)

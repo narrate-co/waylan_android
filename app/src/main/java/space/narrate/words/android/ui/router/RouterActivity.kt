@@ -29,13 +29,14 @@ class RouterActivity : Activity() {
         }
 
         val hasProcessText = intent.hasExtra(Intent.EXTRA_PROCESS_TEXT)
-        // If we're processing text, make sure there's a valid user
+        // If we're processing textRes, make sure there's a valid user
         if (hasProcessText) {
             if ((application as App).hasUser) {
                 // Go straight to MainActivity and pass along intent to be processed
                 Navigator.launchMain(this, true, intent)
             } else {
-                // Go to AuthActivity, authorize, and then MainActivity, passing along intent to each
+                // Go to AuthActivity, authorize, and then MainActivity,
+                // passing along intent to each
                 Navigator.launchAuth(this, null, intent)
             }
         } else {

@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/settingsRoot"
+    android:id="@+id/settings_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorBackground"
@@ -11,14 +11,14 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/settingsContainer"
+        android:id="@+id/settings_container"
         android:paddingTop="@dimen/keyline_2"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout
-            android:id="@+id/contentContainer"
+            android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -37,14 +37,14 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/nightMode"
+                android:id="@+id/night_mode_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_night_mode_title"
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/orientation"
+                android:id="@+id/orientation_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Orientation lock"
@@ -53,7 +53,7 @@
 
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/signOut"
+                android:id="@+id/sign_out_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_sign_out_title"
@@ -61,7 +61,7 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/about"
+                android:id="@+id/about_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_about_title"
@@ -69,7 +69,7 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/contact"
+                android:id="@+id/contact_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_contact_title"
@@ -77,7 +77,7 @@
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/developer"
+                android:id="@+id/developer_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/settings_developer_title"
@@ -105,7 +105,7 @@
             >
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navigationIcon"
+                android:id="@+id/navigation_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="14dp"
@@ -116,7 +116,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/keyline_2"

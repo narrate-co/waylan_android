@@ -2,23 +2,22 @@ package space.narrate.words.android.ui.settings
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.settings_check_preference_list_item.view.*
+import space.narrate.words.android.R
+import space.narrate.words.android.util.widget.CheckPreferenceView
 
 /**
  * A simple ViewHolder to hold and bind a [ThirdPartyLibrary] to a RecyclerView item view.
  */
 class ThirdPartyLibraryViewHolder(
         private val view: View,
-        private val listener: ThirdPartyListener
+        private val listener: ThirdPartyLibraryAdapter.Listener
 ): RecyclerView.ViewHolder(view) {
 
-    interface ThirdPartyListener {
-        fun onClick(lib: ThirdPartyLibrary)
-    }
+    private val preferenceView: CheckPreferenceView = view.findViewById(R.id.preference)
 
     fun bind(lib: ThirdPartyLibrary) {
-        view.preference.setTitle(lib.name)
-        view.preference.setDesc(lib.url)
         view.setOnClickListener { listener.onClick(lib) }
+        preferenceView.setTitle(lib.name)
+        preferenceView.setDesc(lib.url)
     }
 }

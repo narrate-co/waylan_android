@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import space.narrate.words.android.data.disk.mw.WordAndDefinitions
+import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.firestore.users.User
 import java.lang.IllegalArgumentException
 
@@ -16,9 +16,9 @@ import java.lang.IllegalArgumentException
  * An adapter that handles the addition, removal, moving and changing of views inside a
  * LinearLayout.
  */
-class MerriamWebsterListAdapter(
-        private val container: LinearLayout,
-        private val listener: Listener
+class MerriamWebsterItemAdapter(
+    private val container: LinearLayout,
+    private val listener: Listener
 ): ListUpdateCallback {
 
     interface Listener {
@@ -28,8 +28,8 @@ class MerriamWebsterListAdapter(
     }
 
     private val differ = AsyncListDiffer(
-            this,
-            AsyncDifferConfig.Builder(DIFF_CALLBACK).build()
+        this,
+        AsyncDifferConfig.Builder(DIFF_CALLBACK).build()
     )
 
     /**
@@ -39,43 +39,43 @@ class MerriamWebsterListAdapter(
      * This method will diff the current and newly generated list and update the container's views
      * as needed.
      */
-    fun submit(entries: List<WordAndDefinitions>, user: User?) {
+    fun submit(entries: List<MwWordAndDefinitionGroups>, user: User?) {
         differ.submitList(MerriamWebsterList.generate(entries, user))
     }
 
-    private fun getItem(position: Int): MerriamWebsterListItem {
+    private fun getItem(position: Int): MerriamWebsterItemModel {
         return differ.currentList[position]
     }
 
     private fun getViewType(position: Int): Int {
         return when (getItem(position)) {
-            is MerriamWebsterListItem.PartOfSpeech -> VIEW_TYPE_PART_OF_SPEECH
-            is MerriamWebsterListItem.Definition -> VIEW_TYPE_DEFINITION
-            is MerriamWebsterListItem.Related -> VIEW_TYPE_RELATED
-            is MerriamWebsterListItem.PermissionPane -> VIEW_TYPE_PERMISSION_PANE
+            is MerriamWebsterItemModel.PartOfSpeechModel -> VIEW_TYPE_PART_OF_SPEECH
+            is MerriamWebsterItemModel.DefinitionModel -> VIEW_TYPE_DEFINITION
+            is MerriamWebsterItemModel.RelatedModel -> VIEW_TYPE_RELATED
+            is MerriamWebsterItemModel.PermissionPaneModel -> VIEW_TYPE_PERMISSION_PANE
         }
     }
 
-    private fun onBindView(view: View, item: MerriamWebsterListItem) {
+    private fun onBindView(view: View, item: MerriamWebsterItemModel) {
         when (item) {
-            is MerriamWebsterListItem.PartOfSpeech ->
-                MerriamWebsterListItemBinder.PartOfSpeechBinder.bind(view, item, listener)
-            is MerriamWebsterListItem.Definition ->
-                MerriamWebsterListItemBinder.DefinitionBinder.bind(view, item, listener)
-            is MerriamWebsterListItem.Related ->
-                MerriamWebsterListItemBinder.RelatedBinder.bind(view, item, listener)
-            is MerriamWebsterListItem.PermissionPane ->
-                MerriamWebsterListItemBinder.PermissionPaneBinder.bind(view, item, listener)
+            is MerriamWebsterItemModel.PartOfSpeechModel ->
+                MerriamWebsterItemBinder.PartOfSpeechBinder.bind(view, item, listener)
+            is MerriamWebsterItemModel.DefinitionModel ->
+                MerriamWebsterItemBinder.DefinitionBinder.bind(view, item, listener)
+            is MerriamWebsterItemModel.RelatedModel ->
+                MerriamWebsterItemBinder.RelatedBinder.bind(view, item, listener)
+            is MerriamWebsterItemModel.PermissionPaneModel ->
+                MerriamWebsterItemBinder.PermissionPaneBinder.bind(view, item, listener)
         }
     }
 
     private fun onCreateView(parent: ViewGroup, viewType: Int): View {
         return LayoutInflater.from(parent.context).inflate(when (viewType) {
-            VIEW_TYPE_PART_OF_SPEECH -> MerriamWebsterListItemBinder.PartOfSpeechBinder.layout
-            VIEW_TYPE_DEFINITION -> MerriamWebsterListItemBinder.DefinitionBinder.layout
-            VIEW_TYPE_RELATED -> MerriamWebsterListItemBinder.RelatedBinder.layout
-            VIEW_TYPE_PERMISSION_PANE -> MerriamWebsterListItemBinder.PermissionPaneBinder.layout
-            else -> throw IllegalArgumentException("Unsupported view type = [$viewType]")
+            VIEW_TYPE_PART_OF_SPEECH -> MerriamWebsterItemBinder.PartOfSpeechBinder.layout
+            VIEW_TYPE_DEFINITION -> MerriamWebsterItemBinder.DefinitionBinder.layout
+            VIEW_TYPE_RELATED -> MerriamWebsterItemBinder.RelatedBinder.layout
+            VIEW_TYPE_PERMISSION_PANE -> MerriamWebsterItemBinder.PermissionPaneBinder.layout
+            else -> throw IllegalArgumentException("Unsupported view listType = [$viewType]")
         }, parent, false)
     }
 
@@ -113,17 +113,17 @@ class MerriamWebsterListAdapter(
         private const val VIEW_TYPE_RELATED = 2
         private const val VIEW_TYPE_PERMISSION_PANE = 3
 
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MerriamWebsterListItem>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MerriamWebsterItemModel>() {
             override fun areItemsTheSame(
-                    oldItem: MerriamWebsterListItem,
-                    newItem: MerriamWebsterListItem
+                oldItem: MerriamWebsterItemModel,
+                newItem: MerriamWebsterItemModel
             ): Boolean {
                 return oldItem.isSameAs(newItem)
             }
 
             override fun areContentsTheSame(
-                    oldItem: MerriamWebsterListItem,
-                    newItem: MerriamWebsterListItem
+                oldItem: MerriamWebsterItemModel,
+                newItem: MerriamWebsterItemModel
             ): Boolean {
                 return oldItem.isContentSameAs(newItem)
             }

@@ -139,7 +139,7 @@ public class SymSpell {
     /// The dictionary may be dynamically updated (word frequency and new words) at any time by calling createDictionaryEntry</remarks>
     /// <param name="key">The word to add to dictionary.</param>
     /// <param name="count">The frequency count for word.</param>
-    /// <param name="staging">Optional staging object to speed up adding many entries by staging them to a temporary structure.</param>
+    /// <param name="staging">Optional staging object to speed up adding many entry by staging them to a temporary structure.</param>
     /// <returns>True if the word was added as a new correctly spelled word,
     /// or false if the word is added as a below threshold word, or updates an
     /// existing correctly spelled word.</returns>
@@ -252,7 +252,7 @@ public class SymSpell {
         return true;
     }
 
-    /// <summary>Load multiple dictionary entries from a file of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entry from a file of word/frequency count pairs</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <param name="termIndex">The column position of the word.</param>
@@ -274,7 +274,7 @@ public class SymSpell {
         return loadDictionary(br, termIndex, countIndex);
     }
 
-    /// <summary>Load multiple dictionary entries from an input stream of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entry from an input stream of word/frequency count pairs</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <remarks>This is useful for loading the dictionary data from an asset file in Android.</remarks>
     /// <param name="corpus">An input stream to dictionary data.</param>
@@ -287,7 +287,7 @@ public class SymSpell {
         return loadDictionary(br, termIndex, countIndex);
     }
 
-    /// <summary>Load multiple dictionary entries from an buffered reader of word/frequency count pairs</summary>
+    /// <summary>Load multiple dictionary entry from an buffered reader of word/frequency count pairs</summary>
     /// <remarks>Merges with any dictionary data already loaded.</remarks>
     /// <param name="corpus">An buffered reader to dictionary data.</param>
     /// <param name="termIndex">The column position of the word.</param>
@@ -331,7 +331,7 @@ public class SymSpell {
     }
 
     //create a frequency dictionary from a corpus (merges with any dictionary data already loaded)
-    /// <summary>Load multiple dictionary words from a file containing plain text.</summary>
+    /// <summary>Load multiple dictionary words from a file containing plain textRes.</summary>
     /// <param name="corpus">The path+filename of the file.</param>
     /// <returns>True if file loaded, or false if file not found.</returns>
     public boolean createDictionary(String corpus) {

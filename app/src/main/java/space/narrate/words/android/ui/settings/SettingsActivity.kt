@@ -16,11 +16,9 @@ class SettingsActivity : BaseUserActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         if (savedInstanceState == null) {
-            showSettings()
+            Navigator.showSettings(this)
         }
     }
-
-    private fun showSettings() = Navigator.showSettings(this)
 
     fun showAbout() = Navigator.showAbout(this)
 

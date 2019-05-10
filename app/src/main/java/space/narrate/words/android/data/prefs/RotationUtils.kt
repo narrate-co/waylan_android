@@ -4,7 +4,7 @@ import android.content.pm.ActivityInfo
 import java.util.concurrent.TimeUnit
 
 /**
- * A collection of helper objects and functions to determine the type and validity of rotations
+ * A collection of helper objects and functions to determine the listType and validity of rotations
  * and rotation events
  */
 

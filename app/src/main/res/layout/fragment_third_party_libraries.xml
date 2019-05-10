@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/settingsRoot"
+    android:id="@+id/settings_coordinator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?android:windowBackground"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="?android:windowBackground">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -31,7 +30,7 @@
             >
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navigationIcon"
+                android:id="@+id/navigation_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="14dp"
@@ -42,7 +41,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:textAppearance="?textAppearanceHeadline5"
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/keyline_2"

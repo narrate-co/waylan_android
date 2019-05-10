@@ -15,7 +15,7 @@ interface WordDao {
     fun insertAll(vararg word: Word)
 
     @Query("SELECT * FROM words WHERE word = :word")
-    fun getLive(word: String): LiveData<Word?>
+    fun getLive(word: String): LiveData<Word>
 
     @Query("SELECT * FROM words WHERE word = :word")
     fun get(word: String): Word?

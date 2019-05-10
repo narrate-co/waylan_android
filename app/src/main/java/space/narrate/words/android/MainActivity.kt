@@ -3,6 +3,7 @@ package space.narrate.words.android
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -13,13 +14,19 @@ import space.narrate.words.android.ui.search.SearchFragment
 import space.narrate.words.android.ui.search.BottomSheetCallbackCollection
 import space.narrate.words.android.util.*
 import space.narrate.words.android.util.widget.KeyboardManager
-import kotlinx.android.synthetic.main.activity_main.*
+import space.narrate.words.android.ui.list.ListType
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
  * main destination ([HomeFragment], [ListFragment] and [DetailsFragment]).
  */
 class MainActivity : BaseUserActivity() {
+
+    private lateinit var searchFragment: SearchFragment
+    private lateinit var contextualFragment: ContextualFragment
+    private lateinit var coordinatorLayout: CoordinatorLayout
+    private lateinit var bottomSheetScrimView: View
+
 
     /**
      * A single callback aggregator which attached added to [SearchFragment]'s BottomSheetBehavior.
@@ -61,6 +68,17 @@ class MainActivity : BaseUserActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        searchFragment =
+            supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
+        contextualFragment =
+            supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
+        coordinatorLayout = findViewById(R.id.coordinator_layout)
+        bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
+
+        sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { showDetails() }
+        })
+
         if (savedInstanceState == null) {
             showHome()
         }
@@ -80,16 +98,14 @@ class MainActivity : BaseUserActivity() {
 
     /**
      * Handle an intent that contains [Intent.ACTION_PROCESS_TEXT] given to this Activity either
-     * in [onCreate] or [onNewIntent]. A process text extra represents an intent fired after the
-     * user has selected text outside of Words and used the tooltip menu item 'Words' to indicate
-     * that they would like the text defined.
+     * in [onCreate] or [onNewIntent]. A process textRes extra represents an intent fired after the
+     * user has selected textRes outside of Words and used the tooltip menu item 'Words' to indicate
+     * that they would like the textRes defined.
      */
     private fun processText(intent: Intent?) {
-        val textToProcess = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        if (!textToProcess.isNullOrBlank()) {
-            sharedViewModel.setCurrentWord(textToProcess.toString())
-            showDetails()
-        }
+        sharedViewModel.onProcessText(
+            intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
+        )
     }
 
     /**
@@ -103,7 +119,7 @@ class MainActivity : BaseUserActivity() {
      */
     override fun onBackPressed() {
         if (maybeConsumeOnBackPressed()) return
-        sharedViewModel.popBackStack(unconsumedNavigationMethod)
+        sharedViewModel.onNavigatedFrom(unconsumedNavigationMethod)
         unconsumedNavigationMethod = null
         super.onBackPressed()
     }
@@ -145,7 +161,7 @@ class MainActivity : BaseUserActivity() {
         // Observe the height of the keyboard. If it is taller than the search bar + 1.5 search
         // result list items (keep a few list items visible so the user knows there are immediate
         // results), reset the height of the search sheet.
-        KeyboardManager(this, content)
+        KeyboardManager(this, coordinatorLayout)
                 .getKeyboardHeightData()
                 .observe(this, Observer {
                     val minHeight = Math.max(
@@ -180,7 +196,7 @@ class MainActivity : BaseUserActivity() {
         }
 
         // collapse the search sheet if it's scrim is touched
-        bottomSheetScrim.setOnClickListener {
+        bottomSheetScrimView.setOnClickListener {
             searchSheetBehavior.collapse(this)
             contextualSheetBehavior.collapse(this)
         }
@@ -227,52 +243,31 @@ class MainActivity : BaseUserActivity() {
                 && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
                         || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
         ) {
-            bottomSheetScrim.gone()
+            bottomSheetScrimView.gone()
         } else {
-            bottomSheetScrim.visible()
+            bottomSheetScrimView.visible()
         }
     }
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
-        bottomSheetScrim.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
-    }
-
-
-    /**
-     * Any child Fragment of this Activity can call this method to have the SearchFragment
-     * bottom sheet expanded, the SearchFragment's search input field focused and the IME opened to
-     * initiate a new search.
-     *
-     * This is used by [ListFragment] when a user clicks on a banner that prompts them to
-     * "Get Started" searching for words.
-     */
-    fun focusAndOpenSearch() {
-        val searchFragment = supportFragmentManager
-                .findFragmentById(R.id.searchFragment) as? SearchFragment
-        searchFragment?.focusAndOpenSearch()
-    }
-
-    fun openContextualFragment() {
-        val contextualFragment = supportFragmentManager
-                .findFragmentById(R.id.contextualFragment) as? ContextualFragment
-        contextualFragment?.expand()
+        bottomSheetScrimView.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
     }
 
     private fun showHome() {
         if (Navigator.showHome(this)) {
-            sharedViewModel.pushToBackStack(Navigator.HomeDestination.HOME)
+            sharedViewModel.onNavigatedTo(Navigator.HomeDestination.HOME)
         }
     }
 
     fun showDetails() {
         if (Navigator.showDetails(this)) {
-            sharedViewModel.pushToBackStack(Navigator.HomeDestination.DETAILS)
+            sharedViewModel.onNavigatedTo(Navigator.HomeDestination.DETAILS)
         }
     }
 
-    fun showListFragment(type: ListFragment.ListType) {
+    fun showListFragment(type: ListType) {
         if (Navigator.showListFragment(this, type)) {
-            sharedViewModel.pushToBackStack(type.homeDestination)
+            sharedViewModel.onNavigatedTo(type.homeDestination)
         }
     }
 

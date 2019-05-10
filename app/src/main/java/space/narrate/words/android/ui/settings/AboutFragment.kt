@@ -16,22 +16,19 @@ import space.narrate.words.android.ui.common.BaseUserFragment
  * application and software
  *
  * [R.id.aboutBody] A copy explaining what Words is as a product/company
- * [R.id.version] The build's version name and type
+ * [R.id.version] The build's version name and listType
  * [R.id.thirdPartyLibraries] Leads to [ThirdPartyLibrariesFragment]
  */
 class AboutFragment: BaseUserFragment() {
 
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "about_fragment_tag"
-
-        fun newInstance() = AboutFragment()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_about, container, false)
-        view.navigationIcon.setOnClickListener {
-            activity?.onBackPressed()
+        view.navigation_icon.setOnClickListener {
+            requireActivity().onBackPressed()
         }
 
         // Version preference
@@ -39,9 +36,16 @@ class AboutFragment: BaseUserFragment() {
 
         // Third Party Libs preference
         view.thirdPartyLibraries.setOnClickListener {
-            Navigator.showThirdPartyLibraries(activity!!)
+            Navigator.showThirdPartyLibraries(requireActivity())
         }
 
         return view
+    }
+
+    companion object {
+        // A tag used for back stack tracking
+        const val FRAGMENT_TAG = "about_fragment_tag"
+
+        fun newInstance() = AboutFragment()
     }
 }

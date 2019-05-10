@@ -3,13 +3,15 @@ package space.narrate.words.android
 import androidx.lifecycle.*
 import space.narrate.words.android.data.analytics.AnalyticsRepository
 import space.narrate.words.android.data.analytics.NavigationMethod
-import space.narrate.words.android.data.repository.FirestoreUserSource
+import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.di.UserScope
+import space.narrate.words.android.ui.Event
 import space.narrate.words.android.ui.search.Period
-import space.narrate.words.android.util.LiveDataHelper
+import space.narrate.words.android.util.LiveDataUtils
 import space.narrate.words.android.util.peekOrNull
+import space.narrate.words.android.util.switchMapTransform
 import java.util.*
 import javax.inject.Inject
 
@@ -34,28 +36,49 @@ class MainViewModel @Inject constructor(
     // A backing field for the word (as it appears in the dictionary) which should currently be
     // displayed by [DetailsFragment]. This is used instead of alternatives like passing the word
     // via the fragment's arguments
-    private var _currentWord = MutableLiveData<String>()
+    private val _currentWord: MutableLiveData<String> = MutableLiveData()
+    val currentWord: LiveData<String>
+        get() = _currentWord
 
-    val currentWord: LiveData<String> = _currentWord
+    val currentUserWord: LiveData<UserWord>
+        get() = currentWord.switchMapTransform { wordRepository.getUserWord(it) }
 
-    /**
-     * Get a LiveData which observes [currentWord]'s [FirestoreUserSource].
-     *
-     * @see SearchFragment for how this is used to set the correct shelf action states
-     */
-    fun getCurrentFirestoreUserWord(): LiveData<FirestoreUserSource> =
-            Transformations.switchMap(currentWord) {
-                wordRepository.getFirestoreUserSource(it)
-            }
+    private val _shouldShowDetails: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldShowDetails: LiveData<Event<Boolean>>
+        get() = _shouldShowDetails
+
+    private val _shouldOpenAndFocusSearch: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldOpenAndFocusSearch: LiveData<Event<Boolean>>
+        get() = _shouldOpenAndFocusSearch
+
+    private val _shouldOpenContextualSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldOpenContextualSheet: LiveData<Event<Boolean>>
+        get() = _shouldOpenContextualSheet
+
+    fun onProcessText(textToProcess: String?) {
+        if (!textToProcess.isNullOrBlank()) {
+            onChangeCurrentWord(textToProcess)
+            _shouldShowDetails.value = Event(true)
+        }
+    }
+
+    fun onShouldOpenAndFocusSearch() {
+        _shouldOpenAndFocusSearch.value = Event(true)
+    }
+
+    fun onShouldOpenContextualFragment() {
+        _shouldOpenContextualSheet.value = Event(true)
+    }
 
     /**
      * Set the current word to be displayed by [DetailsFragment]
      *
      * @param word The word (as it appears in the dictionary to be defined in [DetailsFragment]
      */
-    fun setCurrentWord(word: String) {
+    fun onChangeCurrentWord(word: String) {
         val sanitizedId = word.toLowerCase()
         _currentWord.value = sanitizedId
+        setCurrentWordRecented()
     }
 
     /**
@@ -66,7 +89,7 @@ class MainViewModel @Inject constructor(
      */
     fun setCurrentWordFavorited(favorite: Boolean) {
         val id = _currentWord.value ?: return
-        wordRepository.setFavorite(id, favorite)
+        wordRepository.setUserWordFavorite(id, favorite)
     }
 
     /**
@@ -75,9 +98,9 @@ class MainViewModel @Inject constructor(
      *
      * This adds [UserWordType.RECENT] to this user's [UserWord.types] for the [currentWord].
      */
-    fun setCurrentWordRecented() {
+    private fun setCurrentWordRecented() {
         val id = _currentWord.value ?: return
-        wordRepository.setRecent(id)
+        wordRepository.setUserWordRecent(id)
     }
 
     /**
@@ -90,7 +113,7 @@ class MainViewModel @Inject constructor(
     /**
      * Add [dest] to the internally maintained Fragment backstack for [MainActivity]
      */
-    fun pushToBackStack(dest: Navigator.HomeDestination) {
+    fun onNavigatedTo(dest: Navigator.HomeDestination) {
         val stack = backStack.value ?: Stack()
         stack.push(dest)
         backStack.value = stack
@@ -101,7 +124,7 @@ class MainViewModel @Inject constructor(
      * for [MainActivity]. This method also handles reporting back navigation methods depending on
      * the value of [unconsumedNavigationMethod].
      */
-    fun popBackStack(unconsumedNavigationMethod: NavigationMethod?) {
+    fun onNavigatedFrom(unconsumedNavigationMethod: NavigationMethod?) {
         val stack = backStack.value
 
         if (unconsumedNavigationMethod != null) {
@@ -134,7 +157,7 @@ class MainViewModel @Inject constructor(
                 Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilterLive
                 Navigator.HomeDestination.RECENT -> userRepository.recentsListFilterLive
                 Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilterLive
-                else -> LiveDataHelper.empty()
+                else -> LiveDataUtils.empty()
             }
         }
     }

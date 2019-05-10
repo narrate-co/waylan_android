@@ -7,26 +7,26 @@ import androidx.room.*
 interface MwDao {
 
     @Transaction
-    fun insert(word: Word, definitions: List<Definition>) {
+    fun insert(word: MwWord, definitions: List<MwDefinitionGroup>) {
         insert(word)
         insertAll(*definitions.toTypedArray())
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(word: Word)
+    fun insert(word: MwWord)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg definition: Definition)
+    fun insertAll(vararg definition: MwDefinitionGroup)
 
     @Query("SELECT * FROM mw_words WHERE word = :word")
-    fun getWord(word: String): Word?
+    fun getWord(word: String): MwWord?
 
     @Query("SELECT * FROM mw_definitions WHERE parentId = :word")
-    fun getDefinitions(word: String): List<Definition>
+    fun getDefinitions(word: String): List<MwDefinitionGroup>
 
     @Transaction
     @Query("SELECT * FROM mw_words WHERE word = :word")
-    fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>>
+    fun getWordAndDefinitions(word: String): LiveData<List<MwWordAndDefinitionGroups>>
 
     @Query("DELETE FROM mw_words WHERE id = :id")
     fun deleteWord(id: String)
