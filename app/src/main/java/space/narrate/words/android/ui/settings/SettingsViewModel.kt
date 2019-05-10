@@ -1,20 +1,15 @@
 package space.narrate.words.android.ui.settings
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import space.narrate.words.android.R
-import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.data.firestore.users.merriamWebsterState
-import space.narrate.words.android.data.firestore.users.oneDayPastExpiration
+import space.narrate.words.android.data.prefs.NightMode
 import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.ui.Event
 import space.narrate.words.android.ui.auth.AuthActivity
-import space.narrate.words.android.ui.common.SnackbarModel
 import javax.inject.Inject
 
 /**
@@ -32,7 +27,7 @@ class SettingsViewModel @Inject constructor(
 
     val user: LiveData<User> = userRepository.getUser()
 
-    val nightMode: LiveData<Int> = userRepository.nightModeLive
+    val nightMode: LiveData<NightMode> = userRepository.nightModeLive
 
     var orientation: LiveData<Orientation> = userRepository.orientationLockLive
 
@@ -49,13 +44,13 @@ class SettingsViewModel @Inject constructor(
     val shouldLaunchMwPurchaseFlow: LiveData<Event<Boolean>>
         get() = _shouldLaunchMwPurchaseFlow
 
-    private val _shouldShowNightModeDialog: MutableLiveData<Event<Int>> = MutableLiveData()
-    val shouldShowNightModeDialog: LiveData<Event<Int>>
+    private val _shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>> = MutableLiveData()
+    val shouldShowNightModeDialog: LiveData<Event<List<NightModeRadioItemModel>>>
         get() = _shouldShowNightModeDialog
 
-    private val _shouldShowOrientationDialog: MutableLiveData<Event<Orientation>> =
+    private val _shouldShowOrientationDialog: MutableLiveData<Event<List<OrientationRadioItemModel>>> =
         MutableLiveData()
-    val shouldShowOrientationDialog: LiveData<Event<Orientation>>
+    val shouldShowOrientationDialog: LiveData<Event<List<OrientationRadioItemModel>>>
         get() = _shouldShowOrientationDialog
 
 
@@ -76,21 +71,25 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onNightModePreferenceClicked() {
-        _shouldShowNightModeDialog.value = Event(userRepository.nightMode)
-    }
-
-    fun onNightModeSelected(mode: Int) {
-        userRepository.nightMode = mode
-    }
-
-    fun onOrientationPreferenceClicked() {
-        _shouldShowOrientationDialog.value = Event(
-            Orientation.fromActivityInfoScreenOrientation(userRepository.orientationLock)
+        val currentNightMode = userRepository.nightMode
+        _shouldShowNightModeDialog.value = Event(userRepository.allNightModes.map {
+            NightModeRadioItemModel(it, it == currentNightMode) }
         )
     }
 
-    fun onOrientationSelected(orientation: Orientation) {
-        userRepository.orientationLock = orientation.value
+    fun onNightModeSelected(item: NightModeRadioItemModel) {
+        userRepository.nightMode = item.nightMode
+    }
+
+    fun onOrientationPreferenceClicked() {
+        val currentOrientation = userRepository.orientationLock
+        _shouldShowOrientationDialog.value = Event(userRepository.allOrientations.map {
+                OrientationRadioItemModel(it, it == currentOrientation)
+        })
+    }
+
+    fun onOrientationSelected(item: OrientationRadioItemModel) {
+        userRepository.orientationLock = item.orientation
     }
 
     fun onSignOutClicked() {

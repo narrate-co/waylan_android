@@ -248,7 +248,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         // Set the CoordinatorLayout's background
         val backgroundTint = parent.backgroundTintList
                 ?: ColorStateList.valueOf(
-                        parent.context.getColorFromAttr(android.R.attr.windowBackground)
+                        parent.context.getColorFromAttr(android.R.attr.colorBackground)
                 )
         DrawableCompat.setTintList(materialShapeDrawable, backgroundTint)
         ViewCompat.setBackground(parent, materialShapeDrawable)

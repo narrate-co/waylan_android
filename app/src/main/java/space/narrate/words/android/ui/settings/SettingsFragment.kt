@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
@@ -16,9 +15,7 @@ import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.billing.BillingManager
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.configError
-import space.narrate.words.android.data.prefs.Orientation
-import space.narrate.words.android.ui.dialog.NightModeDialog
-import space.narrate.words.android.ui.dialog.OrientationDialog
+import space.narrate.words.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.words.android.util.gone
 import space.narrate.words.android.util.visible
 import space.narrate.words.android.util.widget.BannerCardView
@@ -158,18 +155,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         nightModePreference.setOnClickListener { viewModel.onNightModePreferenceClicked() }
 
         viewModel.nightMode.observe(this, Observer { mode ->
-            val desc = when (mode) {
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM ->
-                    getString(R.string.settings_night_mode_follows_system_title)
-                AppCompatDelegate.MODE_NIGHT_AUTO ->
-                    getString(R.string.settings_night_mode_auto_title)
-                AppCompatDelegate.MODE_NIGHT_YES ->
-                    getString(R.string.settings_night_mode_yes_title)
-                AppCompatDelegate.MODE_NIGHT_NO ->
-                    getString(R.string.settings_night_mode_no_title)
-                else -> getString(R.string.settings_night_mode_follows_system_title)
-            }
-            nightModePreference.setDesc(desc)
+            nightModePreference.setDesc(getString(mode.titleRes))
         })
 
         viewModel.shouldShowNightModeDialog.observe(this, Observer { event ->
@@ -189,38 +175,25 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         })
     }
 
-    private fun showNightModeDialog(currentMode: Int) {
-        NightModeDialog
-            .newInstance(currentMode, object : NightModeDialog.NightModeCallback() {
-                private var selected: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                override fun onSelected(nightMode: Int) {
-                    selected = nightMode
-                }
-
-                override fun onDismissed() {
-                    viewModel.onNightModeSelected(selected)
-                    // TODO Make App observe this instead of calling down.
-                    (requireActivity().application as App).updateNightMode()
-                }
-            })
-            .show(requireFragmentManager(), NightModeDialog.TAG)
+    private fun showNightModeDialog(items: List<NightModeRadioItemModel>) {
+        RadioGroupAlertDialog(requireContext(), items)
+            .onItemSelected { item ->
+                viewModel.onNightModeSelected(item)
+                // TODO Make App observe this instead of calling down
+                (requireActivity().application as App).updateNightMode()
+                true
+            }
+            .show()
     }
 
-    private fun showOrientationDialog(currentOrientation: Orientation) {
-        OrientationDialog
-            .newInstance(currentOrientation, object : OrientationDialog.OrientationCallback() {
-                private var selected = Orientation.UNSPECIFIED
-                override fun onSelected(orientation: Orientation) {
-                    selected = orientation
-                }
-
-                override fun onDismissed() {
-                    viewModel.onOrientationSelected(selected)
-                    // TODO Make App observe this instead of calling down
-                    (requireActivity().application as App).updateOrientation()
-                }
-            })
-            .show(activity?.supportFragmentManager, OrientationDialog.TAG)
+    private fun showOrientationDialog(items: List<OrientationRadioItemModel>) {
+        RadioGroupAlertDialog(requireContext(), items)
+            .onItemSelected { item ->
+                viewModel.onOrientationSelected(item)
+                (requireActivity().application as App).updateOrientation()
+                true
+            }
+            .show()
     }
 
     override fun onBannerClicked() {

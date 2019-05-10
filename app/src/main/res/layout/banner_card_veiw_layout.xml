@@ -13,7 +13,7 @@
             style="?styleTextLabel"
             android:id="@+id/label_text_view"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/text_label_height"
             android:layout_marginBottom="@dimen/keyline_2"
             android:visibility="gone"
             tools:visibility="visible"

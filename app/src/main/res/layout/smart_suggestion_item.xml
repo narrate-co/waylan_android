@@ -20,11 +20,10 @@
         app:iconGravity="start"
         android:text="Lock screen to portrait"
         android:textAppearance="?textAppearanceBody1"
-        app:iconTint="?colorPrimaryOnDefault"
-        android:textColor="?colorPrimaryOnDefault"
+        android:textColor="?colorOnSurfaceHighEmphasis"
         android:backgroundTint="@android:color/transparent"
         android:layout_gravity="center"
-        app:rippleColor="?colorAccentSurfaceArea"
+        app:rippleColor="?colorRipple"
         />
 
 </LinearLayout>

@@ -17,7 +17,7 @@
         android:layout_width="72dp"
         android:layout_height="2dp"
         app:trackColor="?colorDivider"
-        app:indicatorColor="?colorBrand"
+        app:indicatorColor="?colorPrimary"
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_gravity="right"/>
 

@@ -25,6 +25,8 @@ import androidx.core.view.*
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.users.UserWordType
@@ -51,6 +53,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         const val TAG = "SearchFragment"
     }
 
+    private lateinit var collapsedContainer: ConstraintLayout
     private lateinit var shelfContainer: FrameLayout
     private lateinit var searchContainer: FrameLayout
     private lateinit var searchEditText: AppCompatEditText
@@ -105,12 +108,20 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        collapsedContainer = view.findViewById(R.id.collapsed_container)
         shelfContainer = view.findViewById(R.id.shelf_container)
         searchContainer = view.findViewById(R.id.search_container)
         searchEditText = view.findViewById(R.id.search_edit_text)
         recyclerView = view.findViewById(R.id.recycler_view)
         actionOneImageView = view.findViewById(R.id.action_one_image_view)
         actionTwoImageView = view.findViewById(R.id.action_two_image_view)
+
+        ViewCompat.setBackground(collapsedContainer, MaterialShapeDrawable(
+            requireContext(),
+            null,
+            R.attr.styleBottomSheetStandard,
+            R.style.Widget_Words_BottomSheet_Standard
+        ))
 
 
         setUpSearchBar(view)

@@ -118,7 +118,7 @@ class SearchViewModel @Inject constructor(
      * @param orientation The orientation the app should be set to
      */
     fun setOrientationPreference(orientation: Orientation) {
-        userRepository.orientationLock = orientation.value
+        userRepository.orientationLock = orientation
     }
 
     /**

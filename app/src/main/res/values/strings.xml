@@ -91,6 +91,10 @@
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
     <string name="settings_developer_title">Developer Settings</string>
     <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
+    <string name="settings_night_mode_set_by_battery_saver_title">Set by Battery Saver</string>
+    <string name="settings_night_mode_set_by_battery_saver_desc">Night mode will automatically be enabled if Battery Saver is turned on</string>
+    <string name="settings_night_mode_system_default_title">System default</string>
+    <string name="settings_night_mode_system_default_desc">Night mode will be used depending on if dark theme is turned on in system settings</string>
     <string name="settings_night_mode_follows_system_title">Follows system</string>
     <string name="settings_night_mode_auto_title">Auto</string>
     <string name="settings_night_mode_yes_title">Yes</string>
@@ -148,6 +152,9 @@
     <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
     <string name="audio_clip_no_network_available">No network available</string>
     <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
+    <string name="item_desc">This is a sample description and should be deleted</string>
+    <string name="item_title">Sample title</string>
+
 
 
 </resources>

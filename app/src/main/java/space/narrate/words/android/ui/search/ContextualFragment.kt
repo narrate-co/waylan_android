@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
+import com.google.android.material.shape.MaterialShapeDrawable
 import space.narrate.words.android.MainActivity
 import space.narrate.words.android.MainViewModel
 import space.narrate.words.android.Navigator
@@ -15,6 +17,7 @@ import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.*
 import kotlinx.android.synthetic.main.fragment_contextual.*
+import kotlinx.android.synthetic.main.fragment_contextual.view.*
 
 /**
  * A second bottom sheet that lives behind the SearchFragment sheet. This is used to give
@@ -51,6 +54,13 @@ class ContextualFragment : BaseUserFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setBackground(view.contextualSheetRoot, MaterialShapeDrawable(
+            requireContext(),
+            null,
+            R.attr.styleBottomSheetStandard,
+            R.style.Widget_Words_BottomSheet_Standard
+        ))
 
         setUpSheet(view)
 

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!--Light v23-->
-    <style name="Theme.Words" parent="Base.Theme.Words">
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-</resources>

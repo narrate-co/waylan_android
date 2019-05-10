@@ -6,10 +6,10 @@ import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import space.narrate.words.android.data.prefs.Orientation
-import space.narrate.words.android.data.prefs.PreferenceDelegate
-import space.narrate.words.android.data.prefs.PreferenceLiveData
-import space.narrate.words.android.data.prefs.Preferences
+import space.narrate.words.android.ui.settings.NightModeRadioItemModel
+import space.narrate.words.android.ui.settings.OrientationRadioItemModel
+import space.narrate.words.android.util.isAtLeastQ
+import space.narrate.words.android.util.mapTransform
 
 /**
  * A top-level store for default (non user tied) [SharedPreferences]
@@ -23,46 +23,62 @@ import space.narrate.words.android.data.prefs.Preferences
  * instance), aiding code clarity. To write to these preferences, do so using
  * [UserRepository].
  */
-class PreferenceStore(
-        private val applicationContext: Context
-) {
+class PreferenceStore(private val applicationContext: Context) {
 
     private val defaultPrefs: SharedPreferences by lazy {
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
     fun resetAll() {
-        nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        orientationLock = Orientation.UNSPECIFIED.value
+        _nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        _orientationLock = Orientation.UNSPECIFIED.value
     }
 
-    var nightMode: Int by PreferenceDelegate(
+    private var _nightMode: Int by PreferenceDelegate(
+        defaultPrefs,
+        Preferences.NIGHT_MODE,
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    )
+    var nightMode: NightMode
+        get() = NightMode.fromAppCompatDelegate(_nightMode)
+        set(value) {
+            _nightMode = value.value
+        }
+
+    var nightModeLive: LiveData<NightMode> =
+        PreferenceLiveData(
             defaultPrefs,
             Preferences.NIGHT_MODE,
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        ).mapTransform {
+            NightMode.fromAppCompatDelegate(it)
+        }
+
+    val allNightModes: List<NightMode> = NightMode.values().toList().filter {
+        if (isAtLeastQ) it != NightMode.BATTERY_SAVER else it != NightMode.SYSTEM_DEFAULT
+    }
+
+    private var _orientationLock: Int by PreferenceDelegate(
+        defaultPrefs,
+        Preferences.ORIENTATION_LOCK,
+        Orientation.UNSPECIFIED.value
     )
+    var orientationLock: Orientation
+        get() = Orientation.fromActivityInfoScreenOrientation(_orientationLock)
+        set(value) {
+            _orientationLock = value.value
+        }
 
-    var nightModeLive: LiveData<Int> =
-            PreferenceLiveData(
-                    defaultPrefs,
-                    Preferences.NIGHT_MODE,
-                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            )
+    var orientationLockLive: LiveData<Orientation> =
+        Transformations.map(PreferenceLiveData(
+            defaultPrefs,
+            Preferences.ORIENTATION_LOCK,
+            Orientation.UNSPECIFIED.value
+        )) {
+            Orientation.fromActivityInfoScreenOrientation(it)
+        }
 
-
-     var orientationLock: Int by PreferenceDelegate(
-             defaultPrefs,
-             Preferences.ORIENTATION_LOCK,
-             Orientation.UNSPECIFIED.value
-     )
-    var orientationLive: LiveData<Orientation> =
-            Transformations.map(PreferenceLiveData(
-                    defaultPrefs,
-                    Preferences.ORIENTATION_LOCK,
-                    Orientation.UNSPECIFIED.value
-            )) {
-                Orientation.fromActivityInfoScreenOrientation(it)
-            }
+    val allOrientations: List<Orientation> = Orientation.values().toList()
 
 }
 

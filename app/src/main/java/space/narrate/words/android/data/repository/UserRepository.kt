@@ -12,6 +12,9 @@ import space.narrate.words.android.data.prefs.UserPreferenceStore
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
+import space.narrate.words.android.data.prefs.NightMode
+import space.narrate.words.android.ui.settings.NightModeRadioItemModel
+import space.narrate.words.android.ui.settings.OrientationRadioItemModel
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -48,24 +51,27 @@ class UserRepository(
         userPreferenceStore.resetAll()
     }
 
+    val allNightModes = preferenceStore.allNightModes
+
+    val allOrientations = preferenceStore.allOrientations
 
     /** Gloabl scoped Shared Preferences */
 
-    var orientationLock: Int
+    var orientationLock: Orientation
         get() = preferenceStore.orientationLock
         set(value) {
             preferenceStore.orientationLock = value
         }
 
-    val orientationLockLive: LiveData<Orientation> = preferenceStore.orientationLive
+    val orientationLockLive: LiveData<Orientation> = preferenceStore.orientationLockLive
 
-    var nightMode: Int
+    var nightMode: NightMode
         get() = preferenceStore.nightMode
         set(value) {
             preferenceStore.nightMode = value
         }
 
-    val nightModeLive: LiveData<Int> = preferenceStore.nightModeLive
+    val nightModeLive: LiveData<NightMode> = preferenceStore.nightModeLive
 
 
     /** User scoped Shared Preferences */

@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Layout-->
     <dimen name="keyline_1">4dp</dimen>
     <dimen name="keyline_2">8dp</dimen>
     <dimen name="keyline_3">16dp</dimen>
     <dimen name="keyline_4">24dp</dimen>
 
+    <!--Elevation-->
+    <dimen name="plane_0">0dp</dimen>
+    <dimen name="plane_1">4dp</dimen>
+    <dimen name="plane_2">8dp</dimen>
+    <dimen name="plane_3">16dp</dimen>
+    <dimen name="plane_4">24dp</dimen>
+    <dimen name="plane_5">32dp</dimen>
+
+    <!--Shape-->
+    <dimen name="shape_small_corner_radius">16dp</dimen>
+    <dimen name="shape_medium_corner_radius">8dp</dimen>
+    <dimen name="shape_large_corner_radius">12dp</dimen>
+
+    <dimen name="text_label_height">40dp</dimen>
+    <dimen name="text_label_corner_radius">20dp</dimen> <!--50% rounded-->
+
+    <dimen name="search_box_height">52dp</dimen>
+    <dimen name="search_box_corner_radius">26dp</dimen> <!--50% rounded-->
+
+    <!--Misc-->
     <dimen name="search_min_peek_height">80dp</dimen>
     <dimen name="contextual_peek_bar_height">52dp</dimen>
     <dimen name="contextual_min_peek_height">132dp</dimen>

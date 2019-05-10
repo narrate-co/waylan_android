@@ -8,11 +8,10 @@
     android:layout_width="match_parent"
     android:paddingBottom="@dimen/search_min_peek_height"
     android:clickable="true"
-    android:elevation="16dp"
+    android:elevation="@dimen/plane_3"
     android:focusable="true"
-    android:background="@drawable/contextual_background"
-    android:clipChildren="true"
-    >
+    android:backgroundTint="?colorSurface"
+    android:clipChildren="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/collapsed_container"

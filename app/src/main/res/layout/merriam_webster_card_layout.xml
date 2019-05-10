@@ -15,7 +15,7 @@
             style="?styleTextLabel"
             android:id="@+id/text_label"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/text_label_height"
             android:text="Free trial: 30d"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"

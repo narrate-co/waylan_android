@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Words.DayNight" parent="Theme.Words.Dark"/>
 
-    <!--Dark Theme-->
-    <style name="Theme.Words.Dark" parent="Base.Theme.Words.Dark"/>
-    <style name="Base.Theme.Words.Dark" parent="Base.Theme.Words">
-        <!--Words Color Theme-->
-        <!--Brand Colors-->
-        <item name="colorBrand">@color/words_dark_color_brand</item>
-        <!--Plane Colors-->
-        <item name="colorBackground">@color/words_dark_color_background</item>
-        <item name="colorSurface">@color/words_dark_color_surface</item>
-        <item name="colorAccentSurface">@color/words_dark_color_accent_surface</item>
-        <item name="colorSubAccentSurface">@color/words_dark_color_sub_accent_surface</item>
-        <item name="colorBackgroundArea">@color/words_dark_color_background_area</item>
-        <item name="colorBackgroundAreaVariant">@color/words_dark_color_background_area_variant</item>
-        <item name="colorSurfaceArea">@color/words_dark_color_surface_area</item>
-        <item name="colorSurfaceAreaVariant">@color/words_dark_color_surface_area_variant</item>
-        <item name="colorAccentSurfaceArea">@color/words_dark_color_accent_surface_area</item>
-        <item name="colorAccentSurfaceAreaVariant">@color/words_dark_color_accent_surface_area_variant</item>
-        <item name="colorSubAccentSurfaceArea">@color/words_dark_color_sub_accent_surface_area</item>
-        <item name="colorSubAccentSurfaceAreaVariant">@color/words_dark_color_sub_accent_surface_area_variant</item>
-        <item name="colorError">@color/words_dark_color_error</item>
-        <item name="colorErrorVariant">@color/words_dark_color_error_variant</item>
-        <item name="colorInformative">@color/words_dark_color_informative</item>
-        <!--On Colors-->
-        <item name="colorPrimaryOnDefault">@color/words_dark_color_primary_on_default</item>
-        <item name="colorSecondaryOnDefault">@color/words_dark_color_secondary_on_default</item>
-        <item name="colorTertiaryOnDefault">@color/words_dark_color_tertiary_on_default</item>
-        <item name="colorErrorOnDefault">@color/words_dark_color_error_on_default</item>
-        <item name="colorPrimaryOnError">@color/words_dark_color_primary_on_error</item>
-        <item name="colorSecondaryOnError">@color/words_dark_color_secondary_on_error</item>
-        <item name="colorTertiaryOnError">@color/words_dark_color_tertiary_on_error</item>
-        <item name="colorOnInformative">@color/words_dark_color_on_informative</item>
-        <!--Misc Colors-->
-        <item name="colorRipple">@color/words_dark_color_ripple</item>
-        <item name="colorScrim">@color/words_dark_color_scrim</item>
-        <item name="colorDivider">@color/words_dark_color_divider</item>
-        <item name="colorHairline">@color/words_dark_color_hairline</item>
-        <item name="colorAccentSurfaceHairline">@color/words_dark_color_accent_surface_hairline</item>
-        <item name="colorSubAccentSurfaceHairline">@color/words_dark_color_sub_accent_surface_hairline</item>
+    <style name="Theme.Words.Dark" parent="Theme.Words">
+        <!--Color-->
+        <item name="colorPrimary">@color/words_color_brand</item>
+        <item name="colorPrimaryVariant">@color/words_color_brand</item>
+        <item name="colorSecondary">@color/words_color_brand</item>
+        <item name="colorSecondaryVariant">@color/words_color_brand</item>
+
+        <item name="android:colorBackground">@color/words_color_background</item>
+        <item name="colorSurface">@color/words_color_surface</item>
+        <item name="colorError">@color/words_color_error</item>
+        <item name="colorInformative">@color/words_color_informative</item>
+
+        <item name="colorBackgroundArea">@color/words_color_background_area</item>
+        <item name="colorSurfaceArea">@color/words_color_surface_area</item>
+        <item name="colorErrorArea">@color/words_color_error_area</item>
+
+        <item name="colorOnPrimary">@color/words_color_on_brand</item>
+        <item name="colorOnSecondary">@color/words_color_on_brand</item>
+
+        <item name="colorOnBackground">@color/words_color_on_background</item>
+        <item name="colorOnBackgroundHighEmphasis">@color/words_color_on_background_high_emphasis</item>
+        <item name="colorOnBackgroundMediumEmphasis">@color/words_color_on_background_medium_emphasis</item>
+        <item name="colorOnBackgroundLowEmphasis">@color/words_color_on_background_low_emphasis</item>
+
+        <item name="colorOnSurface">@color/words_color_on_surface</item>
+        <item name="colorOnSurfaceHighEmphasis">@color/words_color_on_surface_high_emphasis</item>
+        <item name="colorOnSurfaceMediumEmphasis">@color/words_color_on_surface_medium_emphasis</item>
+        <item name="colorOnSurfaceLowEmphasis">@color/words_color_on_surface_low_emphasis</item>
+
+        <item name="colorOnError">@color/words_color_on_error</item>
+        <item name="colorOnErrorHighEmphasis">@color/words_color_on_error_high_emphasis</item>
+        <item name="colorOnErrorMediumEmphasis">@color/words_color_on_error_medium_emphasis</item>
+        <item name="colorOnErrorLowEmphasis">@color/words_color_on_error_low_emphasis</item>
+
+        <item name="colorOnInformative">@color/words_color_on_informative</item>
+
+        <item name="colorRipple">@color/words_color_ripple</item>
+        <item name="colorScrim">@color/words_color_scrim</item>
+        <item name="colorDivider">@color/words_color_divider</item>
+        <item name="colorHairline">@color/words_color_hairline</item>
+
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
 </resources>

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.RoundedCornerTreatment
 import com.google.android.material.shape.ShapePathModel
@@ -48,9 +49,12 @@ abstract class RoundedAlertDialog: AppCompatDialogFragment() {
 
         val d = builder.create()
 
-        d.window?.setBackgroundDrawable(
-                createBackgroundDrawable(requireActivity(), R.dimen.keyline_2, R.attr.colorSurface)
-        )
+        ViewCompat.setBackground(d.window.decorView, MaterialShapeDrawable(
+            context, null, R.attr.alertDialogStyle, R.style.Widget_MaterialComponents_Button_TextButton_Dialog
+        ))
+//        d.window?.setBackgroundDrawable(
+//                createBackgroundDrawable(requireActivity(), R.dimen.keyline_2, R.attr.colorSurface)
+//        )
 
         return d
     }

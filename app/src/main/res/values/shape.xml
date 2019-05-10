@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Shape-->
+    <style name="ShapeAppearance.Words.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/shape_large_corner_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.Words.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/shape_medium_corner_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.Words.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/shape_small_corner_radius</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.BottomSheet.Standard" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/shape_large_corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/shape_large_corner_radius</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+</resources>

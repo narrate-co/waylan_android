@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -307,8 +308,8 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
-                val errorTextColor = getColorFromAttr(R.attr.colorPrimaryOnError)
-                val errorHintColor = getColorFromAttr(R.attr.colorTertiaryOnError)
+                val errorTextColor = getColorFromAttr(R.attr.colorOnError)
+                val errorHintColor = getColorFromAttr(R.attr.colorOnError)
                 TransitionManager.beginDelayedTransition(container)
                 email.setTextColor(errorTextColor)
                 email.setHintTextColor(errorHintColor)
@@ -337,8 +338,8 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
 
-                val textColor = getColorFromAttr(R.attr.colorPrimaryOnDefault)
-                val hintColor = getColorFromAttr(R.attr.colorTertiaryOnDefault)
+                val textColor = getColorFromAttr(R.attr.colorOnBackground)
+                val hintColor = getColorFromAttr(R.attr.colorOnBackground)
                 TransitionManager.beginDelayedTransition(container)
                 email.setTextColor(textColor)
                 email.setHintTextColor(hintColor)

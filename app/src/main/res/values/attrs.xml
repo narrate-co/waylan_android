@@ -1,42 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <!--Color Theme-->
-    <!--Brand Colors-->
-    <attr name="colorBrand" format="color"/>
-    <!--Plane Colors-->
-    <attr name="colorBackground" format="color"/>
-    <attr name="colorSurface" format="color"/>
-    <attr name="colorAccentSurface" format="color"/>
-    <attr name="colorSubAccentSurface" format="color"/>
-    <attr name="colorBackgroundArea" format="color"/>
-    <attr name="colorBackgroundAreaVariant" format="color"/>
-    <attr name="colorSurfaceArea" format="color"/>
-    <attr name="colorSurfaceAreaVariant" format="color"/>
-    <attr name="colorAccentSurfaceArea" format="color"/>
-    <attr name="colorAccentSurfaceAreaVariant" format="color"/>
-    <attr name="colorSubAccentSurfaceArea" format="color"/>
-    <attr name="colorSubAccentSurfaceAreaVariant" format="color"/>
-    <attr name="colorError" format="color"/>
-    <attr name="colorErrorVariant" format="color"/>
+
     <attr name="colorInformative" format="color"/>
-    <!--On Colors-->
-    <attr name="colorPrimaryOnDefault" format="color"/>
-    <attr name="colorSecondaryOnDefault" format="color"/>
-    <attr name="colorTertiaryOnDefault" format="color"/>
-    <attr name="colorErrorOnDefault" format="color"/>
-    <attr name="colorPrimaryOnError" format="color"/>
-    <attr name="colorSecondaryOnError" format="color"/>
-    <attr name="colorTertiaryOnError" format="color"/>
+
+    <attr name="colorBackgroundArea" format="color"/>
+    <attr name="colorSurfaceArea" format="color"/>
+    <attr name="colorErrorArea" format="color"/>
+
     <attr name="colorOnInformative" format="color"/>
-    <!--Misc Colors-->
+    <attr name="colorOnBackgroundHighEmphasis" format="color"/>
+    <attr name="colorOnBackgroundMediumEmphasis" format="color"/>
+    <attr name="colorOnBackgroundLowEmphasis" format="color"/>
+    <attr name="colorOnSurfaceHighEmphasis" format="color"/>
+    <attr name="colorOnSurfaceMediumEmphasis" format="color"/>
+    <attr name="colorOnSurfaceLowEmphasis" format="color"/>
+    <attr name="colorOnErrorHighEmphasis" format="color"/>
+    <attr name="colorOnErrorMediumEmphasis" format="color"/>
+    <attr name="colorOnErrorLowEmphasis" format="color"/>
+
     <attr name="colorRipple" format="color"/>
     <attr name="colorScrim" format="color"/>
     <attr name="colorDivider" format="color"/>
     <attr name="colorHairline" format="color"/>
-    <attr name="colorAccentSurfaceHairline" format="color"/>
-    <attr name="colorSubAccentSurfaceHairline" format="color"/>
-
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>
@@ -44,10 +29,6 @@
     <attr name="styleChipOpen" format="reference"/>
     <attr name="styleEditTextArea" format="reference"/>
     <attr name="styleTextLabel" format="reference"/>
-
-    <!--Drawables-->
-    <!--TODO move to using MaterialShapeDrawables-->
-    <attr name="drawableSnackbarErrorBackground" format="reference"/>
-    <attr name="drawableSnackbarBackground" format="reference"/>
+    <attr name="styleBottomSheetStandard" format="reference"/>
 
 </resources>

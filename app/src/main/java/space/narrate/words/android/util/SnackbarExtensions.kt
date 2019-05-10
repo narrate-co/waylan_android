@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import com.google.android.material.snackbar.Snackbar
@@ -47,6 +48,8 @@ fun Snackbar.configError(context: Context, abovePeekedSheet: Boolean): Snackbar 
 /**
  * Given a Snackbar, alter it's background, message textRes appearance, button textRes appearance and
  * margins to create a floating card with rounded corners.
+ *
+ * TODO: Remove [abovePeekedSheet] and use anchorView instead.
  */
 @SuppressLint("ResourceType")
 private fun Snackbar.config(
@@ -55,31 +58,29 @@ private fun Snackbar.config(
         abovePeekedSheet: Boolean
 ): Snackbar {
     val params = view.layoutParams as ViewGroup.MarginLayoutParams
+    val keyline2 = context.resources.getDimensionPixelSize(R.dimen.keyline_2)
     val keyline3 = context.resources.getDimensionPixelSize(R.dimen.keyline_3)
-    val bottomOffset = if (abovePeekedSheet) context.resources.getDimensionPixelOffset(R.dimen.search_min_peek_height) else 0
-    params.setMargins(keyline3, keyline3 ,keyline3 , bottomOffset + (keyline3/2))
+    val bottomOffset = if (abovePeekedSheet) {
+        context.resources.getDimensionPixelOffset(R.dimen.search_min_peek_height)
+    } else {
+        0
+    }
+    params.setMargins(keyline2, 0 ,keyline2 , bottomOffset + (keyline3/2))
     view.layoutParams = params
 
-    val attrs = when (type) {
-        SnackbarType.ERROR -> intArrayOf(
-                R.attr.drawableSnackbarErrorBackground
-        )
-        SnackbarType.INFORMATIVE -> intArrayOf(
-                R.attr.drawableSnackbarBackground
-        )
+    val bgColorAttr = when (type) {
+        SnackbarType.ERROR -> R.attr.colorError
+        SnackbarType.INFORMATIVE -> R.attr.colorSurface
     }
 
-    val a = context.theme.obtainStyledAttributes(attrs)
-
-    val background = a.getDrawable(0)
+    val background = context.getDrawable(R.drawable.snackbar_background)
+    DrawableCompat.setTint(background, context.getColorFromAttr(bgColorAttr))
     val textAppearance = R.style.TextAppearance_Words_Body1
     val buttonTextAppearance = R.style.TextAppearance_Words_Button
     val textColor = when (type) {
-        SnackbarType.ERROR -> context.getColorFromAttr(R.attr.colorPrimaryOnError)
-        SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.colorPrimaryOnDefault)
+        SnackbarType.ERROR -> context.getColorFromAttr(R.attr.colorOnError)
+        SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.colorOnSurface)
     }
-
-    a.recycle()
 
     view.background = background
     ViewCompat.setElevation(view, 6F)

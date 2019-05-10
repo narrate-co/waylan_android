@@ -17,6 +17,8 @@ import space.narrate.words.android.R
 import space.narrate.words.android.data.disk.wordset.Synonym
 import java.util.*
 
+val isAtLeastQ: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+
 val String.fromHtml: Spanned
     @SuppressLint("NewApi")
     get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

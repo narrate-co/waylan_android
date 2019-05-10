@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:id="@+id/collapsed_container"
-    android:background="@drawable/search_background"
+    android:backgroundTint="?colorSurface"
     android:clickable="true"
     android:focusable="true"
-    android:elevation="16dp"
-    >
+    android:elevation="@dimen/plane_4">
     
     <FrameLayout
         android:id="@+id/shelf_container"
@@ -18,20 +17,18 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/search_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/search_box_height"
         android:layout_marginStart="@dimen/keyline_2"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/search_input_background"
         android:foregroundGravity="center_vertical"
-        android:minHeight="52dp"
         android:padding="@dimen/keyline_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,6 +105,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
