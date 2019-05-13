@@ -59,6 +59,7 @@ class BannerCardView @JvmOverloads constructor(
     private var listener: Listener? = null
 
     init {
+        elevation = resources.getDimension(R.dimen.plane_01)
         val view = View.inflate(context, R.layout.banner_card_veiw_layout, this)
         labelTextView = view.findViewById(R.id.label_text_view)
         bodyTextView = view.findViewById(R.id.body_text_view)

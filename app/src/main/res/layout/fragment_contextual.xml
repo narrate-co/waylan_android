@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:paddingBottom="@dimen/search_min_peek_height"
     android:clickable="true"
-    android:elevation="@dimen/plane_3"
+    android:elevation="@dimen/plane_01"
     android:focusable="true"
     android:backgroundTint="?colorSurface"
     android:clipChildren="true">

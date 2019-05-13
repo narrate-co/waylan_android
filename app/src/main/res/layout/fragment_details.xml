@@ -34,7 +34,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
+            app:elevation="@dimen/plane_00"
             android:background="@android:color/transparent"
             app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down"

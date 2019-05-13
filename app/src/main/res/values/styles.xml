@@ -21,7 +21,8 @@
     <style name="Widget.Words.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">?textAppearanceBody2</item>
         <item name="android:textColor">?colorOnBackgroundLowEmphasis</item>
-        <item name="chipBackgroundColor">?colorSurface</item>
+        <item name="chipBackgroundColor">@android:color/transparent</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="chipStrokeColor">@android:color/transparent</item>
         <item name="rippleColor">?colorRipple</item>
         <item name="chipStrokeWidth">0dp</item>
@@ -55,7 +56,6 @@
     <!--Alert Dialog-->
     <style name="ThemeOverlay.Words.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="dialogCornerRadius">@dimen/shape_large_corner_radius</item>
-        <item name="android:background">?colorSurface</item>
     </style>
 
     <!--Progress Underline-->

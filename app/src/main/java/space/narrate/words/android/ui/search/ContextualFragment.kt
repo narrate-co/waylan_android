@@ -1,5 +1,6 @@
 package space.narrate.words.android.ui.search
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -55,12 +56,17 @@ class ContextualFragment : BaseUserFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setBackground(view.contextualSheetRoot, MaterialShapeDrawable(
+        val materialShapeDrawable = MaterialShapeDrawable(
             requireContext(),
             null,
             R.attr.styleBottomSheetStandard,
             R.style.Widget_Words_BottomSheet_Standard
-        ))
+        ).apply {
+            initializeElevationOverlay(requireContext())
+            elevation = view.contextualSheetRoot.elevation
+            fillColor = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorSurface))
+        }
+        ViewCompat.setBackground(view.contextualSheetRoot, materialShapeDrawable)
 
         setUpSheet(view)
 

@@ -8,6 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
+import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.R
 
@@ -74,7 +75,12 @@ private fun Snackbar.config(
     }
 
     val background = context.getDrawable(R.drawable.snackbar_background)
-    DrawableCompat.setTint(background, context.getColorFromAttr(bgColorAttr))
+    val elevationOverlayProvider = ElevationOverlayProvider(context)
+    val backgroundTint = elevationOverlayProvider.layerOverlayIfNeeded(
+        context.getColorFromAttr(bgColorAttr),
+        context.resources.getDimension(R.dimen.plane_03)
+    )
+    DrawableCompat.setTint(background, backgroundTint)
     val textAppearance = R.style.TextAppearance_Words_Body1
     val buttonTextAppearance = R.style.TextAppearance_Words_Button
     val textColor = when (type) {

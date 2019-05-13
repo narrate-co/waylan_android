@@ -35,7 +35,7 @@
             app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down"
             android:background="@android:color/transparent"
-            app:elevation="0dp">
+            app:elevation="@dimen/plane_00">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbar_container"

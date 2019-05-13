@@ -1,5 +1,7 @@
 package space.narrate.words.android.ui.search
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -116,13 +118,17 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         actionOneImageView = view.findViewById(R.id.action_one_image_view)
         actionTwoImageView = view.findViewById(R.id.action_two_image_view)
 
-        ViewCompat.setBackground(collapsedContainer, MaterialShapeDrawable(
+        val materialShapeDrawable = MaterialShapeDrawable(
             requireContext(),
             null,
             R.attr.styleBottomSheetStandard,
             R.style.Widget_Words_BottomSheet_Standard
-        ))
-
+        ).apply {
+            initializeElevationOverlay(requireContext())
+            elevation = collapsedContainer.elevation
+            fillColor = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorSurface))
+        }
+        ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
         setUpSearchBar(view)
 

@@ -39,7 +39,7 @@
                 android:id="@+id/textAreaCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/plane_0"
+                app:cardElevation="@dimen/plane_00"
                 app:cardBackgroundColor="@android:color/transparent">
 
                 <LinearLayout

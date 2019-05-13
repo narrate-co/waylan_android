@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Words.DayNight" parent="Theme.Words.Light"/>
+    <style name="Theme.Words.DayNight" parent="Theme.Words"/>
 
-    <style name="Theme.Words.Light" parent="Theme.Words">
+    <style name="Theme.Words" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--Color-->
         <item name="colorPrimary">@color/words_color_brand</item>
         <item name="colorPrimaryVariant">@color/words_color_brand</item>
@@ -42,9 +42,7 @@
         <item name="colorScrim">@color/words_color_scrim</item>
         <item name="colorDivider">@color/words_color_divider</item>
         <item name="colorHairline">@color/words_color_hairline</item>
-    </style>
 
-    <style name="Theme.Words" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--Typography-->
         <item name="textAppearanceHeadline2">@style/TextAppearance.Words.Headline2</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.Words.Headline4</item>
@@ -78,7 +76,6 @@
         <item name="android:windowBackground">?android:colorBackground</item>
         <item name="colorControlHighlight">?colorRipple</item>
         <item name="android:navigationBarColor">?colorSurface</item>
-
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
     </style>

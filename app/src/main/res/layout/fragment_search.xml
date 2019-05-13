@@ -8,8 +8,8 @@
     android:backgroundTint="?colorSurface"
     android:clickable="true"
     android:focusable="true"
-    android:elevation="@dimen/plane_4">
-    
+    android:elevation="@dimen/plane_02">
+
     <FrameLayout
         android:id="@+id/shelf_container"
         android:layout_width="wrap_content"

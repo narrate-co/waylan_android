@@ -1,6 +1,7 @@
 package space.narrate.words.android.ui.dialog
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -8,9 +9,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import space.narrate.words.android.R
 import space.narrate.words.android.util.children
+import space.narrate.words.android.util.getColorFromAttr
 
 // TODO Have view models construct and send events to show dialogs with lists
 // TODO Remove night and orientation specific classes

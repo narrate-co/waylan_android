@@ -15,14 +15,14 @@ interface WordDao {
     fun insertAll(vararg word: Word)
 
     @Query("SELECT * FROM words WHERE word = :word")
-    fun getLive(word: String): LiveData<Word>
+    fun getLive(word: String): LiveData<Word?>
 
     @Query("SELECT * FROM words WHERE word = :word")
     fun get(word: String): Word?
 
     @Transaction
     @Query("SELECT * FROM words WHERE word = :word ORDER BY word")
-    fun getWordAndMeanings(word: String): LiveData<WordAndMeanings>
+    fun getWordAndMeanings(word: String): LiveData<WordAndMeanings?>
 
     @Query("SELECT * FROM words ORDER BY word ASC")
     fun getAll(): LiveData<List<Word>>

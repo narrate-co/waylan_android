@@ -25,7 +25,7 @@ class SearchViewModel @Inject constructor(
     private val searchInput: MutableLiveData<String> = MutableLiveData()
 
     val searchResults: LiveData<List<SearchItemModel>> = searchInput
-        .switchMapTransform { if (it.isEmpty()) getRecent(it) else getSearch(it) }
+        .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
 
@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(
         searchInput.value = ""
     }
 
-    private fun getRecent(input: String): LiveData<List<SearchItemModel>> {
+    private fun getRecent(): LiveData<List<SearchItemModel>> {
         return wordRepository.getUserWordRecents(25L)
             .mapTransform { recents -> recents.map { SearchItemModel.UserWordModel(it) } }
     }
@@ -81,19 +81,6 @@ class SearchViewModel @Inject constructor(
         logSearchWordEvent(id, item)
         _shouldShowDetails.value = Event(id)
     }
-
-//    /**
-//     * A LiveData object that an appropriate list of results based on the value of [searchInput].
-//     * When [searchInput], this LiveData's value will be updated to reflect either search results,
-//     * if [searchInput] is not blank, or a list of recently viewed words if it is.
-//     */
-//    val searchResults: LiveData<List<SearchItemModel>> = Transformations.switchMap(searchInputLive) {
-//        if (it.isEmpty()) {
-//            wordRepository.getUserWordRecents(25L) as LiveData<List<WordSource>>
-//        } else {
-//            wordRepository.getSearchWords(it)
-//        }
-//    }
 
     // A mutable live data backing object to be set when an orientation prompt should be shown
     // TODO create a SingularLiveData class to automatically clear a value after emitting a value

@@ -1,12 +1,9 @@
 package space.narrate.words.android.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.disk.AppDatabase
-import space.narrate.words.android.data.mw.PermissiveWordsDefinitions
 import space.narrate.words.android.data.firestore.FirestoreStore
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.words.GlobalWord
@@ -14,7 +11,6 @@ import space.narrate.words.android.data.mw.MerriamWebsterStore
 import space.narrate.words.android.data.spell.SymSpellStore
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataUtils
-import space.narrate.words.android.util.widget.MergedLiveData
 import kotlinx.coroutines.launch
 import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.disk.wordset.Word
@@ -37,7 +33,7 @@ class WordRepository(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    fun getWordsetWord(word: String): LiveData<Word> {
+    fun getWordsetWord(word: String): LiveData<Word?> {
         return db.wordDao().getLive(word)
     }
 
@@ -45,7 +41,7 @@ class WordRepository(
         return db.wordDao().load("$input%")
     }
 
-    fun getWordsetWordAndMeanings(word: String): LiveData<WordAndMeanings> {
+    fun getWordsetWordAndMeanings(word: String): LiveData<WordAndMeanings?> {
         return db.wordDao().getWordAndMeanings(word)
     }
 

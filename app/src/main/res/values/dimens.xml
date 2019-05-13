@@ -6,14 +6,6 @@
     <dimen name="keyline_3">16dp</dimen>
     <dimen name="keyline_4">24dp</dimen>
 
-    <!--Elevation-->
-    <dimen name="plane_0">0dp</dimen>
-    <dimen name="plane_1">4dp</dimen>
-    <dimen name="plane_2">8dp</dimen>
-    <dimen name="plane_3">16dp</dimen>
-    <dimen name="plane_4">24dp</dimen>
-    <dimen name="plane_5">32dp</dimen>
-
     <!--Shape-->
     <dimen name="shape_small_corner_radius">16dp</dimen>
     <dimen name="shape_medium_corner_radius">8dp</dimen>

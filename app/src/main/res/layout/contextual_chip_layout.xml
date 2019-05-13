@@ -11,4 +11,5 @@
     android:text="all time"
     android:textColor="?colorOnBackgroundMediumEmphasis"
     app:chipBackgroundColor="?colorSurfaceArea"
+    android:backgroundTint="?colorSurfaceArea"
     />

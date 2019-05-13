@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.details_component_examples.view.*
+import kotlinx.android.synthetic.main.details_examples_item_layout.view.*
 import space.narrate.words.android.R
 import space.narrate.words.android.data.disk.wordset.Example
-import kotlinx.android.synthetic.main.details_component_merriam_webster.view.*
-import kotlinx.android.synthetic.main.details_component_title.view.*
-import kotlinx.android.synthetic.main.details_component_wordset.view.*
+import kotlinx.android.synthetic.main.details_merriam_webster_item_layout.view.*
+import kotlinx.android.synthetic.main.details_title_item_layout.view.*
+import kotlinx.android.synthetic.main.details_wordset_item_layout.view.*
 import space.narrate.words.android.util.AdapterUtils
 import space.narrate.words.android.util.gone
 import space.narrate.words.android.util.toChip
@@ -25,7 +25,7 @@ sealed class DetailItemViewHolder<T : DetailItemModel>(
     class TitleViewHolder(
         parent: ViewGroup
     ): DetailItemViewHolder<DetailItemModel.TitleModel>(
-        AdapterUtils.inflate(parent, R.layout.details_component_title)
+        AdapterUtils.inflate(parent, R.layout.details_title_item_layout)
     ) {
         override fun bind(item: DetailItemModel.TitleModel) {
             view.detailsComponentTitleText.text = item.word
@@ -36,7 +36,7 @@ sealed class DetailItemViewHolder<T : DetailItemModel>(
         parent: ViewGroup,
         listener: DetailItemAdapter.Listener
     ): DetailItemViewHolder<DetailItemModel.MerriamWebsterModel>(
-        AdapterUtils.inflate(parent, R.layout.details_component_merriam_webster)
+        AdapterUtils.inflate(parent, R.layout.details_merriam_webster_item_layout)
     ) {
 
         private val merriamWebsterCard: MerriamWebsterCardView =
@@ -55,7 +55,7 @@ sealed class DetailItemViewHolder<T : DetailItemModel>(
         parent: ViewGroup,
         private val listener: DetailItemAdapter.Listener
     ): DetailItemViewHolder<DetailItemModel.WordsetModel>(
-        AdapterUtils.inflate(parent, R.layout.details_component_wordset)
+        AdapterUtils.inflate(parent, R.layout.details_wordset_item_layout)
     ) {
 
         override fun bind(item: DetailItemModel.WordsetModel) {
@@ -114,7 +114,7 @@ sealed class DetailItemViewHolder<T : DetailItemModel>(
         parent: ViewGroup,
         val listener: DetailItemAdapter.Listener
     ): DetailItemViewHolder<DetailItemModel.ExamplesModel>(
-        AdapterUtils.inflate(parent, R.layout.details_component_examples)
+        AdapterUtils.inflate(parent, R.layout.details_examples_item_layout)
     ) {
 
         override fun bind(item: DetailItemModel.ExamplesModel) {

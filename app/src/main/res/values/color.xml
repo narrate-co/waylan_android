@@ -97,6 +97,7 @@
 
     <color name="colorWhiteAlpha002">#05ffffff</color> <!--2% alpha-->
     <color name="colorWhiteAlpha005">#0Dffffff</color> <!--5% alpha-->
+    <color name="colorWhiteAlpha010">#1Affffff</color> <!--10% alpha-->
     <color name="colorWhiteAlpha025">#40ffffff</color> <!--25% alpha-->
     <color name="colorWhiteAlpha038">#61f7f3ed</color> <!--38% alpha-->
     <color name="colorWhiteAlpha060">#99f7f3ed</color> <!--60% alpha-->

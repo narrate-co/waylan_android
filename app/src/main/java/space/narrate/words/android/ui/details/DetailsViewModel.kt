@@ -8,6 +8,7 @@ import space.narrate.words.android.ui.Event
 import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.mapOnTransform
 import space.narrate.words.android.util.mapTransform
+import space.narrate.words.android.util.notNullTransform
 import space.narrate.words.android.util.switchMapTransform
 import space.narrate.words.android.util.widget.MergedLiveData
 import javax.inject.Inject
@@ -26,17 +27,22 @@ class DetailsViewModel @Inject constructor(
     val list: LiveData<List<DetailItemModel>> = _word
         .switchMapTransform { word ->
             DetailItemListMediatorLiveData().apply {
+
                 addSource(wordRepository.getWordsetWord(word).mapTransform {
-                    DetailItemModel.TitleModel(it.word)
+                    DetailItemModel.TitleModel(it?.word ?: word)
                 })
 
-                addSource(wordRepository.getWordsetWordAndMeanings(word).mapTransform {
-                    DetailItemModel.WordsetModel(it)
-                })
+                addSource(wordRepository.getWordsetWordAndMeanings(word)
+                    .notNullTransform()
+                    .mapTransform {
+                        DetailItemModel.WordsetModel(it)
+                    })
 
-                addSource(wordRepository.getWordsetWordAndMeanings(word).mapTransform {
-                    DetailItemModel.ExamplesModel(it.meanings.map { m -> m.examples }.flatten())
-                })
+                addSource(wordRepository.getWordsetWordAndMeanings(word)
+                    .notNullTransform()
+                    .mapTransform {
+                        DetailItemModel.ExamplesModel(it.meanings.map { m -> m.examples }.flatten())
+                    })
 
                 addSource(MergedLiveData(
                     wordRepository.getMerriamWebsterWord(word),
