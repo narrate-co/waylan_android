@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.util.widget.InsetFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="?android:windowBackground"
-    >
+    android:background="?android:windowBackground">
 
     <androidx.core.widget.NestedScrollView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -164,4 +163,4 @@
         android:background="?android:windowBackground"
         android:layout_gravity="top"/>
 
-</space.narrate.words.android.util.widget.InsetFrameLayout>
+</FrameLayout>

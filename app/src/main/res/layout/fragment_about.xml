@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/settings_coordinator"
+    android:id="@+id/coordinator_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?android:windowBackground"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="?android:windowBackground">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
@@ -29,14 +29,14 @@
                 android:text="@string/about_header_body" />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/version"
+                android:id="@+id/version_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="Version"
                 />
 
             <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/thirdPartyLibraries"
+                android:id="@+id/third_party_libs_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/about_third_party_lib_title"

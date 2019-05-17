@@ -12,10 +12,13 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import space.narrate.words.android.MainActivity
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.list.ListFragmentDirections
 import space.narrate.words.android.ui.list.ListType
+import space.narrate.words.android.util.widget.ElasticTransition
 
 
 /**
@@ -121,17 +124,12 @@ class HomeFragment: BaseUserFragment() {
     }
 
     private fun onMenuButtonClicked(type: ListType) {
-        (activity as? MainActivity)?.showListFragment(type)
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToListFragment(type)
+        )
     }
 
     private fun launchSettings() {
-        (activity as? MainActivity)?.launchSettings()
-    }
-
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "home_fragment_tag"
-
-        fun newInstance() = HomeFragment()
+        findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
     }
 }

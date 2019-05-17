@@ -48,7 +48,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
         private val wordTextView: AppCompatTextView = view.findViewById(R.id.word)
         private val partOfSpeechTextView: AppCompatTextView = view.findViewById(R.id.part_of_speech)
         private val definitionTextView: AppCompatTextView = view.findViewById(R.id.definition)
-        private val chipGroup: ChipGroup = view.findViewById(R.id.chip_group)
+        private val chipGroup: ChipGroup = view.findViewById(R.id.expanded_chip_group)
 
         override fun bind(item: ListItemModel.UserWordModel) {
             wordTextView.text = item.userWord.word
@@ -66,7 +66,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             item.userWord.synonymPreview.forEach {
                 val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
                 chipGroup.addView(
-                        synonym.toChip(view.context, view.chip_group) {
+                        synonym.toChip(view.context, view.expanded_chip_group) {
                             listener.onWordClicked(it.synonym)
                         }
                 )
@@ -88,7 +88,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
         private val wordTextView: AppCompatTextView = view.findViewById(R.id.word)
         private val partOfSpeechTextView: AppCompatTextView = view.findViewById(R.id.part_of_speech)
         private val definitionTextView: AppCompatTextView = view.findViewById(R.id.definition)
-        private val chipGroup: ChipGroup = view.findViewById(R.id.chip_group)
+        private val chipGroup: ChipGroup = view.findViewById(R.id.expanded_chip_group)
 
         override fun bind(item: ListItemModel.GlobalWordModel) {
             wordTextView.text = item.globalWord.word
@@ -106,7 +106,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             item.globalWord.synonymPreview.forEach {
                 val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
                 chipGroup.addView(
-                        synonym.toChip(view.context, view.chip_group) {
+                        synonym.toChip(view.context, view.expanded_chip_group) {
                             listener.onWordClicked(it.synonym)
                         }
                 )

@@ -1,7 +1,7 @@
 package space.narrate.words.android.ui.search
 
+import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
@@ -24,18 +25,18 @@ import space.narrate.words.android.*
 import space.narrate.words.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
+import androidx.fragment.app.FragmentActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.users.UserWordType
-import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.prefs.RotationManager
 import space.narrate.words.android.util.*
 import space.narrate.words.android.util.widget.DelayedLifecycleAction
+import space.narrate.words.android.util.widget.KeyboardManager
 import javax.inject.Inject
 
 /**
@@ -49,11 +50,6 @@ import javax.inject.Inject
  * seamless as possible.
  */
 class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener, TextWatcher {
-
-    companion object {
-        fun newInstance() = SearchFragment()
-        const val TAG = "SearchFragment"
-    }
 
     private lateinit var collapsedContainer: ConstraintLayout
     private lateinit var shelfContainer: FrameLayout
@@ -130,43 +126,104 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         }
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
-        setUpSearchBar(view)
-
-        setUpRecyclerView(view)
-
-        setUpSmartShelf(view)
-
-        sharedViewModel.currentUserWord.observe(this, Observer {
-            if (sharedViewModel.getBackStack().value?.peekOrNull == Navigator.HomeDestination.DETAILS) {
-                setShelfActionsForDetails(it)
-            }
-        })
-
         sharedViewModel.shouldOpenAndFocusSearch.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { focusAndOpenSearch() }
         })
 
-        setUpShelfActions(view)
-
         viewModel.shouldShowDetails.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
                 sharedViewModel.onChangeCurrentWord(it)
-                Navigator.showDetails(requireActivity())
+                (requireActivity() as MainActivity).findNavController()
+                    .navigate(R.id.action_global_detailsFragment)
             }
         })
 
+        sharedViewModel.currentDestination.observe(this, Observer {
+            when (it) {
+                Navigator.Destination.SETTINGS,
+                Navigator.Destination.ABOUT,
+                Navigator.Destination.THIRD_PARTY,
+                Navigator.Destination.DEV_SETTINGS -> {
+                    bottomSheetBehavior.isHideable = true
+                    bottomSheetBehavior.hide(requireActivity())
+                }
+                else -> {
+                    bottomSheetBehavior.isHideable = false
+                }
+            }
+        })
+
+        setUpSheet()
+
+        setUpSearchBar()
+
+        setUpRecyclerView()
+
+        setUpSmartShelf()
+
+        setUpShelfActions()
     }
 
-    override fun onEnterTransactionEnded() {
-        // TODO: Does this get called before onViewCreated? If so, remove.
-        println("onEnterTransactionEnded")
+    fun close(): Boolean {
+        return bottomSheetBehavior.collapse(requireActivity())
+    }
+
+    fun handleOnBackPressed(): Boolean {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED ||
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+            return close()
+        }
+        return false
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        recyclerView.setPadding(
+            insets.systemWindowInsetLeft,
+            recyclerView.paddingTop,
+            insets.systemWindowInsetRight,
+            getBottomInset(requireContext(), insets)
+        )
+
+        bottomSheetBehavior.peekHeight = getPeekHeight(requireContext(), insets)
+
+        return super.handleApplyWindowInsets(insets)
+    }
+
+    private fun setUpSheet() {
+
+        // Set max expanded height to 60% of screen height, the max height it can be expected that
+        // a person can reach with their thumb
+        val maxReachableExpandedHeight = Math.round(requireContext().displayHeightPx * .60F)
+        val searchItemHeight = requireContext().getDimensionPixelSizeFromAttr(android.R.attr.listPreferredItemHeight)
+        val minPeekHeight = resources.getDimensionPixelSize(R.dimen.search_min_peek_height)
+        val minVisibleHeightAboveKeyboard = minPeekHeight + (1.5 * searchItemHeight)
+
+        requireView().layoutParams?.height = maxReachableExpandedHeight
+
+        // Observe the height of the keyboard. If it is taller than the search bar + 1.5 search
+        // result list items (keep a few list items visible so the user knows there are immediate
+        // results), reset the height of the search sheet.
+        KeyboardManager(requireActivity(), collapsedContainer)
+                .getKeyboardHeightData()
+                .observe(this, Observer {
+                    val minHeight = Math.max(
+                            maxReachableExpandedHeight,
+                            (it.height + minVisibleHeightAboveKeyboard).toInt()
+                    )
+                    if (it.height != 0 && minHeight != requireView().layoutParams.height) {
+                        requireView().layoutParams.height = minHeight
+                    }
+                })
+
+        recyclerView.alpha = 0F
+        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+            recyclerView.alpha = MathUtils.normalize(offset, 0.2F, 1.0F, 0.0F, 1.0F)
+        }
     }
 
     // Set up textRes watchers and on focus changed listeners to help control the
     // hiding/showing of both the search sheet and the IME
-    private fun setUpSearchBar(view: View?) {
-        if (view == null) return
-
+    private fun setUpSearchBar() {
         searchEditText.addTextChangedListener(this)
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
@@ -186,8 +243,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
 
     // Set up the recycler view which holds recently viewed words when the search input field
     // is empty and search results when not.
-    private fun setUpRecyclerView(view: View?) {
-        if (view == null) return
+    private fun setUpRecyclerView() {
         //set up recycler view
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView.adapter = adapter
@@ -206,33 +262,10 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         })
     }
 
-    private fun setUpSmartShelf(view: View?) {
-        if (view == null) return
+    private fun setUpSmartShelf() {
 
-        // TODO remove and replace with automated UI tests
-        // If this is a debug build, set the share button to show the smart shelf, alternating the
-        // prompt each with each click
-        if (BuildConfig.DEBUG) {
-            actionTwoImageView.setOnClickListener(object : View.OnClickListener {
-                var clicks = 0
-                override fun onClick(v: View?) {
-                    val prompt = if (clicks % 2 == 0) {
-                        OrientationPrompt.LockToPortrait(Orientation.PORTRAIT)
-                    } else {
-                        OrientationPrompt.LockToLandscape(Orientation.LANDSCAPE)
-                    }
-                    expandSmartShelf(prompt)
-                    clicks++
-                }
-            })
-        }
-
-
-        // getOrientationPrompt broadcasts a value once and then immediately broadcasts a null
-        // value to avoid observers re-receiving the last value emitted. Listen for broadcasts
-        // and display the smart shelf if not null
-        viewModel.orientationPrompt.observe(this, Observer {
-            if (it != null) {
+        viewModel.shouldShowOrientationPrompt.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let {
                 DelayedLifecycleAction(this, 500) {
                     expandSmartShelf(it)
                 }
@@ -254,40 +287,22 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
     // animate in, compressing the search input field, when the DetailsFragment is the current
     // Fragment and animate out when the search sheet is expanded or DetailsFragment is not the
     // current Fragment
-    private fun setUpShelfActions(view: View?) {
-        if (view == null) return
-
+    private fun setUpShelfActions() {
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        sharedViewModel.getBackStack().observe(this, Observer {
-            val dest = it.peekOrNull ?: Navigator.HomeDestination.HOME
+        sharedViewModel.searchShelfModel.observe(this, Observer { model ->
             // wait for the next layout step to grantee the actions.width is correctly captured
-            view.post {
-                when (dest) {
-                    Navigator.HomeDestination.HOME -> {
-                        runShelfActionsAnimation(0)
+            view?.post {
+                when (model) {
+                    is SearchShelfActionsModel.DetailsShelfActions -> {
+                        runShelfActionsAnimation(2)
+                        setShelfActionsForDetails(model.userWord)
                     }
-                    Navigator.HomeDestination.TRENDING -> {
-                        // need to know: if current list has a filter applied
-                        val hasAppliedFilter = sharedViewModel.getCurrentListFilter().isNotEmpty()
-                        runShelfActionsAnimation(if (hasAppliedFilter) 0 else 1)
+                    is SearchShelfActionsModel.ListShelfActions -> {
+                        runShelfActionsAnimation(if (model.hasFilter) 0 else 1)
                         setShelfActionsForList()
                     }
-                    Navigator.HomeDestination.DETAILS -> {
-                        runShelfActionsAnimation(2)
-                        // setShelfActionsForDetails will be called by the observer of
-                        // MainViewModel's getCurrentFirestoreUserword()
-                    }
-                    else -> runShelfActionsAnimation(0)
+                    is SearchShelfActionsModel.None -> runShelfActionsAnimation(0)
                 }
-            }
-        })
-
-        // Show the filter action if the current HomeDestination has an applied filter and
-        // it is filterable (only TRENDING is filterable currently)
-        sharedViewModel.getCurrentListFilterLive().observe(this, Observer {
-            if (sharedViewModel.getBackStack().value?.peekOrNull == Navigator.HomeDestination.TRENDING) {
-                // Show the filter action if there is no filter applied
-                runShelfActionsAnimation(if (it.isEmpty()) 1 else 0)
             }
         })
 
@@ -295,17 +310,17 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             setSheetSlideOffsetForActions(
                     offset,
-                    (activity as MainActivity).contextualSheetCallback.currentSlide
+                    (requireActivity() as MainActivity).contextualSheetCallback.currentSlide
             )
         }
 
         // Hide filter action if contextual sheet is expanded
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = sharedViewModel.getBackStack().value?.peekOrNull
-                    ?: Navigator.HomeDestination.HOME
-            if (currentDest == Navigator.HomeDestination.TRENDING) {
+            val currentDest = sharedViewModel.currentDestination.value
+                ?: Navigator.Destination.HOME
+            if (currentDest == Navigator.Destination.TRENDING) {
                 setSheetSlideOffsetForActions(
-                        (activity as MainActivity).searchSheetCallback.currentSlide,
+                        (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
                         offset
                 )
             }
@@ -377,10 +392,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
                 smartSuggestion.smartButton.setOnClickListener {
                     // TODO create a custom smartLabel view that is able to change bounds
                     smartSuggestion.smartButton.text = getString(prompt.checkedText)
-
-                    viewModel.setOrientationPreference(prompt.orientationToRequest)
-                    (activity?.application as? App)?.updateOrientation()
-
+                    viewModel.onOrientationPromptClicked(prompt)
                 }
 
                 val display = activity!!.windowManager.defaultDisplay
@@ -410,9 +422,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
                 )
                 smartSuggestion.smartButton.setOnClickListener {
                     smartSuggestion.smartButton.text = getString(prompt.checkedText)
-
-                    viewModel.setOrientationPreference(prompt.orientationToRequest)
-                    (activity?.application as? App)?.updateOrientation()
+                    viewModel.onOrientationPromptClicked(prompt)
                 }
             }
         }
@@ -480,7 +490,6 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         searchContainer.startAnimation(animation)
     }
 
-
     /**
      * Set shelf actions according to [userWord]
      */
@@ -488,8 +497,6 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         if (userWord == null)  return
 
         val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-
-
 
         actionOneImageView.setOnClickListener {
             sharedViewModel.setCurrentWordFavorited(!isFavorited)
@@ -513,7 +520,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
     }
 
     override fun onWordClicked(searchItem: SearchItemModel) {
-        bottomSheetBehavior.collapse(activity)
+        close()
         viewModel.onWordClicked(searchItem)
     }
 
@@ -541,5 +548,19 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         // do nothing. Search banner should not have any buttons
     }
 
+    companion object {
+        const val TAG = "SearchFragment"
+
+        private fun getBottomInset(context: Context, insets: WindowInsetsCompat): Int {
+            return insets.systemWindowInsetBottom +
+                context.resources.getDimensionPixelSize(R.dimen.keyline_2)
+        }
+
+        fun getPeekHeight(context: Context, insets: WindowInsetsCompat): Int {
+            return context.resources.getDimensionPixelSize(
+                R.dimen.search_min_peek_height
+            ) + getBottomInset(context, insets)
+        }
+    }
 }
 

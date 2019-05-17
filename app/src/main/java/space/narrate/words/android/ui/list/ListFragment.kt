@@ -10,17 +10,22 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import space.narrate.words.android.*
-import space.narrate.words.android.data.analytics.NavigationMethod
 import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.search.ContextualFragment
 import space.narrate.words.android.util.*
 import space.narrate.words.android.util.widget.ElasticAppBarBehavior
+import space.narrate.words.android.util.widget.ElasticTransition
 
 /**
  * A flexible Fragment that handles the display of a [ListType]. Each [ListType] configuration is
@@ -33,33 +38,7 @@ class ListFragment:
     ListItemAdapter.ListItemListener,
     ElasticAppBarBehavior.ElasticViewBehaviorCallback {
 
-
-    companion object {
-        /**
-         * Static helper method to construct a [ListFragment] which displays a list of all
-         * trending words on Words.
-         */
-        fun newTrendingInstance(): ListFragment = newInstance(ListType.TRENDING)
-
-        /**
-         * Static helper method to construct a [ListFragment] which displays a list of all
-         * words the current user has recently viewed.
-         */
-        fun newRecentInstance(): ListFragment = newInstance(ListType.RECENT)
-
-        /**
-         * Static helper method to construct a [ListFragment] which displays a list of all words
-         * the current user has marked as favorite.
-         */
-        fun newFavoriteInstance(): ListFragment = newInstance(ListType.FAVORITE)
-
-        private fun newInstance(type: ListType): ListFragment {
-            val listFrag = ListFragment()
-            listFrag.listType = type
-            return listFrag
-        }
-    }
-
+    private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var appBar: AppBarLayout
     private lateinit var statusBarScrim: View
@@ -80,14 +59,18 @@ class ListFragment:
     private val viewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory)
             .get(ListViewModel::class.java).apply {
-                setListType(this@ListFragment.listType)
+                setListType(
+                    navArgs<ListFragmentArgs>().value.listType
+                )
             }
     }
 
-    // A variable to hold this instances [ListType], retrieved from the Fragment's arguments
-    var listType: ListType = ListType.TRENDING
-
     private val adapter by lazy { ListItemAdapter(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = ElasticTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,6 +82,11 @@ class ListFragment:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Postpone enter transition until we've set everything up.
+        postponeEnterTransition()
+
+        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
         navigationIcon = view.findViewById(R.id.navigation_icon)
         appBar = view.findViewById(R.id.app_bar)
         statusBarScrim = view.findViewById(R.id.status_bar_scrim)
@@ -112,7 +100,6 @@ class ListFragment:
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseUserFragment.setUnconsumedNavigationMethod]
-            setUnconsumedNavigationMethod(NavigationMethod.NAV_ICON)
             activity?.onBackPressed()
         }
 
@@ -131,6 +118,21 @@ class ListFragment:
         setUpReachabilityAppBar()
 
         setUpList()
+
+        // Start enter transition now that things are set up.
+        startPostponedEnterTransition()
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        coordinatorLayout.updatePadding(
+            insets.systemWindowInsetLeft,
+            insets.systemWindowInsetTop,
+            insets.systemWindowInsetRight
+        )
+        recyclerView.updatePadding(
+            bottom = ContextualFragment.getPeekHeight(requireContext(), insets)
+        )
+        return super.handleApplyWindowInsets(insets)
     }
 
     private fun setUpList() {
@@ -206,7 +208,7 @@ class ListFragment:
 
     override fun onWordClicked(word: String) {
         sharedViewModel.onChangeCurrentWord(word)
-        (requireActivity() as MainActivity).showDetails()
+        findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
     }
 
     override fun onBannerClicked() {
@@ -242,7 +244,7 @@ class ListFragment:
     }
 
     override fun onDragDismissed(): Boolean {
-        setUnconsumedNavigationMethod(NavigationMethod.DRAG_DISMISS)
+        sharedViewModel.onDragDismissBackEvent(ListFragment::class.java.simpleName)
         Handler().post { activity?.onBackPressed() }
         return true
     }

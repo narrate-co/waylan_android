@@ -63,3 +63,5 @@ fun ImageView.swapImageResource(imgRes: Int) {
     set.playSequentially(alphaOut, alphaIn)
     set.start()
 }
+
+

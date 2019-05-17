@@ -2,17 +2,17 @@ package space.narrate.words.android
 
 import androidx.lifecycle.*
 import space.narrate.words.android.data.analytics.AnalyticsRepository
-import space.narrate.words.android.data.analytics.NavigationMethod
 import space.narrate.words.android.data.firestore.users.UserWord
+import space.narrate.words.android.data.prefs.NightMode
+import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.di.UserScope
 import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.search.ContextualFilterModel
 import space.narrate.words.android.ui.search.Period
-import space.narrate.words.android.util.LiveDataUtils
-import space.narrate.words.android.util.peekOrNull
+import space.narrate.words.android.ui.search.SearchShelfActionsModel
 import space.narrate.words.android.util.switchMapTransform
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -26,12 +26,46 @@ class MainViewModel @Inject constructor(
         private val userRepository: UserRepository
 ) : ViewModel() {
 
-    // An internal representation of MainActivity's current Fragment backstack. This is used
-    // a) by [SearchFragment] when determining when it should show shelf actions and b) to better
-    // track and understand user navigation patterns.
-    // TODO move backStack into a BackStackViewModel or separate impl to hold a default
-    // TODO implementation to be reused across other host Activity VieWModels
-    private var backStack: MutableLiveData<Stack<Navigator.HomeDestination>> = MutableLiveData()
+    private val _currentDestination: MutableLiveData<Navigator.Destination> = MutableLiveData()
+    val currentDestination: LiveData<Navigator.Destination>
+        get() = _currentDestination
+
+    val searchShelfModel: LiveData<SearchShelfActionsModel> = currentDestination.switchMapTransform { dest ->
+        val result = MediatorLiveData<SearchShelfActionsModel>()
+        when (dest) {
+            Navigator.Destination.DETAILS -> result.addSource(currentUserWord) {
+                result.value = SearchShelfActionsModel.DetailsShelfActions(it)
+            }
+            Navigator.Destination.TRENDING -> result.addSource(userRepository.trendingListFilterLive) {
+                result.value = SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
+            }
+            else -> result.value = SearchShelfActionsModel.None
+        }
+
+        result
+    }
+
+    val contextualFilterModel: LiveData<ContextualFilterModel> = currentDestination.switchMapTransform { dest ->
+        val result = MediatorLiveData<ContextualFilterModel>()
+
+        result.addSource(
+            when (dest) {
+                Navigator.Destination.TRENDING -> userRepository.trendingListFilterLive
+                Navigator.Destination.RECENT -> userRepository.recentsListFilterLive
+                Navigator.Destination.FAVORITE -> userRepository.favoritesListFilterLive
+                else -> {
+                    // TODO : Clean up
+                    val data = MutableLiveData<List<Period>>()
+                    data.value = emptyList()
+                    data
+                }
+            }
+        ) { filter ->
+            result.value = ContextualFilterModel(dest, filter, dest == Navigator.Destination.TRENDING)
+        }
+
+        result
+    }
 
     // A backing field for the word (as it appears in the dictionary) which should currently be
     // displayed by [DetailsFragment]. This is used instead of alternatives like passing the word
@@ -40,8 +74,14 @@ class MainViewModel @Inject constructor(
     val currentWord: LiveData<String>
         get() = _currentWord
 
-    val currentUserWord: LiveData<UserWord>
+    private val currentUserWord: LiveData<UserWord>
         get() = currentWord.switchMapTransform { wordRepository.getUserWord(it) }
+
+    val nightMode: LiveData<NightMode>
+        get() = userRepository.nightModeLive
+
+    val orientation: LiveData<Orientation>
+        get() = userRepository.orientationLockLive
 
     private val _shouldShowDetails: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<Boolean>>
@@ -81,6 +121,26 @@ class MainViewModel @Inject constructor(
         setCurrentWordRecented()
     }
 
+    fun onDragDismissBackEvent(currentDestination: String) {
+        analyticsRepository.logDragDismissEvent(currentDestination)
+    }
+
+    fun onListFilterPeriodClicked(period: Period) {
+        setListFilter(listOf(period))
+    }
+
+    fun onClearListFilter() {
+        setListFilter(emptyList())
+    }
+
+    fun onContextualSheetHidden() {
+        onClearListFilter()
+    }
+
+    fun onDestinationChanged(destination: Navigator.Destination) {
+        _currentDestination.value = destination
+    }
+
     /**
      * Add [currentWord]'s value (a word as it appears in the dictionary) to the current user's
      * list of favorited words.
@@ -103,73 +163,14 @@ class MainViewModel @Inject constructor(
         wordRepository.setUserWordRecent(id)
     }
 
-    /**
-     * @return A LiveData object that represents the current Fragment backstack for [MainActivity]
-     */
-    fun getBackStack(): LiveData<Stack<Navigator.HomeDestination>> {
-        return backStack
-    }
 
-    /**
-     * Add [dest] to the internally maintained Fragment backstack for [MainActivity]
-     */
-    fun onNavigatedTo(dest: Navigator.HomeDestination) {
-        val stack = backStack.value ?: Stack()
-        stack.push(dest)
-        backStack.value = stack
-    }
-
-    /**
-     * Pop the last [Navigator.HomeDestination] from the internally maintained Fragment backstack
-     * for [MainActivity]. This method also handles reporting back navigation methods depending on
-     * the value of [unconsumedNavigationMethod].
-     */
-    fun onNavigatedFrom(unconsumedNavigationMethod: NavigationMethod?) {
-        val stack = backStack.value
-
-        if (unconsumedNavigationMethod != null) {
-            // this nav is coming from either a nav_icon click or a drag_dismiss
-            analyticsRepository.logNavigateBackEvent(stack.toString(), unconsumedNavigationMethod)
-        } else {
-            analyticsRepository.logNavigateBackEvent(stack.toString(), NavigationMethod.BACK_BUTTON)
-        }
-
-
-        stack?.pop()
-        if (stack != null) backStack.value = stack
-    }
-
-    fun getCurrentListFilter(): List<Period> {
-        val dest = backStack.value?.peekOrNull ?: Navigator.HomeDestination.HOME
-
-        return when (dest) {
-            Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter
-            Navigator.HomeDestination.RECENT -> userRepository.recentsListFilter
-            Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilter
-            else -> emptyList()
-        }
-    }
-
-    fun getCurrentListFilterLive(): LiveData<List<Period>> {
-        return Transformations.switchMap(getBackStack()) {
-            val dest = it.peekOrNull ?: Navigator.HomeDestination.HOME
-            when (dest) {
-                Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilterLive
-                Navigator.HomeDestination.RECENT -> userRepository.recentsListFilterLive
-                Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilterLive
-                else -> LiveDataUtils.empty()
-            }
-        }
-    }
-
-
-    fun setListFilter(filter: List<Period>) {
-        val dest = backStack.value?.peekOrNull ?: Navigator.HomeDestination.HOME
+    private fun setListFilter(filter: List<Period>) {
+        val dest = currentDestination.value ?: Navigator.Destination.HOME
 
         when (dest) {
-            Navigator.HomeDestination.TRENDING -> userRepository.trendingListFilter = filter
-            Navigator.HomeDestination.RECENT -> userRepository.recentsListFilter = filter
-            Navigator.HomeDestination.FAVORITE -> userRepository.favoritesListFilter = filter
+            Navigator.Destination.TRENDING -> userRepository.trendingListFilter = filter
+            Navigator.Destination.RECENT -> userRepository.recentsListFilter = filter
+            Navigator.Destination.FAVORITE -> userRepository.favoritesListFilter = filter
         }
     }
 

@@ -29,8 +29,8 @@ private enum class SnackbarType {
  *  the [SearchFragment] and should be given additional vertical offset to show above the peeked
  *  bottom search sheet.
  */
-fun Snackbar.configInformative(context: Context, abovePeekedSheet: Boolean): Snackbar {
-    return config(SnackbarType.INFORMATIVE, context, abovePeekedSheet)
+fun Snackbar.configInformative(context: Context): Snackbar {
+    return config(SnackbarType.INFORMATIVE, context)
 }
 
 /**
@@ -42,8 +42,8 @@ fun Snackbar.configInformative(context: Context, abovePeekedSheet: Boolean): Sna
  *  the [SearchFragment] and should be given additional vertical offset to show above the peeked
  *  bottom search sheet.
  */
-fun Snackbar.configError(context: Context, abovePeekedSheet: Boolean): Snackbar {
-    return config(SnackbarType.ERROR, context, abovePeekedSheet)
+fun Snackbar.configError(context: Context): Snackbar {
+    return config(SnackbarType.ERROR, context)
 }
 
 /**
@@ -55,20 +55,8 @@ fun Snackbar.configError(context: Context, abovePeekedSheet: Boolean): Snackbar 
 @SuppressLint("ResourceType")
 private fun Snackbar.config(
         type: SnackbarType,
-        context: Context,
-        abovePeekedSheet: Boolean
+        context: Context
 ): Snackbar {
-    val params = view.layoutParams as ViewGroup.MarginLayoutParams
-    val keyline2 = context.resources.getDimensionPixelSize(R.dimen.keyline_2)
-    val keyline3 = context.resources.getDimensionPixelSize(R.dimen.keyline_3)
-    val bottomOffset = if (abovePeekedSheet) {
-        context.resources.getDimensionPixelOffset(R.dimen.search_min_peek_height)
-    } else {
-        0
-    }
-    params.setMargins(keyline2, 0 ,keyline2 , bottomOffset + (keyline3/2))
-    view.layoutParams = params
-
     val bgColorAttr = when (type) {
         SnackbarType.ERROR -> R.attr.colorError
         SnackbarType.INFORMATIVE -> R.attr.colorSurface

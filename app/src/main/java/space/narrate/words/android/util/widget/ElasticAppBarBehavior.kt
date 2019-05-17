@@ -412,29 +412,30 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onNestedScroll(
-            coordinatorLayout: CoordinatorLayout,
-            child: AppBarLayout,
-            target: View,
-            dxConsumed: Int,
-            dyConsumed: Int,
-            dxUnconsumed: Int,
-            dyUnconsumed: Int,
-            type: Int
+        coordinatorLayout: CoordinatorLayout,
+        child: AppBarLayout,
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int,
+        consumed: IntArray
     ) {
         dragScaleVertical(coordinatorLayout, dyUnconsumed)
         dragScaleHorizontal(coordinatorLayout, dxUnconsumed)
 
         if (!hasStartedVerticalDrag) {
             super.onNestedScroll(
-                    coordinatorLayout,
-                    child,
-                    target,
-                    dxConsumed,
-                    dyConsumed,
-                    dxUnconsumed,
-                    dyUnconsumed,
-                    type
-            )
+                coordinatorLayout,
+                child,
+                target,
+                dxConsumed,
+                dyConsumed,
+                dxUnconsumed,
+                dyUnconsumed,
+                type,
+                consumed)
         }
     }
 

@@ -4,7 +4,6 @@ data class SnackbarModel(
     val textRes: Int,
     val length: Int = LENGTH_SHORT,
     val isError: Boolean = false,
-    val abovePeekedSheet: Boolean = false,
     val actionRes: Int? = null
 ) {
     companion object {

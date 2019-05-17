@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.*
 import space.narrate.words.android.billing.BillingConfig
@@ -20,6 +24,7 @@ import space.narrate.words.android.util.gone
 import space.narrate.words.android.util.visible
 import space.narrate.words.android.util.widget.BannerCardView
 import space.narrate.words.android.util.widget.CheckPreferenceView
+import space.narrate.words.android.util.widget.ElasticTransition
 import javax.inject.Inject
 
 /**
@@ -43,7 +48,8 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     @Inject
     lateinit var billingManger: BillingManager
 
-    private lateinit var settingsCoordinatorLayout: CoordinatorLayout
+    private lateinit var coordinatorLayout: CoordinatorLayout
+    private lateinit var scrollView: NestedScrollView
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var bannerCardView: BannerCardView
     private lateinit var nightModePreference: CheckPreferenceView
@@ -60,6 +66,11 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
             .get(SettingsViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = ElasticTransition()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +81,11 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        settingsCoordinatorLayout = view.findViewById(R.id.settings_coordinator)
+
+        postponeEnterTransition()
+
+        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
+        scrollView = view.findViewById(R.id.scroll_view)
         navigationIcon = view.findViewById(R.id.navigation_icon)
         bannerCardView = view.findViewById(R.id.banner)
         nightModePreference = view.findViewById(R.id.night_mode_preference)
@@ -80,7 +95,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         contactPreference = view.findViewById(R.id.contact_preference)
         developerPreference = view.findViewById(R.id.developer_preference)
 
-        navigationIcon.setOnClickListener { activity?.onBackPressed() }
+        navigationIcon.setOnClickListener { requireActivity().onBackPressed() }
 
         viewModel.shouldLaunchAuth.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { Navigator.launchAuth(requireContext(), it) }
@@ -88,7 +103,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
         viewModel.shouldLaunchMwPurchaseFlow.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
-                billingManger.initiatePurchaseFlow(activity!!, BillingConfig.SKU_MERRIAM_WEBSTER)
+                billingManger.initiatePurchaseFlow(requireActivity(), BillingConfig.SKU_MERRIAM_WEBSTER)
             }
         })
 
@@ -102,7 +117,9 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         signOutPreference.setOnClickListener { viewModel.onSignOutClicked() }
 
         // About preference
-        aboutPreference.setOnClickListener { (requireActivity() as SettingsActivity).showAbout() }
+        aboutPreference.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_aboutFragment)
+        }
 
         // Contact preference
         // If debug, there will be a developer settings item after this preference. Show divider
@@ -112,11 +129,11 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
                 Navigator.launchEmail(context!!, SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
             } catch (e: ActivityNotFoundException) {
                 Snackbar.make(
-                    settingsCoordinatorLayout,
+                    coordinatorLayout,
                     getString(R.string.settings_email_compose_no_client_error),
                     Snackbar.LENGTH_SHORT
                 )
-                    .configError(context!!, false)
+                    .configError(requireContext())
                     .show()
             }
         }
@@ -125,8 +142,22 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         // TODO further lock this down. Possibly by user?
         developerPreference.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
         developerPreference.setOnClickListener {
-            (requireActivity() as SettingsActivity).showDeveloperSettings()
+            findNavController().navigate(R.id.action_settingsFragment_to_developerSettingsFragment)
         }
+
+        startPostponedEnterTransition()
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        coordinatorLayout.updatePadding(
+            insets.systemWindowInsetLeft,
+            insets.systemWindowInsetTop,
+            insets.systemWindowInsetRight
+        )
+        scrollView.updatePadding(
+            bottom = insets.systemWindowInsetBottom
+        )
+        return super.handleApplyWindowInsets(insets)
     }
 
     private fun setUpBanner() {
@@ -180,7 +211,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
             .onItemSelected { item ->
                 viewModel.onNightModeSelected(item)
                 // TODO Make App observe this instead of calling down
-                (requireActivity().application as App).updateNightMode()
+//                (requireActivity().application as App).updateNightMode()
                 true
             }
             .show()
@@ -190,7 +221,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         RadioGroupAlertDialog(requireContext(), items)
             .onItemSelected { item ->
                 viewModel.onOrientationSelected(item)
-                (requireActivity().application as App).updateOrientation()
+//                (requireActivity().application as App).updateOrientation()
                 true
             }
             .show()
@@ -213,11 +244,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     }
 
     companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "settings_fragment_tag"
-
         const val SUPPORT_EMAIL_ADDRESS = "words@narrate.space"
-
-        fun newInstance() = SettingsFragment()
     }
 }

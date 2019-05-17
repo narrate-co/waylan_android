@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contextualSheetRoot"
+    android:id="@+id/contextual_frame"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:paddingBottom="@dimen/search_min_peek_height"
@@ -16,14 +16,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/collapsed_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/contextual_peek_bar_height"
+        android:layout_height="@dimen/contextual_collapsed_container_height"
         android:layout_gravity="top"
         android:alpha="0"
-        tools:alpha="1"
-        >
+        tools:alpha="1">
 
         <HorizontalScrollView
-            android:id="@+id/collapsedHorizontalScrollView"
+            android:id="@+id/collapsed_hztl_scroll_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -33,18 +32,18 @@
             android:paddingEnd="12dp"
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/close"
+            app:layout_constraintEnd_toStartOf="@+id/close_image_view"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/collapsedChipGroup"
+                android:id="@+id/collapsed_chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </HorizontalScrollView>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/close"
+            android:id="@+id/close_image_view"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
@@ -63,7 +62,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/expandedContainer"
+        android:id="@+id/expanded_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
@@ -71,7 +70,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
+            android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -79,12 +78,12 @@
             android:layout_marginBottom="8dp"
             android:text="Filter"
             android:textAppearance="?textAppearanceSubtitle2"
-            app:layout_constraintBottom_toTopOf="@+id/collapsedBarGuideline"
+            app:layout_constraintBottom_toTopOf="@+id/collapsed_bar_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/subtitle"
+            android:id="@+id/subtitle_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -92,17 +91,17 @@
             android:text="Period"
             android:textAppearance="?textAppearanceCaption"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/collapsedBarGuideline" />
+            app:layout_constraintTop_toTopOf="@+id/collapsed_bar_guideline" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/collapsedBarGuideline"
+            android:id="@+id/collapsed_bar_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="52dp" />
 
         <HorizontalScrollView
-            android:id="@+id/expandedHorizontalScrollView"
+            android:id="@+id/expanded_hztl_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -110,10 +109,10 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle">
+            app:layout_constraintTop_toBottomOf="@+id/subtitle_text_view">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
+                android:id="@+id/expanded_chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

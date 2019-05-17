@@ -5,21 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.ui.list.ListItemDividerDecoration
 import space.narrate.words.android.Navigator
+import space.narrate.words.android.util.widget.ElasticTransition
 
 /**
  * A simple fragment that displays a static list of [ThirdPartyLibrary]
  */
 class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter.Listener {
 
+    private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var recyclerView: RecyclerView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = ElasticTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +41,8 @@ class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
         navigationIcon = view.findViewById(R.id.navigation_icon)
         recyclerView = view.findViewById(R.id.recycler_view)
 
@@ -39,6 +51,17 @@ class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter
         }
 
         setUpList()
+        startPostponedEnterTransition()
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        coordinatorLayout.updatePadding(
+            insets.systemWindowInsetLeft,
+            insets.systemWindowInsetTop,
+            insets.systemWindowInsetRight
+        )
+        recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
+        return super.handleApplyWindowInsets(insets)
     }
 
     private fun setUpList() {
@@ -56,12 +79,5 @@ class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter
 
     override fun onClick(lib: ThirdPartyLibrary) {
         Navigator.launchWebsite(context!!, lib.url)
-    }
-
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "third_party_library_fragment_tag"
-
-        fun newInstance() = ThirdPartyLibrariesFragment()
     }
 }

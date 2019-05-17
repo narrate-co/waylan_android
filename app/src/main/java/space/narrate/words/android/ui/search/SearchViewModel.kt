@@ -3,6 +3,7 @@ package space.narrate.words.android.ui.search
 import androidx.lifecycle.*
 import space.narrate.words.android.R
 import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.data.prefs.*
@@ -21,17 +22,20 @@ class SearchViewModel @Inject constructor(
         private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
-    // A live data copy of [searchInput] to be observed by [searchResults]
     private val searchInput: MutableLiveData<String> = MutableLiveData()
 
     val searchResults: LiveData<List<SearchItemModel>> = searchInput
         .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
-
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
         get() = _shouldShowDetails
+
+    private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPrompt>>
+        = MutableLiveData()
+    val shouldShowOrientationPrompt: LiveData<Event<OrientationPrompt>>
+        get() = _shouldShowOrientationPrompt
 
     init {
         searchInput.value = ""
@@ -71,31 +75,16 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onWordClicked(item: SearchItemModel) {
-        val id = when (item) {
+        val word = when (item) {
             is SearchItemModel.WordModel -> item.word.word
             is SearchItemModel.UserWordModel -> item.userWord.word
             is SearchItemModel.SuggestModel -> item.suggestItem.term
             else -> return
         }
 
-        logSearchWordEvent(id, item)
-        _shouldShowDetails.value = Event(id)
+        analyticsRepository.logSearchWordEvent(word, word, item::class.java.simpleName)
+        _shouldShowDetails.value = Event(word)
     }
-
-    // A mutable live data backing object to be set when an orientation prompt should be shown
-    // TODO create a SingularLiveData class to automatically clear a value after emitting a value
-    // TODO something like RxJava's Single
-    private val _orientationPrompt: MutableLiveData<OrientationPrompt?> = MutableLiveData()
-
-    /**
-     * A LiveData object that broadcasts [OrientationPrompt]s when prompts should be immediately
-     * shown. After an [OrientationPrompt] is set as the value, the the value immediately return
-     * to null. This is becuase orientation prompts are extremely "timely" events and should only
-     * be acted on the instant they are seen. The value will return to null to avoid observers
-     * resubscribing and being passed the last value seen, which would then be an out-dated (no
-     * longer timely prompt)
-     */
-    val orientationPrompt: LiveData<OrientationPrompt?> = _orientationPrompt
 
     /**
      * Set the users [Orientation] preference. This preferenced is watched by the app, which will
@@ -104,19 +93,8 @@ class SearchViewModel @Inject constructor(
      *
      * @param orientation The orientation the app should be set to
      */
-    fun setOrientationPreference(orientation: Orientation) {
-        userRepository.orientationLock = orientation
-    }
-
-    /**
-     * Log a user having searched for a word and clicked on a result.
-     *
-     * @see [AnalyticsRepository.EVENT_SEARCH_WORD] for more details
-     */
-    private fun logSearchWordEvent(id: String, item: SearchItemModel) {
-        searchInput.value?.let {
-            analyticsRepository.logSearchWordEvent(it, id, item::class.java.simpleName)
-        }
+    fun onOrientationPromptClicked(orientationPrompt: OrientationPrompt) {
+        userRepository.orientationLock = orientationPrompt.orientationToRequest
     }
 
 
@@ -137,18 +115,16 @@ class SearchViewModel @Inject constructor(
         if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
             if (userRepository.portraitToLandscapeOrientationChangeCount == 2L) {
-                _orientationPrompt.value = OrientationPrompt.LockToLandscape(
-                        Orientation.fromActivityInfoScreenOrientation(new.orientation)
-                )
-                _orientationPrompt.value = null
+                _shouldShowOrientationPrompt.value = Event(OrientationPrompt.LockToLandscape(
+                    Orientation.fromActivityInfoScreenOrientation(new.orientation)
+                ))
             }
         } else if (RotationUtils.isLandscapeToPortrait(old, new)) {
             userRepository.landscapeToPortraitOrientationChangeCount++
             if (userRepository.landscapeToPortraitOrientationChangeCount == 1L) {
-                _orientationPrompt.value = OrientationPrompt.LockToPortrait(
-                        Orientation.fromActivityInfoScreenOrientation(new.orientation)
-                )
-                _orientationPrompt.value = null
+                _shouldShowOrientationPrompt.value = Event(OrientationPrompt.LockToPortrait(
+                    Orientation.fromActivityInfoScreenOrientation(new.orientation)
+                ))
             }
         }
     }
@@ -165,8 +141,9 @@ class SearchViewModel @Inject constructor(
                         System.nanoTime()
                 )) {
             //should suggest unlocking
-            _orientationPrompt.value = OrientationPrompt.UnlockOrientation(Orientation.UNSPECIFIED)
-            _orientationPrompt.value = null
+            _shouldShowOrientationPrompt.value = Event(OrientationPrompt.UnlockOrientation(
+                Orientation.UNSPECIFIED
+            ))
         }
     }
 

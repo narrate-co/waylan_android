@@ -5,28 +5,38 @@ import android.os.Bundle
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import space.narrate.words.android.ui.common.BaseUserActivity
+import dagger.android.support.DaggerAppCompatActivity
+import space.narrate.words.android.data.prefs.NightMode
+import space.narrate.words.android.data.prefs.Orientation
+import space.narrate.words.android.ui.home.HomeFragment
 import space.narrate.words.android.ui.list.ListFragment
+import space.narrate.words.android.ui.list.ListFragmentArgs
+import space.narrate.words.android.ui.list.ListType
 import space.narrate.words.android.ui.search.ContextualFragment
 import space.narrate.words.android.ui.search.SearchFragment
 import space.narrate.words.android.ui.search.BottomSheetCallbackCollection
 import space.narrate.words.android.util.*
 import space.narrate.words.android.util.widget.KeyboardManager
-import space.narrate.words.android.ui.list.ListType
+import javax.inject.Inject
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
  * main destination ([HomeFragment], [ListFragment] and [DetailsFragment]).
  */
-class MainActivity : BaseUserActivity() {
+class MainActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var searchFragment: SearchFragment
     private lateinit var contextualFragment: ContextualFragment
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var bottomSheetScrimView: View
-
 
     /**
      * A single callback aggregator which attached added to [SearchFragment]'s BottomSheetBehavior.
@@ -56,17 +66,28 @@ class MainActivity : BaseUserActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ensureAppHasUser(application as App)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
         // Tell the system that we'd like to be laid out behind the system bars and handle insets
         // ourselves. This is used because MainActivity's child Fragments use
         // [ElasticAppBarBehavior] and we'd like each fragment to extend to the top
         // of the window. When dragging down the fragment pulls down off the top of the screen,
         // and from under the status bar.
-        window.decorView.systemUiVisibility =
-                window.decorView.systemUiVisibility or
+        val decor = window.decorView
+        val flags = decor.systemUiVisibility or
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        decor.systemUiVisibility = flags
+
+        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
+            // TODO: Move mapping into Navigator.Destination
+            sharedViewModel.onDestinationChanged(
+                Navigator.Destination.fromDestinationId(destination, arguments)
+            )
+        }
 
         searchFragment =
             supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
@@ -76,25 +97,32 @@ class MainActivity : BaseUserActivity() {
         bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
         sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
-            event.getUnhandledContent()?.let { showDetails() }
+            event.getUnhandledContent()?.let {
+                findNavController().navigate(R.id.action_homeFragment_to_detailsFragment)
+            }
         })
 
-        if (savedInstanceState == null) {
-            showHome()
-        }
+        sharedViewModel.nightMode.observe(this, Observer {
+            setLocalNightMode(it)
+        })
+
+        sharedViewModel.orientation.observe(this, Observer {
+            setOrientation(it)
+        })
 
         processText(intent)
 
-        setUpSearchSheet()
+        setUpScrimView()
 
-        setUpContextualSheet()
+//        setUpSearchSheet()
+
+//        setUpContextualSheet()
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         processText(intent)
     }
-
 
     /**
      * Handle an intent that contains [Intent.ACTION_PROCESS_TEXT] given to this Activity either
@@ -108,6 +136,22 @@ class MainActivity : BaseUserActivity() {
         )
     }
 
+    private fun ensureAppHasUser(app: App) {
+        // TODO rework Dagger configuration to avoid this?
+        // When the app's process is killed and restarted, the system occasionally attempts
+        // to restore the app directly into a UserScope'ed state. If this happens, injecting
+        // will fail. This check avoids injection crashing by setting a null user and setting
+        // a temporary, invalid user and kicking out to AuthActivity
+        if (!app.hasUser) {
+            app.setUser(null)
+            Navigator.launchAuth(this)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            finish()
+        }
+    }
+
+    fun findNavController(): NavController = findNavController(R.id.nav_host_fragment)
+
     /**
      * This method expects to receive all back events from all child Fragments and back
      * navigation methods. It determines a) if the back event should close an opened
@@ -119,8 +163,6 @@ class MainActivity : BaseUserActivity() {
      */
     override fun onBackPressed() {
         if (maybeConsumeOnBackPressed()) return
-        sharedViewModel.onNavigatedFrom(unconsumedNavigationMethod)
-        unconsumedNavigationMethod = null
         super.onBackPressed()
     }
 
@@ -133,46 +175,18 @@ class MainActivity : BaseUserActivity() {
      */
     private fun maybeConsumeOnBackPressed(): Boolean {
         var consumed = false
-        if (searchSheetBehavior.collapse(this)) {
+        if (searchFragment.handleOnBackPressed()) {
             consumed = true
         }
-        if (contextualSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED &&
-                contextualSheetBehavior.collapse(this)) {
+
+        if (contextualFragment.handleOnBackPressed()) {
             consumed = true
         }
 
         return consumed
     }
 
-    /**
-     * Configure [SearchFragment] and its [BottomSheetBehavior]
-     */
-    private fun setUpSearchSheet() {
-
-        // Set max expanded height to 60% of screen height, the max height it can be expected that
-        // a person can reach with their thumb
-        val maxReachableExpandedHeight = Math.round(displayHeightPx * .60F)
-        val searchItemHeight = getDimensionPixelSizeFromAttr(android.R.attr.listPreferredItemHeight)
-        val minPeekHeight = resources.getDimensionPixelSize(R.dimen.search_min_peek_height)
-        val minVisibleHeightAboveKeyboard = minPeekHeight + (1.5 * searchItemHeight)
-
-        searchFragment.view?.layoutParams?.height = maxReachableExpandedHeight
-
-        // Observe the height of the keyboard. If it is taller than the search bar + 1.5 search
-        // result list items (keep a few list items visible so the user knows there are immediate
-        // results), reset the height of the search sheet.
-        KeyboardManager(this, coordinatorLayout)
-                .getKeyboardHeightData()
-                .observe(this, Observer {
-                    val minHeight = Math.max(
-                            maxReachableExpandedHeight,
-                            (it.height + minVisibleHeightAboveKeyboard).toInt()
-                    )
-                    if (it.height != 0 && minHeight != searchFragment.view?.layoutParams?.height) {
-                        searchFragment.view?.layoutParams?.height = minHeight
-                    }
-                })
-
+    private fun setUpScrimView() {
 
         // Show a scrim behind the search sheet when it is expanded by setting the scrims
         // alpha to match the bottom sheet's slide offset.
@@ -180,10 +194,20 @@ class MainActivity : BaseUserActivity() {
             setBottomSheetScrimAlpha(searchSlide, contextualSheetCallback.currentSlide)
         }
 
+        // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
+        // when either bottom sheet is not resting, hence the use of Math.max
+        contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
+            setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
+        }
+
         // Set the scrims visibility to gone if the search sheet is collapsed, otherwise make it
         // visible
         searchSheetCallback.addOnStateChangedAction { _, newState ->
             setBottomSheetScrimVisibility(newState, contextualSheetCallback.currentState)
+        }
+
+        contextualSheetCallback.addOnStateChangedAction { _, newState ->
+            setBottomSheetScrimVisibility(searchSheetCallback.currentState, newState)
         }
 
         // Hide keyboard if sheet is manually dragged and collapsed
@@ -195,41 +219,14 @@ class MainActivity : BaseUserActivity() {
             }
         }
 
-        // collapse the search sheet if it's scrim is touched
         bottomSheetScrimView.setOnClickListener {
-            searchSheetBehavior.collapse(this)
-            contextualSheetBehavior.collapse(this)
-        }
-
-        // add the search sheet callback to the bottom sheet (note we are still able to add
-        // [onStateChangedAction] and [onSlideActions] after adding if needs, as are other
-        // clients)
-        searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
-
-    }
-
-    /**
-     * Configure [ContextualFragment] and its [BottomSheetBehavior]
-     */
-    private fun setUpContextualSheet() {
-
-        contextualSheetBehavior.isFitToContents = true
-
-        // Set max expanded height to 60% of screen height plus a 52dp offset to be visible
-        // above the search sheet when both sheets are peeking
-
-        // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
-        // when either bottom sheet is not resting, hence the use of Math.max
-        contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
-            setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
-        }
-
-        contextualSheetCallback.addOnStateChangedAction { _, newState ->
-            setBottomSheetScrimVisibility(searchSheetCallback.currentState, newState)
+            searchFragment.close()
+            contextualFragment.close()
         }
 
 
         contextualSheetBehavior.setBottomSheetCallback(contextualSheetCallback)
+        searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
     }
 
     /**
@@ -253,24 +250,11 @@ class MainActivity : BaseUserActivity() {
         bottomSheetScrimView.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
     }
 
-    private fun showHome() {
-        if (Navigator.showHome(this)) {
-            sharedViewModel.onNavigatedTo(Navigator.HomeDestination.HOME)
-        }
+    private fun setLocalNightMode(nightMode: NightMode) {
+        delegate.localNightMode = nightMode.value
     }
 
-    fun showDetails() {
-        if (Navigator.showDetails(this)) {
-            sharedViewModel.onNavigatedTo(Navigator.HomeDestination.DETAILS)
-        }
+    private fun setOrientation(orientation: Orientation) {
+        requestedOrientation = orientation.value
     }
-
-    fun showListFragment(type: ListType) {
-        if (Navigator.showListFragment(this, type)) {
-            sharedViewModel.onNavigatedTo(type.homeDestination)
-        }
-    }
-
-    fun launchSettings() = Navigator.launchSettings(this)
-
 }

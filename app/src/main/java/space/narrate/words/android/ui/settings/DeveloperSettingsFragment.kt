@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -18,6 +21,7 @@ import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.util.configInformative
 import space.narrate.words.android.util.widget.CheckPreferenceView
+import space.narrate.words.android.util.widget.ElasticTransition
 
 
 /**
@@ -36,7 +40,8 @@ import space.narrate.words.android.util.widget.CheckPreferenceView
  */
 class DeveloperSettingsFragment : BaseUserFragment() {
 
-    private lateinit var settingsCoordinatorLayout: CoordinatorLayout
+    private lateinit var coordinatorLayout: CoordinatorLayout
+    private lateinit var scrollView: NestedScrollView
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var clearUserPreference: CheckPreferenceView
     private lateinit var mwStatePreference: CheckPreferenceView
@@ -52,6 +57,11 @@ class DeveloperSettingsFragment : BaseUserFragment() {
                 .get(DeveloperSettingsViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = ElasticTransition()
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -62,7 +72,9 @@ class DeveloperSettingsFragment : BaseUserFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        settingsCoordinatorLayout = view.findViewById(R.id.settings_coordinator)
+        postponeEnterTransition()
+        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
+        scrollView = view.findViewById(R.id.scroll_view)
         navigationIcon = view.findViewById(R.id.navigation_icon)
         clearUserPreference = view.findViewById(R.id.clear_user_preference)
         mwStatePreference = view.findViewById(R.id.merriam_webster_state_preference)
@@ -114,25 +126,30 @@ class DeveloperSettingsFragment : BaseUserFragment() {
         errorSnackbarPreference.setOnClickListener {
             viewModel.onErrorSnackbarPreferenceClicked()
         }
+        startPostponedEnterTransition()
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        coordinatorLayout.updatePadding(
+            insets.systemWindowInsetLeft,
+            insets.systemWindowInsetTop,
+            insets.systemWindowInsetRight
+        )
+        scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
+        return super.handleApplyWindowInsets(insets)
     }
 
     private fun showSnackbar(model: SnackbarModel) {
-        val snackbar = Snackbar.make(settingsCoordinatorLayout, model.textRes, when (model.length) {
+        val snackbar = Snackbar.make(coordinatorLayout, model.textRes, when (model.length) {
             SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
             SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
             else -> Snackbar.LENGTH_SHORT
         })
         if (model.isError) {
-            snackbar.configError(requireContext(), model.abovePeekedSheet)
+            snackbar.configError(requireContext())
         } else {
-            snackbar.configInformative(requireContext(), model.abovePeekedSheet)
+            snackbar.configInformative(requireContext())
         }
         snackbar.show()
-    }
-
-    companion object {
-        const val FRAGMENT_TAG = "developer_fragment_tag"
-
-        fun newInstance() = DeveloperSettingsFragment()
     }
 }

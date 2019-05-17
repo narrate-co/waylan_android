@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 
 /**
@@ -20,7 +21,7 @@ import androidx.lifecycle.*
  * TODO This isn't a very robust solution. Find something better
  */
 class KeyboardManager(
-        private val activity: AppCompatActivity,
+        private val activity: FragmentActivity,
         private val activityRoot: View
 ) : PopupWindow(activity), LifecycleObserver {
 

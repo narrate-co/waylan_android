@@ -22,7 +22,7 @@ class AnalyticsRepository(
     // All custom events
     companion object {
         private const val EVENT_SEARCH_WORD = "search_word"
-        private const val EVENT_NAVIGATE_BACK = "navigate_back"
+        private const val EVENT_DRAG_DISMISS = "drag_dismiss"
     }
 
     // Optionally set the current user's Id for additional info
@@ -38,11 +38,11 @@ class AnalyticsRepository(
         firebaseAnalytics.logEvent(EVENT_SEARCH_WORD, params)
     }
 
-    fun logNavigateBackEvent(stack: String, method: NavigationMethod) {
-        val params = Bundle()
-        params.putString(FirebaseAnalytics.Param.VALUE, stack)
-        params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, method.name)
-        firebaseAnalytics.logEvent(EVENT_NAVIGATE_BACK, params)
+    fun logDragDismissEvent(from: String) {
+        val params = Bundle().apply {
+            putString(FirebaseAnalytics.Param.VALUE, from)
+        }
+        firebaseAnalytics.logEvent(EVENT_DRAG_DISMISS, params)
     }
 
 }

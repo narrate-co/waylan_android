@@ -105,7 +105,6 @@ class DetailsViewModel @Inject constructor(
         _shouldShowSnackbar.value = Event(SnackbarModel(
             messageRes,
             SnackbarModel.LENGTH_SHORT,
-            true,
             true
         ))
     }

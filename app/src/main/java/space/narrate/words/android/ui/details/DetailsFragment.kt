@@ -5,21 +5,23 @@ import android.os.Handler
 import android.view.*
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.MainViewModel
 import space.narrate.words.android.R
-import space.narrate.words.android.data.analytics.NavigationMethod
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.*
 import space.narrate.words.android.util.widget.EducationalOverlayView
 import space.narrate.words.android.util.widget.ElasticAppBarBehavior
-import space.narrate.words.android.Navigator
 import space.narrate.words.android.ui.common.SnackbarModel
+import space.narrate.words.android.ui.search.SearchFragment
+import space.narrate.words.android.util.widget.ElasticTransition
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
@@ -57,6 +59,11 @@ class DetailsFragment: BaseUserFragment(),
         AudioClipHelper(requireContext(), this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = ElasticTransition()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,6 +74,10 @@ class DetailsFragment: BaseUserFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Postpone enter transition until we've set everything up.
+        postponeEnterTransition()
+
         coordinatorLayout = view.findViewById(R.id.coordinator_layout)
         appBarLayout = view.findViewById(R.id.app_bar)
         navigationIcon = view.findViewById(R.id.navigation_icon)
@@ -82,7 +93,6 @@ class DetailsFragment: BaseUserFragment(),
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseUserFragment.setUnconsumedNavigationMethod]
-            setUnconsumedNavigationMethod(NavigationMethod.NAV_ICON)
             requireActivity().onBackPressed()
         }
 
@@ -125,6 +135,19 @@ class DetailsFragment: BaseUserFragment(),
                 showSnackbar(it)
             }
         })
+
+        // Start enter transition now that things are set up.
+        startPostponedEnterTransition()
+    }
+
+    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
+        coordinatorLayout.setPadding(
+            insets.systemWindowInsetLeft,
+            insets.systemWindowInsetTop,
+            insets.systemWindowInsetRight,
+            SearchFragment.getPeekHeight(requireContext(), insets)
+        )
+        return super.handleApplyWindowInsets(insets)
     }
 
     override fun onMwRelatedWordClicked(word: String) {
@@ -152,7 +175,7 @@ class DetailsFragment: BaseUserFragment(),
     }
 
     override fun onMwPermissionPaneDetailsClicked() {
-        Navigator.launchSettings(requireContext())
+        findNavController().navigate(R.id.action_detailsFragment_to_settingsFragment)
     }
 
     override fun onMwPermissionPaneDismissClicked() {
@@ -167,9 +190,9 @@ class DetailsFragment: BaseUserFragment(),
         })
 
         if (model.isError) {
-            snackbar.configError(requireContext(), model.abovePeekedSheet)
+            snackbar.configError(requireContext())
         } else {
-            snackbar.configInformative(requireContext(), model.abovePeekedSheet)
+            snackbar.configInformative(requireContext())
         }
 
         // TODO : Add actions
@@ -195,16 +218,9 @@ class DetailsFragment: BaseUserFragment(),
     }
 
     override fun onDragDismissed(): Boolean {
-        setUnconsumedNavigationMethod(NavigationMethod.DRAG_DISMISS)
+        sharedViewModel.onDragDismissBackEvent(DetailsFragment::class.java.simpleName)
         Handler().post { requireActivity().onBackPressed() }
         return true
-    }
-
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "details_fragment_tag"
-
-        fun newInstance() = DetailsFragment()
     }
 }
 

@@ -4,21 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--clipChildren and clipToPadding are false to make sure -->
-    <!--we allow fragments to draw shadows -->
-    <space.narrate.words.android.util.widget.InsetFrameLayout
-        android:id="@+id/fragment_container"
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true"
-        />
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation_graph"/>
 
     <View
         android:id="@+id/bottom_sheet_scrim"
@@ -26,7 +22,6 @@
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="gone"
-        android:fitsSystemWindows="true"
         android:background="?colorScrim"/>
 
     <fragment
@@ -36,6 +31,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
+        app:behavior_skipCollapsed="true"
         app:behavior_peekHeight="@dimen/contextual_min_peek_height"
         />
 

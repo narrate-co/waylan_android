@@ -172,8 +172,6 @@ class EducationalOverlayView private constructor(
         var currentView: View? = v
 
         while (currentView?.parent != null && currentView.parent is View) {
-            // InsetFrameLayout is only used for a root of a fragment. exit early
-            if (currentView is InsetFrameLayout) return currentView
             currentView = currentView.parent as View
         }
 

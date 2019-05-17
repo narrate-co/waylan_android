@@ -44,7 +44,6 @@ class DeveloperSettingsViewModel @Inject constructor(
         _shouldShowSnackbar.value = Event(SnackbarModel(
             R.string.developer_settings_all_preferences_cleared,
             SnackbarModel.LENGTH_SHORT,
-            false,
             false
         ))
     }
@@ -104,7 +103,6 @@ class DeveloperSettingsViewModel @Inject constructor(
             R.string.developer_settings_informative_snackbar_test_message,
             SnackbarModel.LENGTH_SHORT,
             false,
-            false,
             R.string.developer_settings_informative_snackbar_test_action
         ))
     }
@@ -114,7 +112,6 @@ class DeveloperSettingsViewModel @Inject constructor(
             R.string.developer_settings_error_snackbar_test_message,
             SnackbarModel.LENGTH_SHORT,
             true,
-            false,
             R.string.developer_settings_error_snackbar_test_action
         ))
     }
