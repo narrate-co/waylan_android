@@ -12,12 +12,12 @@ import space.narrate.words.android.util.visible
 import kotlinx.android.synthetic.main.check_preference_view_layout.view.*
 
 /**
- * A compound ViewGroup which displays an preference item containing a title, a description and
+ * A compound ViewGroup which displays an preference item containing a titleRes, a description and
  * an optional checkbox.
  *
- * @property title The main title of the preference.
+ * @property title The main titleRes of the preference.
  * @property desc A short sentence describing what the preference does or the current value of the
- *  preference (ie. a preference with the title Orientation might choose to use the description to
+ *  preference (ie. a preference with the titleRes Orientation might choose to use the description to
  *  show the currently set value - unlocked, portrait, landscape)
  * @property checkable If this preferences checkbox should be displayed. Use for true/false
  *  preferences
@@ -75,7 +75,7 @@ class CheckPreferenceView @JvmOverloads constructor(
     }
 
     /**
-     * Set this preferences title
+     * Set this preferences titleRes
      */
     fun setTitle(title: String) {
         this.title = title

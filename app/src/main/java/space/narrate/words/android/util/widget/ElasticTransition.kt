@@ -23,24 +23,22 @@ import space.narrate.words.android.R
  * (the light source lives near the top of the window and points towards the bottom, casting shadows
  * along the bottom and sides of views but being basically non existent along the top of views when
  * near the top of the window). For this reason, Fragments that are elastic are wrapped in an
- * [InsetFrameLayout] that acts as a scrim behind the Fragments main content.
+ * [FrameLayout] that acts as a scrim behind the Fragments main content.
  *
  * For this transition, we want to animate the elastic Fragment's scrim and main contents
  * seperately. This Transition requires the Elastic fragment to have a CoordinatorLayout with the
- * id R.id.coordinator as the only child of an [InsetFrameLayout]. On enter, we animate the
+ * id R.id.coordinator as the only child of an [FrameLayout]. On enter, we animate the
  * translationY of the main contents CoordinatorLayout, creating the slide up animation and animate
- * the alpha of the [InsetFrameLayout], effectively animating in the entire Fragment's view.
+ * the alpha of the [FrameLayout], effectively animating in the entire Fragment's view.
  */
 class ElasticTransition : Fade() {
 
     companion object {
-        private const val TAG = "ElasticTransition"
-
         private const val PROPNAME_TRANSLATION_Y =
                 "space.narrate.words.android.ExitTransition:translationY"
 
-        private const val DEFAULT_DURATION = 300L
-        private const val TRANSLATION_DISTANCE = 500F
+        private const val DEFAULT_DURATION = 225L
+        private const val TRANSLATION_DISTANCE = 200F
     }
 
     override fun captureStartValues(transitionValues: TransitionValues) {
@@ -55,7 +53,7 @@ class ElasticTransition : Fade() {
 
     private fun captureValues(transitionValues: TransitionValues) {
         val coordinatorLayout: CoordinatorLayout? =
-                transitionValues.view.findViewById(R.id.coordinator)
+                transitionValues.view.findViewById(R.id.coordinator_layout)
         transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
     }
 
@@ -66,7 +64,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
                 ?: return null
 
         val set = AnimatorSet()
@@ -99,7 +97,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator)
+        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
                 ?: return null
 
         val startY = startValues?.values?.get(PROPNAME_TRANSLATION_Y) as? Float ?: 0F

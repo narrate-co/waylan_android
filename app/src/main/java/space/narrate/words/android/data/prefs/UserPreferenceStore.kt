@@ -96,6 +96,12 @@ class UserPreferenceStore(
             UserPreferences.HAS_SEEN_MERRIAM_WEBSTER_PERMISSION_PANE,
             false
     )
+    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean> =
+        PreferenceLiveData(
+            sharedPrefs,
+            UserPreferences.HAS_SEEN_MERRIAM_WEBSTER_PERMISSION_PANE,
+            false
+        )
 
     // Recents list filter
     private var recentsListFilter: Set<String> by PreferenceDelegate(

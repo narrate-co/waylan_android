@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.util.widget.InsetFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frame"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="?android:windowBackground"
-    >
+    android:background="?android:windowBackground">
 
     <androidx.core.widget.NestedScrollView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/scrollContainer"
+        android:id="@+id/scroll_container"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/search_min_peek_height">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/constraintContainer"
+            android:id="@+id/constraint_container"
             android:layout_marginTop="@dimen/keyline_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
 
             <LinearLayout
-                android:id="@+id/trendingContainer"
+                android:id="@+id/trending_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -36,19 +33,19 @@
                 android:paddingTop="@dimen/keyline_3"
                 android:paddingEnd="@dimen/keyline_3"
                 android:paddingBottom="@dimen/keyline_3"
-                app:layout_constraintBottom_toTopOf="@+id/recentContainer"
+                app:layout_constraintBottom_toTopOf="@+id/recent_container"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/trending"
+                    android:id="@+id/trending_title_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_trending"
                     android:textAppearance="?textAppearanceHeadline5" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/trendingPreview"
+                    android:id="@+id/trending_preview_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -59,7 +56,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/recentContainer"
+                android:id="@+id/recent_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -69,18 +66,18 @@
                 android:paddingEnd="@dimen/keyline_3"
                 android:paddingBottom="@dimen/keyline_3"
                 app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintBottom_toTopOf="@+id/favoriteContainer"
-                app:layout_constraintTop_toBottomOf="@+id/trendingContainer">
+                app:layout_constraintBottom_toTopOf="@+id/favorite_container"
+                app:layout_constraintTop_toBottomOf="@+id/trending_container">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/recent"
+                    android:id="@+id/recent_title_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_recent"
                     android:textAppearance="?textAppearanceHeadline5" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/recentPreview"
+                    android:id="@+id/recent_preview_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -91,7 +88,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/favoriteContainer"
+                android:id="@+id/favorite_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -101,18 +98,18 @@
                 android:paddingEnd="@dimen/keyline_3"
                 android:paddingBottom="@dimen/keyline_3"
                 app:layout_constraintBottom_toTopOf="@+id/view"
-                app:layout_constraintTop_toBottomOf="@+id/recentContainer"
+                app:layout_constraintTop_toBottomOf="@+id/recent_container"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/action2"
+                    android:id="@+id/favorite_title_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_favorite"
                     android:textAppearance="?textAppearanceHeadline5" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/favoritePreview"
+                    android:id="@+id/favorite_preview_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -122,40 +119,24 @@
 
             </LinearLayout>
 
-            <!--<View-->
-                <!--android:id="@+id/view"-->
-                <!--android:layout_width="72dp"-->
-                <!--android:layout_height="2dp"-->
-                <!--android:layout_marginLeft="@dimen/keyline_3"-->
-                <!--android:layout_marginRight="@dimen/keyline_3"-->
-                <!--android:layout_marginTop="@dimen/keyline_3"-->
-                <!--android:layout_marginBottom="@dimen/keyline_3"-->
-                <!--android:background="@drawable/title_underline_background"-->
-                <!--app:layout_constraintBottom_toTopOf="@+id/settings"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/favoriteContainer"-->
-                <!--app:layout_constraintVertical_chainStyle="packed" -->
-                <!--/>-->
-
             <space.narrate.words.android.util.widget.ProgressUnderlineView
                 android:id="@+id/view"
                 android:layout_width="72dp"
                 android:layout_height="2dp"
-                app:trackColor="?colorTertiaryOnDefault"
-                app:indicatorColor="?colorBrand"
+                app:trackColor="?colorOnBackgroundLowEmphasis"
+                app:indicatorColor="?colorPrimary"
                 android:layout_marginLeft="@dimen/keyline_3"
                 android:layout_marginRight="@dimen/keyline_3"
                 android:layout_marginTop="@dimen/keyline_3"
                 android:layout_marginBottom="@dimen/keyline_3"
-                app:layout_constraintBottom_toTopOf="@+id/settings"
+                app:layout_constraintBottom_toTopOf="@+id/settings_text_view"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/favoriteContainer"
+                app:layout_constraintTop_toBottomOf="@+id/favorite_container"
                 app:layout_constraintVertical_chainStyle="packed"
                 />
 
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/settings"
+                android:id="@+id/settings_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -170,13 +151,14 @@
                 app:layout_constraintVertical_chainStyle="packed" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <View
-        android:id="@+id/statusBarScrim"
+        android:id="@+id/status_bar_scrim"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?android:windowBackground"
         android:layout_gravity="top"/>
 
-</space.narrate.words.android.util.widget.InsetFrameLayout>
+</FrameLayout>

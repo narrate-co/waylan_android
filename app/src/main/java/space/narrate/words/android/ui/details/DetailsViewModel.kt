@@ -2,10 +2,15 @@ package space.narrate.words.android.ui.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import space.narrate.words.android.data.repository.*
-import space.narrate.words.android.data.repository.*
+import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.common.SnackbarModel
+import space.narrate.words.android.util.mapOnTransform
+import space.narrate.words.android.util.mapTransform
+import space.narrate.words.android.util.notNullTransform
+import space.narrate.words.android.util.switchMapTransform
+import space.narrate.words.android.util.widget.MergedLiveData
 import javax.inject.Inject
 
 /**
@@ -19,51 +24,88 @@ class DetailsViewModel @Inject constructor(
     // The current word being displayed (as it appears in the dictionary)
     private var _word = MutableLiveData<String>()
 
-    /** LiveData object for [_word]'s [WordPropertiesSource] */
-    val wordPropertiesSource: LiveData<WordPropertiesSource> = Transformations.switchMap(_word) {
-        wordRepository.getWordPropertiesSource(it)
-    }
+    val list: LiveData<List<DetailItemModel>> = _word
+        .switchMapTransform { word ->
+            DetailItemListMediatorLiveData().apply {
 
-    /** LiveData object for [_word]'s [WordsetSource] */
-    val wordsetSource: LiveData<WordsetSource?> = Transformations.switchMap(_word) {
-        wordRepository.getWordsetSource(it)
-    }
+                addSource(wordRepository.getWordsetWord(word).mapTransform {
+                    DetailItemModel.TitleModel(it?.word ?: word)
+                })
 
-    /** LiveData object for [_word]'s [FirestoreUserSource] */
-    val firestoreUserSource: LiveData<FirestoreUserSource> = Transformations.switchMap(_word) {
-        wordRepository.getFirestoreUserSource(it)
-    }
+                addSource(wordRepository.getWordsetWordAndMeanings(word)
+                    .notNullTransform()
+                    .mapTransform {
+                        DetailItemModel.WordsetModel(it)
+                    })
 
-    /** LiveData object for [_word]'s [FirestoreGlobalSource] */
-    val firestoreGlobalSource: LiveData<FirestoreGlobalSource> = Transformations.switchMap(_word) {
-        wordRepository.getFirestoreGlobalSource(it)
-    }
+                addSource(wordRepository.getWordsetWordAndMeanings(word)
+                    .notNullTransform()
+                    .mapTransform {
+                        DetailItemModel.ExamplesModel(it.meanings.map { m -> m.examples }.flatten())
+                    })
 
-    /** LiveData object for [_word]'s [MerriamWebsterSource] */
-    val merriamWebsterSource: LiveData<MerriamWebsterSource> = Transformations.switchMap(_word) {
-        wordRepository.getMerriamWebsterSource(it)
-    }
-
-    var hasSeenDragDismissOverlay: Boolean
-        get() = userRepository.hasSeenDragDismissOverlay
-        set(value) {
-            userRepository.hasSeenDragDismissOverlay = value
+                addSource(MergedLiveData(
+                    wordRepository.getMerriamWebsterWord(word),
+                    userRepository.user
+                ) { mw, user ->
+                    DetailItemModel.MerriamWebsterModel(mw, user)
+                })
+            }
+        }
+        .mapOnTransform(userRepository.hasSeenMerriamWebsterPermissionPaneLive) { list, hasSeen ->
+            if (hasSeen) {
+                list.toMutableList().apply {
+                    removeAll { it is DetailItemModel.MerriamWebsterModel }
+                }
+            } else {
+                list
+            }
         }
 
-    var hasSeenMerriamWebsterPermissionsPane: Boolean
-        get() = userRepository.hasSeenMerriamWebsterPermissionPane
-        set(value) {
-            userRepository.hasSeenMerriamWebsterPermissionPane = value
-        }
+    private val _shouldShowDragDismissOverlay: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldShowDragDismissOverlay: LiveData<Event<Boolean>>
+        get() = _shouldShowDragDismissOverlay
 
-    /**
-     * Set the current word (as it appears in the dictionary) that is to be displayed
-     */
-    fun setWord(word: String) {
+    private val _audioClipAction: MutableLiveData<Event<AudioClipAction>> = MutableLiveData()
+    val audioClipAction: LiveData<Event<AudioClipAction>>
+        get() = _audioClipAction
+
+    private val _shouldShowSnackbar: MutableLiveData<Event<SnackbarModel>> = MutableLiveData()
+    val shouldShowSnackbar: LiveData<Event<SnackbarModel>>
+        get() = _shouldShowSnackbar
+
+    init {
+        if (!userRepository.hasSeenDragDismissOverlay) {
+            _shouldShowDragDismissOverlay.value = Event(true)
+            userRepository.hasSeenDragDismissOverlay = true
+        }
+    }
+
+    fun onCurrentWordChanged(word: String) {
         if (_word.value != word) {
             _word.value = word
         }
     }
 
+    fun onMerriamWebsterPermissionPaneDismissClicked() {
+        userRepository.hasSeenMerriamWebsterPermissionPane = true
+    }
 
+    fun onPlayAudioClicked(url: String?) {
+        if (url == null) return
+
+        _audioClipAction.value = Event(AudioClipAction.Play(url))
+    }
+
+    fun onStopAudioClicked() {
+        _audioClipAction.value = Event(AudioClipAction.Stop)
+    }
+
+    fun onAudioClipError(messageRes: Int) {
+        _shouldShowSnackbar.value = Event(SnackbarModel(
+            messageRes,
+            SnackbarModel.LENGTH_SHORT,
+            true
+        ))
+    }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<space.narrate.words.android.ui.details.MerriamWebsterCardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailsComponentMerriamWebsterCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/keyline_2"
+    android:layout_marginEnd="@dimen/keyline_2"
+    android:layout_marginTop="42dp"
+    android:layout_marginBottom="@dimen/keyline_2"
+    android:paddingTop="@dimen/keyline_3"
+    android:paddingBottom="@dimen/keyline_3"
+    app:cardElevation="@dimen/plane_01"
+    app:cardCornerRadius="@dimen/keyline_2"
+    app:cardBackgroundColor="?colorSurface"
+    android:clipToPadding="false"
+    />

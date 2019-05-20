@@ -87,7 +87,7 @@ class DatabaseSeedService: Service(), CoroutineScope {
             // Get json string from asset file
             try {
                 val jsonString = getJsonFromAsset("wordset/$file")
-                // Parse into BaseWord object map
+                // Parse into BaseWord object mapTransform
                 val letter: Map<String, BaseWord> = gson.fromJson(jsonString, object: TypeToken<Map<String, BaseWord>>() {}.type)
 
                 val words: MutableList<Word> = mutableListOf()

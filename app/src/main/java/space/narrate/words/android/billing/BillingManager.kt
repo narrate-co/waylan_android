@@ -37,8 +37,6 @@ class BillingManager(
 ): PurchasesUpdatedListener, CoroutineScope {
 
     companion object {
-        private val TAG = BillingManager::class.java.simpleName
-
         private const val BILLING_MANAGER_NOT_INITIALIZED = -1
         private const val BASE_64_ENCODED_PUBLIC_KEY = "EMPTY_FOR_NOW"
     }

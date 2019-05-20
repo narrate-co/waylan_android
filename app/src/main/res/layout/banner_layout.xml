@@ -21,7 +21,7 @@
 
     <com.google.android.material.button.MaterialButton
         style="?attr/styleTextButton"
-        android:id="@+id/topButton"
+        android:id="@+id/details_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/keyline_2"
@@ -35,7 +35,7 @@
 
     <com.google.android.material.button.MaterialButton
         style="?attr/styleTextButton"
-        android:id="@+id/bottomButton"
+        android:id="@+id/dismiss_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="12dp"

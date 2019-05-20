@@ -6,7 +6,7 @@ import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.BuildConfig
-import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.util.contentEquals
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
@@ -41,14 +41,14 @@ class MerriamWebsterStore(
 
     /**
      * Immediately returns a LiveData object observing the local Merriam-Webster Room db
-     * for [word]. If such an [Word] exists, that stored value is returned immediately. Meanwhile,
+     * for [word]. If such an [MwWord] exists, that stored value is returned immediately. Meanwhile,
      * a task is launched to fetch new data from the Merriam-Webster API. On response, the old
-     * [Word]s and [Definition]s are deleted, the new API data is inserted and the previously
+     * [MwWord]s and [Definition]s are deleted, the new API data is inserted and the previously
      * returned LiveData receives updates for the relevant changes.
      *
      * @param word The word to query for (as it appears in the dictionary)
      */
-    fun getWordAndDefinitions(word: String): LiveData<List<WordAndDefinitions>> {
+    fun getWordAndDefinitions(word: String): LiveData<List<MwWordAndDefinitionGroups>> {
 
         // Asynchronously get the word from the mw service if it either does not contain any
         // definitions (ie. has never been fetched) or the last time it was fetched was long
@@ -115,7 +115,7 @@ class MerriamWebsterStore(
                         mwDao.insertAll(*definitions.toTypedArray())
                     }
 
-                    // If a response's "entries" is empty, the response often contains a
+                    // If a response's "entry" is empty, the response often contains a
                     // suggestions list. We should insert this so observers receive updates
                     // to this word and can at least display possible alternative searches
                     val shouldInsertSuggestions =
@@ -135,7 +135,7 @@ class MerriamWebsterStore(
                             mwDao.insert(existingMwWord)
                         } else if (existingMwWord == null) {
                             //this is not already in the db. Add it
-                            val newWord = toDbMwSuggestionWord(word, suggestions)
+                            val newWord = EntryUtils.toDbMwSuggestionWord(word, suggestions)
                             mwDao.insert(newWord)
                         }
                     }
@@ -143,5 +143,7 @@ class MerriamWebsterStore(
             }
         }
     }
+
+
 }
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="words_color_brand">@color/colorPink100</color>
+
+    <color name="words_color_background">@color/colorGray900</color>
+    <color name="words_color_surface">@color/colorGray900</color>
+    <color name="words_color_error">@color/colorMauve300</color>
+    <color name="words_color_informative">@color/colorPink900</color>
+
+    <color name="words_color_background_area">@color/colorWhiteAlpha005</color>
+    <color name="words_color_surface_area">@color/colorWhiteAlpha005</color>
+    <color name="words_color_error_area">@color/colorMauveDarkAlpha022</color>
+
+    <color name="words_color_on_brand">@color/colorGray900</color>
+
+    <color name="words_color_on_background">@color/colorWhiteAlpha087</color>
+    <color name="words_color_on_background_high_emphasis">@color/colorWhiteAlpha087</color>
+    <color name="words_color_on_background_medium_emphasis">@color/colorWhiteAlpha060</color>
+    <color name="words_color_on_background_low_emphasis">@color/colorWhiteAlpha038</color>
+
+    <color name="words_color_on_surface">@color/colorWhiteAlpha087</color>
+    <color name="words_color_on_surface_high_emphasis">@color/colorWhiteAlpha087</color>
+    <color name="words_color_on_surface_medium_emphasis">@color/colorWhiteAlpha060</color>
+    <color name="words_color_on_surface_low_emphasis">@color/colorWhiteAlpha038</color>
+
+    <color name="words_color_on_error">@color/colorBlackAlpha087</color>
+    <color name="words_color_on_error_high_emphasis">@color/colorBlackAlpha087</color>
+    <color name="words_color_on_error_medium_emphasis">@color/colorBlackAlpha060</color>
+    <color name="words_color_on_error_low_emphasis">@color/colorBlackAlpha038</color>
+
+    <color name="words_color_on_informative">@color/colorPink100</color>
+
+    <color name="words_color_ripple">@color/colorGray500</color>
+    <color name="words_color_scrim">@color/colorBlackAlpha025</color>
+    <color name="words_color_divider">@color/colorWhiteAlpha005</color>
+    <color name="words_color_hairline">@color/colorWhiteAlpha025</color>
+
+</resources>

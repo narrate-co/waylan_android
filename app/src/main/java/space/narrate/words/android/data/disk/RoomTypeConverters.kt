@@ -3,7 +3,7 @@ package space.narrate.words.android.data.disk
 import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import space.narrate.words.android.data.disk.mw.OrderedDefinitionItem
+import space.narrate.words.android.data.disk.mw.MwDefinition
 import space.narrate.words.android.data.disk.mw.Sound
 import space.narrate.words.android.data.disk.mw.Uro
 import space.narrate.words.android.data.disk.wordset.Example
@@ -152,14 +152,14 @@ object RoomTypeConverters {
 
     @TypeConverter
     @JvmStatic
-    fun toOrderedDefinitionItemList(value: String): List<OrderedDefinitionItem> {
-        val type = object : TypeToken<List<OrderedDefinitionItem>>() {}.type
+    fun toOrderedDefinitionItemList(value: String): List<MwDefinition> {
+        val type = object : TypeToken<List<MwDefinition>>() {}.type
         return gson.fromJson(value, type)
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromOrderedDefinitionItemList(value: List<OrderedDefinitionItem>): String {
+    fun fromOrderedDefinitionItemList(value: List<MwDefinition>): String {
         return gson.toJson(value)
     }
 }

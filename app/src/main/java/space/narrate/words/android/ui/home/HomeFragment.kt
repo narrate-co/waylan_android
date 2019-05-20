@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.updatePadding
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import space.narrate.words.android.MainActivity
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
-import space.narrate.words.android.ui.list.ListFragment
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import space.narrate.words.android.ui.list.ListFragmentDirections
+import space.narrate.words.android.ui.list.ListType
+import space.narrate.words.android.util.widget.ElasticTransition
 
 
 /**
@@ -22,44 +28,61 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
  */
 class HomeFragment: BaseUserFragment() {
 
-    companion object {
-        // A tag used for back stack tracking
-        const val FRAGMENT_TAG = "home_fragment_tag"
+    private lateinit var trendingContainer: LinearLayout
+    private lateinit var recentContainer: LinearLayout
+    private lateinit var favoriteContainer: LinearLayout
+    private lateinit var settingsTextView: AppCompatTextView
+    private lateinit var scrollContainer: NestedScrollView
+    private lateinit var constraintContainer: ConstraintLayout
+    private lateinit var statusBarScrimView: View
+    private lateinit var trendingPreviewTextView: AppCompatTextView
+    private lateinit var recentPreviewTextView: AppCompatTextView
+    private lateinit var favoritePreviewTextView: AppCompatTextView
 
-        fun newInstance() = HomeFragment()
-    }
 
     private val viewModel by lazy {
         ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(HomeViewModel::class.java)
+            .of(this, viewModelFactory)
+            .get(HomeViewModel::class.java)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        // Set menu on click listeners
-        view.trendingContainer.setOnClickListener {
-            onMenuButtonClicked(ListFragment.ListType.TRENDING)
-        }
-        view.recentContainer.setOnClickListener {
-            onMenuButtonClicked(ListFragment.ListType.RECENT)
-        }
-        view.favoriteContainer.setOnClickListener {
-            onMenuButtonClicked(ListFragment.ListType.FAVORITE)
-        }
-        view.settings.setOnClickListener { launchSettings() }
-
-        setUpReachabilityParams(view)
-        return view
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    // Defer load intensive work until after enter transaction has ended
-    override fun onEnterTransactionEnded() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        trendingContainer = view.findViewById(R.id.trending_container)
+        recentContainer = view.findViewById(R.id.recent_container)
+        favoriteContainer = view.findViewById(R.id.favorite_container)
+        settingsTextView = view.findViewById(R.id.settings_text_view)
+        scrollContainer = view.findViewById(R.id.scroll_container)
+        constraintContainer = view.findViewById(R.id.constraint_container)
+        statusBarScrimView = view.findViewById(R.id.status_bar_scrim)
+        trendingPreviewTextView = view.findViewById(R.id.trending_preview_text_view)
+        recentPreviewTextView = view.findViewById(R.id.recent_preview_text_view)
+        favoritePreviewTextView = view.findViewById(R.id.favorite_preview_text_view)
+
+        // Set menu on click listeners
+        trendingContainer.setOnClickListener {
+            onMenuButtonClicked(ListType.TRENDING)
+        }
+        recentContainer.setOnClickListener {
+            onMenuButtonClicked(ListType.RECENT)
+        }
+        favoriteContainer.setOnClickListener {
+            onMenuButtonClicked(ListType.FAVORITE)
+        }
+        settingsTextView.setOnClickListener {
+            launchSettings()
+        }
+
+        setUpReachabilityParams(view)
+
         setUpListPreviews()
     }
 
@@ -74,14 +97,13 @@ class HomeFragment: BaseUserFragment() {
      */
     private fun setUpReachabilityParams(view: View) {
         view.doOnPreDraw {
-            val totalHeight = view.scrollContainer.height
-            val menuContainerHeight = view.constraintContainer.height
+            val totalHeight = scrollContainer.height
+            val menuContainerHeight = constraintContainer.height
             val topOffset = Math.max(
-                    view.statusBarScrim.height,
-                    totalHeight - menuContainerHeight - resources.getDimensionPixelSize(R.dimen.search_min_peek_height) - resources.getDimensionPixelSize(R.dimen.home_menu_bottom_offset_min)
+                statusBarScrimView.height,
+                totalHeight - menuContainerHeight - resources.getDimensionPixelSize(R.dimen.search_min_peek_height) - resources.getDimensionPixelSize(R.dimen.home_menu_bottom_offset_min)
             )
-            println("HomeFragment::setUpReachabilityParams - totalHeight $totalHeight, menuContainerHeight = $menuContainerHeight, topOffset = $topOffset")
-            view.scrollContainer.updatePadding(top = topOffset)
+            scrollContainer.updatePadding(top = topOffset)
         }
     }
 
@@ -90,22 +112,24 @@ class HomeFragment: BaseUserFragment() {
      * contains. This functions sets those previews up by observing each list's data source.
      */
     private fun setUpListPreviews() {
-        viewModel.getListPreview(ListFragment.ListType.TRENDING).observe(this, Observer {
-            view?.trendingPreview?.text = it
+        viewModel.getPreview(ListType.TRENDING).observe(this, Observer {
+            trendingPreviewTextView.text = it
         })
-        viewModel.getListPreview(ListFragment.ListType.RECENT).observe(this, Observer {
-            view?.recentPreview?.text = it
+        viewModel.getPreview(ListType.RECENT).observe(this, Observer {
+            recentPreviewTextView.text = it
         })
-        viewModel.getListPreview(ListFragment.ListType.FAVORITE).observe(this, Observer {
-            view?.favoritePreview?.text = it
+        viewModel.getPreview(ListType.FAVORITE).observe(this, Observer {
+            favoritePreviewTextView.text = it
         })
     }
 
-    private fun onMenuButtonClicked(type: ListFragment.ListType) {
-        (activity as? MainActivity)?.showListFragment(type)
+    private fun onMenuButtonClicked(type: ListType) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToListFragment(type)
+        )
     }
 
     private fun launchSettings() {
-        (activity as? MainActivity)?.launchSettings()
+        findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
     }
 }

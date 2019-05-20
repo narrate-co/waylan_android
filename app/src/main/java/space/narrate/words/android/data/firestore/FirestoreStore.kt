@@ -7,7 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import space.narrate.words.android.data.disk.AppDatabase
-import space.narrate.words.android.data.firestore.users.*
 import space.narrate.words.android.data.firestore.util.*
 import space.narrate.words.android.data.firestore.words.GlobalWord
 import space.narrate.words.android.ui.search.Period
@@ -20,7 +19,7 @@ import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.users.UserWordType
-import space.narrate.words.android.data.firestore.util.*
+import space.narrate.words.android.util.LiveDataUtils
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
@@ -48,12 +47,14 @@ class FirestoreStore(
         get() = Dispatchers.IO
 
     fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
+        if (id.isBlank()) return LiveDataUtils.empty()
         return firestore.words
                 .document(id)
                 .liveData(GlobalWord::class.java)
     }
 
     fun getUserWordLive(id: String): LiveData<UserWord> {
+        if (id.isBlank()) return LiveDataUtils.empty()
         return firestore.userWords(firestoreUser.uid)
                 .document(id)
                 .liveData(UserWord::class.java)

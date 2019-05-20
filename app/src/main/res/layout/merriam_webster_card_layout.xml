@@ -4,164 +4,57 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <LinearLayout
-        android:id="@+id/headerContainer"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/keyline_3"
-        android:orientation="vertical"
-        >
+        android:paddingBottom="@dimen/keyline_3">
 
         <com.google.android.material.chip.Chip
             style="?styleTextLabel"
-            android:id="@+id/textLabel"
+            android:id="@+id/text_label"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/text_label_height"
+            android:text="Free trial: 30d"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textAppearance="?textAppearanceSubtitle2"
+            android:id="@+id/mw_subtitle_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_2"
             android:layout_marginStart="@dimen/keyline_3"
             android:layout_marginEnd="@dimen/keyline_3"
-            android:layout_marginBottom="@dimen/keyline_2"
-            android:text="Free trial: 30d"/>
+            android:text="Merriam-Webster"
+            app:layout_constraintTop_toBottomOf="@+id/text_label"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <space.narrate.words.android.ui.details.MerriamWebsterAudioView
+            android:id="@+id/mw_audio_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/keyline_3"
             android:paddingEnd="@dimen/keyline_3"
-            >
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="?textAppearanceSubtitle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:text="Merriam-Webster"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/audioImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:paddingRight="4dp"
-                android:paddingLeft="4dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_round_play_arrow_24px"/>
-
-        </FrameLayout>
-
-        <space.narrate.words.android.util.widget.ProgressUnderlineView
-            android:id="@+id/underline"
-            android:layout_width="72dp"
-            android:layout_height="2dp"
-            app:trackColor="?colorDivider"
-            app:indicatorColor="?colorBrand"
-            android:layout_marginTop="@dimen/keyline_2"
-            android:layout_marginBottom="@dimen/keyline_2"
-            android:layout_marginStart="@dimen/keyline_3"
-            android:layout_marginEnd="@dimen/keyline_3"
-            android:layout_gravity="right"/>
+            android:paddingTop="@dimen/keyline_1"
+            app:layout_constraintTop_toBottomOf="@id/text_label"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
-            android:id="@+id/definitionsContainer"
+            android:id="@+id/list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/keyline_3"
-            android:orientation="vertical"/>
-
-        <LinearLayout
-            android:id="@+id/permissionContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/keyline_3"
-            android:layout_marginRight="@dimen/keyline_3"
-            android:layout_marginTop="@dimen/keyline_2"
-            android:layout_marginBottom="@dimen/keyline_2"
             android:orientation="vertical"
-            tools:visibility="visible"
-            android:visibility="gone">
+            app:layout_constraintTop_toBottomOf="@+id/mw_audio_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <View
-                android:layout_width="100dp"
-                android:layout_height="28dp"
-                android:layout_marginTop="@dimen/keyline_2"
-                android:layout_marginBottom="@dimen/keyline_1"
-                android:background="@drawable/permission_pane_background"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="@dimen/keyline_1"
-                android:layout_marginBottom="@dimen/keyline_2"
-                android:background="@drawable/permission_pane_background"/>
-
-
-            <com.google.android.material.button.MaterialButton
-                style="?attr/styleTextButton"
-                android:id="@+id/topButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/keyline_3"
-                android:paddingLeft="@dimen/keyline_3"
-                android:layout_marginTop="@dimen/keyline_1"
-                android:text="@string/details_merriam_webster_card_details_button"
-                android:layout_gravity="right"
-                />
-
-
-            <com.google.android.material.button.MaterialButton
-                style="?attr/styleTextButton"
-                android:id="@+id/bottomButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/keyline_1"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/keyline_3"
-                android:paddingLeft="@dimen/keyline_3"
-                android:text="@string/details_merriam_webster_card_dismiss_button"
-                android:layout_gravity="right"
-                />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:textAppearance="?textAppearanceCaption"
-            android:id="@+id/relatedWordsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="Also see:"
-            android:visibility="gone"
-            />
-
-        <HorizontalScrollView
-            android:id="@+id/relatedWordsHorizontalScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_1"
-            android:layout_marginBottom="@dimen/keyline_3"
-            android:clipToPadding="false"
-            android:paddingEnd="@dimen/keyline_1"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/relatedWordsChipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                app:singleLine="true" />
-
-        </HorizontalScrollView>
-
-    </LinearLayout>
-
-
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>
 

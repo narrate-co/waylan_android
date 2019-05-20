@@ -2,7 +2,6 @@ package space.narrate.words.android.util.widget
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
@@ -50,7 +49,7 @@ class EducationalOverlayView private constructor(
 
     // The paint used for the educational dot
     private var dotPaint = Paint(ANTI_ALIAS_FLAG).apply {
-        color = context.getColorFromAttr(R.attr.colorBrand)
+        color = context.getColorFromAttr(R.attr.colorPrimary)
         style = Paint.Style.FILL
     }
 
@@ -172,8 +171,6 @@ class EducationalOverlayView private constructor(
         var currentView: View? = v
 
         while (currentView?.parent != null && currentView.parent is View) {
-            // InsetFrameLayout is only used for a root of a fragment. exit early
-            if (currentView is InsetFrameLayout) return currentView
             currentView = currentView.parent as View
         }
 

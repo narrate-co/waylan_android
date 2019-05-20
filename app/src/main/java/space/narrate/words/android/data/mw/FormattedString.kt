@@ -31,7 +31,7 @@ data class FormattedString(var value: String = "")
  * fn -> link to another word
  * dx -> start reference to extra material (illustrations)
  * dxt -> dx reference name
- * dxn -> dx reference type (illustration)
+ * dxn -> dx reference listType (illustration)
  * ag -> attribution (author, name, etc.)
  *
  */
@@ -54,7 +54,7 @@ class FormattedStringConverter: Converter<FormattedString> {
     private fun flatten(parent: InputNode?, child: InputNode?, sb: StringBuilder) {
         if (parent != null) {
 
-            //append floating text before child element
+            //append floating textRes before child element
             appendValue(parent.value, sb)
 
             var c = child
@@ -78,7 +78,7 @@ class FormattedStringConverter: Converter<FormattedString> {
                     else -> appendValueInsideTag(c.value, c.name, sb)
                 }
 
-                //append floating text after child element
+                //append floating textRes after child element
                 appendValue(parent.value, sb)
 
                 flatten(c, c.next, sb)

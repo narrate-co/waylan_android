@@ -1,12 +1,13 @@
 package space.narrate.words.android.ui.list
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import space.narrate.words.android.R
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.data.repository.WordSource
-import space.narrate.words.android.ui.search.Period
-import space.narrate.words.android.ui.list.ListFragment
+import space.narrate.words.android.util.mapTransform
+import space.narrate.words.android.util.switchMapTransform
 import javax.inject.Inject
 
 /**
@@ -17,47 +18,87 @@ class ListViewModel @Inject constructor(
         private val userRepository: UserRepository
 ): ViewModel() {
 
+    private val _listType: MutableLiveData<ListType> = MutableLiveData()
+    val listType: LiveData<ListType>
+        get() = _listType
+
     /**
-     * @return whether or not the user has previously seen and dismissed an onboarding
-     *  banner for [type]
+     * Whether or not the user has seen the banner for this list type.
      */
-    fun getHasSeenBanner(type: ListFragment.ListType): Boolean =
+    private val hasSeenHeader: LiveData<Boolean> = listType.switchMapTransform {
+        when (it) {
+            ListType.TRENDING -> userRepository.hasSeenTrendingBannerLive
+            ListType.RECENT -> userRepository.hasSeenRecentsBannerLive
+            ListType.FAVORITE -> userRepository.hasSeenFavoritesBannerLive
+        }
+    }
+
+    val list: LiveData<List<ListItemModel>> = listType
+        .switchMapTransform { type ->
             when (type) {
-                ListFragment.ListType.TRENDING -> userRepository.hasSeenTrendingBanner
-                ListFragment.ListType.RECENT -> userRepository.hasSeenRecentsBanner
-                ListFragment.ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner
+                ListType.TRENDING -> userRepository.trendingListFilterLive
+                    .switchMapTransform { filter ->
+                        wordRepository.getGlobalWordTrending(LIST_LIMIT, filter)
+                    }
+                    .mapTransform { globalWords ->
+                        globalWords.map { ListItemModel.GlobalWordModel(it) }
+                    }
+                ListType.RECENT -> wordRepository.getUserWordRecents(LIST_LIMIT)
+                    .mapTransform { userWords ->
+                        userWords.map { ListItemModel.UserWordModel(it) }
+                    }
+                ListType.FAVORITE -> wordRepository.getUserWordFavorites(LIST_LIMIT)
+                    .mapTransform { userWords ->
+                        userWords.map { ListItemModel.UserWordModel(it) }
+                    }
+            } as LiveData<List<ListItemModel>>
+        }
+        .switchMapTransform { filteredItems ->
+            hasSeenHeader.mapTransform { hasSeenHeader -> addHeader(filteredItems, hasSeenHeader) }
+        }
+
+    /**
+     * Set the current list type to be observed.
+     */
+    fun setListType(type: ListType) {
+        _listType.value = type
+    }
+
+    /**
+     * Generate the header data model which should be shown for this list type.
+     */
+    private fun addHeader(list: List<ListItemModel>, hasSeenHeader: Boolean): List<ListItemModel> {
+        val type = listType.value ?: ListType.TRENDING
+
+        return if (list.isNullOrEmpty() || (!hasSeenHeader && type == ListType.TRENDING)) {
+            // Add a header to the list
+            val text = when (type) {
+                ListType.TRENDING -> R.string.list_banner_trending_body
+                ListType.RECENT -> R.string.list_banner_recents_body
+                ListType.FAVORITE -> R.string.list_banner_favorites_body
             }
+            val topButton = if (list.isEmpty()) R.string.list_banner_get_started_button else null
+            val bottomButton = if (list.isEmpty()) null else R.string.list_banner_dismiss_button
+            val header = ListItemModel.HeaderModel(text, topButton, bottomButton)
 
-    /**
-     * Set the underlying preference dictating whether or not the user has seen and dismissed
-     * the onboarding banner for [type]
-     */
-    fun setHasSeenBanner(type: ListFragment.ListType, value: Boolean) {
-        when (type) {
-            ListFragment.ListType.TRENDING -> userRepository.hasSeenTrendingBanner = value
-            ListFragment.ListType.RECENT -> userRepository.hasSeenRecentsBanner = value
-            ListFragment.ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner = value
+            list.toMutableList().apply {
+                add(0, header)
+            }
+        } else {
+            list
         }
     }
 
-    fun getListFilter(type: ListFragment.ListType): LiveData<List<Period>> {
-        return when (type) {
-            ListFragment.ListType.TRENDING -> userRepository.trendingListFilterLive
-            ListFragment.ListType.RECENT -> userRepository.recentsListFilterLive
-            ListFragment.ListType.FAVORITE -> userRepository.favoritesListFilterLive
+    fun onBannerDismissClicked() {
+        when (listType.value) {
+            ListType.TRENDING -> userRepository.hasSeenTrendingBanner = true
+            ListType.RECENT -> userRepository.hasSeenRecentsBanner = true
+            ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner = true
         }
     }
 
-    /**
-     * Get a list of either [FirestoreUserSource] or [FirestoreGlobalSource] items which
-     * correspond to the given [type]
-     */
-    fun getList(type: ListFragment.ListType, filter: List<Period>): LiveData<List<WordSource>> {
-        return when (type) {
-            ListFragment.ListType.TRENDING -> wordRepository.getTrending(25L, filter)
-            ListFragment.ListType.RECENT -> wordRepository.getRecents(25L)
-            ListFragment.ListType.FAVORITE -> wordRepository.getFavorites(25L)
-        } as LiveData<List<WordSource>>
+    companion object {
+        private const val LIST_LIMIT = 25L
     }
 }
 

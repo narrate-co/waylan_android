@@ -22,7 +22,7 @@ interface WordDao {
 
     @Transaction
     @Query("SELECT * FROM words WHERE word = :word ORDER BY word")
-    fun getWordAndMeanings(word: String): LiveData<WordAndMeanings>
+    fun getWordAndMeanings(word: String): LiveData<WordAndMeanings?>
 
     @Query("SELECT * FROM words ORDER BY word ASC")
     fun getAll(): LiveData<List<Word>>

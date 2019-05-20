@@ -1,11 +1,15 @@
 package space.narrate.words.android.ui.search
 
 import androidx.lifecycle.*
-import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.R
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.data.repository.WordSource
 import space.narrate.words.android.data.prefs.*
+import space.narrate.words.android.ui.Event
+import space.narrate.words.android.util.mapTransform
+import space.narrate.words.android.util.switchMapTransform
+import space.narrate.words.android.util.widget.MergedLiveData
 import javax.inject.Inject
 
 /**
@@ -17,55 +21,73 @@ class SearchViewModel @Inject constructor(
         private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
-    /**
-     * The current text of the [SearchFragment]'s search input field. Set this property when
-     * the search input field's EditText changes to have [searchResults] re-query for new
-     * results.
-     *
-     * Client should only need to <i>set</i> this property while getting results from
-     * [searchResults]
-     */
-    var searchInput: String = ""
-        set(value) {
-            if (value == field) return
-            field = value
-            searchInputLive.value = value
-        }
+    private val searchInput: MutableLiveData<String> = MutableLiveData()
 
-    // A live data copy of [searchInput] to be observed by [searchResults]
-    private val searchInputLive: MutableLiveData<String> = MutableLiveData()
+    val searchResults: LiveData<List<SearchItemModel>> = searchInput
+        .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
+        .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
-    /**
-     * A LiveData object that an appropriate list of results based on the value of [searchInput].
-     * When [searchInput], this LiveData's value will be updated to reflect either search results,
-     * if [searchInput] is not blank, or a list of recently viewed words if it is.
-     */
-    val searchResults: LiveData<List<WordSource>> = Transformations.switchMap(searchInputLive) {
-        if (it.isEmpty()) {
-            wordRepository.getRecents(25L) as LiveData<List<WordSource>>
-        } else {
-            wordRepository.getSearchWords(it)
+    private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
+    val shouldShowDetails: LiveData<Event<String>>
+        get() = _shouldShowDetails
+
+    private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPromptModel>>
+        = MutableLiveData()
+    val shouldShowOrientationPrompt: LiveData<Event<OrientationPromptModel>>
+        get() = _shouldShowOrientationPrompt
+
+    init {
+        searchInput.value = ""
+    }
+
+    private fun getRecent(): LiveData<List<SearchItemModel>> {
+        return wordRepository.getUserWordRecents(25L)
+            .mapTransform { recents -> recents.map { SearchItemModel.UserWordModel(it) } }
+    }
+
+    private fun getSearch(input: String): LiveData<List<SearchItemModel>> {
+        return MergedLiveData(
+            wordRepository.getWordsetWords(input),
+            wordRepository.getSuggestItems(input)
+        ) { words, suggestions ->
+            val wordsModels = words.map { SearchItemModel.WordModel(it) }
+            val suggestModels = suggestions.map { SearchItemModel.SuggestModel(it) }
+            (wordsModels + suggestModels).distinctBy { item ->
+                when (item) {
+                    is SearchItemModel.WordModel -> item.word.word
+                    is SearchItemModel.SuggestModel -> item.suggestItem.term
+                    else -> ""
+                }
+            }
         }
     }
 
-    // A mutable live data backing object to be set when an orientation prompt should be shown
-    // TODO create a SingularLiveData class to automatically clear a value after emitting a value
-    // TODO something like RxJava's Single
-    private val _orientationPrompt: MutableLiveData<OrientationPrompt?> = MutableLiveData()
+    private fun addHeader(list: List<SearchItemModel>): List<SearchItemModel> {
+        return if (list.isEmpty()) {
+            list.toMutableList().apply {
+                add(0, SearchItemModel.HeaderModel(
+                    R.string.search_banner_body
+                ))
+            }
+        } else {
+            list
+        }
+    }
 
-    /**
-     * A LiveData object that broadcasts [OrientationPrompt]s when prompts should be immediately
-     * shown. After an [OrientationPrompt] is set as the value, the the value immediately return
-     * to null. This is becuase orientation prompts are extremely "timely" events and should only
-     * be acted on the instant they are seen. The value will return to null to avoid observers
-     * resubscribing and being passed the last value seen, which would then be an out-dated (no
-     * longer timely prompt)
-     */
-    val orientationPrompt: LiveData<OrientationPrompt?> = _orientationPrompt
+    fun onSearchInputTextChanged(input: CharSequence?) {
+        searchInput.value = input?.toString() ?: ""
+    }
 
-    // initialize properties to defaults
-    init {
-        searchInputLive.value = ""
+    fun onWordClicked(item: SearchItemModel) {
+        val word = when (item) {
+            is SearchItemModel.WordModel -> item.word.word
+            is SearchItemModel.UserWordModel -> item.userWord.word
+            is SearchItemModel.SuggestModel -> item.suggestItem.term
+            else -> return
+        }
+
+        analyticsRepository.logSearchWordEvent(word, word, item::class.java.simpleName)
+        _shouldShowDetails.value = Event(word)
     }
 
     /**
@@ -75,17 +97,8 @@ class SearchViewModel @Inject constructor(
      *
      * @param orientation The orientation the app should be set to
      */
-    fun setOrientationPreference(orientation: Orientation) {
-        userRepository.orientationLock = orientation.value
-    }
-
-    /**
-     * Log a user having searched for a word and clicked on a result.
-     *
-     * @see [AnalyticsRepository.EVENT_SEARCH_WORD] for more details
-     */
-    fun logSearchWordEvent(id: String, word: WordSource) {
-        analyticsRepository.logSearchWordEvent(searchInput, id, word::class.java.simpleName)
+    fun onOrientationPromptClicked(orientationPrompt: OrientationPromptModel) {
+        userRepository.orientationLock = orientationPrompt.orientationToRequest
     }
 
 
@@ -103,21 +116,19 @@ class SearchViewModel @Inject constructor(
             old: RotationManager.RotationEvent,
             new: RotationManager.RotationEvent
     ) {
-        if (isPortraitToLandscape(old, new)) {
+        if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
             if (userRepository.portraitToLandscapeOrientationChangeCount == 2L) {
-                _orientationPrompt.value = OrientationPrompt.LockToLandscape(
-                        Orientation.fromActivityInfoScreenOrientation(new.orientation)
-                )
-                _orientationPrompt.value = null
+                _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.LockToLandscape(
+                    Orientation.fromActivityInfoScreenOrientation(new.orientation)
+                ))
             }
-        } else if (isLandscapeToPortrait(old, new)) {
+        } else if (RotationUtils.isLandscapeToPortrait(old, new)) {
             userRepository.landscapeToPortraitOrientationChangeCount++
             if (userRepository.landscapeToPortraitOrientationChangeCount == 1L) {
-                _orientationPrompt.value = OrientationPrompt.LockToPortrait(
-                        Orientation.fromActivityInfoScreenOrientation(new.orientation)
-                )
-                _orientationPrompt.value = null
+                _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.LockToPortrait(
+                    Orientation.fromActivityInfoScreenOrientation(new.orientation)
+                ))
             }
         }
     }
@@ -127,10 +138,16 @@ class SearchViewModel @Inject constructor(
             lockedTo: Int,
             observedSince: Long
     ) {
-        if (isLikelyUnlockDesiredScenario(pattern, lockedTo, observedSince, System.nanoTime())) {
+        if (RotationUtils.isLikelyUnlockDesiredScenario(
+                        pattern,
+                        lockedTo,
+                        observedSince,
+                        System.nanoTime()
+                )) {
             //should suggest unlocking
-            _orientationPrompt.value = OrientationPrompt.UnlockOrientation(Orientation.UNSPECIFIED)
-            _orientationPrompt.value = null
+            _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.UnlockOrientation(
+                Orientation.UNSPECIFIED
+            ))
         }
     }
 

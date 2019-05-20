@@ -40,8 +40,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     companion object {
-        private val TAG = ElasticAppBarBehavior::class.java.simpleName
-
         private const val DIRECTION_UP = 0x1
         private const val DIRECTION_DOWN = 0x2
         private const val DIRECTION_RIGHT = 0x4
@@ -248,7 +246,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         // Set the CoordinatorLayout's background
         val backgroundTint = parent.backgroundTintList
                 ?: ColorStateList.valueOf(
-                        parent.context.getColorFromAttr(android.R.attr.windowBackground)
+                        parent.context.getColorFromAttr(android.R.attr.colorBackground)
                 )
         DrawableCompat.setTintList(materialShapeDrawable, backgroundTint)
         ViewCompat.setBackground(parent, materialShapeDrawable)
@@ -337,7 +335,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         // If this is not a touch event from a nested scrolling source, we're touching the ABL
         if (!nestedScrolling) {
-            // Determine gesture type and handle scroll events in our gesture detector
+            // Determine gesture listType and handle scroll events in our gesture detector
             gestureDetector.onTouchEvent(ev)
             when (ev.action) {
                 // Scrolling/touch has stopped. Process any accumulated drag
@@ -412,29 +410,30 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onNestedScroll(
-            coordinatorLayout: CoordinatorLayout,
-            child: AppBarLayout,
-            target: View,
-            dxConsumed: Int,
-            dyConsumed: Int,
-            dxUnconsumed: Int,
-            dyUnconsumed: Int,
-            type: Int
+        coordinatorLayout: CoordinatorLayout,
+        child: AppBarLayout,
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int,
+        consumed: IntArray
     ) {
         dragScaleVertical(coordinatorLayout, dyUnconsumed)
         dragScaleHorizontal(coordinatorLayout, dxUnconsumed)
 
         if (!hasStartedVerticalDrag) {
             super.onNestedScroll(
-                    coordinatorLayout,
-                    child,
-                    target,
-                    dxConsumed,
-                    dyConsumed,
-                    dxUnconsumed,
-                    dyUnconsumed,
-                    type
-            )
+                coordinatorLayout,
+                child,
+                target,
+                dxConsumed,
+                dyConsumed,
+                dxUnconsumed,
+                dyUnconsumed,
+                type,
+                consumed)
         }
     }
 

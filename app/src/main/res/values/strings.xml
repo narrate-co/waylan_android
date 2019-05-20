@@ -25,6 +25,16 @@
     <string name="details_merriam_webster_card_details_button">Details</string>
     <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
 
+    <!--MerriamWebsterCardView-->
+    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
+    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
+    <string name="mw_card_view_plugin_expired">Plugin expired</string>
+    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
+
+    <!--MerriamWebsterAudioView-->
+    <string name="mw_audio_view_no_audio_available_error">No audio available</string>
+    <string name="mw_audio_view_requires_mw_plugin_error">Audio pronunciation requires the Merriam-Webster plugin</string>
+
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
     <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
@@ -48,7 +58,7 @@
     <!--Auth Screen-->
     <string name="auth_email_hint">Email</string>
     <string name="auth_password_hint">Password</string>
-    <string name="auth_confirm_passsword_hint">Confirm Password</string>
+    <string name="auth_confirm_password_hint">Confirm Password</string>
     <string name="auth_cancel_button">Cancel</string>
     <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
     <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
@@ -67,16 +77,24 @@
     <string name="settings_header_anonymous_none_body">Want to save your recents and favorites across devices? Want access to Merriam-Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
     <string name="settings_header_anonymous_create_account_button">Create Account</string>
     <string name="settings_header_anonymous_log_in_button">Log in</string>
+    <string name="settings_header_added_label">Added</string>
+    <string name="settings_header_expired_label">Plugin expired</string>
+    <string name="settings_header_free_trial_expired_label">Free trial expired</string>
     <string name="settings_header_registered_none_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words for an entire year of access.</string>
     <string name="settings_header_registered_free_trial_expired_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Help support Merriam-Webster and Words for an entire year of access.</string>
     <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Words. Help support Merriam-Webster and Words and get an entire year of access.</string>
     <string name="settings_header_registered_subscribed_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. You have unlimited access. Thank you for your support.</string>
     <string name="settings_header_registered_subscribed_expired_body">Looks like your purchase expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Words entries. Renew for a whole year of access.</string>
     <string name="settings_header_registered_add_button">Add</string>
+    <string name="settings_header_renew_top_button">Renew</string>
     <string name="settings_sign_out_title">Sign out</string>
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
     <string name="settings_developer_title">Developer Settings</string>
     <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
+    <string name="settings_night_mode_set_by_battery_saver_title">Set by Battery Saver</string>
+    <string name="settings_night_mode_set_by_battery_saver_desc">Night mode will automatically be enabled if Battery Saver is turned on</string>
+    <string name="settings_night_mode_system_default_title">System default</string>
+    <string name="settings_night_mode_system_default_desc">Night mode will be used depending on if dark theme is turned on in system settings</string>
     <string name="settings_night_mode_follows_system_title">Follows system</string>
     <string name="settings_night_mode_auto_title">Auto</string>
     <string name="settings_night_mode_yes_title">Yes</string>
@@ -124,6 +142,18 @@
     <string name="period_label_month">month</string>
     <string name="period_label_year">year</string>
     <string name="period_label_all_time">all time</string>
+    <string name="developer_settings_all_preferences_cleared">All user preferences cleared</string>
+    <string name="developer_settings_informative_snackbar_test_message">A test piece of information</string>
+    <string name="developer_settings_informative_snackbar_test_action">Okay</string>
+    <string name="developer_settings_error_snackbar_test_action">Report</string>
+    <string name="developer_settings_error_snackbar_test_message">A test error message</string>
+    <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
+    <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
+    <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
+    <string name="audio_clip_no_network_available">No network available</string>
+    <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
+    <string name="item_desc">This is a sample description and should be deleted</string>
+    <string name="item_title">Sample title</string>
 
 
 </resources>

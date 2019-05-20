@@ -38,7 +38,7 @@ class PreferenceLiveData<T>(
             is Long -> sharedPrefs.getLong(key, default) as T
             is Int -> sharedPrefs.getInt(key, default) as T
             is Set<*> -> sharedPrefs.getStringSet(key, default as Set<String>) as T
-            else -> throw RuntimeException("Unsupported preference type")
+            else -> throw RuntimeException("Unsupported preference listType")
         }
     }
 

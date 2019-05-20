@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.core.graphics.withTranslation
 import space.narrate.words.android.R
-import space.narrate.words.android.util.getScaleBetweenRange
+import space.narrate.words.android.util.MathUtils
 
 /**
  * A View that acts as a simple underline when not showing progress and a linear, indeterminate
@@ -35,8 +35,6 @@ class ProgressUnderlineView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
-        private val TAG = ProgressUnderlineView::class.java.simpleName
-
         private const val DEF_STYLE_RES = R.style.Widget_Words_ProgressUnderlineView
 
         private const val ANIM_DURATION = 2000L
@@ -141,19 +139,19 @@ class ProgressUnderlineView @JvmOverloads constructor(
             // second rect (shrink)
             // start with the second rect since the first can easily
             // be calculated relative to it
-            val rect2TransX = getScaleBetweenRange(
-                    transInterp,
-                    -1F,
-                    1F,
-                    minTransX,
-                    maxTransX
+            val rect2TransX = MathUtils.normalize(
+                transInterp,
+                -1F,
+                1F,
+                minTransX,
+                maxTransX
             )
-            val rect2ScaleX = getScaleBetweenRange(
-                    transInterp,
-                    0.4F,
-                    1F,
-                    1F,
-                    .25F
+            val rect2ScaleX = MathUtils.normalize(
+                transInterp,
+                0.4F,
+                1F,
+                1F,
+                .25F
             )
             val checkpoint = canvas.save()
             // translate and scale for our second rect

@@ -3,11 +3,11 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24"
-    android:tint="?colorPrimaryOnDefault">
+    android:tint="?colorOnBackgroundHighEmphasis">
   <path
-      android:fillColor="?colorPrimaryOnDefault"
+      android:fillColor="#FF000000"
       android:pathData="M19.36,6.55A9,9 0,0 0,13 3.91V3.08a1,1 0,0 0,-1.71 -0.71L9.47,4.2a1,1 0,0 0,0 1.41L11.3,7.44a1,1 0,0 0,1.7 -0.7V5.91a7,7 0,0 1,5.45 2.61A7,7 0,0 1,13 19.91a6.89,6.89 0,0 1,-2.29 -0.39,1 1,0 0,0 -1,0.26A1,1 0,0 0,10 21.4a9,9 0,0 0,9.33 -2.13A9,9 0,0 0,19.36 6.55Z"/>
   <path
-      android:fillColor="?colorPrimaryOnDefault"
+      android:fillColor="#FF000000"
       android:pathData="M9.87,11H9.44v-0.79A2.26,2.26 0,0 0,7.7 8a2.19,2.19 0,0 0,-2.64 2.14V11H4.62a0.87,0.87 0,0 0,-0.87 0.88v4.37a0.88,0.88 0,0 0,0.87 0.88H9.87a0.88,0.88 0,0 0,0.88 -0.88V11.88A0.87,0.87 0,0 0,9.87 11ZM7.25,14.9A0.88,0.88 0,1 1,8.12 14,0.88 0.88,0 0,1 7.25,14.9ZM5.94,11v-0.81A1.36,1.36 0,0 1,7 8.83a1.32,1.32 0,0 1,1.55 1.29V11Z"/>
 </vector>

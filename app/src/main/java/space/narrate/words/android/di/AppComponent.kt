@@ -36,8 +36,8 @@ import dagger.android.support.AndroidSupportInjectionModule
  * |________________________________________________________|
  *
  * TODO Refine this since it doesn't make perfect sense (ie. AuthActivity should have @ActivityScope
- * TODO but not @UserScope like MainActivity. @ActivityScope might need to be a scope that overlaps
- * TODO @UserScope and @ApplicationScope
+ * but not @UserScope like MainActivity. @ActivityScope might need to be a scope that overlaps
+ * @UserScope and @ApplicationScope
  */
 @Component(
         modules = [
