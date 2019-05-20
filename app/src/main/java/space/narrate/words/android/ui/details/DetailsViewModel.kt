@@ -46,7 +46,7 @@ class DetailsViewModel @Inject constructor(
 
                 addSource(MergedLiveData(
                     wordRepository.getMerriamWebsterWord(word),
-                    userRepository.getUser()
+                    userRepository.user
                 ) { mw, user ->
                     DetailItemModel.MerriamWebsterModel(mw, user)
                 })

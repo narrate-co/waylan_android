@@ -10,6 +10,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.NavDestination
 import androidx.transition.Transition
 import space.narrate.words.android.ui.auth.AuthActivity
+import space.narrate.words.android.ui.auth.AuthRoute
 import space.narrate.words.android.ui.details.DetailsFragment
 import space.narrate.words.android.ui.home.HomeFragment
 import space.narrate.words.android.ui.list.ListFragment
@@ -21,7 +22,15 @@ import space.narrate.words.android.util.widget.ElasticTransition
 object Navigator {
 
     enum class Destination {
-        HOME, TRENDING, RECENT, FAVORITE, DETAILS, SETTINGS, ABOUT, THIRD_PARTY, DEV_SETTINGS;
+        HOME,
+        TRENDING,
+        RECENT,
+        FAVORITE,
+        DETAILS,
+        SETTINGS,
+        ABOUT,
+        THIRD_PARTY,
+        DEV_SETTINGS;
 
         companion object {
             fun fromDestinationId(destination: NavDestination, args: Bundle?): Destination {
@@ -57,9 +66,9 @@ object Navigator {
      *  Intent.ACTION_PROCESS_TEXT extra)
      */
     fun launchAuth(
-            context: Context,
-            authRoute: AuthActivity.AuthRoute? = null,
-            filterIntent: Intent? = null
+        context: Context,
+        authRoute: AuthRoute? = null,
+        filterIntent: Intent? = null
     ) {
         val intent = Intent(context, AuthActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -93,9 +102,9 @@ object Navigator {
      * Launch the user's default email client directly into a newly composed email.
      *
      * @param toEmail The addressee's email address
-     * @param subject The email title
+     * @param subject The email titleRes
      * @param body The email's content
-     * @param shareTitle The title of the share picker sheet the client will be offered to choose
+     * @param shareTitle The titleRes of the share picker sheet the client will be offered to choose
      *  their desired email client
      * @throws ActivityNotFoundException If the user doesn't have an email client installed, this
      *  method will throw an ActivityNotFound exception

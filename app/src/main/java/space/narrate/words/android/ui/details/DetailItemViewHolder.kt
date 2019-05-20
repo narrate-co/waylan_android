@@ -65,7 +65,7 @@ sealed class DetailItemViewHolder<T : DetailItemModel>(
 
             //add definition groups for each partOfSpeech
             item.entry.meanings.groupBy { it.partOfSpeech }.entries.forEach { map ->
-                // Create and add the overline part of speech title view
+                // Create and add the overline part of speech titleRes view
                 view.detailsComponentWordsetDefinitionsContainer?.addView(
                     createPartOfSpeechView(map.key)
                 )

@@ -2,14 +2,16 @@ package space.narrate.words.android.di
 
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
-import space.narrate.words.android.data.analytics.AnalyticsRepository
-import space.narrate.words.android.di.UserComponent
+import com.google.firebase.auth.FirebaseAuth
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.disk.AppDatabase
 import space.narrate.words.android.data.prefs.PreferenceStore
 import space.narrate.words.android.data.spell.SymSpellStore
 import space.narrate.words.android.data.prefs.RotationManager
 import dagger.Module
 import dagger.Provides
+import space.narrate.words.android.data.auth.AuthenticationStore
+import space.narrate.words.android.data.prefs.ThirdPartyLibraryStore
 
 @Module(subcomponents = [UserComponent::class])
 class AppModule {
@@ -22,7 +24,7 @@ class AppModule {
 
     @ApplicationScope
     @Provides
-    fun providePreferenceRepository(application: Application): PreferenceStore {
+    fun providePreferenceStore(application: Application): PreferenceStore {
         return PreferenceStore(application)
     }
 
@@ -30,6 +32,18 @@ class AppModule {
     @Provides
     fun provideSymSpellStore(application: Application): SymSpellStore {
         return SymSpellStore(application.applicationContext)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideThirdPartyLibraryStore(): ThirdPartyLibraryStore {
+        return ThirdPartyLibraryStore
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideAuthenticationStore(): AuthenticationStore {
+        return AuthenticationStore()
     }
 
     @ApplicationScope

@@ -13,7 +13,6 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
@@ -25,7 +24,6 @@ import space.narrate.words.android.*
 import space.narrate.words.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.*
-import androidx.fragment.app.FragmentActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -122,7 +120,9 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         ).apply {
             initializeElevationOverlay(requireContext())
             elevation = collapsedContainer.elevation
-            fillColor = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorSurface))
+            fillColor = ColorStateList.valueOf(
+                requireContext().getColorFromAttr(R.attr.colorSurface)
+            )
         }
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
@@ -194,7 +194,9 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         // Set max expanded height to 60% of screen height, the max height it can be expected that
         // a person can reach with their thumb
         val maxReachableExpandedHeight = Math.round(requireContext().displayHeightPx * .60F)
-        val searchItemHeight = requireContext().getDimensionPixelSizeFromAttr(android.R.attr.listPreferredItemHeight)
+        val searchItemHeight = requireContext().getDimensionPixelSizeFromAttr(
+            android.R.attr.listPreferredItemHeight
+        )
         val minPeekHeight = resources.getDimensionPixelSize(R.dimen.search_min_peek_height)
         val minVisibleHeightAboveKeyboard = minPeekHeight + (1.5 * searchItemHeight)
 
@@ -216,7 +218,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
                 })
 
         recyclerView.alpha = 0F
-        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             recyclerView.alpha = MathUtils.normalize(offset, 0.2F, 1.0F, 0.0F, 1.0F)
         }
     }
@@ -245,7 +247,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
     // is empty and search results when not.
     private fun setUpRecyclerView() {
         //set up recycler view
-        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
         // hide IME if user is scrolling search results
@@ -273,11 +275,11 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         })
 
         // observe for orientation/rotation changes in the viewModel
-        rotationManager.observe(SearchFragment::class.java.simpleName, this, viewModel)
+        rotationManager.observe(this.javaClass.simpleName, this, viewModel)
 
         // observe for all orientation/rotation patterns in the viewModel
         rotationManager.observeForPattern(
-                SearchFragment::class.java.simpleName,
+                this.javaClass.simpleName,
                 this,
                 RotationManager.PATTERNS_ALL,
                 viewModel)
@@ -332,7 +334,8 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
         val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
         val hiddenMargin = keyline2
-        val showingMargin = (((actionOneImageView.width + keyline3) * numberOfShelfActionsShowing) + (if (zeroActions) keyline2 else 0)) + keyline2
+        val showingMargin = (((actionOneImageView.width + keyline3) * numberOfShelfActionsShowing) +
+            (if (zeroActions) keyline2 else 0)) + keyline2
         val params = searchContainer.layoutParams  as ConstraintLayout.LayoutParams
 
         params.rightMargin = MathUtils.normalize(
@@ -364,7 +367,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
      * TODO Create a custom view to "vertically marquee" textRes that changes in smartSuggestion
      * TODO and animate the removal of the icon/textRes width changing
      */
-    private fun expandSmartShelf(prompt: OrientationPrompt) {
+    private fun expandSmartShelf(prompt: OrientationPromptModel) {
         if (view == null) return
 
         synchronized(smartShelfExpanded) {
@@ -399,7 +402,8 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
                 val point = Point()
                 display.getSize(point)
                 smartSuggestion.measure(point.x, point.y)
-                val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop + smartSuggestion.marginBottom
+                val measuredDiff = smartSuggestion.measuredHeight + smartSuggestion.marginTop +
+                    smartSuggestion.marginBottom
 
                 // close the shelf after the transition has ended and after a delay
                 smartShelfAfterTransitionEndAction = DelayedAfterTransitionEndAction(
@@ -465,8 +469,10 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         val zeroActions = numberOfActions == 0
         val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
         val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
-        val showMargin = (((actionOneImageView.width + keyline3) * numberOfActions) + (if (zeroActions) keyline2 else 0)) + keyline2
-        val currentMargin = (searchContainer.layoutParams as ConstraintLayout.LayoutParams).rightMargin
+        val showMargin = (((actionOneImageView.width + keyline3) * numberOfActions) +
+            (if (zeroActions) keyline2 else 0)) + keyline2
+        val currentMargin =
+            (searchContainer.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
         if ((!zeroActions && currentMargin == showMargin)
@@ -524,32 +530,31 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         viewModel.onWordClicked(searchItem)
     }
 
-    override fun afterTextChanged(s: Editable?) {}
+    override fun afterTextChanged(s: Editable?) { }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         viewModel.onSearchInputTextChanged(s)
     }
 
     override fun onBannerClicked() {
-        // do nothing. Search banner should not have any buttons
+        // Do nothing. Search banner should not have any buttons
     }
 
     override fun onBannerLabelClicked() {
-        // do nothing. Search banner should not have a label.
+        // Do nothing. Search banner should not have a label.
     }
 
     override fun onBannerTopButtonClicked() {
-        // do nothing. Search banner should not have any buttons
+        // Do nothing. Search banner should not have any buttons
     }
 
     override fun onBannerBottomButtonClicked() {
-        // do nothing. Search banner should not have any buttons
+        // Do nothing. Search banner should not have any buttons
     }
 
     companion object {
-        const val TAG = "SearchFragment"
 
         private fun getBottomInset(context: Context, insets: WindowInsetsCompat): Int {
             return insets.systemWindowInsetBottom +

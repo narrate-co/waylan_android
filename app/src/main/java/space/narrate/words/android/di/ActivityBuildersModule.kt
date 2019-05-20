@@ -12,8 +12,7 @@ abstract class ActivityBuildersModule {
         MainFragmentBuildersModule::class,
         SettingsFragmentBuildersModule::class
     ])
+
     abstract fun contributeMainActivity(): MainActivity
-
-
 }
 

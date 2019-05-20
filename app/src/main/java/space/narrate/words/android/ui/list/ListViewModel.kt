@@ -43,12 +43,14 @@ class ListViewModel @Inject constructor(
                     .mapTransform { globalWords ->
                         globalWords.map { ListItemModel.GlobalWordModel(it) }
                     }
-                ListType.RECENT -> wordRepository.getUserWordRecents(LIST_LIMIT).mapTransform { userWords ->
-                    userWords.map { ListItemModel.UserWordModel(it) }
-                }
-                ListType.FAVORITE -> wordRepository.getUserWordFavorites(LIST_LIMIT).mapTransform { userWords ->
-                    userWords.map { ListItemModel.UserWordModel(it) }
-                }
+                ListType.RECENT -> wordRepository.getUserWordRecents(LIST_LIMIT)
+                    .mapTransform { userWords ->
+                        userWords.map { ListItemModel.UserWordModel(it) }
+                    }
+                ListType.FAVORITE -> wordRepository.getUserWordFavorites(LIST_LIMIT)
+                    .mapTransform { userWords ->
+                        userWords.map { ListItemModel.UserWordModel(it) }
+                    }
             } as LiveData<List<ListItemModel>>
         }
         .switchMapTransform { filteredItems ->

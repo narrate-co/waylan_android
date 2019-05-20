@@ -29,13 +29,11 @@ import space.narrate.words.android.util.widget.ElasticTransition
  * for a given word.
  */
 class DetailsFragment: BaseUserFragment(),
-    DetailItemAdapter.Listener,
-    ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+    DetailItemAdapter.Listener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var navigationIcon: AppCompatImageButton
-    private lateinit var statusBarScrim: View
     private lateinit var recyclerView: RecyclerView
 
     // The MainViewModel which is used to for data shared between MainActivity and
@@ -81,24 +79,20 @@ class DetailsFragment: BaseUserFragment(),
         coordinatorLayout = view.findViewById(R.id.coordinator_layout)
         appBarLayout = view.findViewById(R.id.app_bar)
         navigationIcon = view.findViewById(R.id.navigation_icon)
-        statusBarScrim = view.findViewById(R.id.status_bar_scrim)
         recyclerView = view.findViewById(R.id.recycler_view)
 
-        // Add callback to the AppBarLayout's ElasticAppBarBehavior to listen for
-        // drag to dismiss events
-        ((appBarLayout.layoutParams as CoordinatorLayout.LayoutParams)
-            .behavior as ElasticAppBarBehavior)
-            .addCallback(this)
+        appBarLayout.setUpWithElasticBehavior(
+            this.javaClass.simpleName,
+            sharedViewModel,
+            listOf(appBarLayout),
+            listOf(recyclerView, appBarLayout)
+        )
 
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseUserFragment.setUnconsumedNavigationMethod]
-            requireActivity().onBackPressed()
+            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
         }
-
-        // Set up fake status bar background to be either transparent or opaque depending on this
-        // Fragment's AppBarLayout offset
-        setUpStatusBarScrim(statusBarScrim, appBarLayout)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
@@ -198,29 +192,6 @@ class DetailsFragment: BaseUserFragment(),
         // TODO : Add actions
 
         snackbar.show()
-    }
-
-    override fun onDrag(
-        dragFraction: Float,
-        dragTo: Float,
-        rawOffset: Float,
-        rawOffsetPixels: Float,
-        dragDismissScale: Float
-    ) {
-
-        // Translate individual views to create a parallax effect
-        val alpha = 1 - dragFraction
-        val cutDragTo = dragTo * .15F
-
-        appBarLayout.translationY = cutDragTo
-        recyclerView.alpha = alpha
-        appBarLayout.alpha = alpha
-    }
-
-    override fun onDragDismissed(): Boolean {
-        sharedViewModel.onDragDismissBackEvent(DetailsFragment::class.java.simpleName)
-        Handler().post { requireActivity().onBackPressed() }
-        return true
     }
 }
 

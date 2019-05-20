@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.settings
+package space.narrate.words.android.ui.dev
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import space.narrate.words.android.MainViewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.data.firestore.users.PluginState
@@ -20,6 +22,7 @@ import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.util.configInformative
+import space.narrate.words.android.util.setUpWithElasticBehavior
 import space.narrate.words.android.util.widget.CheckPreferenceView
 import space.narrate.words.android.util.widget.ElasticTransition
 
@@ -29,18 +32,20 @@ import space.narrate.words.android.util.widget.ElasticTransition
  * in conjunction with the current user (ie. directly changing Merriam-Webster PluginState
  * properties, clearing [UserPreferences]) and UI/UX elements (like Snackbar example triggers)
  *
- * [R.id.clear_user_preference] Resets all [UserPreferences] to their defaults
- * [R.id.merriam_webster_state_preference] Changes the [PluginState] of the current user's Merriam-Webster plugin
- *  by manipulating properties on [User]
- * [R.id.use_test_skus_preference] Toggle to run Google Play Billing against test skus defined in [BillingConfig]
- * [R.id.merriam_webster_billing_response_preference] Toggle to switch between the three possible "fake" billing
- *  skus available for testing Google Play Billing
- * [R.id.informative_snackbar_preference] Trigger an informative Snackbar to test UI/UX
- * [R.id.error_snackbar_preference] Trigger an error Snackbar to test UI/UX
+ * [R.id.clear_user_preference] Resets all [UserPreferences] to their defaults.
+ * [R.id.merriam_webster_state_preference] Changes the [PluginState] of the current user's
+ *  Merriam-Webster plugin by manipulating properties on [User].
+ * [R.id.use_test_skus_preference] Toggle to run Google Play Billing against test skus defined
+ *  in [BillingConfig].
+ * [R.id.merriam_webster_billing_response_preference] Toggle to switch between the three possible
+ *  "fake" billing skus available for testing Google Play Billing.
+ * [R.id.informative_snackbar_preference] Trigger an informative Snackbar to test UI/UX.
+ * [R.id.error_snackbar_preference] Trigger an error Snackbar to test UI/UX.
  */
 class DeveloperSettingsFragment : BaseUserFragment() {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var scrollView: NestedScrollView
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var clearUserPreference: CheckPreferenceView
@@ -50,7 +55,12 @@ class DeveloperSettingsFragment : BaseUserFragment() {
     private lateinit var informativeSnackbarPreference: CheckPreferenceView
     private lateinit var errorSnackbarPreference: CheckPreferenceView
 
-    // Reuse the SettingsViewView model from SettingsFragment since many of the methods are the same
+    private val sharedViewModel by lazy {
+        ViewModelProviders
+            .of(requireActivity(), viewModelFactory)
+            .get(MainViewModel::class.java)
+    }
+
     private val viewModel by lazy {
         ViewModelProviders
                 .of(this, viewModelFactory)
@@ -74,6 +84,7 @@ class DeveloperSettingsFragment : BaseUserFragment() {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         coordinatorLayout = view.findViewById(R.id.coordinator_layout)
+        appBarLayout = view.findViewById(R.id.app_bar)
         scrollView = view.findViewById(R.id.scroll_view)
         navigationIcon = view.findViewById(R.id.navigation_icon)
         clearUserPreference = view.findViewById(R.id.clear_user_preference)
@@ -85,7 +96,16 @@ class DeveloperSettingsFragment : BaseUserFragment() {
         informativeSnackbarPreference = view.findViewById(R.id.informative_snackbar_preference)
         errorSnackbarPreference = view.findViewById(R.id.error_snackbar_preference)
 
-        navigationIcon.setOnClickListener { requireActivity().onBackPressed() }
+        appBarLayout.setUpWithElasticBehavior(
+            this.javaClass.simpleName,
+            sharedViewModel,
+            listOf(navigationIcon),
+            listOf(scrollView, appBarLayout)
+        )
+
+        navigationIcon.setOnClickListener {
+            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+        }
 
         viewModel.shouldShowSnackbar.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { showSnackbar(it) }

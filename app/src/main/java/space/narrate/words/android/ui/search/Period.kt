@@ -2,6 +2,7 @@ package space.narrate.words.android.ui.search
 
 import space.narrate.words.android.R
 
+//TODO Move this into data package?
 enum class Period(val label: Int, val prefString: String, val viewCountProp: String) {
     MINUTE(R.string.period_label_minute, "min", "minuteViewCount"),
     HOUR(R.string.period_label_hour, "hr", "hourViewCount"),

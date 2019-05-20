@@ -2,7 +2,6 @@ package space.narrate.words.android.util.widget
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG

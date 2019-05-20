@@ -83,7 +83,6 @@ class MainActivity : DaggerAppCompatActivity() {
         decor.systemUiVisibility = flags
 
         findNavController().addOnDestinationChangedListener { _, destination, arguments ->
-            // TODO: Move mapping into Navigator.Destination
             sharedViewModel.onDestinationChanged(
                 Navigator.Destination.fromDestinationId(destination, arguments)
             )
@@ -95,6 +94,10 @@ class MainActivity : DaggerAppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
         coordinatorLayout = findViewById(R.id.coordinator_layout)
         bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
+
+        sharedViewModel.shouldNavigateBack.observe(this, Observer { event ->
+            event.getUnhandledContent()?.let { onBackPressed() }
+        })
 
         sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
@@ -113,10 +116,6 @@ class MainActivity : DaggerAppCompatActivity() {
         processText(intent)
 
         setUpScrimView()
-
-//        setUpSearchSheet()
-
-//        setUpContextualSheet()
     }
 
     override fun onNewIntent(intent: Intent?) {

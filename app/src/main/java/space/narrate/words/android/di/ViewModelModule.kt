@@ -12,7 +12,7 @@ import space.narrate.words.android.ui.settings.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import space.narrate.words.android.ui.settings.DeveloperSettingsViewModel
+import space.narrate.words.android.ui.dev.DeveloperSettingsViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -31,11 +31,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     internal abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(AuthViewModel::class)
-    internal abstract fun bindAuthViewModel(authViewModel: AuthViewModel): ViewModel
+//
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(AuthViewModel::class)
+//    internal abstract fun bindAuthViewModel(authViewModel: AuthViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -110,8 +110,8 @@ fun <T> TrimmedStack<T>.hasPattern(pattern: List<T>): Boolean {
  * @param areEqual A function to compare items in [pattern] against items in this TrimmedStack. This
  *  is helpful if items are of different types.
  *
- * @return A list, exactly the same as [pattern], but of [T], the listType of the TrimmedStack. If the
- *  pattern is not present, null will be returned.
+ * @return A list, exactly the same as [pattern], but of [T], the listType of the TrimmedStack. If
+ *   the pattern is not present, null will be returned.
  */
 fun <T, P> TrimmedStack<T>.copyMatchedPattern(
         pattern: List<P>,

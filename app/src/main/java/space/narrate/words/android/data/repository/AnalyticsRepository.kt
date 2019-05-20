@@ -1,4 +1,4 @@
-package space.narrate.words.android.data.analytics
+package space.narrate.words.android.data.repository
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics

@@ -10,6 +10,7 @@ import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.ui.Event
 import space.narrate.words.android.ui.auth.AuthActivity
+import space.narrate.words.android.ui.auth.AuthRoute
 import javax.inject.Inject
 
 /**
@@ -25,38 +26,39 @@ class SettingsViewModel @Inject constructor(
         private val userRepository: UserRepository
 ): ViewModel() {
 
-    val user: LiveData<User> = userRepository.getUser()
+    val user: LiveData<User> = userRepository.user
 
     val nightMode: LiveData<NightMode> = userRepository.nightModeLive
 
     var orientation: LiveData<Orientation> = userRepository.orientationLockLive
 
-    val bannerModel: LiveData<MwBannerModel> = Transformations.map(userRepository.getUser()) {
+    val bannerModel: LiveData<MwBannerModel> = Transformations.map(userRepository.user) {
         MwBannerModel.create(it)
     }
 
-    private val _shouldLaunchAuth: MutableLiveData<Event<AuthActivity.AuthRoute>> =
+    private val _shouldLaunchAuth: MutableLiveData<Event<AuthRoute>> =
         MutableLiveData()
-    val shouldLaunchAuth: LiveData<Event<AuthActivity.AuthRoute>>
+    val shouldLaunchAuth: LiveData<Event<AuthRoute>>
         get() = _shouldLaunchAuth
 
     private val _shouldLaunchMwPurchaseFlow: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldLaunchMwPurchaseFlow: LiveData<Event<Boolean>>
         get() = _shouldLaunchMwPurchaseFlow
 
-    private val _shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>> = MutableLiveData()
+    private val _shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>>
+        = MutableLiveData()
     val shouldShowNightModeDialog: LiveData<Event<List<NightModeRadioItemModel>>>
         get() = _shouldShowNightModeDialog
 
-    private val _shouldShowOrientationDialog: MutableLiveData<Event<List<OrientationRadioItemModel>>> =
-        MutableLiveData()
+    private val _shouldShowOrientationDialog: MutableLiveData<Event<List<OrientationRadioItemModel>>>
+        = MutableLiveData()
     val shouldShowOrientationDialog: LiveData<Event<List<OrientationRadioItemModel>>>
         get() = _shouldShowOrientationDialog
 
 
     fun onBannerTopButtonClicked() {
         if (user.value?.isAnonymous == true) {
-            _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.SIGN_UP)
+            _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
         } else {
             _shouldLaunchMwPurchaseFlow.value = Event(true)
         }
@@ -64,7 +66,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onBannerBottomButtonClicked() {
         if (user.value?.isAnonymous == true) {
-            _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.LOG_IN)
+            _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
         } else {
             _shouldLaunchMwPurchaseFlow.value = Event(true)
         }
@@ -93,7 +95,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onSignOutClicked() {
-        _shouldLaunchAuth.value = Event(AuthActivity.AuthRoute.LOG_IN)
+        _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
     }
 
 

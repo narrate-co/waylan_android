@@ -13,6 +13,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.words.android.*
 import space.narrate.words.android.billing.BillingConfig
@@ -21,6 +22,7 @@ import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.words.android.util.gone
+import space.narrate.words.android.util.setUpWithElasticBehavior
 import space.narrate.words.android.util.visible
 import space.narrate.words.android.util.widget.BannerCardView
 import space.narrate.words.android.util.widget.CheckPreferenceView
@@ -34,20 +36,23 @@ import javax.inject.Inject
  *
  * [R.id.banner] Should show either a prompt to sign up/log in or publish the availability
  *  and status of the user's Merriam-Webster plugin
- * [R.id.night_mode_preference] Allows the user to switch between a light theme, a night theme or optionally
- * allowing the user to have these set by time of day or the OS's settings
+ * [R.id.night_mode_preference] Allows the user to switch between a light theme, a night theme or
+ *  optionally allowing the user to have these set by time of day or the OS's settings
  * [R.id.orientation_preference] Allows the user to explicitly lock the app's orientation
- * [R.id.sign_out_preference] Should only show for registered users and allows the user to log out and sign in
- *  with different credentials or create a new account
+ * [R.id.sign_out_preference] Should only show for registered users and allows the user to log out
+ *  and sign in with different credentials or create a new account
  * [R.id.about_preference] Leads to [AboutFragment]
  * [R.id.contact_preference] Calls [Navigator.launchEmail]
- * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug builds
+ * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
+ *  builds
  */
 class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
+
 
     @Inject
     lateinit var billingManger: BillingManager
 
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var scrollView: NestedScrollView
     private lateinit var navigationIcon: AppCompatImageButton
@@ -58,6 +63,12 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     private lateinit var aboutPreference: CheckPreferenceView
     private lateinit var contactPreference: CheckPreferenceView
     private lateinit var developerPreference: CheckPreferenceView
+
+    private val sharedViewModel by lazy {
+        ViewModelProviders
+            .of(requireActivity(), viewModelFactory)
+            .get(MainViewModel::class.java)
+    }
 
     // This SettingsFragment's own ViewModel
     private val viewModel by lazy {
@@ -84,6 +95,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
         postponeEnterTransition()
 
+        appBarLayout = view.findViewById(R.id.app_bar)
         coordinatorLayout = view.findViewById(R.id.coordinator_layout)
         scrollView = view.findViewById(R.id.scroll_view)
         navigationIcon = view.findViewById(R.id.navigation_icon)
@@ -95,7 +107,17 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         contactPreference = view.findViewById(R.id.contact_preference)
         developerPreference = view.findViewById(R.id.developer_preference)
 
-        navigationIcon.setOnClickListener { requireActivity().onBackPressed() }
+
+        appBarLayout.setUpWithElasticBehavior(
+            this.javaClass.simpleName,
+            sharedViewModel,
+            listOf(navigationIcon),
+            listOf(scrollView, appBarLayout)
+        )
+
+        navigationIcon.setOnClickListener {
+            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+        }
 
         viewModel.shouldLaunchAuth.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { Navigator.launchAuth(requireContext(), it) }
@@ -103,7 +125,10 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
         viewModel.shouldLaunchMwPurchaseFlow.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
-                billingManger.initiatePurchaseFlow(requireActivity(), BillingConfig.SKU_MERRIAM_WEBSTER)
+                billingManger.initiatePurchaseFlow(
+                    requireActivity(),
+                    BillingConfig.SKU_MERRIAM_WEBSTER
+                )
             }
         })
 
@@ -210,8 +235,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         RadioGroupAlertDialog(requireContext(), items)
             .onItemSelected { item ->
                 viewModel.onNightModeSelected(item)
-                // TODO Make App observe this instead of calling down
-//                (requireActivity().application as App).updateNightMode()
                 true
             }
             .show()
@@ -221,7 +244,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
         RadioGroupAlertDialog(requireContext(), items)
             .onItemSelected { item ->
                 viewModel.onOrientationSelected(item)
-//                (requireActivity().application as App).updateOrientation()
                 true
             }
             .show()

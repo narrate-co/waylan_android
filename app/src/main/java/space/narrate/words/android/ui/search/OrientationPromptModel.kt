@@ -17,7 +17,7 @@ import space.narrate.words.android.data.prefs.Orientation
  * @property uncheckedText The textRes to be displayed in the search shelf if the user clicks on
  *  [checkedText], indicating that they want to reverse the "checked" or "completed" prompt.
  */
-sealed class OrientationPrompt(
+sealed class OrientationPromptModel(
         val orientationToRequest: Orientation,
         val message: Int,
         val icon: Int,
@@ -25,7 +25,7 @@ sealed class OrientationPrompt(
         val uncheckedText: Int
 ) {
 
-    class LockToLandscape(orientationToRequest: Orientation) : OrientationPrompt(
+    class LockToLandscape(orientationToRequest: Orientation) : OrientationPromptModel(
             orientationToRequest,
             R.string.orientation_prompt_lock_to_landscape,
             R.drawable.ic_round_orientation_lock_24px,
@@ -33,7 +33,7 @@ sealed class OrientationPrompt(
             R.string.orientation_prompt_unlocked_label
     )
 
-    class LockToPortrait(orientationToRequest: Orientation) : OrientationPrompt(
+    class LockToPortrait(orientationToRequest: Orientation) : OrientationPromptModel(
             orientationToRequest,
             R.string.orientation_prompt_lock_to_portrait,
             R.drawable.ic_round_orientation_lock_24px,
@@ -41,7 +41,7 @@ sealed class OrientationPrompt(
             R.string.orientation_prompt_unlocked_label
     )
 
-    class UnlockOrientation(orientationToRequest: Orientation) : OrientationPrompt(
+    class UnlockOrientation(orientationToRequest: Orientation) : OrientationPromptModel(
             orientationToRequest,
             R.string.orientation_prompt_unlock_orientation,
             R.drawable.ic_round_orientation_lock_24px,

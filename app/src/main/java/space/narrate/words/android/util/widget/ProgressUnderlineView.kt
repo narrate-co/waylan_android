@@ -35,8 +35,6 @@ class ProgressUnderlineView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
-        private val TAG = ProgressUnderlineView::class.java.simpleName
-
         private const val DEF_STYLE_RES = R.style.Widget_Words_ProgressUnderlineView
 
         private const val ANIM_DURATION = 2000L

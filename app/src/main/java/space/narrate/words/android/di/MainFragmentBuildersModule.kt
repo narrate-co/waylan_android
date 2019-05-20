@@ -31,6 +31,5 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector //add fragment specific dependencies here
     abstract fun contributeListFragment(): ListFragment
 
-
 }
 

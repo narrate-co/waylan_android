@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.auth
+package space.narrate.words.android.data.auth
 
 import com.google.firebase.auth.FirebaseUser
 import space.narrate.words.android.data.firestore.users.User
@@ -9,6 +9,9 @@ import space.narrate.words.android.data.firestore.users.User
  *
  * Once valid, this class is used to call [App.setUser], satisfying all dependencies needed for
  * [UserScope]d objects.
+ *
+ * TODO Move this back into ui.auth and use as a model class, refactoring out it's usage in
+ * AuthStore
  */
 data class Auth(val firebaseUser: FirebaseUser, val user: User)
 

@@ -1,120 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<space.narrate.words.android.util.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator_layout"
-    android:layout_width="match_parent"
+    android:id="@+id/scrim_frame"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground">
+    android:layout_width="match_parent"
+    android:background="?colorScrim">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_view"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="?android:windowBackground">
 
-
-        <LinearLayout
-            android:id="@+id/content_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/clear_user_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/developer_settings_clear_user_preferences_title"
-                app:desc="@string/developer_settings_clear_user_preferences_desc"
-                />
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/merriam_webster_state_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/developer_settings_toggle_merriam_webster_state_title"
-                />
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/use_test_skus_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/developer_settings_use_test_skus_title"
-                app:desc="@string/developer_settings_use_test_skus_desc"
-                app:checkable="true"
-                />
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/merriam_webster_billing_response_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="Toggle Merriam-Webster Billing response"
-                />
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/informative_snackbar_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="Informative Snackbar"
-                app:desc="Show a test of an informative snackbar"/>
-
-            <space.narrate.words.android.util.widget.CheckPreferenceView
-                android:id="@+id/error_snackbar_preference"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="Error Snackbar"
-                app:desc="Show a test of an error snackbar"
-                app:showDivider="false"/>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:colorBackground"
-        app:elevation="@dimen/plane_00">
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="?actionBarSize"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/keyline_3"
-            android:layout_marginRight="@dimen/keyline_3"
-            app:layout_scrollFlags="scroll|enterAlways"
-            >
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/navigation_icon"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/content_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:layout_gravity="left|center_vertical"
-                android:background="?selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_round_arrow_left_24px"/>
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:textAppearance="?textAppearanceHeadline5"
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_2"
-                android:text="@string/developer_settings_title"
-                />
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/clear_user_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_clear_user_preferences_title"
+                    app:desc="@string/developer_settings_clear_user_preferences_desc"
+                    />
 
-            <View
-                android:layout_width="72dp"
-                android:layout_height="2dp"
-                android:background="@drawable/title_underline_background"
-                android:layout_marginTop="@dimen/keyline_3"/>
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/merriam_webster_state_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_toggle_merriam_webster_state_title"
+                    />
 
-        </LinearLayout>
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/use_test_skus_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_use_test_skus_title"
+                    app:desc="@string/developer_settings_use_test_skus_desc"
+                    app:checkable="true"
+                    />
+
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/merriam_webster_billing_response_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="Toggle Merriam-Webster Billing response"
+                    />
+
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/informative_snackbar_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="Informative Snackbar"
+                    app:desc="Show a test of an informative snackbar"/>
+
+                <space.narrate.words.android.util.widget.CheckPreferenceView
+                    android:id="@+id/error_snackbar_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="Error Snackbar"
+                    app:desc="Show a test of an error snackbar"
+                    app:showDivider="false"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
+            app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
+            app:elevation="@dimen/plane_00">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="?actionBarSize"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/keyline_3"
+                android:layout_marginRight="@dimen/keyline_3"
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/navigation_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:layout_gravity="left|center_vertical"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_round_arrow_down_24px"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:textAppearance="?textAppearanceHeadline5"
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/keyline_2"
+                    android:text="@string/developer_settings_title"
+                    />
+
+                <View
+                    android:layout_width="72dp"
+                    android:layout_height="2dp"
+                    android:background="@drawable/title_underline_background"
+                    android:layout_marginTop="@dimen/keyline_3"/>
+
+            </LinearLayout>
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</space.narrate.words.android.util.widget.ScrimmedFrameLayout>

@@ -17,9 +17,6 @@ import space.narrate.words.android.R
 import space.narrate.words.android.util.children
 import space.narrate.words.android.util.getColorFromAttr
 
-// TODO Have view models construct and send events to show dialogs with lists
-// TODO Remove night and orientation specific classes
-
 class RadioGroupAlertDialog<T : RadioItemModel>(
     context: Context,
     items: List<T>

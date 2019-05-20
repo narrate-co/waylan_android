@@ -10,7 +10,12 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import com.google.android.material.appbar.AppBarLayout
+import space.narrate.words.android.MainViewModel
+import space.narrate.words.android.util.widget.ElasticAppBarBehavior
+import java.lang.IllegalArgumentException
 
 class ViewGroupChildIterator(private val viewGroup: ViewGroup): Iterator<View> {
 
@@ -62,6 +67,50 @@ fun ImageView.swapImageResource(imgRes: Int) {
     val set = AnimatorSet()
     set.playSequentially(alphaOut, alphaIn)
     set.start()
+}
+
+
+fun AppBarLayout.setUpWithElasticBehavior(
+    callback: ElasticAppBarBehavior.ElasticViewBehaviorCallback
+) {
+    val params = layoutParams as? CoordinatorLayout.LayoutParams
+        ?: throw IllegalArgumentException(
+            "AppBarLayout must be a child of CoordinatorLayout to setup with ElasticBehavior"
+        )
+
+    val behavior = params.behavior as? ElasticAppBarBehavior
+        ?: throw IllegalArgumentException("AppBarLayout must use ElasticAppBarBehavior")
+
+    behavior.addCallback(callback)
+}
+
+fun AppBarLayout.setUpWithElasticBehavior(
+    currentDestination: String,
+    sharedViewModel: MainViewModel,
+    parallaxOnDrag: List<View>,
+    alphaOnDrag: List<View>
+) {
+    val callback = object : ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+        override fun onDrag(
+            dragFraction: Float,
+            dragTo: Float,
+            rawOffset: Float,
+            rawOffsetPixels: Float,
+            dragDismissScale: Float
+        ) {
+            val alpha = 1 - dragFraction
+            val cutDragTo = dragTo * .15F
+
+            parallaxOnDrag.forEach { it.translationY = cutDragTo }
+            alphaOnDrag.forEach { it.alpha = alpha }
+        }
+
+        override fun onDragDismissed(): Boolean {
+            return sharedViewModel.onDragDismissBackEvent(currentDestination)
+        }
+    }
+
+    setUpWithElasticBehavior(callback)
 }
 
 

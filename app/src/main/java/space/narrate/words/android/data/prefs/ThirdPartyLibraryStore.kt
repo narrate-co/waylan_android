@@ -1,15 +1,7 @@
-package space.narrate.words.android.ui.settings
-
-/**
- * An object that represents all data needed to display a 3p library
- */
-data class ThirdPartyLibrary(
-    val name: String,
-    val url: String
-)
+package space.narrate.words.android.data.prefs
 
 object ThirdPartyLibraryStore {
-    val ALL = listOf(
+    val all = listOf(
         ThirdPartyLibrary(
             "Material Design Components",
             "https://github.com/material-components"

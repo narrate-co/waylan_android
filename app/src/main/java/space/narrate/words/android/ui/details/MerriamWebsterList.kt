@@ -12,7 +12,10 @@ import space.narrate.words.android.data.firestore.users.merriamWebsterState
  */
 object MerriamWebsterList {
 
-    fun generate(entries: List<MwWordAndDefinitionGroups>, user: User?): List<MerriamWebsterItemModel> {
+    fun generate(
+        entries: List<MwWordAndDefinitionGroups>,
+        user: User?
+    ): List<MerriamWebsterItemModel> {
         val list = mutableListOf<MerriamWebsterItemModel>()
 
         // Exit early if user is not valid, showing the permission pane.

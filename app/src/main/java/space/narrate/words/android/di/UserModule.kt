@@ -4,7 +4,7 @@ import android.app.Application
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import space.narrate.words.android.billing.BillingManager
-import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.disk.AppDatabase
 import space.narrate.words.android.data.firestore.FirestoreStore
 import space.narrate.words.android.data.firestore.users.User
@@ -17,6 +17,7 @@ import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.data.spell.SymSpellStore
 import dagger.Module
 import dagger.Provides
+import space.narrate.words.android.data.prefs.ThirdPartyLibraryStore
 
 @Module(
         includes = [ActivityBuildersModule::class, ViewModelModule::class]
@@ -25,14 +26,33 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideFirestoreStore(appDatabase: AppDatabase, firebaseUser: FirebaseUser?): FirestoreStore? {
-        return if (firebaseUser != null) FirestoreStore(FirebaseFirestore.getInstance(), appDatabase, firebaseUser) else null
+    fun provideFirestoreStore(
+        appDatabase: AppDatabase,
+        firebaseUser: FirebaseUser?
+    ): FirestoreStore? {
+        return if (firebaseUser != null) {
+            FirestoreStore(
+                FirebaseFirestore.getInstance(),
+                appDatabase,
+                firebaseUser
+            )
+        } else {
+            null
+        }
     }
 
     @UserScope
     @Provides
-    fun provideMerriamWebsterStore(appDatabase: AppDatabase, analyticsRepository: AnalyticsRepository): MerriamWebsterStore {
-        return MerriamWebsterStore(RetrofitService.getInstance(), appDatabase.mwDao(), analyticsRepository)
+    fun provideMerriamWebsterStore(
+        appDatabase: AppDatabase,
+        analyticsRepository: AnalyticsRepository
+    ): MerriamWebsterStore {
+
+        return MerriamWebsterStore(
+            RetrofitService.getInstance(),
+            appDatabase.mwDao(),
+            analyticsRepository
+        )
     }
 
     @UserScope
@@ -49,7 +69,11 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun provideUserPreferenceRepository(application: Application, user: User?): UserPreferenceStore {
+    fun provideUserPreferenceRepository(
+        application: Application,
+        user: User?
+    ): UserPreferenceStore {
+
         return UserPreferenceStore(application, user?.uid)
     }
 
@@ -58,13 +82,24 @@ class UserModule {
     fun provideUserRepository(
             firestoreStore: FirestoreStore?,
             userPreferenceStore: UserPreferenceStore,
-            preferenceStore: PreferenceStore): UserRepository {
-        return UserRepository(firestoreStore, userPreferenceStore, preferenceStore)
+            preferenceStore: PreferenceStore,
+            thirdPartyLibraryStore: ThirdPartyLibraryStore): UserRepository {
+
+        return UserRepository(
+            firestoreStore,
+            userPreferenceStore,
+            preferenceStore,
+            thirdPartyLibraryStore
+        )
     }
 
     @UserScope
     @Provides
-    fun provideBillingManager(application: Application, userRepository: UserRepository): BillingManager {
+    fun provideBillingManager(
+        application: Application,
+        userRepository: UserRepository
+    ): BillingManager {
+
         return BillingManager(application, userRepository)
     }
 

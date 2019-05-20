@@ -1,12 +1,11 @@
 package space.narrate.words.android.di
 
-import space.narrate.words.android.ui.settings.AboutFragment
-import space.narrate.words.android.ui.settings.DeveloperSettingsFragment
+import space.narrate.words.android.ui.about.AboutFragment
+import space.narrate.words.android.ui.dev.DeveloperSettingsFragment
 import space.narrate.words.android.ui.settings.SettingsFragment
-import space.narrate.words.android.ui.settings.ThirdPartyLibrariesFragment
+import space.narrate.words.android.ui.third_party.ThirdPartyLibrariesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import space.narrate.words.android.di.FragmentScope
 
 @Module
 abstract class SettingsFragmentBuildersModule {

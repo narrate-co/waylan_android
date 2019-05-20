@@ -81,7 +81,9 @@ class ContextualFragment : BaseUserFragment() {
         ).apply {
             initializeElevationOverlay(requireContext())
             elevation = contextualFrame.elevation
-            fillColor = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorSurface))
+            fillColor = ColorStateList.valueOf(
+                requireContext().getColorFromAttr(R.attr.colorSurface)
+            )
         }
         ViewCompat.setBackground(contextualFrame, materialShapeDrawable)
 
@@ -133,17 +135,30 @@ class ContextualFragment : BaseUserFragment() {
         // expanded state. Peeking should just show the top collapsedContainer and the expanded
         // state should just show the expandedContainer
         (requireActivity() as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val collapsedContainerAlpha = MathUtils.normalize(offset, 0.0F, 0.5F, 1.0F, 0.0F)
-            val expandedContainerAlpha = MathUtils.normalize(offset, 0.5F, 1.0F, 0.0F, 1.0F)
+            val collapsedContainerAlpha = MathUtils.normalize(
+                offset,
+                0.0F,
+                0.5F,
+                1.0F,
+                0.0F
+            )
+            val expandedContainerAlpha = MathUtils.normalize(
+                offset,
+                0.5F,
+                1.0F,
+                0.0F,
+                1.0F
+            )
             collapsedContainer.alpha = collapsedContainerAlpha
             expandedContainer.alpha = expandedContainerAlpha
         }
 
-        (requireActivity() as MainActivity).contextualSheetCallback.addOnStateChangedAction { _, state ->
-            when (state) {
-                BottomSheetBehavior.STATE_HIDDEN -> sharedViewModel.onContextualSheetHidden()
+        (requireActivity() as MainActivity).contextualSheetCallback
+            .addOnStateChangedAction { _, state ->
+                when (state) {
+                    BottomSheetBehavior.STATE_HIDDEN -> sharedViewModel.onContextualSheetHidden()
+                }
             }
-        }
 
         // Configure UI based on current destination
         sharedViewModel.currentDestination.observe(this, Observer { dest ->
@@ -155,7 +170,10 @@ class ContextualFragment : BaseUserFragment() {
         // Configure bottom sheet state and UI based on current filter.
         sharedViewModel.contextualFilterModel.observe(this, Observer { model ->
             setCollapsedChips(model.filter)
-            peekOrHide(model.isFilterable && model.filter.isNotEmpty(), model.filter.isNotEmpty())
+            peekOrHide(
+                model.isFilterable && model.filter.isNotEmpty(),
+                model.filter.isNotEmpty()
+            )
         })
 
     }
@@ -223,8 +241,6 @@ class ContextualFragment : BaseUserFragment() {
     }
 
     companion object {
-        const val TAG = "ContextualFragment"
-
         fun getPeekHeight(context: Context, insets: WindowInsetsCompat): Int {
             return SearchFragment.getPeekHeight(context, insets) +
                 context.resources.getDimensionPixelSize(

@@ -1,8 +1,9 @@
-package space.narrate.words.android.ui.settings
+package space.narrate.words.android.ui.third_party
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.words.android.R
+import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.util.widget.CheckPreferenceView
 
 /**

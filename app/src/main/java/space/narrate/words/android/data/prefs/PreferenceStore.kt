@@ -29,11 +29,6 @@ class PreferenceStore(private val applicationContext: Context) {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
-    fun resetAll() {
-        _nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        _orientationLock = Orientation.UNSPECIFIED.value
-    }
-
     private var _nightMode: Int by PreferenceDelegate(
         defaultPrefs,
         Preferences.NIGHT_MODE,
@@ -80,5 +75,9 @@ class PreferenceStore(private val applicationContext: Context) {
 
     val allOrientations: List<Orientation> = Orientation.values().toList()
 
+    fun resetAll() {
+        _nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        _orientationLock = Orientation.UNSPECIFIED.value
+    }
 }
 

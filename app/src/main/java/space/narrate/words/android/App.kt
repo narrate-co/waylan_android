@@ -2,15 +2,11 @@ package space.narrate.words.android
 
 import android.app.Application
 import android.content.Intent
-import android.content.IntentFilter
-import android.preference.PreferenceManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import space.narrate.words.android.data.analytics.AnalyticsRepository
-import space.narrate.words.android.data.prefs.Preferences
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.di.DaggerAppComponent
 import space.narrate.words.android.di.UserComponent
-import space.narrate.words.android.ui.auth.Auth
+import space.narrate.words.android.data.auth.Auth
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject

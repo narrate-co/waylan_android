@@ -6,7 +6,7 @@ import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.BuildConfig
-import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.util.contentEquals
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
@@ -135,7 +135,7 @@ class MerriamWebsterStore(
                             mwDao.insert(existingMwWord)
                         } else if (existingMwWord == null) {
                             //this is not already in the db. Add it
-                            val newWord = toDbMwSuggestionWord(word, suggestions)
+                            val newWord = EntryUtils.toDbMwSuggestionWord(word, suggestions)
                             mwDao.insert(newWord)
                         }
                     }
@@ -143,5 +143,7 @@ class MerriamWebsterStore(
             }
         }
     }
+
+
 }
 

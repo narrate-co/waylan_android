@@ -40,8 +40,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     companion object {
-        private val TAG = ElasticAppBarBehavior::class.java.simpleName
-
         private const val DIRECTION_UP = 0x1
         private const val DIRECTION_DOWN = 0x2
         private const val DIRECTION_RIGHT = 0x4

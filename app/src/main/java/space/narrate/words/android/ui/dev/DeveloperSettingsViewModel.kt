@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.settings
+package space.narrate.words.android.ui.dev
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +19,7 @@ class DeveloperSettingsViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    val user: LiveData<User> = userRepository.getUser()
+    val user: LiveData<User> = userRepository.user
 
     val mwState: LiveData<PluginState> = Transformations.map(user) {
         it.merriamWebsterState

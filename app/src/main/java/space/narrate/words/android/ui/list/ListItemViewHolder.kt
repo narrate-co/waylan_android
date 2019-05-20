@@ -117,5 +117,4 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             }
         }
     }
-
 }

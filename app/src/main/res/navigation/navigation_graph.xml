@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="space.narrate.words.android.ui.settings.AboutFragment"
+        android:name="space.narrate.words.android.ui.about.AboutFragment"
         android:label="AboutFragment" >
         <action
             android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
@@ -58,11 +58,11 @@
     </fragment>
     <fragment
         android:id="@+id/developerSettingsFragment"
-        android:name="space.narrate.words.android.ui.settings.DeveloperSettingsFragment"
+        android:name="space.narrate.words.android.ui.dev.DeveloperSettingsFragment"
         android:label="DeveloperSettingsFragment" />
     <fragment
         android:id="@+id/thirdPartyLibrariesFragment"
-        android:name="space.narrate.words.android.ui.settings.ThirdPartyLibrariesFragment"
+        android:name="space.narrate.words.android.ui.third_party.ThirdPartyLibrariesFragment"
         android:label="ThirdPartyLibrariesFragment" />
     <action
         android:id="@+id/action_global_detailsFragment"

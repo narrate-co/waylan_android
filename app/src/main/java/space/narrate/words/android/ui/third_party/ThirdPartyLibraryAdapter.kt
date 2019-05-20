@@ -1,9 +1,10 @@
-package space.narrate.words.android.ui.settings
+package space.narrate.words.android.ui.third_party
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import space.narrate.words.android.R
+import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.util.AdapterUtils
 
 class ThirdPartyLibraryAdapter(

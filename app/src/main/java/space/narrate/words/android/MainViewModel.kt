@@ -1,10 +1,11 @@
 package space.narrate.words.android
 
 import androidx.lifecycle.*
-import space.narrate.words.android.data.analytics.AnalyticsRepository
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.prefs.NightMode
 import space.narrate.words.android.data.prefs.Orientation
+import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.di.UserScope
@@ -21,51 +22,59 @@ import javax.inject.Inject
  */
 @UserScope
 class MainViewModel @Inject constructor(
-        private val wordRepository: WordRepository,
-        private val analyticsRepository: AnalyticsRepository,
-        private val userRepository: UserRepository
+    private val wordRepository: WordRepository,
+    private val analyticsRepository: AnalyticsRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _currentDestination: MutableLiveData<Navigator.Destination> = MutableLiveData()
     val currentDestination: LiveData<Navigator.Destination>
         get() = _currentDestination
 
-    val searchShelfModel: LiveData<SearchShelfActionsModel> = currentDestination.switchMapTransform { dest ->
-        val result = MediatorLiveData<SearchShelfActionsModel>()
-        when (dest) {
-            Navigator.Destination.DETAILS -> result.addSource(currentUserWord) {
-                result.value = SearchShelfActionsModel.DetailsShelfActions(it)
-            }
-            Navigator.Destination.TRENDING -> result.addSource(userRepository.trendingListFilterLive) {
-                result.value = SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
-            }
-            else -> result.value = SearchShelfActionsModel.None
-        }
-
-        result
-    }
-
-    val contextualFilterModel: LiveData<ContextualFilterModel> = currentDestination.switchMapTransform { dest ->
-        val result = MediatorLiveData<ContextualFilterModel>()
-
-        result.addSource(
+    val searchShelfModel: LiveData<SearchShelfActionsModel> = currentDestination
+        .switchMapTransform { dest ->
+            val result = MediatorLiveData<SearchShelfActionsModel>()
             when (dest) {
-                Navigator.Destination.TRENDING -> userRepository.trendingListFilterLive
-                Navigator.Destination.RECENT -> userRepository.recentsListFilterLive
-                Navigator.Destination.FAVORITE -> userRepository.favoritesListFilterLive
-                else -> {
-                    // TODO : Clean up
-                    val data = MutableLiveData<List<Period>>()
-                    data.value = emptyList()
-                    data
+                Navigator.Destination.DETAILS -> result.addSource(currentUserWord) {
+                    result.value = SearchShelfActionsModel.DetailsShelfActions(it)
                 }
+                Navigator.Destination.TRENDING -> result.addSource(
+                    userRepository.trendingListFilterLive
+                ) {
+                    result.value = SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
+                }
+                else -> result.value = SearchShelfActionsModel.None
             }
-        ) { filter ->
-            result.value = ContextualFilterModel(dest, filter, dest == Navigator.Destination.TRENDING)
+
+            result
         }
 
-        result
-    }
+    val contextualFilterModel: LiveData<ContextualFilterModel> = currentDestination
+        .switchMapTransform { dest ->
+            val result = MediatorLiveData<ContextualFilterModel>()
+
+            result.addSource(
+                when (dest) {
+                    Navigator.Destination.TRENDING -> userRepository.trendingListFilterLive
+                    Navigator.Destination.RECENT -> userRepository.recentsListFilterLive
+                    Navigator.Destination.FAVORITE -> userRepository.favoritesListFilterLive
+                    else -> {
+                        // TODO : Clean up
+                        val data = MutableLiveData<List<Period>>()
+                        data.value = emptyList()
+                        data
+                    }
+                }
+            ) { filter ->
+                result.value = ContextualFilterModel(
+                    dest,
+                    filter,
+                    dest == Navigator.Destination.TRENDING
+                )
+            }
+
+            result
+        }
 
     // A backing field for the word (as it appears in the dictionary) which should currently be
     // displayed by [DetailsFragment]. This is used instead of alternatives like passing the word
@@ -82,6 +91,13 @@ class MainViewModel @Inject constructor(
 
     val orientation: LiveData<Orientation>
         get() = userRepository.orientationLockLive
+
+    val thirdPartyLibraries: List<ThirdPartyLibrary>
+        get() = userRepository.allThirdPartyLibraries
+
+    private val _shouldNavigateBack: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldNavigateBack: LiveData<Event<Boolean>>
+        get() = _shouldNavigateBack
 
     private val _shouldShowDetails: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<Boolean>>
@@ -121,8 +137,15 @@ class MainViewModel @Inject constructor(
         setCurrentWordRecented()
     }
 
-    fun onDragDismissBackEvent(currentDestination: String) {
+    fun onNavigationIconClicked(currentDestination: String): Boolean {
+        _shouldNavigateBack.value = Event(true)
+        return true
+    }
+
+    fun onDragDismissBackEvent(currentDestination: String): Boolean {
         analyticsRepository.logDragDismissEvent(currentDestination)
+        _shouldNavigateBack.value = Event(true)
+        return true
     }
 
     fun onListFilterPeriodClicked(period: Period) {

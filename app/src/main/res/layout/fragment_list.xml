@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<space.narrate.words.android.util.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/scrim_frame"
-    android:clipChildren="false"
-    android:clipToPadding="false"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:background="?colorScrim">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -101,12 +99,6 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <View
-        android:id="@+id/status_bar_scrim"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="?android:windowBackground"
-        android:layout_gravity="top"/>
+</space.narrate.words.android.util.widget.ScrimmedFrameLayout>
 
-</FrameLayout>
 

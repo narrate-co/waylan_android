@@ -2,8 +2,7 @@ package space.narrate.words.android.ui.search
 
 import androidx.lifecycle.*
 import space.narrate.words.android.R
-import space.narrate.words.android.data.analytics.AnalyticsRepository
-import space.narrate.words.android.data.firestore.users.UserWord
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.data.prefs.*
@@ -32,9 +31,9 @@ class SearchViewModel @Inject constructor(
     val shouldShowDetails: LiveData<Event<String>>
         get() = _shouldShowDetails
 
-    private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPrompt>>
+    private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPromptModel>>
         = MutableLiveData()
-    val shouldShowOrientationPrompt: LiveData<Event<OrientationPrompt>>
+    val shouldShowOrientationPrompt: LiveData<Event<OrientationPromptModel>>
         get() = _shouldShowOrientationPrompt
 
     init {
@@ -47,8 +46,13 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun getSearch(input: String): LiveData<List<SearchItemModel>> {
-        return MergedLiveData(wordRepository.getWordsetWords(input), wordRepository.getSuggestItems(input)) { words, suggestions ->
-            (words.map { SearchItemModel.WordModel(it) } + suggestions.map { SearchItemModel.SuggestModel(it) }).distinctBy { item ->
+        return MergedLiveData(
+            wordRepository.getWordsetWords(input),
+            wordRepository.getSuggestItems(input)
+        ) { words, suggestions ->
+            val wordsModels = words.map { SearchItemModel.WordModel(it) }
+            val suggestModels = suggestions.map { SearchItemModel.SuggestModel(it) }
+            (wordsModels + suggestModels).distinctBy { item ->
                 when (item) {
                     is SearchItemModel.WordModel -> item.word.word
                     is SearchItemModel.SuggestModel -> item.suggestItem.term
@@ -93,7 +97,7 @@ class SearchViewModel @Inject constructor(
      *
      * @param orientation The orientation the app should be set to
      */
-    fun onOrientationPromptClicked(orientationPrompt: OrientationPrompt) {
+    fun onOrientationPromptClicked(orientationPrompt: OrientationPromptModel) {
         userRepository.orientationLock = orientationPrompt.orientationToRequest
     }
 
@@ -115,14 +119,14 @@ class SearchViewModel @Inject constructor(
         if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
             if (userRepository.portraitToLandscapeOrientationChangeCount == 2L) {
-                _shouldShowOrientationPrompt.value = Event(OrientationPrompt.LockToLandscape(
+                _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.LockToLandscape(
                     Orientation.fromActivityInfoScreenOrientation(new.orientation)
                 ))
             }
         } else if (RotationUtils.isLandscapeToPortrait(old, new)) {
             userRepository.landscapeToPortraitOrientationChangeCount++
             if (userRepository.landscapeToPortraitOrientationChangeCount == 1L) {
-                _shouldShowOrientationPrompt.value = Event(OrientationPrompt.LockToPortrait(
+                _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.LockToPortrait(
                     Orientation.fromActivityInfoScreenOrientation(new.orientation)
                 ))
             }
@@ -141,7 +145,7 @@ class SearchViewModel @Inject constructor(
                         System.nanoTime()
                 )) {
             //should suggest unlocking
-            _shouldShowOrientationPrompt.value = Event(OrientationPrompt.UnlockOrientation(
+            _shouldShowOrientationPrompt.value = Event(OrientationPromptModel.UnlockOrientation(
                 Orientation.UNSPECIFIED
             ))
         }
