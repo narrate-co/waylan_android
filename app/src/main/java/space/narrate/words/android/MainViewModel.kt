@@ -138,6 +138,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onNavigationIconClicked(currentDestination: String): Boolean {
+        analyticsRepository.logNavigationIconEvent(currentDestination)
         _shouldNavigateBack.value = Event(true)
         return true
     }

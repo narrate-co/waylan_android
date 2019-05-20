@@ -1,6 +1,7 @@
 package space.narrate.words.android.di
 
 import android.app.Application
+import android.os.Build
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import space.narrate.words.android.data.repository.AnalyticsRepository
@@ -10,6 +11,7 @@ import space.narrate.words.android.data.spell.SymSpellStore
 import space.narrate.words.android.data.prefs.RotationManager
 import dagger.Module
 import dagger.Provides
+import space.narrate.words.android.BuildConfig
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.prefs.ThirdPartyLibraryStore
 
@@ -49,7 +51,10 @@ class AppModule {
     @ApplicationScope
     @Provides
     fun provideAnalyticsRepository(application: Application): AnalyticsRepository {
-        return AnalyticsRepository(FirebaseAnalytics.getInstance(application))
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(application).apply {
+            setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
+        }
+        return AnalyticsRepository(firebaseAnalytics)
     }
 
     @ApplicationScope
