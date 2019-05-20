@@ -8,8 +8,8 @@
     <color name="words_color_error">@color/colorMauve100</color>
     <color name="words_color_informative">@color/colorPink50</color>
 
-    <color name="words_color_background_area">@color/colorIvoryAlpha004</color>
-    <color name="words_color_surface_area">@color/colorIvoryAlpha004</color>
+    <color name="words_color_background_area">@color/colorIvoryAlpha005</color>
+    <color name="words_color_surface_area">@color/colorIvoryAlpha005</color>
     <color name="words_color_error_area">@color/colorMauveAlpha020</color>
 
     <color name="words_color_on_brand">@color/colorGray900</color>
@@ -61,6 +61,8 @@
 
     <color name="colorIvory50">#faf8f2</color>
     <color name="colorIvory100">#f8f5ee</color>
+    <!--<color name="colorIvory100">#f7f3f0</color>-->
+    <!--<color name="colorIvory100">#f3f0eb</color>-->
     <color name="colorIvory200">#f2efea</color>
     <color name="colorIvory300">#efeee9</color>
     <color name="colorIvory400">#eae9e5</color>
@@ -82,13 +84,14 @@
     <color name="colorGray800">#181819</color>
     <color name="colorGray900">#131314</color>
 
-    <color name="colorIvoryAlpha004">#0A696765</color> <!--4% alpha-->
+    <color name="colorIvoryAlpha005">#0D696765</color> <!--5% alpha-->
 
     <color name="colorMauveAlpha020">#33e09dac</color> <!--20% alpha-->
 
     <color name="colorMauveDarkAlpha022">#388a171b</color>
 
     <color name="colorBlackAlpha002">#05000000</color> <!--2% alpha-->
+    <color name="colorBlackAlpha004">#0A000000</color> <!--5% alpha-->
     <color name="colorBlackAlpha005">#0D000000</color> <!--5% alpha-->
     <color name="colorBlackAlpha025">#40000000</color> <!--25% alpha-->
     <color name="colorBlackAlpha038">#61000000</color> <!--38% alpha-->

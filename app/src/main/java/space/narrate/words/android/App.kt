@@ -54,7 +54,7 @@ class App: DaggerApplication() {
                 .build()
                 .inject(this)
         hasUser = auth != null
-        dispatchReinjectUserBroadcast()
+        dispatchReInjectUserBroadcast()
     }
 
     /**
@@ -62,10 +62,10 @@ class App: DaggerApplication() {
      */
     fun clearUser() {
         setUser(null)
-        dispatchReinjectUserBroadcast()
+        dispatchReInjectUserBroadcast()
     }
 
-    private fun dispatchReinjectUserBroadcast() {
+    private fun dispatchReInjectUserBroadcast() {
         LocalBroadcastManager.getInstance(this)
             .sendBroadcast(Intent(RESET_USER_BROADCAST))
     }

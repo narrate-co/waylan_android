@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -84,6 +85,10 @@ class ContextualFragment : BaseUserFragment() {
             fillColor = ColorStateList.valueOf(
                 requireContext().getColorFromAttr(R.attr.colorSurface)
             )
+            strokeColor = ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.colorBlackAlpha005)
+            )
+            strokeWidth = 2F
         }
         ViewCompat.setBackground(contextualFrame, materialShapeDrawable)
 

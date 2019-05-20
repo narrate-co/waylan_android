@@ -2,6 +2,7 @@ package space.narrate.words.android.ui.search
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.words.android.*
 import space.narrate.words.android.ui.common.BaseUserFragment
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.ChangeBounds
@@ -123,6 +125,10 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
             fillColor = ColorStateList.valueOf(
                 requireContext().getColorFromAttr(R.attr.colorSurface)
             )
+            strokeColor = ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.colorBlackAlpha005)
+            )
+            strokeWidth = 3F
         }
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
