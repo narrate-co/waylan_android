@@ -94,7 +94,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             wordTextView.text = item.globalWord.word
 
             //Set part of speech
-            partOfSpeechTextView.text = item.globalWord.partOfSpeechPreview.keys.first()
+            partOfSpeechTextView.text = item.globalWord.partOfSpeechPreview.keys.firstOrNull() ?: ""
 
             //Set definition
             item.globalWord.defPreview.map { it.key }.firstOrNull()?.let {
