@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.ui.widget
 
 import com.google.android.material.shape.CornerTreatment
 import com.google.android.material.shape.ShapePath

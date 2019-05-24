@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import space.narrate.words.android.ui.settings.NightModeRadioItemModel
@@ -29,15 +30,18 @@ class PreferenceStore(private val applicationContext: Context) {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
-    private var _nightMode: Int by PreferenceDelegate(
-        defaultPrefs,
-        Preferences.NIGHT_MODE,
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    )
+    private val defaultNightMode = if (isAtLeastQ) {
+        NightMode.SYSTEM_DEFAULT
+    } else {
+        NightMode.BATTERY_SAVER
+    }
+
     var nightMode: NightMode
-        get() = NightMode.fromAppCompatDelegate(_nightMode)
+        get() = NightMode.fromAppCompatDelegate(
+            defaultPrefs.getInt(Preferences.NIGHT_MODE, defaultNightMode.value)
+        )
         set(value) {
-            _nightMode = value.value
+            defaultPrefs.edit { putInt(Preferences.NIGHT_MODE, value.value) }
         }
 
     var nightModeLive: LiveData<NightMode> =
@@ -53,15 +57,14 @@ class PreferenceStore(private val applicationContext: Context) {
         if (isAtLeastQ) it != NightMode.BATTERY_SAVER else it != NightMode.SYSTEM_DEFAULT
     }
 
-    private var _orientationLock: Int by PreferenceDelegate(
-        defaultPrefs,
-        Preferences.ORIENTATION_LOCK,
-        Orientation.UNSPECIFIED.value
-    )
+    private val defaultOrientationLock = Orientation.UNSPECIFIED
+
     var orientationLock: Orientation
-        get() = Orientation.fromActivityInfoScreenOrientation(_orientationLock)
+        get() = Orientation.fromActivityInfoScreenOrientation(
+            defaultPrefs.getInt(Preferences.ORIENTATION_LOCK, defaultOrientationLock.value)
+        )
         set(value) {
-            _orientationLock = value.value
+            defaultPrefs.edit { putInt(Preferences.ORIENTATION_LOCK, value.value) }
         }
 
     var orientationLockLive: LiveData<Orientation> =
@@ -76,8 +79,8 @@ class PreferenceStore(private val applicationContext: Context) {
     val allOrientations: List<Orientation> = Orientation.values().toList()
 
     fun resetAll() {
-        _nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        _orientationLock = Orientation.UNSPECIFIED.value
+        nightMode = defaultNightMode
+        orientationLock = defaultOrientationLock
     }
 }
 

@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,9 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
 import android.widget.FrameLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.appbar.AppBarLayout
-import space.narrate.words.android.R
 import space.narrate.words.android.util.children
 import space.narrate.words.android.util.getColorFromAttr
 import space.narrate.words.android.util.invisible

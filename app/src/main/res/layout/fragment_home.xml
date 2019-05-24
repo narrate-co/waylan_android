@@ -119,7 +119,7 @@
 
             </LinearLayout>
 
-            <space.narrate.words.android.util.widget.ProgressUnderlineView
+            <space.narrate.words.android.ui.widget.ProgressUnderlineView
                 android:id="@+id/view"
                 android:layout_width="72dp"
                 android:layout_height="2dp"

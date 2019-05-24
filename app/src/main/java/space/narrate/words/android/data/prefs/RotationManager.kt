@@ -9,9 +9,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import space.narrate.words.android.util.widget.TrimmedStack
-import space.narrate.words.android.util.widget.copyMatchedPattern
-import space.narrate.words.android.util.widget.emptyTrimmedStack
+import space.narrate.words.android.util.TrimmedStack
+import space.narrate.words.android.util.copyMatchedPattern
+import space.narrate.words.android.util.emptyTrimmedStack
 import space.narrate.words.android.util.doOnDestroy
 import space.narrate.words.android.util.doOnNextResume
 import space.narrate.words.android.util.doOnResume

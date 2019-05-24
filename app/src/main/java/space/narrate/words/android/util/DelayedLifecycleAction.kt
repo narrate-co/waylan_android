@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.util
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

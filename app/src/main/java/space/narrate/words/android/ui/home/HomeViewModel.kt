@@ -5,12 +5,11 @@ import androidx.lifecycle.ViewModel
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.ui.list.ListType
 import space.narrate.words.android.util.mapTransform
-import javax.inject.Inject
 
 /**
  * ViewModel for [HomeFragment]
  */
-class HomeViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
+class HomeViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
     fun getPreview(type: ListType): LiveData<String> {
         return (when (type) {

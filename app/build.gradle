@@ -19,9 +19,8 @@ android {
         // Merriam Webster Key
         buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
     }
+
     buildTypes {
-
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -31,9 +30,17 @@ android {
             debuggable true
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     lintOptions {
         checkReleaseBuilds false
     }
+
     dokka {
         includes = ['app.md']
         outputFormat = 'html'
@@ -92,14 +99,11 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
     // Google Play Billing
-    implementation 'com.android.billingclient:billing:1.2'
+    implementation "com.android.billingclient:billing:$google_play_billing_version"
 
-    // Dagger
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    implementation "com.google.dagger:dagger-android:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    // Koin
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation "org.koin:koin-java:$koin_version"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -109,7 +113,13 @@ dependencies {
     // Testing
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    testImplementation "org.robolectric:robolectric:$robolectric_version"
     testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "androidx.test:core-ktx:$test_core_ktx_version"
+    testImplementation "com.google.truth:truth:$google_truth_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation "org.koin:koin-test:$koin_version"
     androidTestImplementation "androidx.test:runner:$androidx_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }

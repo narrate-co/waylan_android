@@ -12,6 +12,7 @@ import space.narrate.words.android.data.spell.SymSpellStore
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
+import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.disk.wordset.Word
 import space.narrate.words.android.data.disk.wordset.WordAndMeanings
@@ -25,6 +26,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class WordRepository(
         private val db: AppDatabase,
+        private val authenticationStore: AuthenticationStore,
         private val firestoreStore: FirestoreStore?,
         private val merriamWebsterStore: MerriamWebsterStore?,
         private val symSpellStore: SymSpellStore
@@ -50,7 +52,9 @@ class WordRepository(
     }
 
     fun getUserWord(id: String): LiveData<UserWord> {
-        return firestoreStore?.getUserWordLive(id) ?: LiveDataUtils.empty()
+        val uid = authenticationStore.uid ?: return onUnauthenticated()
+
+        return firestoreStore?.getUserWordLive(id, uid) ?: LiveDataUtils.empty()
     }
 
     fun getMerriamWebsterWord(word: String): LiveData<List<MwWordAndDefinitionGroups>> {
@@ -65,28 +69,36 @@ class WordRepository(
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
-        return firestoreStore?.getFavorites(limit) ?: LiveDataUtils.empty()
+        val uid = authenticationStore.uid ?: return onUnauthenticated()
+        return firestoreStore?.getFavorites(uid, limit) ?: LiveDataUtils.empty()
     }
 
     fun setUserWordFavorite(id: String, favorite: Boolean) {
         if (id.isBlank()) return
+        val uid = authenticationStore.uid ?: return
 
         launch {
-            firestoreStore?.setFavorite(id, favorite)
+            firestoreStore?.setFavorite(id, uid, favorite)
         }
     }
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
-        return firestoreStore?.getRecents(limit) ?: LiveDataUtils.empty()
+        val uid = authenticationStore.uid ?: return onUnauthenticated()
+        return firestoreStore?.getRecents(uid, limit) ?: LiveDataUtils.empty()
     }
 
     fun setUserWordRecent(id: String) {
         if (id.isBlank()) return
+        val uid = authenticationStore.uid ?: return
 
         launch {
-            firestoreStore?.setRecent(id)
+            firestoreStore?.setRecent(id, uid)
         }
     }
 
+    private fun <T> onUnauthenticated(): LiveData<T> {
+        // TODO: Create a more robust response/error system
+        return LiveDataUtils.empty()
+    }
 }
 

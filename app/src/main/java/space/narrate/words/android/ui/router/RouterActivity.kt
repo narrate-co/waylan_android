@@ -3,8 +3,9 @@ package space.narrate.words.android.ui.router
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import space.narrate.words.android.App
+import org.koin.android.ext.android.inject
 import space.narrate.words.android.Navigator
+import space.narrate.words.android.data.auth.AuthenticationStore
 
 
 /**
@@ -15,6 +16,8 @@ import space.narrate.words.android.Navigator
  * <a>https://plus.google.com/+DianneHackborn/posts/LjnRzJKWPGW</a>
  */
 class RouterActivity : Activity() {
+
+    private val authenticationStore: AuthenticationStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,7 @@ class RouterActivity : Activity() {
         val hasProcessText = intent.hasExtra(Intent.EXTRA_PROCESS_TEXT)
         // If we're processing textRes, make sure there's a valid user
         if (hasProcessText) {
-            if ((application as App).hasUser) {
+            if (authenticationStore.hasUser) {
                 // Go straight to MainActivity and pass along intent to be processed
                 Navigator.launchMain(this, true, intent)
             } else {

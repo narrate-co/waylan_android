@@ -4,19 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
-import space.narrate.words.android.di.Injectable
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import androidx.fragment.app.Fragment
 
 /**
  * A Fragment that falls under [UserScope]. User dependent objects are available to this
  * Fragment.
  */
-abstract class BaseUserFragment: DaggerFragment(), Injectable {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+abstract class BaseUserFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

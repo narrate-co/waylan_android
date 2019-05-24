@@ -11,11 +11,10 @@ import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.firestore.users.merriamWebsterState
 import space.narrate.words.android.data.firestore.users.oneDayPastExpiration
 import space.narrate.words.android.data.repository.UserRepository
-import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.common.Event
 import space.narrate.words.android.ui.common.SnackbarModel
-import javax.inject.Inject
 
-class DeveloperSettingsViewModel @Inject constructor(
+class DeveloperSettingsViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 

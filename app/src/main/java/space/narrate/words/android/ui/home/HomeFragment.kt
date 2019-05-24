@@ -11,14 +11,11 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import space.narrate.words.android.MainActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
-import space.narrate.words.android.ui.list.ListFragmentDirections
 import space.narrate.words.android.ui.list.ListType
-import space.narrate.words.android.util.widget.ElasticTransition
 
 
 /**
@@ -39,12 +36,7 @@ class HomeFragment: BaseUserFragment() {
     private lateinit var recentPreviewTextView: AppCompatTextView
     private lateinit var favoritePreviewTextView: AppCompatTextView
 
-
-    private val viewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(HomeViewModel::class.java)
-    }
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,

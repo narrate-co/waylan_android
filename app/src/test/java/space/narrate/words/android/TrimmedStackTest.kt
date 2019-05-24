@@ -1,9 +1,9 @@
 package space.narrate.words.android
 
 import space.narrate.words.android.data.prefs.RotationManager
-import space.narrate.words.android.util.widget.copyMatchedPattern
-import space.narrate.words.android.util.widget.emptyTrimmedStack
-import space.narrate.words.android.util.widget.hasPattern
+import space.narrate.words.android.util.copyMatchedPattern
+import space.narrate.words.android.util.emptyTrimmedStack
+import space.narrate.words.android.util.hasPattern
 import org.junit.Test
 import org.junit.Assert.*
 

@@ -26,8 +26,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class MerriamWebsterStore(
         private val merriamWebsterService: MerriamWebsterService,
-        private val mwDao: MwDao,
-        private val analyticsRepository: AnalyticsRepository
+        private val mwDao: MwDao
 ) : CoroutineScope {
 
     companion object {

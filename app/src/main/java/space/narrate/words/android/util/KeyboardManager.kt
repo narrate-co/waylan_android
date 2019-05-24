@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.util
 
 import android.content.res.Configuration
 import android.graphics.Point
@@ -9,7 +9,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
@@ -105,8 +104,8 @@ class KeyboardManager(
 
     private fun notifyKeyboardHeightChanged(height: Int, orientation: Int) {
         keyboardHeightData.value = KeyboardHeightData(
-                height,
-                orientation
+            height,
+            orientation
         )
     }
 }

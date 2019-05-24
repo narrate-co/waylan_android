@@ -12,7 +12,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:src="@drawable/ic_round_play_arrow_24px"/>
 
-    <space.narrate.words.android.util.widget.ProgressUnderlineView
+    <space.narrate.words.android.ui.widget.ProgressUnderlineView
         android:id="@+id/underline"
         android:layout_width="72dp"
         android:layout_height="2dp"

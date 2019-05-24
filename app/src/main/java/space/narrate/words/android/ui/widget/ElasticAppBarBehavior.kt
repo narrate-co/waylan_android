@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.ui.widget
 
 import android.animation.ValueAnimator
 import android.content.Context

@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -13,8 +12,8 @@ import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
-import space.narrate.words.android.MainViewModel
-import space.narrate.words.android.util.widget.ElasticAppBarBehavior
+import space.narrate.words.android.ui.MainViewModel
+import space.narrate.words.android.ui.widget.ElasticAppBarBehavior
 import java.lang.IllegalArgumentException
 
 class ViewGroupChildIterator(private val viewGroup: ViewGroup): Iterator<View> {

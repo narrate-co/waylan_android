@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui
+package space.narrate.words.android.ui.common
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

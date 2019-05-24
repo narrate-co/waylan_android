@@ -10,10 +10,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import space.narrate.words.android.MainViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.data.firestore.users.PluginState
@@ -23,8 +24,8 @@ import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.util.configInformative
 import space.narrate.words.android.util.setUpWithElasticBehavior
-import space.narrate.words.android.util.widget.CheckPreferenceView
-import space.narrate.words.android.util.widget.ElasticTransition
+import space.narrate.words.android.ui.widget.CheckPreferenceView
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 
 /**
@@ -55,17 +56,9 @@ class DeveloperSettingsFragment : BaseUserFragment() {
     private lateinit var informativeSnackbarPreference: CheckPreferenceView
     private lateinit var errorSnackbarPreference: CheckPreferenceView
 
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(requireActivity(), viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
-    private val viewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(DeveloperSettingsViewModel::class.java)
-    }
+    private val viewModel: DeveloperSettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

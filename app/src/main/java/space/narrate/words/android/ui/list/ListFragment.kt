@@ -13,17 +13,19 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.*
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.ui.search.ContextualFragment
 import space.narrate.words.android.util.*
-import space.narrate.words.android.util.widget.ElasticTransition
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 /**
  * A flexible Fragment that handles the display of a [ListType]. Each [ListType] configuration is
@@ -31,9 +33,7 @@ import space.narrate.words.android.util.widget.ElasticTransition
  * AppBarLayout (faked) titleRes is set to.
  *
  */
-class ListFragment:
-    BaseUserFragment(),
-    ListItemAdapter.ListItemListener {
+class ListFragment: BaseUserFragment(), ListItemAdapter.ListItemListener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var navigationIcon: AppCompatImageButton
@@ -45,21 +45,10 @@ class ListFragment:
     private lateinit var underline: View
 
     // The MainViewModel used to share data between MainActivity and its child Fragments
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     // ListFragment's own ViewModel
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)
-            .get(ListViewModel::class.java).apply {
-                setListType(
-                    navArgs<ListFragmentArgs>().value.listType
-                )
-            }
-    }
+    private val viewModel: ListViewModel by viewModel()
 
     private val adapter by lazy { ListItemAdapter(this) }
 
@@ -90,6 +79,8 @@ class ListFragment:
         toolbarTitle = view.findViewById(R.id.toolbar_title)
         toolbarTitleCollapsed = view.findViewById(R.id.toolbar_title_collapsed)
         underline = view.findViewById(R.id.underline)
+
+        viewModel.setListType(navArgs<ListFragmentArgs>().value.listType)
 
         appBarLayout.setUpWithElasticBehavior(
             this.javaClass.simpleName,

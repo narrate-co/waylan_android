@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.words.android.R
 import space.narrate.words.android.data.prefs.ThirdPartyLibrary
-import space.narrate.words.android.util.widget.CheckPreferenceView
+import space.narrate.words.android.ui.widget.CheckPreferenceView
 
 /**
  * A simple ViewHolder to hold and bind a [ThirdPartyLibrary] to a RecyclerView item view.

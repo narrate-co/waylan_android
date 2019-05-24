@@ -1,42 +1,40 @@
-package space.narrate.words.android
+package space.narrate.words.android.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import dagger.android.support.DaggerAppCompatActivity
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.words.android.Navigator
+import space.narrate.words.android.R
+import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.prefs.NightMode
 import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.ui.home.HomeFragment
 import space.narrate.words.android.ui.list.ListFragment
-import space.narrate.words.android.ui.list.ListFragmentArgs
-import space.narrate.words.android.ui.list.ListType
 import space.narrate.words.android.ui.search.ContextualFragment
 import space.narrate.words.android.ui.search.SearchFragment
 import space.narrate.words.android.ui.search.BottomSheetCallbackCollection
 import space.narrate.words.android.util.*
-import space.narrate.words.android.util.widget.KeyboardManager
-import javax.inject.Inject
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
  * main destination ([HomeFragment], [ListFragment] and [DetailsFragment]).
  */
-class MainActivity : DaggerAppCompatActivity() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+class MainActivity : AppCompatActivity() {
 
     private lateinit var searchFragment: SearchFragment
     private lateinit var contextualFragment: ContextualFragment
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var bottomSheetScrimView: View
+
+    private val authenticationStore: AuthenticationStore by inject()
 
     /**
      * A single callback aggregator which attached added to [SearchFragment]'s BottomSheetBehavior.
@@ -59,14 +57,10 @@ class MainActivity : DaggerAppCompatActivity() {
     val contextualSheetCallback = BottomSheetCallbackCollection()
 
     // MainActivity's ViewModel which is also used by its child Fragments to share data
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ensureAppHasUser(application as App)
+        ensureAppHasUser()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -135,14 +129,13 @@ class MainActivity : DaggerAppCompatActivity() {
         )
     }
 
-    private fun ensureAppHasUser(app: App) {
+    private fun ensureAppHasUser() {
         // TODO rework Dagger configuration to avoid this?
         // When the app's process is killed and restarted, the system occasionally attempts
         // to restore the app directly into a UserScope'ed state. If this happens, injecting
         // will fail. This check avoids injection crashing by setting a null user and setting
         // a temporary, invalid user and kicking out to AuthActivity
-        if (!app.hasUser) {
-            app.setUser(null)
+        if (!authenticationStore.hasUser) {
             Navigator.launchAuth(this)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()

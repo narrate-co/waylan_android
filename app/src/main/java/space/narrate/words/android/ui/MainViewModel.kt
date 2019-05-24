@@ -1,6 +1,7 @@
-package space.narrate.words.android
+package space.narrate.words.android.ui
 
 import androidx.lifecycle.*
+import space.narrate.words.android.Navigator
 import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.prefs.NightMode
@@ -8,20 +9,17 @@ import space.narrate.words.android.data.prefs.Orientation
 import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.di.UserScope
-import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.common.Event
 import space.narrate.words.android.ui.search.ContextualFilterModel
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.ui.search.SearchShelfActionsModel
 import space.narrate.words.android.util.switchMapTransform
-import javax.inject.Inject
 
 /**
  * A ViewModel owned by MainActivity, accessible by all its child Fragments, making data
  * passing/sharing easy.
  */
-@UserScope
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val wordRepository: WordRepository,
     private val analyticsRepository: AnalyticsRepository,
     private val userRepository: UserRepository

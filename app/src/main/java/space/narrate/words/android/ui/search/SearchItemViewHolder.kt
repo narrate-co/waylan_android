@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.words.android.R
 import space.narrate.words.android.util.AdapterUtils
-import space.narrate.words.android.util.widget.BannerCardView
+import space.narrate.words.android.ui.widget.BannerCardView
 
 sealed class SearchItemViewHolder<T : SearchItemModel>(
         val view: View

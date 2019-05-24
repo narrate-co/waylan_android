@@ -2,7 +2,6 @@ package space.narrate.words.android.ui.search
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +16,6 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -31,13 +29,17 @@ import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.data.firestore.users.UserWord
 import space.narrate.words.android.data.firestore.users.UserWordType
 import space.narrate.words.android.data.prefs.RotationManager
+import space.narrate.words.android.ui.MainActivity
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.util.*
-import space.narrate.words.android.util.widget.DelayedLifecycleAction
-import space.narrate.words.android.util.widget.KeyboardManager
-import javax.inject.Inject
+import space.narrate.words.android.util.DelayedLifecycleAction
+import space.narrate.words.android.util.KeyboardManager
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,
@@ -61,19 +63,10 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     // SearchFragment's own ViewModel
-    private val viewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(SearchViewModel::class.java)
-    }
-
+    private val viewModel: SearchViewModel by viewModel()
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
@@ -91,8 +84,7 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
     // the smart shelf after a delay has elapsed
     private var smartShelfAfterTransitionEndAction: DelayedAfterTransitionEndAction? = null
 
-    @Inject
-    lateinit var rotationManager: RotationManager
+    private val rotationManager: RotationManager by inject()
 
     private var numberOfShelfActionsShowing: Int = 0
 

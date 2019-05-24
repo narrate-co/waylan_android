@@ -27,7 +27,7 @@
 
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.MainActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".ui.router.RouterActivity"

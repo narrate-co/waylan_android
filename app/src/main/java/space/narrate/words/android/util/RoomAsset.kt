@@ -1,4 +1,4 @@
-package space.narrate.words.android.util.widget
+package space.narrate.words.android.util
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

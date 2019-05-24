@@ -1,35 +1,33 @@
 package space.narrate.words.android.ui.details
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import space.narrate.words.android.MainViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.*
-import space.narrate.words.android.util.widget.EducationalOverlayView
-import space.narrate.words.android.util.widget.ElasticAppBarBehavior
+import space.narrate.words.android.ui.widget.EducationalOverlayView
 import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.ui.search.SearchFragment
-import space.narrate.words.android.util.widget.ElasticTransition
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
  * handles showing the aggregation of WordSet data, Merriam-Webster data and Firestore data
  * for a given word.
  */
-class DetailsFragment: BaseUserFragment(),
-    DetailItemAdapter.Listener {
+class DetailsFragment: BaseUserFragment(), DetailItemAdapter.Listener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout
@@ -38,18 +36,10 @@ class DetailsFragment: BaseUserFragment(),
 
     // The MainViewModel which is used to for data shared between MainActivity and
     // its child fragments (HomeFragment, ListFragment and DetailsFragment)
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     // This Fragment's ViewModel
-    private val viewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(DetailsViewModel::class.java)
-    }
+    private val viewModel: DetailsViewModel by viewModel()
 
     private val adapter: DetailItemAdapter = DetailItemAdapter(this)
 

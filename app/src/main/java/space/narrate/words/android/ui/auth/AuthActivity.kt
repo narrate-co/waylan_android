@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
@@ -20,28 +21,21 @@ import androidx.core.view.updatePadding
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.google.android.material.button.MaterialButton
-import space.narrate.words.android.App
 import space.narrate.words.android.R
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.util.getColorFromAttr
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import space.narrate.words.android.data.auth.Auth
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 
-/**
- * An Activity which acts as a splash screen, an [Auth] getter/setter and a SetLogin or Sign up
- * screen.
- */
-class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
+class AuthActivity : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
@@ -60,9 +54,7 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
     private lateinit var errorTextView: AppCompatTextView
     private lateinit var progressBar: ProgressBar
 
-    private val authViewModel by lazy {
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
-    }
+    private val authViewModel: AuthViewModel by viewModel()
 
     // A property to hold an intent which should be passed through and handled by the next
     // activity. ie. A ACTION_PROCESS_TEXT extra that should be handled by MainActivity
@@ -148,7 +140,9 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
 
         authViewModel.shouldLaunchMain.observe(this, Observer { event ->
             event?.getUnhandledContent()?.let {
-                launchMain(it.auth, it.clearStack)
+                Navigator.launchMain(this@AuthActivity, true, filterIntent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
             }
         })
 
@@ -326,13 +320,8 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
     }
 
     // Set the user and go to MainActivity
-    private fun launchMain(auth: Auth?, clearStack: Boolean) {
-        (application as App).setUser(auth)
+    private fun launchMain(clearStack: Boolean) {
 
-        Navigator.launchMain(this@AuthActivity, clearStack, filterIntent)
-
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()
     }
 
     companion object {

@@ -6,16 +6,15 @@ import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.data.prefs.*
-import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.common.Event
 import space.narrate.words.android.util.mapTransform
 import space.narrate.words.android.util.switchMapTransform
-import space.narrate.words.android.util.widget.MergedLiveData
-import javax.inject.Inject
+import space.narrate.words.android.util.MergedLiveData
 
 /**
  * A ViewModel for [SearchFragment]
  */
-class SearchViewModel @Inject constructor(
+class SearchViewModel(
         private val wordRepository: WordRepository,
         private val userRepository: UserRepository,
         private val analyticsRepository: AnalyticsRepository

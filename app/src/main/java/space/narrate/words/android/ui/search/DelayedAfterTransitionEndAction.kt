@@ -3,7 +3,7 @@ package space.narrate.words.android.ui.search
 import androidx.lifecycle.LifecycleOwner
 import androidx.transition.Transition
 import androidx.transition.TransitionListenerAdapter
-import space.narrate.words.android.util.widget.DelayedLifecycleAction
+import space.narrate.words.android.util.DelayedLifecycleAction
 
 
 /**

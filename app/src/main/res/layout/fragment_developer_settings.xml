@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.util.widget.ScrimmedFrameLayout
+<space.narrate.words.android.ui.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrim_frame"
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/clear_user_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -35,14 +35,14 @@
                     app:desc="@string/developer_settings_clear_user_preferences_desc"
                     />
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_state_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="@string/developer_settings_toggle_merriam_webster_state_title"
                     />
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/use_test_skus_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,21 +51,21 @@
                     app:checkable="true"
                     />
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_billing_response_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Toggle Merriam-Webster Billing response"
                     />
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/informative_snackbar_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Informative Snackbar"
                     app:desc="Show a test of an informative snackbar"/>
 
-                <space.narrate.words.android.util.widget.CheckPreferenceView
+                <space.narrate.words.android.ui.widget.CheckPreferenceView
                     android:id="@+id/error_snackbar_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorBackground"
-            app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
+            app:layout_behavior=".ui.widget.ElasticAppBarBehavior"
             app:elevation="@dimen/plane_00">
 
             <LinearLayout
@@ -127,4 +127,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</space.narrate.words.android.util.widget.ScrimmedFrameLayout>
+</space.narrate.words.android.ui.widget.ScrimmedFrameLayout>
