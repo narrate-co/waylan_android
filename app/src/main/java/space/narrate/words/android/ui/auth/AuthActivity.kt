@@ -109,6 +109,10 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
         cancelButton.setOnClickListener { authViewModel.onCancelClicked() }
 
+        authViewModel.nightMode.observe(this, Observer {
+            delegate.localNightMode = it.value
+        })
+
         authViewModel.shouldShowError.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { model ->
                 when (model) {
@@ -317,11 +321,6 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         altCredentialTypeButton.isClickable = !show
         doneButton.isClickable = !show
         cancelButton.isClickable = !show
-    }
-
-    // Set the user and go to MainActivity
-    private fun launchMain(clearStack: Boolean) {
-
     }
 
     companion object {

@@ -8,10 +8,15 @@ import kotlinx.coroutines.launch
 import space.narrate.words.android.data.Result
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.auth.FirebaseAuthWordsException
+import space.narrate.words.android.data.prefs.NightMode
+import space.narrate.words.android.data.prefs.PreferenceStore
 import space.narrate.words.android.ui.common.Event
 import kotlin.Exception
 
-class AuthViewModel(private val authenticationStore: AuthenticationStore): ViewModel() {
+class AuthViewModel(
+    private val authenticationStore: AuthenticationStore,
+    private val preferenceStore: PreferenceStore
+): ViewModel() {
 
     private val _authRoute: MutableLiveData<AuthRoute> = MutableLiveData()
     val authRoute: LiveData<AuthRoute>
@@ -34,6 +39,8 @@ class AuthViewModel(private val authenticationStore: AuthenticationStore): ViewM
     val showLoading: LiveData<Boolean>
         get() = _showLoading
 
+    val nightMode: LiveData<NightMode>
+        get() = preferenceStore.nightModeLive
 
     fun onAuthRouteReceived(authRoute: AuthRoute) {
         _authRoute.postValue(authRoute)

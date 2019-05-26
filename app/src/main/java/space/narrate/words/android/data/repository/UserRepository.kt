@@ -163,6 +163,7 @@ class UserRepository(
     fun setUserMerriamWebsterState(state: PluginState) {
         val uid = authenticationStore.uid ?: return
 
+        // Launch and forget
         launch {
             userPreferenceStore.hasSeenMerriamWebsterPermissionPane = false
             firestoreStore.setUserMerriamWebsterState(uid, state)

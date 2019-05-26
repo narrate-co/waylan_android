@@ -13,22 +13,26 @@ class HomeViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
     fun getPreview(type: ListType): LiveData<String> {
         return (when (type) {
-            ListType.TRENDING -> wordRepository.getGlobalWordTrending(PREVIEW_LIMIT).mapTransform { trends ->
-                trends.map { it.word }
+            ListType.TRENDING -> wordRepository.getGlobalWordTrending(PREVIEW_LIMIT)
+                .mapTransform { trends ->
+                    trends.map { it.word }
+                }
+            ListType.RECENT -> wordRepository.getUserWordRecents(PREVIEW_LIMIT)
+                .mapTransform { recs ->
+                    recs.map { it.word }
+                }
+            ListType.FAVORITE -> wordRepository.getUserWordFavorites(PREVIEW_LIMIT)
+                .mapTransform { favs ->
+                    favs.map { it.word }
+                }
+        })
+            .mapTransform { list ->
+                if (list.isNotEmpty()) {
+                    list.reduce { acc, word -> "$acc, $word" }
+                } else {
+                    ""
+                }
             }
-            ListType.RECENT -> wordRepository.getUserWordRecents(PREVIEW_LIMIT).mapTransform { recs ->
-                recs.map { it.word }
-            }
-            ListType.FAVORITE -> wordRepository.getUserWordFavorites(PREVIEW_LIMIT).mapTransform { favs ->
-                favs.map { it.word }
-            }
-        }).mapTransform { list ->
-            if (list.isNotEmpty()) {
-                list.reduce { acc, word -> "$acc, $word" }
-            } else {
-                ""
-            }
-        }
     }
 
     companion object {

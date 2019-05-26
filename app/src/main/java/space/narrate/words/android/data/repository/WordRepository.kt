@@ -27,8 +27,8 @@ import kotlin.coroutines.CoroutineContext
 class WordRepository(
         private val db: AppDatabase,
         private val authenticationStore: AuthenticationStore,
-        private val firestoreStore: FirestoreStore?,
-        private val merriamWebsterStore: MerriamWebsterStore?,
+        private val firestoreStore: FirestoreStore,
+        private val merriamWebsterStore: MerriamWebsterStore,
         private val symSpellStore: SymSpellStore
 ) : CoroutineScope {
 
@@ -54,45 +54,47 @@ class WordRepository(
     fun getUserWord(id: String): LiveData<UserWord> {
         val uid = authenticationStore.uid ?: return onUnauthenticated()
 
-        return firestoreStore?.getUserWordLive(id, uid) ?: LiveDataUtils.empty()
+        return firestoreStore.getUserWordLive(id, uid)
     }
 
     fun getMerriamWebsterWord(word: String): LiveData<List<MwWordAndDefinitionGroups>> {
-        return merriamWebsterStore?.getWordAndDefinitions(word) ?: LiveDataUtils.empty()
+        return merriamWebsterStore.getWordAndDefinitions(word)
     }
 
     fun getGlobalWordTrending(
         limit: Long? = null,
         filter: List<Period> = emptyList()
     ): LiveData<List<GlobalWord>> {
-        return firestoreStore?.getTrending(limit, filter) ?: LiveDataUtils.empty()
+        return firestoreStore.getTrending(limit, filter)
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
         val uid = authenticationStore.uid ?: return onUnauthenticated()
-        return firestoreStore?.getFavorites(uid, limit) ?: LiveDataUtils.empty()
+        return firestoreStore.getFavorites(uid, limit)
     }
 
     fun setUserWordFavorite(id: String, favorite: Boolean) {
         if (id.isBlank()) return
         val uid = authenticationStore.uid ?: return
 
+        // Launch and forget
         launch {
-            firestoreStore?.setFavorite(id, uid, favorite)
+            firestoreStore.setFavorite(id, uid, favorite)
         }
     }
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
         val uid = authenticationStore.uid ?: return onUnauthenticated()
-        return firestoreStore?.getRecents(uid, limit) ?: LiveDataUtils.empty()
+        return firestoreStore.getRecents(uid, limit)
     }
 
     fun setUserWordRecent(id: String) {
         if (id.isBlank()) return
         val uid = authenticationStore.uid ?: return
 
+        // Launch and forget
         launch {
-            firestoreStore?.setRecent(id, uid)
+            firestoreStore.setRecent(id, uid)
         }
     }
 

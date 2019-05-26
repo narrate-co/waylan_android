@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         sharedViewModel.nightMode.observe(this, Observer {
-            setLocalNightMode(it)
+            delegate.localNightMode = it.value
         })
 
         sharedViewModel.orientation.observe(this, Observer {
@@ -240,10 +240,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
         bottomSheetScrimView.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
-    }
-
-    private fun setLocalNightMode(nightMode: NightMode) {
-        delegate.localNightMode = nightMode.value
     }
 
     private fun setOrientation(orientation: Orientation) {

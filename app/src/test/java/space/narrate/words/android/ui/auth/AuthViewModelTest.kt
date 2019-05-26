@@ -14,6 +14,7 @@ import org.mockito.Mockito.verify
 import space.narrate.words.android.data.Result
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.firestore.users.User
+import space.narrate.words.android.data.prefs.PreferenceStore
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
@@ -24,6 +25,8 @@ class AuthViewModelTest {
 
     // Mock authentication store to be injected into the ViewModel.
     private val authenticationStore = mock(AuthenticationStore::class.java)
+
+    private val preferenceStore = mock(PreferenceStore::class.java)
 
     private val TEST_USER = User("ABC")
     private val TEST_EXCEPTION = Exception("Error!")
@@ -37,7 +40,7 @@ class AuthViewModelTest {
 
     @Before
     fun setUp() {
-        authViewModel = AuthViewModel(authenticationStore)
+        authViewModel = AuthViewModel(authenticationStore, preferenceStore)
     }
 
     @Test
