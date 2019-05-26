@@ -21,6 +21,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * A store which knows about the credentials which back a [User] - the global account object.
+ *
+ * This class can [authenticate] a [User] or help create a new [User] by using [logIn], [signUp]
+ * or [signUpAnonymously].
+ */
 class AuthenticationStore(
     private val firebaseAuth: FirebaseAuth,
     private val firestoreStore: FirestoreStore
@@ -29,7 +35,14 @@ class AuthenticationStore(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    val hasFirestoreUser: Boolean
+    /**
+     * Whether or not the credentials necessary to authenticate a [User] are available.
+     *
+     * If they are, the client can call [authenticate] and refresh the [user] LiveData. Otherwise,
+     * the client must use [logIn], [signUp] or [signUpAnonymously] to get/create the necessary
+     * credentials and refresh [user].
+     */
+    val hasCredentials: Boolean
         get() = firebaseAuth.currentUser != null
 
     val hasUser: Boolean
@@ -114,6 +127,26 @@ class AuthenticationStore(
         }
     }
 
+    suspend fun signUpAnonymously(): Result<User> {
+        try {
+            suspendCancellableCoroutine<FirebaseUser> { cont ->
+                firebaseAuth.signInAnonymously()
+                    .addOnSuccessListener {
+                        cont.resume(it.user)
+                    }
+                    .addOnFailureListener {
+                        cont.resumeWithFirebaseAuthException(
+                            FirebaseAuthWordsException.AnonSignUpFailedException,
+                            it
+                        )
+                    }
+            }
+            return authenticate()
+        } catch (e: Exception) {
+            return Result.Error(e)
+        }
+    }
+
     private fun signUpByLinkingCredentials(
         cont: CancellableContinuation<FirebaseUser>,
         email: String,
@@ -154,26 +187,6 @@ class AuthenticationStore(
                     it
                 )
             }
-    }
-
-    suspend fun signUpAnonymously(): Result<User> {
-        try {
-            suspendCancellableCoroutine<FirebaseUser> { cont ->
-                firebaseAuth.signInAnonymously()
-                    .addOnSuccessListener {
-                        cont.resume(it.user)
-                    }
-                    .addOnFailureListener {
-                        cont.resumeWithFirebaseAuthException(
-                            FirebaseAuthWordsException.AnonSignUpFailedException,
-                            it
-                        )
-                    }
-            }
-            return authenticate()
-        } catch (e: Exception) {
-            return Result.Error(e)
-        }
     }
 
     private suspend fun getOrCreateUser(firebaseUser: FirebaseUser): Result<User> {

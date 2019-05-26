@@ -1,4 +1,4 @@
-package space.narrate.words.android
+package space.narrate.words.android.data.prefs
 
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
@@ -14,7 +14,6 @@ import org.mockito.Mockito.`when` as whenever
 import org.robolectric.RobolectricTestRunner
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.data.prefs.UserPreferenceStore
 
 @RunWith(RobolectricTestRunner::class)
 class UserPreferenceStoreTest : KoinTest {

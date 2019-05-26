@@ -1,9 +1,8 @@
-package space.narrate.words.android
+package space.narrate.words.android.data.prefs
 
 import android.content.pm.ActivityInfo
-import space.narrate.words.android.data.prefs.RotationManager
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import space.narrate.words.android.data.prefs.RotationUtils
 
 class RotationTest {
 
@@ -40,6 +39,8 @@ class RotationTest {
         }
 
         //An observeSince time that's qualifies
-        assert(!RotationUtils.isLikelyUnlockDesiredScenario(patterns, lockedTo, observedSince, now))
+        assertThat(
+            RotationUtils.isLikelyUnlockDesiredScenario(patterns, lockedTo, observedSince, now)
+        ).isFalse()
     }
 }

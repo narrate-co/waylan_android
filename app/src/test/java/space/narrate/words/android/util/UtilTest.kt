@@ -1,4 +1,4 @@
-package space.narrate.words.android
+package space.narrate.words.android.util
 
 import space.narrate.words.android.util.peekOrNull
 import org.junit.Test
