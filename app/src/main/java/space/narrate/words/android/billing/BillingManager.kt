@@ -3,14 +3,10 @@ package space.narrate.words.android.billing
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.repository.UserRepository
-import kotlinx.coroutines.launch
 import space.narrate.words.android.data.repository.AnalyticsRepository
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 /**
  * A class to handle all communication between Words and Google Play Billing
@@ -33,18 +29,15 @@ import kotlin.coroutines.CoroutineContext
  **
  */
 class BillingManager(
-        private val context: Context,
-        private val userRepository: UserRepository,
-        private val analyticsRepository: AnalyticsRepository
-): PurchasesUpdatedListener, CoroutineScope {
+    private val context: Context,
+    private val userRepository: UserRepository,
+    private val analyticsRepository: AnalyticsRepository
+): PurchasesUpdatedListener {
 
     companion object {
         private const val BILLING_MANAGER_NOT_INITIALIZED = -1
         private const val BASE_64_ENCODED_PUBLIC_KEY = "EMPTY_FOR_NOW"
     }
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
 
     private val billingClient by lazy {
         BillingClient.newBuilder(context).setListener(this).build()
@@ -55,18 +48,18 @@ class BillingManager(
 
     private val tokensToBeConsumed = HashSet<String>()
 
+    private val workQueue = PriorityQueue<BillingTask>()
+
     init {
         doWithServiceConnection {
-            launch {
-                it.queryPurchasesAndSubscription(true)
-            }
+            queryPurchasesAndSubscription(it, true)
         }
     }
 
     fun initiatePurchaseFlow(
-            activity: Activity,
-            skuId: String,
-            @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
+        activity: Activity,
+        skuId: String,
+        @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
     ) {
         val sku = if (userRepository.useTestSkus) {
             when (skuId) {
@@ -79,21 +72,19 @@ class BillingManager(
         initiatePurchaseFlow(activity, sku, null, billingType)
     }
 
-    fun initiatePurchaseFlow(
-            activity: Activity,
-            skuId: String,
-            oldSkus: ArrayList<String>?,
-            @BillingClient.SkuType billingType: String
+    private fun initiatePurchaseFlow(
+        activity: Activity,
+        skuId: String,
+        oldSkus: ArrayList<String>?,
+        @BillingClient.SkuType billingType: String
     ) {
         doWithServiceConnection {
-            launch {
-                val purchaseParams = BillingFlowParams.newBuilder()
-                        .setSku(skuId)
-                        .setType(billingType)
-                        .setOldSkus(oldSkus)
-                        .build()
-                it.launchBillingFlow(activity, purchaseParams)
-            }
+            val purchaseParams = BillingFlowParams.newBuilder()
+                .setSku(skuId)
+                .setType(billingType)
+                .setOldSkus(oldSkus)
+                .build()
+            it.launchBillingFlow(activity, purchaseParams)
         }
     }
 
@@ -104,45 +95,19 @@ class BillingManager(
     }
 
     fun querySkuDetails(
-            @BillingClient.SkuType itemType: String,
-            skuList: List<String>,
-            listener: SkuDetailsResponseListener
+        @BillingClient.SkuType itemType: String,
+        skuList: List<String>,
+        listener: SkuDetailsResponseListener
     ) {
         doWithServiceConnection {
-            launch {
-                val params = SkuDetailsParams.newBuilder()
-                        .setSkusList(skuList)
-                        .setType(itemType)
-                it.querySkuDetailsAsync(params.build()) { responseCode, skuDetailsList ->
-                    listener.onSkuDetailsResponse(responseCode, skuDetailsList)
-                }
+            val params = SkuDetailsParams.newBuilder()
+                .setSkusList(skuList)
+                .setType(itemType)
+            it.querySkuDetailsAsync(params.build()) { responseCode, skuDetailsList ->
+                listener.onSkuDetailsResponse(responseCode, skuDetailsList)
             }
         }
     }
-
-    private fun doWithServiceConnection(work: (BillingClient) -> Unit) {
-        if (isServiceConnected) {
-            launch {
-                work(billingClient)
-            }
-        } else {
-            billingClient.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(responseCode: Int) {
-                    if (responseCode == BillingClient.BillingResponse.OK) {
-                        isServiceConnected = true
-                        launch {
-                            work(billingClient)
-                        }
-                        billingClientResponseCode = responseCode
-                    }
-                }
-                override fun onBillingServiceDisconnected() {
-                    isServiceConnected = false
-                }
-            })
-        }
-    }
-
 
     fun consume(purchaseToken: String) {
         if (tokensToBeConsumed.contains(purchaseToken)) {
@@ -151,30 +116,28 @@ class BillingManager(
 
         tokensToBeConsumed.add(purchaseToken)
 
-        val onConsumeListener = ConsumeResponseListener { responseCode, purchaseToken ->
-            tokensToBeConsumed.remove(purchaseToken)
+        val onConsumeListener = ConsumeResponseListener { _, token ->
+            tokensToBeConsumed.remove(token)
         }
 
         doWithServiceConnection {
-            launch {
-                it.consumeAsync(purchaseToken, onConsumeListener)
-            }
+            it.consumeAsync(purchaseToken, onConsumeListener)
         }
     }
 
     private fun areSubscriptionsSupported(): Boolean {
         return billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS) ==
-                BillingClient.BillingResponse.OK
+            BillingClient.BillingResponse.OK
     }
 
     /**
      * Gets all the current active, purchases and subs (non-consumed, non-cancelled, non-expired)
      */
-    private fun BillingClient.queryPurchasesAndSubscription(consumeAll: Boolean) {
-        val purchaseResults = queryPurchases(BillingClient.SkuType.INAPP)
+    private fun queryPurchasesAndSubscription(client: BillingClient, consumeAll: Boolean) {
+        val purchaseResults = client.queryPurchases(BillingClient.SkuType.INAPP)
 
         if (areSubscriptionsSupported()) {
-            val subscriptionResult = queryPurchases(BillingClient.SkuType.SUBS)
+            val subscriptionResult = client.queryPurchases(BillingClient.SkuType.SUBS)
             if (subscriptionResult.responseCode == BillingClient.BillingResponse.OK) {
                 purchaseResults.purchasesList.addAll(subscriptionResult.purchasesList)
             }
@@ -232,4 +195,43 @@ class BillingManager(
         }
     }
 
+    private fun doWithServiceConnection(task: (BillingClient) -> Unit) {
+        doWithServiceConnection(BillingTask(task))
+    }
+
+    private fun doWithServiceConnection(task: BillingTask) {
+        // TODO: Replace tasks which have the same id
+        workQueue.offer(task)
+
+        if (isServiceConnected) {
+            workQueue.pollEach { it.run(billingClient) }
+        } else {
+            billingClient.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(responseCode: Int) {
+                    if (responseCode == BillingClient.BillingResponse.OK) {
+                        isServiceConnected = true
+                        workQueue.pollEach { it.run(billingClient) }
+                        billingClientResponseCode = responseCode
+                    }
+                }
+                override fun onBillingServiceDisconnected() {
+                    isServiceConnected = false
+                }
+            })
+        }
+    }
+
+    /**
+     * Copy a queue and immediately clear it. For each item in the copied queue, run [action].
+     *
+     * This is used to immediately run all queued work to be done with a [BillingClient] and avoid
+     * any work being duplicated by subsequent calls to [doWithServiceConnection].
+     */
+    private fun <E> PriorityQueue<E>.pollEach(action: (E) -> Unit) {
+        val items = PriorityQueue(this)
+        clear()
+        do {
+            action(items.poll())
+        } while (items.isNotEmpty())
+    }
 }
