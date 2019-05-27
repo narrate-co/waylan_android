@@ -269,8 +269,8 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
-                val errorTextColor = getColorFromAttr(R.attr.colorOnError)
-                val errorHintColor = getColorFromAttr(R.attr.colorOnError)
+                val errorTextColor = getColorFromAttr(R.attr.colorOnErrorHighEmphasis)
+                val errorHintColor = getColorFromAttr(R.attr.colorOnErrorLowEmphasis)
                 TransitionManager.beginDelayedTransition(containerLayout)
                 emailEditText.setTextColor(errorTextColor)
                 emailEditText.setHintTextColor(errorHintColor)

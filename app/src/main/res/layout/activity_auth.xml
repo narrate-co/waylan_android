@@ -113,7 +113,7 @@
             android:layout_marginBottom="@dimen/keyline_2"
             tools:text="Password must contain at least one number or symbol."
             android:alpha="0"
-            android:textColor="?colorError" />
+            android:textColor="?colorOnBackgroundError" />
 
         <FrameLayout
             android:layout_width="match_parent"
