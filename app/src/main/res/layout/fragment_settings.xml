@@ -36,7 +36,7 @@
                     android:layout_marginEnd="@dimen/keyline_2"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:layout_marginBottom="@dimen/keyline_4"
-                    app:cardElevation="2dp"
+                    app:cardElevation="@dimen/plane_01"
                     app:cardCornerRadius="@dimen/keyline_2"
                     app:cardBackgroundColor="?colorSurface"
                     />

@@ -48,7 +48,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
  * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
  *  builds
  */
-class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
+class SettingsFragment : BaseUserFragment() {
 
 
     private val billingManager: BillingManager by inject()
@@ -179,7 +179,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     }
 
     private fun setUpBanner() {
-        bannerCardView.setLisenter(this)
         viewModel.bannerModel.observe(this, Observer { model ->
             bannerCardView
                 .setText(model.textRes)
@@ -189,7 +188,13 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
                     model.daysRemaining
                 ))
                 .setTopButton(model.topButtonRes)
+                .setOnTopButtonClicked {
+                    viewModel.onMwBannerActionClicked(model.topButtonAction)
+                }
                 .setBottomButton(model.bottomButtonRes)
+                .setOnBottomButtonClicked {
+                    viewModel.onMwBannerActionClicked(model.bottomButtonAction)
+                }
 
             if (model.email == null) {
                 signOutPreference.gone()
@@ -240,22 +245,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
                 true
             }
             .show()
-    }
-
-    override fun onBannerClicked() {
-        // Do nothing
-    }
-
-    override fun onBannerLabelClicked() {
-        // Do nothing
-    }
-
-    override fun onBannerTopButtonClicked() {
-        viewModel.onBannerTopButtonClicked()
-    }
-
-    override fun onBannerBottomButtonClicked() {
-        viewModel.onBannerBottomButtonClicked()
     }
 
     companion object {

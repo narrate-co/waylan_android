@@ -53,22 +53,29 @@ class SettingsViewModel(
     val shouldShowOrientationDialog: LiveData<Event<List<OrientationRadioItemModel>>>
         get() = _shouldShowOrientationDialog
 
-
-    fun onBannerTopButtonClicked() {
-        if (user.value?.isAnonymous == true) {
-            _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
-        } else {
-            _shouldLaunchMwPurchaseFlow.value = Event(true)
+    fun onMwBannerActionClicked(action: MwBannerAction?) {
+        when (action) {
+            MwBannerAction.LOG_IN -> _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
+            MwBannerAction.SIGN_UP -> _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
+            MwBannerAction.LAUNCH_PURCHASE_FLOW -> _shouldLaunchMwPurchaseFlow.value = Event(true)
         }
     }
 
-    fun onBannerBottomButtonClicked() {
-        if (user.value?.isAnonymous == true) {
-            _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
-        } else {
-            _shouldLaunchMwPurchaseFlow.value = Event(true)
-        }
-    }
+//    fun onBannerTopButtonClicked() {
+//        if (user.value?.isAnonymous == true) {
+//            _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
+//        } else {
+//            _shouldLaunchMwPurchaseFlow.value = Event(true)
+//        }
+//    }
+//
+//    fun onBannerBottomButtonClicked() {
+//        if (user.value?.isAnonymous == true) {
+//            _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
+//        } else {
+//            _shouldLaunchMwPurchaseFlow.value = Event(true)
+//        }
+//    }
 
     fun onNightModePreferenceClicked() {
         val currentNightMode = userRepository.nightMode

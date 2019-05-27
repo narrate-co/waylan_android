@@ -11,7 +11,7 @@
     app:bannerText="Recents is where all of your previous searches will appear"
     app:bannerTopButtonText="Get Started"
     app:bannerBottomButtonText="Dismiss"
-    app:cardElevation="0dp"
+    app:cardElevation="@dimen/plane_00"
     app:cardCornerRadius="@dimen/keyline_2"
     app:cardBackgroundColor="?android:windowBackground"
     android:tag="header"

@@ -57,9 +57,10 @@ class BannerCardView @JvmOverloads constructor(
     private var bottomButton: MaterialButton
 
     private var listener: Listener? = null
+    private var onTopButtonClicked: (() -> Unit)? = null
+    private var onBottomButtonClicked: (() -> Unit)? = null
 
     init {
-        elevation = resources.getDimension(R.dimen.plane_01)
         val view = View.inflate(context, R.layout.banner_card_veiw_layout, this)
         labelTextView = view.findViewById(R.id.label_text_view)
         bodyTextView = view.findViewById(R.id.body_text_view)
@@ -75,8 +76,14 @@ class BannerCardView @JvmOverloads constructor(
 
         setOnClickListener { listener?.onBannerClicked() }
         labelTextView.setOnClickListener { listener?.onBannerLabelClicked() }
-        topButton.setOnClickListener { listener?.onBannerTopButtonClicked() }
-        bottomButton.setOnClickListener { listener?.onBannerBottomButtonClicked() }
+        topButton.setOnClickListener {
+            listener?.onBannerTopButtonClicked()
+            onTopButtonClicked?.let { it() }
+        }
+        bottomButton.setOnClickListener {
+            listener?.onBannerBottomButtonClicked()
+            onBottomButtonClicked?.let { it() }
+        }
     }
 
 
@@ -139,6 +146,11 @@ class BannerCardView @JvmOverloads constructor(
         return this
     }
 
+    fun setOnTopButtonClicked(onClick: (() -> Unit)?): BannerCardView {
+        onTopButtonClicked = onClick
+        return this
+    }
+
     fun setBottomButton(textRes: Int?): BannerCardView {
         return setBottomButton(context.getStringOrNull(textRes))
     }
@@ -149,4 +161,8 @@ class BannerCardView @JvmOverloads constructor(
         return this
     }
 
+    fun setOnBottomButtonClicked(onClick: (() -> Unit)?): BannerCardView {
+        onBottomButtonClicked = onClick
+        return this
+    }
 }

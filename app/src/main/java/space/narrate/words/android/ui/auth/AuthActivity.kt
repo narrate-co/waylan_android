@@ -32,6 +32,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.words.android.ui.widget.ProgressUnderlineView
 import space.narrate.words.android.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 
@@ -53,6 +54,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var altCredentialTypeButton: MaterialButton
     private lateinit var errorTextView: AppCompatTextView
     private lateinit var progressBar: ProgressBar
+    private lateinit var progressBarTop: ProgressUnderlineView
 
     private val authViewModel: AuthViewModel by viewModel()
 
@@ -96,6 +98,8 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         altCredentialTypeButton = findViewById(R.id.alternate_credintial_type_button)
         errorTextView = findViewById(R.id.error_text_view)
         progressBar = findViewById(R.id.progress_bar)
+        progressBarTop = findViewById(R.id.progress_bar_top)
+        progressBarTop.startProgress()
 
         ViewCompat.setOnApplyWindowInsetsListener(containerLayout) { _, insets ->
             handleApplyWindowInsets(insets)
@@ -133,6 +137,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
             when (route) {
                 AuthRoute.LOG_IN -> setToLoginUi()
                 AuthRoute.SIGN_UP -> setToSignUpUi()
+                AuthRoute.ANONYMOUS -> setToAuthenticateUI()
             }
         })
 
@@ -217,7 +222,27 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         altCredentialTypeButton.setOnClickListener {
             authViewModel.onLoginAlternateClicked()
         }
+    }
 
+    private fun setToAuthenticateUI() {
+        progressBarTop.startProgress()
+        val anim = ObjectAnimator.ofFloat(
+            progressBarTop,
+            "alpha",
+            1F
+        )
+        anim.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) { }
+            override fun onAnimationEnd(animation: Animator?) { }
+            override fun onAnimationCancel(animation: Animator?) { }
+            override fun onAnimationStart(animation: Animator?) {
+                progressBarTop.visibility = View.VISIBLE
+            }
+        })
+        anim.interpolator = FastOutSlowInInterpolator()
+        anim.duration = 300
+        anim.startDelay = 3000
+        anim.start()
     }
 
     // Transition from the splash screen to the credentials layout
@@ -226,21 +251,28 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
         val set = AnimatorSet()
         set.playTogether(
-                ObjectAnimator.ofFloat(
-                        containerLayout,
-                        "translationY",
-                        resources.displayMetrics.density * -100
-                ),
-                ObjectAnimator.ofFloat(
-                        credentialsContainerLayout,
-                        "alpha",
-                        0F,
-                        1F
-                )
+            ObjectAnimator.ofFloat(
+                containerLayout,
+                "translationY",
+                resources.displayMetrics.density * -100
+            ),
+            ObjectAnimator.ofFloat(
+                credentialsContainerLayout,
+                "alpha",
+                0F,
+                1F
+            ),
+            ObjectAnimator.ofFloat(
+                progressBarTop,
+                "alpha",
+                0F
+            )
         )
         set.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) {}
+            override fun onAnimationEnd(p0: Animator?) {
+                progressBarTop.visibility = View.INVISIBLE
+            }
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationStart(p0: Animator?) {
                 credentialsContainerLayout.visibility = View.VISIBLE
@@ -250,7 +282,6 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         set.duration = 300
         set.start()
     }
-
 
     private fun showErrorMessage(message: String) {
         synchronized(lastErrorStateIsShown) {
