@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.appcompat.widget.AppCompatTextView xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.AppCompatTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:textAppearance="?textAppearanceHeadline2"
@@ -13,4 +13,5 @@
     android:layout_marginEnd="8dp"
     tools:text="quiescent"
     android:text="@{sharedViewModel.currentWord.dbWord.word}"
+    android:hyphenationFrequency="normal"
     />

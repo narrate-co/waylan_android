@@ -64,7 +64,7 @@ val appModule = module {
     // Managers
     single { RotationManager(androidContext()) }
 
-    single { BillingManager(androidContext(), get()) }
+    single { BillingManager(androidContext(), get(), get()) }
 
     viewModel { MainViewModel(get(), get(), get()) }
 
@@ -80,5 +80,5 @@ val appModule = module {
 
     viewModel { DetailsViewModel(get(), get()) }
 
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get()) }
 }

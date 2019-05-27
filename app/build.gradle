@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "space.narrate.words.android"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 4
         versionName "0.0.04.debug"

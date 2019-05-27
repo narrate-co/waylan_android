@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.repository.UserRepository
 import kotlinx.coroutines.launch
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -33,7 +34,8 @@ import kotlin.coroutines.CoroutineContext
  */
 class BillingManager(
         private val context: Context,
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
+        private val analyticsRepository: AnalyticsRepository
 ): PurchasesUpdatedListener, CoroutineScope {
 
     companion object {
@@ -194,7 +196,7 @@ class BillingManager(
     }
 
     private fun handlePurchase(purchase: Purchase) {
-        //TODO make sure we're verifying purchase tokens in a Cloud Function
+        //TODO Make sure we're verifying purchase tokens in a Cloud Function
 
         val startedDate = Date(purchase.purchaseTime)
 
@@ -209,6 +211,7 @@ class BillingManager(
             BillingConfig.TEST_SKU_ITEM_UNAVAILABLE -> {
                 val pluginState = PluginState.Purchased(Date(), purchase.purchaseToken)
                 userRepository.setUserMerriamWebsterState(pluginState)
+                analyticsRepository.logMerriamWebsterPurchaseEvent()
             }
         }
 

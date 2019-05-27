@@ -131,8 +131,10 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         viewModel.shouldShowDetails.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
                 sharedViewModel.onChangeCurrentWord(it)
-                (requireActivity() as MainActivity).findNavController()
-                    .navigate(R.id.action_global_detailsFragment)
+                val navController = (requireActivity() as MainActivity).findNavController()
+                if (navController.currentDestination?.id != R.id.detailsFragment) {
+                    navController.navigate(R.id.action_global_detailsFragment)
+                }
             }
         })
 
@@ -219,6 +221,16 @@ class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener,
         (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             recyclerView.alpha = MathUtils.normalize(offset, 0.2F, 1.0F, 0.0F, 1.0F)
         }
+
+        // Make sure we're hiding the recycler view, even when the state change event is
+        // coming from something other than a drag.
+        (requireActivity() as MainActivity).searchSheetCallback
+            .addOnStateChangedAction { _, newState ->
+                if (newState == BottomSheetBehavior.STATE_HIDDEN ||
+                    newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    recyclerView.alpha = 0F
+                }
+            }
     }
 
     // Set up textRes watchers and on focus changed listeners to help control the

@@ -6,7 +6,6 @@ import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.BuildConfig
-import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.util.contentEquals
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime

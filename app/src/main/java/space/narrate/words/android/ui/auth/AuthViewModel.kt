@@ -10,12 +10,14 @@ import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.auth.FirebaseAuthWordsException
 import space.narrate.words.android.data.prefs.NightMode
 import space.narrate.words.android.data.prefs.PreferenceStore
+import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.ui.common.Event
 import kotlin.Exception
 
 class AuthViewModel(
     private val authenticationStore: AuthenticationStore,
-    private val preferenceStore: PreferenceStore
+    private val preferenceStore: PreferenceStore,
+    private val analyticsRepository: AnalyticsRepository
 ): ViewModel() {
 
     private val _authRoute: MutableLiveData<AuthRoute> = MutableLiveData()
@@ -98,7 +100,10 @@ class AuthViewModel(
             confirmPassword
         )
         when (result) {
-            is Result.Success -> postLaunchMain()
+            is Result.Success -> {
+                analyticsRepository.logSignUpEvent()
+                postLaunchMain()
+            }
             is Result.Error -> postError(result.exception)
         }
         _showLoading.postValue(false)

@@ -13,7 +13,8 @@
             app:destination="@id/listFragment" />
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -24,7 +25,8 @@
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="true"/>
         <argument
             android:name="listType"
             app:argType="space.narrate.words.android.ui.list.ListType"/>
@@ -66,5 +68,6 @@
         android:label="ThirdPartyLibrariesFragment" />
     <action
         android:id="@+id/action_global_detailsFragment"
-        app:destination="@id/detailsFragment" />
+        app:destination="@id/detailsFragment"
+        app:launchSingleTop="true"/>
 </navigation>

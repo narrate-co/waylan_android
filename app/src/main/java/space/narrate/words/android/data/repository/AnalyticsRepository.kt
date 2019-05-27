@@ -25,6 +25,8 @@ class AnalyticsRepository(
     companion object {
         private const val EVENT_SEARCH_WORD = "search_word"
         private const val EVENT_NAVIGATE_BACK = "navigate_back"
+        private const val EVENT_SIGN_UP = "sign_up"
+        private const val EVENT_MW_PURCHASE = "mw_purchase"
     }
 
     init {
@@ -48,6 +50,14 @@ class AnalyticsRepository(
 
     fun logDragDismissEvent(from: String) {
         logNavigateBackEvent(from, "DRAG_DISMISS")
+    }
+
+    fun logSignUpEvent() {
+        firebaseAnalytics.logEvent(EVENT_SIGN_UP, Bundle())
+    }
+
+    fun logMerriamWebsterPurchaseEvent() {
+        firebaseAnalytics.logEvent(EVENT_MW_PURCHASE, Bundle())
     }
 
     private fun logNavigateBackEvent(from: String, type: String) {
