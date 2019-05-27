@@ -23,8 +23,8 @@ object ThirdPartyLibraryStore {
             "https://firebase.google.com/"
         ),
         ThirdPartyLibrary(
-            "Dagger 2",
-            "https://github.com/google/dagger"
+            "Koin",
+            "https://insert-koin.io/"
         ),
         ThirdPartyLibrary(
             "Retrofit",
