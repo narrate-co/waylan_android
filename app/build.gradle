@@ -126,28 +126,46 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrest_version"
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     testImplementation "org.robolectric:robolectric:$robolectric_version"
     testImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    testImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    testImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
     testImplementation "com.google.truth:truth:$google_truth_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
     // Android Unit tests
     androidTestImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test:runner:$androidx_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-inline:$mockito_version"
 
     // AndroidX JVM tests
-    testImplementation "androidx.test:core-ktx:$test_core_ktx_version"
+    testImplementation "androidx.test:core-ktx:$androidx_test_core_ktx_version"
+    testImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext_kotlin_runner_version"
+    testImplementation "androidx.test:rules:$androidx_test_rules_version"
+    // Once https://issuetracker.google.com/127986458 is fixed this can be testImplementation
+    implementation "androidx.fragment:fragment-testing:$androidx_fragment_version"
+    implementation "androidx.test:core:$androidx_test_core_version"
+    implementation "androidx.fragment:fragment:$androidx_fragment_version"
 
     // Instrumented tests
-    androidTestImplementation "androidx.test:core-ktx:$test_core_ktx_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    androidTestImplementation "androidx.test:core-ktx:$androidx_test_core_ktx_version"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext_kotlin_runner_version"
+    androidTestImplementation "androidx.test:rules:$androidx_test_rules_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espresso_version"
+    androidTestImplementation "org.robolectric:annotations:$robolectric_version"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+
+    androidTestImplementation "androidx.appcompat:appcompat:$appcompat_version"
+    androidTestImplementation "com.google.android.material:material:$material_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

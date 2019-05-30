@@ -2,6 +2,7 @@
 <space.narrate.words.android.ui.widget.ProgressUnderlineView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/divider"
     android:layout_width="72dp"
     android:layout_height="2dp"
     android:layout_margin="@dimen/keyline_3"

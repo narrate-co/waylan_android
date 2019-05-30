@@ -36,7 +36,7 @@ class AuthViewModelTest {
 
     // Mock Android's getMainLooper()
     @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+    val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {

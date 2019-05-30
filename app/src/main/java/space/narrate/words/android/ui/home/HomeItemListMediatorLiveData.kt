@@ -24,6 +24,10 @@ class HomeItemListMediatorLiveData : MediatorLiveData<List<HomeItemModel>>() {
 
     private val settings = HomeItemModel.SettingsModel
 
+    init {
+        updateList()
+    }
+
     fun addSource(data: LiveData<HomeItemModel.ItemModel>) {
         addSource(data) {
             when (it.listType) {
