@@ -3,30 +3,23 @@ package space.narrate.words.android.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import space.narrate.words.android.data.auth.Auth
+import space.narrate.words.android.data.Result
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.auth.FirebaseAuthWordsException
-import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.ui.Event
-import javax.inject.Inject
+import space.narrate.words.android.data.prefs.NightMode
+import space.narrate.words.android.data.prefs.PreferenceStore
+import space.narrate.words.android.data.repository.AnalyticsRepository
+import space.narrate.words.android.ui.common.Event
 import kotlin.Exception
-import kotlin.coroutines.CoroutineContext
 
-/**
- * A ViewModel that handles the manipulation of [FirebaseUser] and [User] to create
- * valid [Auth] objects.
- */
-class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
-
-    // TODO Move into constructor and inject
-    private val authenticationStore: AuthenticationStore = AuthenticationStore()
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+class AuthViewModel(
+    private val authenticationStore: AuthenticationStore,
+    private val preferenceStore: PreferenceStore,
+    private val analyticsRepository: AnalyticsRepository
+): ViewModel() {
 
     private val _authRoute: MutableLiveData<AuthRoute> = MutableLiveData()
     val authRoute: LiveData<AuthRoute>
@@ -37,8 +30,8 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     val shouldShowCredentials: LiveData<Event<ShowCredentialsModel>>
         get() = _shouldShowCredentials
 
-    private val _shouldLaunchMain: MutableLiveData<Event<LaunchMainModel>> = MutableLiveData()
-    val shouldLaunchMain: LiveData<Event<LaunchMainModel>>
+    private val _shouldLaunchMain: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldLaunchMain: LiveData<Event<Boolean>>
         get() = _shouldLaunchMain
 
     private val _shouldShowError: MutableLiveData<Event<ShowErrorModel>> = MutableLiveData()
@@ -49,6 +42,8 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     val showLoading: LiveData<Boolean>
         get() = _showLoading
 
+    val nightMode: LiveData<NightMode>
+        get() = preferenceStore.nightModeLive
 
     fun onAuthRouteReceived(authRoute: AuthRoute) {
         _authRoute.postValue(authRoute)
@@ -57,10 +52,10 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
             AuthRoute.SIGN_UP,
             AuthRoute.LOG_IN -> _shouldShowCredentials.postValue(Event(ShowCredentialsModel()))
             else -> {
-                if (authenticationStore.hasFirebaseUser) {
-                    getCurrentAuthAndReturnToMain()
+                if (authenticationStore.hasCredentials) {
+                    authenticate()
                 } else {
-                    signUpAnonymouslyAndReturnToMain()
+                    signUpAnonymously()
                 }
             }
         }
@@ -71,38 +66,8 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
     }
 
     fun onCancelClicked() {
-        if (authenticationStore.hasFirebaseUser) {
-            getCurrentAuthAndReturnToMain()
-        }
-    }
-
-    fun onLoginClicked(email: String, password: String) {
-        launch {
-            _showLoading.postValue(true)
-            try {
-                val auth = authenticationStore.logIn(email, password)
-                postLaunchMain(auth)
-            } catch (e: Exception) {
-                postError(e)
-            }
-            _showLoading.postValue(false)
-        }
-    }
-
-    fun onSignUpClicked(email: String, password: String, confirmPassword: String) {
-        launch {
-            _showLoading.postValue(true)
-            try {
-                val auth = authenticationStore.signUp(
-                    email,
-                    password,
-                    confirmPassword
-                )
-                postLaunchMain(auth)
-            } catch (e: Exception) {
-                postError(e)
-            }
-            _showLoading.postValue(false)
+        if (authenticationStore.hasUser) {
+            authenticate()
         }
     }
 
@@ -114,34 +79,59 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         _authRoute.postValue(AuthRoute.LOG_IN)
     }
 
-    private fun signUpAnonymouslyAndReturnToMain() {
-        launch {
-            _showLoading.postValue(true)
-            try {
-                val auth = authenticationStore.signUpAnonymously()
-                postLaunchMain(auth)
-            } catch (e: Exception) {
-                postError(e)
-            }
-            _showLoading.postValue(false)
+    fun onLoginClicked(email: String, password: String) = viewModelScope.launch {
+        _showLoading.postValue(true)
+        val result = authenticationStore.logIn(email, password)
+        when (result) {
+            is Result.Success -> postLaunchMain()
+            is Result.Error -> postError(result.exception)
         }
+        _showLoading.postValue(false)
     }
 
-    private fun getCurrentAuthAndReturnToMain() {
-        launch {
-            _showLoading.postValue(true)
-            try {
-                val auth = authenticationStore.getCurrentAuth()
-                postLaunchMain(auth)
-            } catch (e: Exception) {
-                postError(e)
+    fun onSignUpClicked(
+        email: String,
+        password: String,
+        confirmPassword: String
+    ) = viewModelScope.launch {
+        _showLoading.postValue(true)
+        val result = authenticationStore.signUp(
+            email,
+            password,
+            confirmPassword
+        )
+        when (result) {
+            is Result.Success -> {
+                analyticsRepository.logSignUpEvent()
+                postLaunchMain()
             }
-            _showLoading.postValue(false)
+            is Result.Error -> postError(result.exception)
         }
+        _showLoading.postValue(false)
     }
 
-    private fun postLaunchMain(auth: Auth?, clearStack: Boolean = true) {
-        _shouldLaunchMain.postValue(Event(LaunchMainModel(auth, clearStack)))
+    private fun authenticate() = viewModelScope.launch {
+        _showLoading.postValue(true)
+        val result = authenticationStore.authenticate()
+        when (result) {
+            is Result.Success -> postLaunchMain()
+            is Result.Error -> postError(result.exception)
+        }
+        _showLoading.postValue(false)
+    }
+
+    private fun signUpAnonymously() = viewModelScope.launch {
+        _showLoading.postValue(true)
+        val result = authenticationStore.signUpAnonymously()
+        when (result) {
+            is Result.Success -> postLaunchMain()
+            is Result.Error -> postError(result.exception)
+        }
+        _showLoading.postValue(false)
+    }
+
+    private fun postLaunchMain() {
+        _shouldLaunchMain.postValue(Event(true))
     }
 
     private fun postError(e: Exception) {
@@ -151,9 +141,5 @@ class AuthViewModel @Inject constructor(): ViewModel(), CoroutineScope {
         }
         _shouldShowError.postValue(Event(error))
     }
-
-
-
-
 }
 

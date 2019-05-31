@@ -6,7 +6,6 @@ import com.crashlytics.android.Crashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import space.narrate.words.android.BuildConfig
-import space.narrate.words.android.data.repository.AnalyticsRepository
 import space.narrate.words.android.util.contentEquals
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
@@ -26,8 +25,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class MerriamWebsterStore(
         private val merriamWebsterService: MerriamWebsterService,
-        private val mwDao: MwDao,
-        private val analyticsRepository: AnalyticsRepository
+        private val mwDao: MwDao
 ) : CoroutineScope {
 
     companion object {
@@ -67,9 +65,10 @@ class MerriamWebsterStore(
         }
 
         //TODO possibly create a "SuspendableLiveData" object that can suspend updates to observers
-        //TODO while db data is updated. This would avoid the situation of data being present in
-        //TODO the db which is returned and then deleting it and receiving a null update and then
-        //TODO inserting it and again receiving new (and often times the same) data.
+        //while db data is updated. This would avoid the situation of data being present in
+        //the db which is returned and then deleting it and receiving a null update and then
+        //inserting it and again receiving new (and often times the same) data.
+
         //return a live data observing the db which will update once the service returns and saved
         //the word to the db
         return mwDao.getWordAndDefinitions(word)
@@ -89,6 +88,7 @@ class MerriamWebsterStore(
             Log.e(TAG, "mwApiWordCallback on Failure = $t")
             Crashlytics.logException(t)
         }
+
         override fun onResponse(call: Call<EntryList>?, response: Response<EntryList>?) {
             //Save to db
             response?.body()?.let { entryList ->

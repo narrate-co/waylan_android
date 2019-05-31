@@ -14,7 +14,7 @@ import space.narrate.words.android.data.disk.wordset.Meaning
 import space.narrate.words.android.data.disk.wordset.MeaningDao
 import space.narrate.words.android.data.disk.wordset.Word
 import space.narrate.words.android.data.disk.wordset.WordDao
-import space.narrate.words.android.util.widget.RoomAsset
+import space.narrate.words.android.util.RoomAsset
 
 /**
  *

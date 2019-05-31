@@ -11,23 +11,25 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.*
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.billing.BillingManager
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.words.android.util.gone
 import space.narrate.words.android.util.setUpWithElasticBehavior
 import space.narrate.words.android.util.visible
-import space.narrate.words.android.util.widget.BannerCardView
-import space.narrate.words.android.util.widget.CheckPreferenceView
-import space.narrate.words.android.util.widget.ElasticTransition
-import javax.inject.Inject
+import space.narrate.words.android.ui.widget.BannerCardView
+import space.narrate.words.android.ui.widget.CheckPreferenceView
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 /**
  * A [Fragment] that displays the main settings screen with an account banner (plugins and
@@ -46,11 +48,10 @@ import javax.inject.Inject
  * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
  *  builds
  */
-class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
+class SettingsFragment : BaseUserFragment() {
 
 
-    @Inject
-    lateinit var billingManger: BillingManager
+    private val billingManager: BillingManager by inject()
 
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var coordinatorLayout: CoordinatorLayout
@@ -64,18 +65,10 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     private lateinit var contactPreference: CheckPreferenceView
     private lateinit var developerPreference: CheckPreferenceView
 
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(requireActivity(), viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     // This SettingsFragment's own ViewModel
-    private val viewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(SettingsViewModel::class.java)
-    }
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +118,7 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
 
         viewModel.shouldLaunchMwPurchaseFlow.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
-                billingManger.initiatePurchaseFlow(
+                billingManager.initiatePurchaseFlow(
                     requireActivity(),
                     BillingConfig.SKU_MERRIAM_WEBSTER
                 )
@@ -186,7 +179,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
     }
 
     private fun setUpBanner() {
-        bannerCardView.setLisenter(this)
         viewModel.bannerModel.observe(this, Observer { model ->
             bannerCardView
                 .setText(model.textRes)
@@ -196,7 +188,13 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
                     model.daysRemaining
                 ))
                 .setTopButton(model.topButtonRes)
+                .setOnTopButtonClicked {
+                    viewModel.onMwBannerActionClicked(model.topButtonAction)
+                }
                 .setBottomButton(model.bottomButtonRes)
+                .setOnBottomButtonClicked {
+                    viewModel.onMwBannerActionClicked(model.bottomButtonAction)
+                }
 
             if (model.email == null) {
                 signOutPreference.gone()
@@ -247,22 +245,6 @@ class SettingsFragment : BaseUserFragment(), BannerCardView.Listener {
                 true
             }
             .show()
-    }
-
-    override fun onBannerClicked() {
-        // Do nothing
-    }
-
-    override fun onBannerLabelClicked() {
-        // Do nothing
-    }
-
-    override fun onBannerTopButtonClicked() {
-        viewModel.onBannerTopButtonClicked()
-    }
-
-    override fun onBannerBottomButtonClicked() {
-        viewModel.onBannerBottomButtonClicked()
     }
 
     companion object {

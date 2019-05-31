@@ -9,18 +9,18 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import space.narrate.words.android.MainViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.ui.list.ListItemDividerDecoration
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.util.setUpWithElasticBehavior
-import space.narrate.words.android.util.widget.ElasticTransition
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 /**
  * A simple fragment that displays a static list of [ThirdPartyLibrary]
@@ -32,11 +32,7 @@ class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var recyclerView: RecyclerView
 
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

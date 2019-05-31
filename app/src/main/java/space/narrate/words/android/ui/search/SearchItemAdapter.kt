@@ -3,7 +3,7 @@ package space.narrate.words.android.ui.search
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import space.narrate.words.android.util.AdapterUtils
-import space.narrate.words.android.util.widget.BannerCardView
+import space.narrate.words.android.ui.widget.BannerCardView
 
 class SearchItemAdapter(
         private val listener: SearchItemListener

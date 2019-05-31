@@ -15,13 +15,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.MaterialShapeDrawable
-import space.narrate.words.android.MainActivity
-import space.narrate.words.android.MainViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import space.narrate.words.android.ui.MainActivity
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
@@ -45,11 +45,7 @@ class ContextualFragment : BaseUserFragment() {
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {

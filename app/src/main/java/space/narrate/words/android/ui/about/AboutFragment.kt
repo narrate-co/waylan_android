@@ -9,16 +9,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.words.android.BuildConfig
-import space.narrate.words.android.MainViewModel
+import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
 import space.narrate.words.android.ui.common.BaseUserFragment
 import space.narrate.words.android.util.setUpWithElasticBehavior
-import space.narrate.words.android.util.widget.CheckPreferenceView
-import space.narrate.words.android.util.widget.ElasticTransition
+import space.narrate.words.android.ui.widget.CheckPreferenceView
+import space.narrate.words.android.ui.widget.ElasticTransition
 
 
 /**
@@ -38,11 +38,7 @@ class AboutFragment: BaseUserFragment() {
     private lateinit var versionPreference: CheckPreferenceView
     private lateinit var thirdPartyLibrariesPreference: CheckPreferenceView
 
-    private val sharedViewModel by lazy {
-        ViewModelProviders
-            .of(requireActivity(), viewModelFactory)
-            .get(MainViewModel::class.java)
-    }
+    private val sharedViewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

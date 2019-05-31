@@ -5,19 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.NavDestination
-import androidx.transition.Transition
+import space.narrate.words.android.ui.MainActivity
 import space.narrate.words.android.ui.auth.AuthActivity
 import space.narrate.words.android.ui.auth.AuthRoute
-import space.narrate.words.android.ui.details.DetailsFragment
-import space.narrate.words.android.ui.home.HomeFragment
-import space.narrate.words.android.ui.list.ListFragment
 import space.narrate.words.android.ui.list.ListFragmentArgs
 import space.narrate.words.android.ui.list.ListType
-import space.narrate.words.android.ui.settings.*
-import space.narrate.words.android.util.widget.ElasticTransition
 
 object Navigator {
 

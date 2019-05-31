@@ -13,7 +13,6 @@ class PreferenceLiveData<T>(
         private val default: T
 ): LiveData<T>() {
 
-
     override fun onActive() {
         super.onActive()
         value = getPreference()

@@ -12,11 +12,13 @@ import space.narrate.words.android.data.prefs.UserPreferenceStore
 import space.narrate.words.android.ui.search.Period
 import space.narrate.words.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
+import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.prefs.NightMode
 import space.narrate.words.android.data.prefs.ThirdPartyLibrary
 import space.narrate.words.android.data.prefs.ThirdPartyLibraryStore
 import space.narrate.words.android.ui.settings.NightModeRadioItemModel
 import space.narrate.words.android.ui.settings.OrientationRadioItemModel
+import space.narrate.words.android.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -26,10 +28,11 @@ import kotlin.coroutines.CoroutineContext
  *
  */
 class UserRepository(
-        private val firestoreStore: FirestoreStore?,
-        private val userPreferenceStore: UserPreferenceStore,
-        private val preferenceStore: PreferenceStore,
-        private val thirdPartyLibraryStore: ThirdPartyLibraryStore
+    private val authenticationStore: AuthenticationStore,
+    private val firestoreStore: FirestoreStore,
+    private val userPreferenceStore: UserPreferenceStore,
+    private val preferenceStore: PreferenceStore,
+    private val thirdPartyLibraryStore: ThirdPartyLibraryStore
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -38,8 +41,8 @@ class UserRepository(
     /** Firestore User */
 
     val user: LiveData<User>
-        get() = firestoreStore?.getUserLive() ?: LiveDataUtils.empty()
-
+        get() = authenticationStore.user
+            .switchMapTransform { firestoreStore.getUserLive(it.uid) }
 
     /** Shared Preferences */
 
@@ -75,7 +78,7 @@ class UserRepository(
         }
 
     val hasSeenRecentsBannerLive: LiveData<Boolean> =
-            userPreferenceStore.hasSeenRecentsBannerLive
+        userPreferenceStore.hasSeenRecentsBannerLive
 
     var hasSeenFavoritesBanner: Boolean
         get() = userPreferenceStore.hasSeenFavoritesBanner
@@ -84,7 +87,7 @@ class UserRepository(
         }
 
     val hasSeenFavoritesBannerLive: LiveData<Boolean> =
-            userPreferenceStore.hasSeenFavoritesBannerLive
+        userPreferenceStore.hasSeenFavoritesBannerLive
 
     var hasSeenTrendingBanner: Boolean
         get() = userPreferenceStore.hasSeenTrendingBanner
@@ -93,7 +96,7 @@ class UserRepository(
         }
 
     val hasSeenTrendingBannerLive: LiveData<Boolean> =
-            userPreferenceStore.hasSeenTrendingBannerLive
+        userPreferenceStore.hasSeenTrendingBannerLive
 
     var hasSeenDragDismissOverlay: Boolean
         get() = userPreferenceStore.hasSeenDragDismissOverlay
@@ -111,23 +114,29 @@ class UserRepository(
         userPreferenceStore.hasSeenMerriamWebsterPermissionPaneLive
 
     var recentsListFilter: List<Period>
-        get() = userPreferenceStore.getRecentsListFilter()
-        set(value) = userPreferenceStore.setRecentsListFilter(value)
+        get() = userPreferenceStore.recentsListFilter
+        set(value) {
+          userPreferenceStore.recentsListFilter = value
+        }
 
     val recentsListFilterLive: LiveData<List<Period>> = userPreferenceStore.recentsListFilterLive
 
     var trendingListFilter: List<Period>
-        get() = userPreferenceStore.getTrendingListFilter()
-        set(value) = userPreferenceStore.setTrendingListFilter(value)
+        get() = userPreferenceStore.trendingListFilter
+        set(value) {
+            userPreferenceStore.trendingListFilter = value
+        }
 
     val trendingListFilterLive: LiveData<List<Period>> = userPreferenceStore.trendingListFilterLive
 
     var favoritesListFilter: List<Period>
-        get() = userPreferenceStore.getFavoritesListFilter()
-        set(value) = userPreferenceStore.setFavoritesListFilter(value)
+        get() = userPreferenceStore.favoritesListFilter
+        set(value) {
+            userPreferenceStore.favoritesListFilter = value
+        }
 
     val favoritesListFilterLive: LiveData<List<Period>> =
-            userPreferenceStore.favoritesListFilterLive
+        userPreferenceStore.favoritesListFilterLive
 
     var useTestSkus: Boolean
         get() = userPreferenceStore.useTestSkus
@@ -152,9 +161,12 @@ class UserRepository(
     val allThirdPartyLibraries: List<ThirdPartyLibrary> = thirdPartyLibraryStore.all
 
     fun setUserMerriamWebsterState(state: PluginState) {
+        val uid = authenticationStore.uid ?: return
+
+        // Launch and forget
         launch {
             userPreferenceStore.hasSeenMerriamWebsterPermissionPane = false
-            firestoreStore?.setUserMerriamWebsterState(state)
+            firestoreStore.setUserMerriamWebsterState(uid, state)
         }
     }
 

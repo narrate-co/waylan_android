@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.util.widget.ScrimmedFrameLayout
+<space.narrate.words.android.ui.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrim_frame"
     android:layout_height="match_parent"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             app:elevation="@dimen/plane_00"
             android:background="@android:color/transparent"
-            app:layout_behavior="space.narrate.words.android.util.widget.ElasticAppBarBehavior"
+            app:layout_behavior=".ui.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down">
 
             <FrameLayout
@@ -58,4 +58,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</space.narrate.words.android.util.widget.ScrimmedFrameLayout>
+</space.narrate.words.android.ui.widget.ScrimmedFrameLayout>

@@ -27,8 +27,8 @@
 
         </activity>
 
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ui.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustNothing"/>
 
         <activity android:name=".ui.router.RouterActivity"
             android:theme="@android:style/Theme.NoDisplay">

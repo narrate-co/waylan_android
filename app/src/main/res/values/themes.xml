@@ -26,6 +26,8 @@
         <item name="colorOnBackgroundMediumEmphasis">@color/words_color_on_background_medium_emphasis</item>
         <item name="colorOnBackgroundLowEmphasis">@color/words_color_on_background_low_emphasis</item>
 
+        <item name="colorOnBackgroundError">@color/words_color_on_background_error</item>
+
         <item name="colorOnSurface">@color/words_color_on_surface</item>
         <item name="colorOnSurfaceHighEmphasis">@color/words_color_on_surface_high_emphasis</item>
         <item name="colorOnSurfaceMediumEmphasis">@color/words_color_on_surface_medium_emphasis</item>

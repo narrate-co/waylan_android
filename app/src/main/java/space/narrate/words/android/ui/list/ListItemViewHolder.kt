@@ -10,7 +10,7 @@ import space.narrate.words.android.util.*
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 import org.threeten.bp.OffsetDateTime
 import space.narrate.words.android.R
-import space.narrate.words.android.util.widget.BannerCardView
+import space.narrate.words.android.ui.widget.BannerCardView
 
 sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView.ViewHolder(view) {
 

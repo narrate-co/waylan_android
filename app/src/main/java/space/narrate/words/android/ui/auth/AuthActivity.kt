@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
@@ -20,28 +21,22 @@ import androidx.core.view.updatePadding
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.google.android.material.button.MaterialButton
-import space.narrate.words.android.App
 import space.narrate.words.android.R
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.util.getColorFromAttr
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import space.narrate.words.android.data.auth.Auth
+import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.words.android.ui.widget.ProgressUnderlineView
 import space.narrate.words.android.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 
-/**
- * An Activity which acts as a splash screen, an [Auth] getter/setter and a SetLogin or Sign up
- * screen.
- */
-class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
+class AuthActivity : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
@@ -59,10 +54,9 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
     private lateinit var altCredentialTypeButton: MaterialButton
     private lateinit var errorTextView: AppCompatTextView
     private lateinit var progressBar: ProgressBar
+    private lateinit var progressBarTop: ProgressUnderlineView
 
-    private val authViewModel by lazy {
-        ViewModelProviders.of(this).get(AuthViewModel::class.java)
-    }
+    private val authViewModel: AuthViewModel by viewModel()
 
     // A property to hold an intent which should be passed through and handled by the next
     // activity. ie. A ACTION_PROCESS_TEXT extra that should be handled by MainActivity
@@ -104,6 +98,8 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
         altCredentialTypeButton = findViewById(R.id.alternate_credintial_type_button)
         errorTextView = findViewById(R.id.error_text_view)
         progressBar = findViewById(R.id.progress_bar)
+        progressBarTop = findViewById(R.id.progress_bar_top)
+        progressBarTop.startProgress()
 
         ViewCompat.setOnApplyWindowInsetsListener(containerLayout) { _, insets ->
             handleApplyWindowInsets(insets)
@@ -116,6 +112,10 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
         confirmPasswordEditText.addTextChangedListener(errorMessageTextWatcher)
 
         cancelButton.setOnClickListener { authViewModel.onCancelClicked() }
+
+        authViewModel.nightMode.observe(this, Observer {
+            delegate.localNightMode = it.value
+        })
 
         authViewModel.shouldShowError.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { model ->
@@ -137,6 +137,7 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
             when (route) {
                 AuthRoute.LOG_IN -> setToLoginUi()
                 AuthRoute.SIGN_UP -> setToSignUpUi()
+                AuthRoute.ANONYMOUS -> setToAuthenticateUI()
             }
         })
 
@@ -148,7 +149,9 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
 
         authViewModel.shouldLaunchMain.observe(this, Observer { event ->
             event?.getUnhandledContent()?.let {
-                launchMain(it.auth, it.clearStack)
+                Navigator.launchMain(this@AuthActivity, true, filterIntent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                finish()
             }
         })
 
@@ -219,7 +222,27 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
         altCredentialTypeButton.setOnClickListener {
             authViewModel.onLoginAlternateClicked()
         }
+    }
 
+    private fun setToAuthenticateUI() {
+        progressBarTop.startProgress()
+        val anim = ObjectAnimator.ofFloat(
+            progressBarTop,
+            "alpha",
+            1F
+        )
+        anim.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) { }
+            override fun onAnimationEnd(animation: Animator?) { }
+            override fun onAnimationCancel(animation: Animator?) { }
+            override fun onAnimationStart(animation: Animator?) {
+                progressBarTop.visibility = View.VISIBLE
+            }
+        })
+        anim.interpolator = FastOutSlowInInterpolator()
+        anim.duration = 300
+        anim.startDelay = 3000
+        anim.start()
     }
 
     // Transition from the splash screen to the credentials layout
@@ -228,21 +251,28 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
 
         val set = AnimatorSet()
         set.playTogether(
-                ObjectAnimator.ofFloat(
-                        containerLayout,
-                        "translationY",
-                        resources.displayMetrics.density * -100
-                ),
-                ObjectAnimator.ofFloat(
-                        credentialsContainerLayout,
-                        "alpha",
-                        0F,
-                        1F
-                )
+            ObjectAnimator.ofFloat(
+                containerLayout,
+                "translationY",
+                resources.displayMetrics.density * -100
+            ),
+            ObjectAnimator.ofFloat(
+                credentialsContainerLayout,
+                "alpha",
+                0F,
+                1F
+            ),
+            ObjectAnimator.ofFloat(
+                progressBarTop,
+                "alpha",
+                0F
+            )
         )
         set.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) {}
+            override fun onAnimationEnd(p0: Animator?) {
+                progressBarTop.visibility = View.INVISIBLE
+            }
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationStart(p0: Animator?) {
                 credentialsContainerLayout.visibility = View.VISIBLE
@@ -252,7 +282,6 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
         set.duration = 300
         set.start()
     }
-
 
     private fun showErrorMessage(message: String) {
         synchronized(lastErrorStateIsShown) {
@@ -271,8 +300,8 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
-                val errorTextColor = getColorFromAttr(R.attr.colorOnError)
-                val errorHintColor = getColorFromAttr(R.attr.colorOnError)
+                val errorTextColor = getColorFromAttr(R.attr.colorOnErrorHighEmphasis)
+                val errorHintColor = getColorFromAttr(R.attr.colorOnErrorLowEmphasis)
                 TransitionManager.beginDelayedTransition(containerLayout)
                 emailEditText.setTextColor(errorTextColor)
                 emailEditText.setHintTextColor(errorHintColor)
@@ -323,16 +352,6 @@ class AuthActivity : DaggerAppCompatActivity(), CoroutineScope {
         altCredentialTypeButton.isClickable = !show
         doneButton.isClickable = !show
         cancelButton.isClickable = !show
-    }
-
-    // Set the user and go to MainActivity
-    private fun launchMain(auth: Auth?, clearStack: Boolean) {
-        (application as App).setUser(auth)
-
-        Navigator.launchMain(this@AuthActivity, clearStack, filterIntent)
-
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()
     }
 
     companion object {

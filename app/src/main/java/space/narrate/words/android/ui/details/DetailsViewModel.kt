@@ -4,19 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.words.android.data.repository.*
-import space.narrate.words.android.ui.Event
+import space.narrate.words.android.ui.common.Event
 import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.mapOnTransform
 import space.narrate.words.android.util.mapTransform
 import space.narrate.words.android.util.notNullTransform
 import space.narrate.words.android.util.switchMapTransform
-import space.narrate.words.android.util.widget.MergedLiveData
-import javax.inject.Inject
+import space.narrate.words.android.util.MergedLiveData
 
 /**
  * ViewModel for [DetailsFragment]
  */
-class DetailsViewModel @Inject constructor(
+class DetailsViewModel(
         private val wordRepository: WordRepository,
         private val userRepository: UserRepository
 ): ViewModel() {

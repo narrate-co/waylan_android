@@ -18,6 +18,16 @@
         android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/ic_words_logo" />
 
+    <space.narrate.words.android.ui.widget.ProgressUnderlineView
+        android:id="@+id/progress_bar_top"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        app:indicatorColor="?colorPrimary"
+        app:trackColor="?colorDivider"
+        android:visibility="invisible"
+        android:alpha="0"/>
+
     <LinearLayout
         android:id="@+id/credentials_container"
         android:layout_width="match_parent"
@@ -113,7 +123,7 @@
             android:layout_marginBottom="@dimen/keyline_2"
             tools:text="Password must contain at least one number or symbol."
             android:alpha="0"
-            android:textColor="?colorError" />
+            android:textColor="?colorOnBackgroundError" />
 
         <FrameLayout
             android:layout_width="match_parent"

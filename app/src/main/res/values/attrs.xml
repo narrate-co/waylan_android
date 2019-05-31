@@ -8,12 +8,17 @@
     <attr name="colorErrorArea" format="color"/>
 
     <attr name="colorOnInformative" format="color"/>
+
     <attr name="colorOnBackgroundHighEmphasis" format="color"/>
     <attr name="colorOnBackgroundMediumEmphasis" format="color"/>
     <attr name="colorOnBackgroundLowEmphasis" format="color"/>
+
+    <attr name="colorOnBackgroundError" format="color"/>
+
     <attr name="colorOnSurfaceHighEmphasis" format="color"/>
     <attr name="colorOnSurfaceMediumEmphasis" format="color"/>
     <attr name="colorOnSurfaceLowEmphasis" format="color"/>
+
     <attr name="colorOnErrorHighEmphasis" format="color"/>
     <attr name="colorOnErrorMediumEmphasis" format="color"/>
     <attr name="colorOnErrorLowEmphasis" format="color"/>

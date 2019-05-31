@@ -10,11 +10,14 @@ import space.narrate.words.android.util.getStringOrNull
 data class MwBannerModel(
     val textRes: Int,
     val topButtonRes: Int?,
+    val topButtonAction: MwBannerAction?,
     val bottomButtonRes: Int?,
+    val bottomButtonAction: MwBannerAction?,
     val labelRes: Int?,
     val daysRemaining: Long?,
     val email: String?
 ) {
+
     companion object {
         fun create(user: User?): MwBannerModel {
             return if (user?.isAnonymous == false) {
@@ -59,7 +62,9 @@ data class MwBannerModel(
             return MwBannerModel(
                 text,
                 topButton,
+                MwBannerAction.SIGN_UP,
                 bottomButton,
+                MwBannerAction.LOG_IN,
                 label,
                 daysRemaining,
                 null
@@ -69,7 +74,9 @@ data class MwBannerModel(
         private fun createRegistered(state: PluginState, email: String?): MwBannerModel {
             var text: Int
             var topButton: Int? = null
+            var topButtonAction: MwBannerAction? = null
             var bottomButton: Int? = null
+            var bottomButtonAction: MwBannerAction? = null
             var label: Int? = null
             var daysRemaining: Long? = null
 
@@ -77,6 +84,7 @@ data class MwBannerModel(
                 is PluginState.None -> {
                     text = R.string.settings_header_registered_none_body
                     topButton = R.string.settings_header_registered_add_button
+                    topButtonAction = MwBannerAction.LAUNCH_PURCHASE_FLOW
                 }
                 is PluginState.FreeTrial -> {
                     if (state.isValid) {
@@ -84,10 +92,12 @@ data class MwBannerModel(
                         label = R.string.mw_card_view_free_trial_days_remaining
                         daysRemaining = state.remainingDays
                         topButton = R.string.settings_header_registered_add_button
+                        topButtonAction = MwBannerAction.LAUNCH_PURCHASE_FLOW
                     } else {
                         text = R.string.settings_header_registered_free_trial_expired_body
                         label = R.string.settings_header_free_trial_expired_label
                         topButton = R.string.settings_header_registered_add_button
+                        topButtonAction = MwBannerAction.LAUNCH_PURCHASE_FLOW
                     }
                 }
                 is PluginState.Purchased -> {
@@ -98,6 +108,7 @@ data class MwBannerModel(
                         text = R.string.settings_header_registered_subscribed_expired_body
                         label = R.string.settings_header_expired_label
                         topButton = R.string.settings_header_renew_top_button
+                        topButtonAction = MwBannerAction.LAUNCH_PURCHASE_FLOW
                     }
                 }
             }
@@ -105,7 +116,9 @@ data class MwBannerModel(
             return MwBannerModel(
                 text,
                 topButton,
+                topButtonAction,
                 bottomButton,
+                bottomButtonAction,
                 label,
                 daysRemaining,
                 email

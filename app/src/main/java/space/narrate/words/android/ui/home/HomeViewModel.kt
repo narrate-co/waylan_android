@@ -2,35 +2,54 @@ package space.narrate.words.android.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import space.narrate.words.android.R
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.ui.list.ListType
 import space.narrate.words.android.util.mapTransform
-import javax.inject.Inject
 
 /**
  * ViewModel for [HomeFragment]
  */
-class HomeViewModel @Inject constructor(private val wordRepository: WordRepository) : ViewModel() {
+class HomeViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
-    fun getPreview(type: ListType): LiveData<String> {
-        return (when (type) {
-            ListType.TRENDING -> wordRepository.getGlobalWordTrending(PREVIEW_LIMIT).mapTransform { trends ->
-                trends.map { it.word }
-            }
-            ListType.RECENT -> wordRepository.getUserWordRecents(PREVIEW_LIMIT).mapTransform { recs ->
-                recs.map { it.word }
-            }
-            ListType.FAVORITE -> wordRepository.getUserWordFavorites(PREVIEW_LIMIT).mapTransform { favs ->
-                favs.map { it.word }
-            }
-        }).mapTransform { list ->
-            if (list.isNotEmpty()) {
-                list.reduce { acc, word -> "$acc, $word" }
-            } else {
-                ""
-            }
+    val list: LiveData<List<HomeItemModel>>
+        get() = HomeItemListMediatorLiveData().apply {
+            addSource(
+                wordRepository.getGlobalWordTrending(PREVIEW_LIMIT)
+                    .mapTransform { trends ->
+                        HomeItemModel.ItemModel(
+                            ListType.TRENDING,
+                            R.string.title_trending,
+                            trends.map { it.word }.toPreview
+                        )
+                    }
+            )
+
+            addSource(
+                wordRepository.getUserWordRecents(PREVIEW_LIMIT)
+                    .mapTransform { recs ->
+                        HomeItemModel.ItemModel(
+                            ListType.RECENT,
+                            R.string.title_recent,
+                            recs.map { it.word }.toPreview
+                        )
+                    }
+            )
+
+            addSource(
+                wordRepository.getUserWordFavorites(PREVIEW_LIMIT)
+                    .mapTransform { favs ->
+                        HomeItemModel.ItemModel(
+                            ListType.FAVORITE,
+                            R.string.title_favorite,
+                            favs.map { it.word }.toPreview
+                        )
+                    }
+            )
         }
-    }
+
+    private val List<String>.toPreview: String
+        get() = if (isNotEmpty()) reduce { acc, s -> "$acc, $s" } else ""
 
     companion object {
         private const val PREVIEW_LIMIT = 4L

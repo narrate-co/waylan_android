@@ -8,12 +8,11 @@ import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.WordRepository
 import space.narrate.words.android.util.mapTransform
 import space.narrate.words.android.util.switchMapTransform
-import javax.inject.Inject
 
 /**
  * ViewModel for [ListFragment]
  */
-class ListViewModel @Inject constructor(
+class ListViewModel(
         private val wordRepository: WordRepository,
         private val userRepository: UserRepository
 ): ViewModel() {

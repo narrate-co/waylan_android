@@ -19,6 +19,8 @@
     <color name="words_color_on_background_medium_emphasis">@color/colorBlackAlpha060</color>
     <color name="words_color_on_background_low_emphasis">@color/colorBlackAlpha038</color>
 
+    <color name="words_color_on_background_error">@color/colorMauve400</color>
+
     <color name="words_color_on_surface">@color/colorBlackAlpha087</color>
     <color name="words_color_on_surface_high_emphasis">@color/colorBlackAlpha087</color>
     <color name="words_color_on_surface_medium_emphasis">@color/colorBlackAlpha060</color>
