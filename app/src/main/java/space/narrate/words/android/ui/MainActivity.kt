@@ -130,11 +130,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun ensureAppHasUser() {
-        // TODO rework Dagger configuration to avoid this?
-        // When the app's process is killed and restarted, the system occasionally attempts
-        // to restore the app directly into a UserScope'ed state. If this happens, injecting
-        // will fail. This check avoids injection crashing by setting a null user and setting
-        // a temporary, invalid user and kicking out to AuthActivity
         if (!authenticationStore.hasUser) {
             Navigator.launchAuth(this)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

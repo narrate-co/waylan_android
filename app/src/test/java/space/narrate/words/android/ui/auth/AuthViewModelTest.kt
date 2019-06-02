@@ -11,11 +11,13 @@ import org.mockito.Mockito.`when` as whenever
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runBlockingTest
 import org.mockito.Mockito.verify
+import space.narrate.words.android.CoroutinesTestRule
 import space.narrate.words.android.data.Result
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.firestore.users.User
 import space.narrate.words.android.data.prefs.PreferenceStore
 import space.narrate.words.android.data.repository.AnalyticsRepository
+import space.narrate.words.android.valueBlocking
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi

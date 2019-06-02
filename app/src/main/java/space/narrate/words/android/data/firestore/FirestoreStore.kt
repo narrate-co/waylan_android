@@ -25,20 +25,13 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 /**
- * The top-most store for access to Firestore data. This class abstracts handles CRUD operations
+ * The top-most store for access to Firestore data. This class handles CRUD operations
  * for [User], [UserWord] and [GlobalWord].
- *
- * Note this store is user-centric. Meaning it's only available with a valid user and all
- * actions made are seen as made by the current [firestoreUser]
  */
 class FirestoreStore(
     private val firestore: FirebaseFirestore,
     private val db: AppDatabase
 ) : CoroutineScope {
-
-    companion object {
-        private const val TAG = "FirestoreStore"
-    }
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
@@ -50,21 +43,21 @@ class FirestoreStore(
             .liveData(GlobalWord::class.java)
     }
 
-    fun getUserWordLive(id: String, userId: String): LiveData<UserWord> {
+    fun getUserWordLive(id: String, uid: String): LiveData<UserWord> {
         if (id.isBlank()) return LiveDataUtils.empty()
-        return firestore.userWords(userId)
+        return firestore.userWords(uid)
             .document(id)
             .liveData(UserWord::class.java)
     }
 
     private suspend fun getUserWord(
         id: String,
-        userId: String,
+        uid: String,
         createIfDoesNotExist: Boolean
     ): Result<UserWord> {
         try {
             val userWord = suspendCoroutine<UserWord> { cont ->
-                firestore.userWords(userId).document(id).get()
+                firestore.userWords(uid).document(id).get()
                     .addOnFailureListener {
                         cont.resumeWithException(it)
                     }
@@ -146,7 +139,7 @@ class FirestoreStore(
         }
     }
 
-    fun getTrending(limit: Long? = null, filter: List<Period>): LiveData<List<GlobalWord>> {
+    fun getTrending(limit: Long?, filter: List<Period>): LiveData<List<GlobalWord>> {
         val period = filter.firstOrNull()?.viewCountProp ?: Period.ALL_TIME.viewCountProp
         val query = firestore.words
             .orderBy(period, Query.Direction.DESCENDING)
@@ -156,8 +149,8 @@ class FirestoreStore(
     }
 
     //get all favorites for firestoreUser
-    fun getFavorites(userId: String, limit: Long? = null): LiveData<List<UserWord>> {
-        val query = firestore.userWords(userId)
+    fun getFavorites(uid: String, limit: Long?): LiveData<List<UserWord>> {
+        val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
             .orderBy("modified", Query.Direction.DESCENDING)
             .limit(limit ?: 25)
@@ -168,10 +161,10 @@ class FirestoreStore(
     //favorite a word for firestoreUser
     suspend fun setFavorite(
         id: String,
-        userId: String,
+        uid: String,
         favorite: Boolean
     ): Result<UserWord> {
-        return updateUserWord(id, userId, true) {
+        return updateUserWord(id, uid, true) {
             if (favorite) {
                 types[UserWordType.FAVORITED.name] = true
             } else {
@@ -181,8 +174,8 @@ class FirestoreStore(
         }
     }
 
-    fun getRecents(userId: String, limit: Long? = null): LiveData<List<UserWord>> {
-        val query = firestore.userWords(userId)
+    fun getRecents(uid: String, limit: Long?): LiveData<List<UserWord>> {
+        val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.RECENT.name}", true)
             .orderBy("modified", Query.Direction.DESCENDING)
             .limit(limit ?: 25)
@@ -190,8 +183,8 @@ class FirestoreStore(
         return query.liveData(UserWord::class.java)
     }
 
-    suspend fun setRecent(id: String, userId: String): Result<UserWord> {
-        return updateUserWord(id, userId, true) {
+    suspend fun setRecent(id: String, uid: String): Result<UserWord> {
+        return updateUserWord(id, uid, true) {
             if (!types.containsKey(UserWordType.RECENT.name) || modified.isMoreThanOneMinuteAgo) {
                 types[UserWordType.RECENT.name] = true
                 modified = Date()
@@ -201,9 +194,9 @@ class FirestoreStore(
 
     private suspend fun setUserWord(
         userWord: UserWord,
-        userId: String
+        uid: String
     ): Result<UserWord> = suspendCancellableCoroutine { cont ->
-        firestore.userWords(userId).document(userWord.id).set(userWord)
+        firestore.userWords(uid).document(userWord.id).set(userWord)
             .addOnSuccessListener {
                 cont.resume(Result.Success(userWord))
             }
@@ -228,9 +221,9 @@ class FirestoreStore(
         return result
     }
 
-    fun getUserLive(userId: String): LiveData<User> {
+    fun getUserLive(uid: String): LiveData<User> {
         return firestore.users
-            .document(userId)
+            .document(uid)
             .liveData(User::class.java)
     }
 
@@ -286,10 +279,10 @@ class FirestoreStore(
     }
 
     suspend fun setUserMerriamWebsterState(
-        userId: String,
+        uid: String,
         state: PluginState
     ): Result<User> {
-        val result = getUser(userId)
+        val result = getUser(uid)
         return if (result is Result.Success) {
             val user = result.data.apply {
                 merriamWebsterStarted = state.started

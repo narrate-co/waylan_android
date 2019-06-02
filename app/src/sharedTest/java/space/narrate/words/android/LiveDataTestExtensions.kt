@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.auth
+package space.narrate.words.android
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

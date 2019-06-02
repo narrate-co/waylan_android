@@ -1,7 +1,7 @@
 package space.narrate.words.android.ui.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertAbout
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -10,11 +10,10 @@ import org.mockito.Mockito.mock
 import space.narrate.words.android.R
 import org.mockito.Mockito.`when` as whenever
 import space.narrate.words.android.data.repository.WordRepository
-import space.narrate.words.android.ui.auth.FirestoreTestData
-import space.narrate.words.android.ui.auth.LiveDataTestUtils
-import space.narrate.words.android.ui.auth.valueBlocking
+import space.narrate.words.android.FirestoreTestData
+import space.narrate.words.android.LiveDataTestUtils
+import space.narrate.words.android.valueBlocking
 import space.narrate.words.android.ui.list.ListType
-import space.narrate.words.android.ui.home.assertThat
 
 class HomeViewModelTest {
 
@@ -59,10 +58,10 @@ class HomeViewModelTest {
             LiveDataTestUtils.of(FirestoreTestData.globalWords)
         )
         whenever(wordRepository.getUserWordRecents(any())).thenReturn(
-            LiveDataTestUtils.of(FirestoreTestData.userWords)
+            LiveDataTestUtils.of(FirestoreTestData.user1Words)
         )
         whenever(wordRepository.getUserWordFavorites(any())).thenReturn(
-            LiveDataTestUtils.of(FirestoreTestData.userWords)
+            LiveDataTestUtils.of(FirestoreTestData.user1Words)
         )
 
         val globalWordsPreview = "wharf, mercurial"
@@ -78,5 +77,10 @@ class HomeViewModelTest {
                 HomeItemModel.ItemModel(ListType.TRENDING, R.string.title_trending, globalWordsPreview)
             )
         )
+    }
+
+
+    private fun assertThat(list: List<HomeItemModel>?): HomeItemModelListSubject {
+        return assertAbout(homeItemModelList()).that(list)
     }
 }

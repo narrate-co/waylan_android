@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.auth
+package space.narrate.words.android
 
 import android.content.res.Resources
 import android.view.View

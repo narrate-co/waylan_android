@@ -35,7 +35,3 @@ class HomeItemModelListSubject(
 fun homeItemModelList(): Subject.Factory<HomeItemModelListSubject, List<HomeItemModel>> {
     return Subject.Factory<HomeItemModelListSubject, List<HomeItemModel>> { metaData, target -> HomeItemModelListSubject(metaData, target) }
 }
-
-fun assertThat(list: List<HomeItemModel>?): HomeItemModelListSubject {
-    return assertAbout(homeItemModelList()).that(list)
-}

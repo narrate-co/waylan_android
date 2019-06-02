@@ -1,4 +1,4 @@
-package space.narrate.words.android.ui.auth
+package space.narrate.words.android
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
