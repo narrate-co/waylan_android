@@ -1,4 +1,4 @@
-# Words
+# Waylan
 
 A dictionary that focuses on execution, ergonomics and experience concepts
 
