@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.ui.widget.ScrimmedFrameLayout
+<space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrim_frame"
@@ -35,14 +35,14 @@
                     android:padding="@dimen/keyline_3"
                     android:text="@string/about_header_body" />
 
-                <space.narrate.words.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
                     android:id="@+id/version_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Version"
                     />
 
-                <space.narrate.words.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
                     android:id="@+id/third_party_libs_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorBackground"
-            app:layout_behavior=".ui.widget.ElasticAppBarBehavior"
+            app:layout_behavior="space.narrate.waylan.android.ui.widget.ElasticAppBarBehavior"
             app:elevation="@dimen/plane_00">
 
             <LinearLayout
@@ -104,4 +104,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</space.narrate.words.android.ui.widget.ScrimmedFrameLayout>
+</space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout>

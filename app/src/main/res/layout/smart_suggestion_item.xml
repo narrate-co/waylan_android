@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         app:iconSize="18dp"
         app:icon="@drawable/ic_round_orientation_lock_24px"
+        app:iconTint="?colorOnSurfaceHighEmphasis"
         app:iconGravity="start"
         android:text="Lock screen to portrait"
         android:textAppearance="?textAppearanceBody1"

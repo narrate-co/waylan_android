@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="space.narrate.words.android.ui.home.HomeFragment"
+        android:name="space.narrate.waylan.android.ui.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_listFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/listFragment"
-        android:name="space.narrate.words.android.ui.list.ListFragment"
+        android:name="space.narrate.waylan.android.ui.list.ListFragment"
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
@@ -29,11 +29,11 @@
             app:launchSingleTop="true"/>
         <argument
             android:name="listType"
-            app:argType="space.narrate.words.android.ui.list.ListType"/>
+            app:argType="space.narrate.waylan.android.ui.list.ListType"/>
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="space.narrate.words.android.ui.details.DetailsFragment"
+        android:name="space.narrate.waylan.android.ui.details.DetailsFragment"
         android:label="DetailsFragment" >
         <action
             android:id="@+id/action_detailsFragment_to_settingsFragment"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="space.narrate.words.android.ui.settings.SettingsFragment"
+        android:name="space.narrate.waylan.android.ui.settings.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_aboutFragment"
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="space.narrate.words.android.ui.about.AboutFragment"
+        android:name="space.narrate.waylan.android.ui.about.AboutFragment"
         android:label="AboutFragment" >
         <action
             android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
@@ -60,11 +60,11 @@
     </fragment>
     <fragment
         android:id="@+id/developerSettingsFragment"
-        android:name="space.narrate.words.android.ui.dev.DeveloperSettingsFragment"
+        android:name="space.narrate.waylan.android.ui.dev.DeveloperSettingsFragment"
         android:label="DeveloperSettingsFragment" />
     <fragment
         android:id="@+id/thirdPartyLibrariesFragment"
-        android:name="space.narrate.words.android.ui.third_party.ThirdPartyLibrariesFragment"
+        android:name="space.narrate.waylan.android.ui.third_party.ThirdPartyLibrariesFragment"
         android:label="ThirdPartyLibrariesFragment" />
     <action
         android:id="@+id/action_global_detailsFragment"

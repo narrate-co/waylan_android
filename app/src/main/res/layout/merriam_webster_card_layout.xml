@@ -34,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <space.narrate.words.android.ui.details.MerriamWebsterAudioView
+        <space.narrate.waylan.android.ui.details.MerriamWebsterAudioView
             android:id="@+id/mw_audio_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

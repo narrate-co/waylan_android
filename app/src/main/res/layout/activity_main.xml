@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/contextual_fragment"
-        android:name="space.narrate.words.android.ui.search.ContextualFragment"
+        android:name="space.narrate.waylan.android.ui.search.ContextualFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="space.narrate.words.android.ui.search.SearchFragment"
+        android:name="space.narrate.waylan.android.ui.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.words.android.ui.widget.ScrimmedFrameLayout
+<space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +28,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior=".ui.widget.ElasticAppBarBehavior"
+            app:layout_behavior="space.narrate.waylan.android.ui.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down"
             android:background="@android:color/transparent"
             app:elevation="@dimen/plane_00">
@@ -99,6 +99,6 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</space.narrate.words.android.ui.widget.ScrimmedFrameLayout>
+</space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout>
 
 
