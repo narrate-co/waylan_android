@@ -248,6 +248,6 @@ class SettingsFragment : BaseFragment() {
     }
 
     companion object {
-        const val SUPPORT_EMAIL_ADDRESS = "words@narrate.space"
+        const val SUPPORT_EMAIL_ADDRESS = "waylan@narrate.space"
     }
 }
