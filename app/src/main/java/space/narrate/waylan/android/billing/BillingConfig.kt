@@ -15,5 +15,5 @@ object BillingConfig {
     var TEST_SKU_MERRIAM_WEBSTER = TEST_SKU_PURCHASED
 
     // Our actual Google Play sku
-    const val SKU_MERRIAM_WEBSTER = "space.narrate.waylan.android.merriam_webster_plugin"
+    const val SKU_MERRIAM_WEBSTER = "space.narrate.words.android.merriam_webster_plugin"
 }
