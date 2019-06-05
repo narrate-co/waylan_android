@@ -1,7 +1,7 @@
 <resources>
 
     <!--App-->
-    <string name="app_name">Words</string>
+    <string name="app_name">Waylan</string>
 
     <!--List-->
     <string name="title_favorite">Favorite</string>
