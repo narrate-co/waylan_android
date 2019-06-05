@@ -21,7 +21,7 @@ import space.narrate.words.android.*
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.billing.BillingManager
 import space.narrate.words.android.ui.MainViewModel
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.words.android.util.gone
@@ -48,7 +48,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
  * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
  *  builds
  */
-class SettingsFragment : BaseUserFragment() {
+class SettingsFragment : BaseFragment() {
 
 
     private val billingManager: BillingManager by inject()

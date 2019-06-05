@@ -15,17 +15,17 @@ import java.util.*
  * alternative big data table.
  */
 open class ViewCountDocument(
-        var totalViewCount: Long = 0L,
-        var yearViewCount: Long = 0L,
-        var yearViewCountStarted: Date = Date(),
-        var monthViewCount: Long = 0L,
-        var monthViewCountStarted: Date = Date(),
-        var weekViewCount: Long = 0L,
-        var weekViewCountStarted: Date = Date(),
-        var dayViewCount: Long = 0L,
-        var dayViewCountStarted: Date = Date(),
-        var hourViewCount: Long = 0L,
-        var hourViewCountStarted: Date = Date(),
-        var minuteViewCount: Long = 0L,
-        var minuteViewCountStarted: Date = Date()
+    var totalViewCount: Long = 0L,
+    var yearViewCount: Long = 0L,
+    var yearViewCountStarted: Date = Date(),
+    var monthViewCount: Long = 0L,
+    var monthViewCountStarted: Date = Date(),
+    var weekViewCount: Long = 0L,
+    var weekViewCountStarted: Date = Date(),
+    var dayViewCount: Long = 0L,
+    var dayViewCountStarted: Date = Date(),
+    var hourViewCount: Long = 0L,
+    var hourViewCountStarted: Date = Date(),
+    var minuteViewCount: Long = 0L,
+    var minuteViewCountStarted: Date = Date()
 )

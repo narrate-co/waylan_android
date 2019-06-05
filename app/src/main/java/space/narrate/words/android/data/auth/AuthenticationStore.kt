@@ -48,9 +48,6 @@ class AuthenticationStore(
     val hasUser: Boolean
         get() = _user.value != null
 
-    val uid: String?
-        get() = _user.value?.uid
-
     private val _user: MutableLiveData<User> = MutableLiveData()
     val user: LiveData<User>
         get() = _user

@@ -21,7 +21,7 @@ package space.narrate.words.android.data.disk.mw
  * https://media.merriam-webster.com/audio/prons/en/us/mp3/q/quiesce_q.mp3
  */
 data class Sound(
-        val wavs: List<String>,
-        val wprs: List<String>
+    val wavs: List<String>,
+    val wprs: List<String>
 )
 

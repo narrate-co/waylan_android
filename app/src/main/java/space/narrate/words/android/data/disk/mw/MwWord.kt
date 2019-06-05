@@ -23,35 +23,35 @@ import org.threeten.bp.OffsetDateTime
  */
 @Entity(tableName = "mw_words")
 data class MwWord(
-        @PrimaryKey
-        val id: String,
-        val word: String,
-        val subj: String,
-        val phonetic: String,
-        val sound: List<Sound>,
-        val pronunciation: List<String>,
-        val partOfSpeech: String,
-        val etymology: String,
-        val relatedWords: List<String>,
-        var suggestions: List<String>,
-        val uro: List<Uro>,
-        val lastFetch: OffsetDateTime
+    @PrimaryKey
+    val id: String,
+    val word: String,
+    val subj: String,
+    val phonetic: String,
+    val sound: List<Sound>,
+    val pronunciation: List<String>,
+    val partOfSpeech: String,
+    val etymology: String,
+    val relatedWords: List<String>,
+    var suggestions: List<String>,
+    val uro: List<Uro>,
+    val lastFetch: OffsetDateTime
 ) {
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (other !is MwWord) return false
-            if (this === other) return true
+    override fun equals(other: Any?): Boolean {
+        if (other == null) return false
+        if (other !is MwWord) return false
+        if (this === other) return true
 
-            return id == other.id &&
-                    word == other.word &&
-                    subj == other.subj &&
-                    phonetic == other.phonetic &&
-                    partOfSpeech == other.partOfSpeech &&
-                    etymology == other.etymology
-                    // Uro not included
-                    // Sound not included
-                    // pronunciation not included
-        }
+        return id == other.id &&
+            word == other.word &&
+            subj == other.subj &&
+            phonetic == other.phonetic &&
+            partOfSpeech == other.partOfSpeech &&
+            etymology == other.etymology
+            // Uro not included
+            // Sound not included
+            // pronunciation not included
+    }
 
     override fun toString(): String {
         return "$id, $word, $subj, $phonetic, $partOfSpeech, $etymology"

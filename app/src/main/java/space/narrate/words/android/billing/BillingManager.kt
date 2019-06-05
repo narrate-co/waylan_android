@@ -6,6 +6,7 @@ import com.android.billingclient.api.*
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.repository.UserRepository
 import space.narrate.words.android.data.repository.AnalyticsRepository
+import space.narrate.words.android.data.firestore.users.User
 import java.util.*
 
 /**
@@ -22,9 +23,7 @@ import java.util.*
  * one-time purchases that are good for one year (365 days). Once a year elapses, the plugin is
  * expired and [PluginState.isValid]' should return false.
  *
- * @param userPreferenceStore Used to check if the user has developer preferences
- *      set to run Billing against test skus.
- * @param userRepository Used to update Firestore [User] objects with prurchaseTokens and
+ * @param userRepository Used to update Firestore [User] objects with purchaseToken and
  *      start dates
  **
  */

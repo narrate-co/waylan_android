@@ -15,7 +15,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.words.android.BuildConfig
 import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.util.setUpWithElasticBehavior
 import space.narrate.words.android.ui.widget.CheckPreferenceView
 import space.narrate.words.android.ui.widget.ElasticTransition
@@ -29,7 +29,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
  * [R.id.version_preference] The build's version name and listType
  * [R.id.third_party_libs_preference] Leads to [ThirdPartyLibrariesFragment]
  */
-class AboutFragment: BaseUserFragment() {
+class AboutFragment: BaseFragment() {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout

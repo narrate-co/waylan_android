@@ -43,7 +43,7 @@ class AuthViewModel(
         get() = _showLoading
 
     val nightMode: LiveData<NightMode>
-        get() = preferenceStore.nightModeLive
+        get() = preferenceStore.nightMode.getLive()
 
     fun onAuthRouteReceived(authRoute: AuthRoute) {
         _authRoute.postValue(authRoute)

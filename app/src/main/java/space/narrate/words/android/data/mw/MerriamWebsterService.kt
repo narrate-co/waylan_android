@@ -11,6 +11,9 @@ import space.narrate.words.android.data.mw.EntryList
  */
 interface MerriamWebsterService {
     @GET("{word}")
-    fun getWord(@Path("word") word: String, @Query("key") developerKey: String): Call<EntryList>
+    fun getWord(
+        @Path("word") word: String,
+        @Query("key") developerKey: String
+    ): Call<EntryList>
 }
 

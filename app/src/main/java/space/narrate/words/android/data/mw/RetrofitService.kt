@@ -16,19 +16,19 @@ object RetrofitService {
     fun getInstance(): MerriamWebsterService {
         if (instance == null)  {
             val okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor(
-                            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-                    )
-                    .build()
+                .addInterceptor(
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+                )
+                .build()
             val retrofit = Retrofit.Builder()
-                    .baseUrl(
-                            "https://www.dictionaryapi.com/api/v1/references/collegiate/xml/"
-                    )
-                    .client(okHttpClient)
-                    .addConverterFactory(
-                            SimpleXmlConverterFactory.create(Persister(AnnotationStrategy()))
-                    )
-                    .build()
+                .baseUrl(
+                    "https://www.dictionaryapi.com/api/v1/references/collegiate/xml/"
+                )
+                .client(okHttpClient)
+                .addConverterFactory(
+                    SimpleXmlConverterFactory.create(Persister(AnnotationStrategy()))
+                )
+                .build()
 
             instance = retrofit.create(MerriamWebsterService::class.java)
         }

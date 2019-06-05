@@ -6,11 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 
-/**
- * A Fragment that falls under [UserScope]. User dependent objects are available to this
- * Fragment.
- */
-abstract class BaseUserFragment: Fragment() {
+abstract class BaseFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

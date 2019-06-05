@@ -13,8 +13,8 @@ import kotlin.coroutines.CoroutineContext
  * A helper class to turn a [DocumentSnapshot] [EventListener] into a LiveData object
  */
 class FirestoreDocumentLiveData<T>(
-        private val documentReference: DocumentReference,
-        private val clazz: Class<T>): LiveData<T>(), CoroutineScope {
+    private val documentReference: DocumentReference,
+    private val clazz: Class<T>): LiveData<T>(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -23,18 +23,19 @@ class FirestoreDocumentLiveData<T>(
 
     override fun onActive() {
         super.onActive()
-        listenerRegistration = documentReference.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-            if (firebaseFirestoreException == null) {
-                if (documentSnapshot != null && documentSnapshot.exists()) {
-                    // move parsing off the main thread
-                    launch {
-                        value = documentSnapshot.toObject(clazz)
+        listenerRegistration =
+            documentReference.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException == null) {
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        // move parsing off the main thread
+                        launch {
+                            value = documentSnapshot.toObject(clazz)
+                        }
                     }
+                } else {
+                    firebaseFirestoreException.printStackTrace()
                 }
-            } else {
-                firebaseFirestoreException.printStackTrace()
             }
-        }
     }
 
     override fun onInactive() {

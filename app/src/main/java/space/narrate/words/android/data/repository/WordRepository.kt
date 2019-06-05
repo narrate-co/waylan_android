@@ -17,6 +17,7 @@ import space.narrate.words.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.words.android.data.disk.wordset.Word
 import space.narrate.words.android.data.disk.wordset.WordAndMeanings
 import space.narrate.words.android.data.spell.SuggestItem
+import space.narrate.words.android.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -52,9 +53,9 @@ class WordRepository(
     }
 
     fun getUserWord(id: String): LiveData<UserWord> {
-        val uid = authenticationStore.uid ?: return onUnauthenticated()
-
-        return firestoreStore.getUserWordLive(id, uid)
+        return authenticationStore.user.switchMapTransform { user ->
+            firestoreStore.getUserWordLive(id, user.uid)
+        }
     }
 
     fun getMerriamWebsterWord(word: String): LiveData<List<MwWordAndDefinitionGroups>> {
@@ -69,13 +70,14 @@ class WordRepository(
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
-        val uid = authenticationStore.uid ?: return onUnauthenticated()
-        return firestoreStore.getFavorites(uid, limit)
+        return authenticationStore.user.switchMapTransform { user ->
+            firestoreStore.getFavorites(user.uid, limit)
+        }
     }
 
     fun setUserWordFavorite(id: String, favorite: Boolean) {
         if (id.isBlank()) return
-        val uid = authenticationStore.uid ?: return
+        val uid = authenticationStore.user.value?.uid ?: return
 
         // Launch and forget
         launch {
@@ -84,23 +86,19 @@ class WordRepository(
     }
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
-        val uid = authenticationStore.uid ?: return onUnauthenticated()
-        return firestoreStore.getRecents(uid, limit)
+        return authenticationStore.user.switchMapTransform { user ->
+            firestoreStore.getRecents(user.uid, limit)
+        }
     }
 
     fun setUserWordRecent(id: String) {
         if (id.isBlank()) return
-        val uid = authenticationStore.uid ?: return
+        val uid = authenticationStore.user.value?.uid ?: return
 
         // Launch and forget
         launch {
             firestoreStore.setRecent(id, uid)
         }
-    }
-
-    private fun <T> onUnauthenticated(): LiveData<T> {
-        // TODO: Create a more robust response/error system
-        return LiveDataUtils.empty()
     }
 }
 

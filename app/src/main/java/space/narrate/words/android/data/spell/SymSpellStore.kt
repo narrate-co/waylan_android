@@ -29,12 +29,22 @@ class SymSpellStore(context: Context) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    private var symSpell: SymSpell = SymSpell(-1, 3, -1, SymConfig.defaultTargetCount, Long.MAX_VALUE)
+    private var symSpell: SymSpell = SymSpell(
+        -1,
+        3,
+        -1,
+        SymConfig.defaultTargetCount,
+        Long.MAX_VALUE
+    )
 
     init {
         launch {
             val inputStream = context.assets.open(SymConfig.defaultCorpusPath)
-            if (!symSpell.loadDictionary(inputStream, SymConfig.defaultTermIndex, SymConfig.defaultCountIndex)) throw FileNotFoundException("${SymConfig.defaultCorpusPath} not found")
+            if (!symSpell.loadDictionary(
+                    inputStream,
+                    SymConfig.defaultTermIndex,
+                    SymConfig.defaultCountIndex
+                )) throw FileNotFoundException("${SymConfig.defaultCorpusPath} not found")
         }
     }
 
@@ -42,7 +52,11 @@ class SymSpellStore(context: Context) : CoroutineScope {
      * Find all possible correct spellings/alternatives for the given [input]
      */
     fun lookup(input: String): List<SuggestItem> {
-        return symSpell.lookup(input, SymConfig.defaultVerbosity, SymConfig.defaultMaxEditDistanceLookup)
+        return symSpell.lookup(
+            input,
+            SymConfig.defaultVerbosity,
+            SymConfig.defaultMaxEditDistanceLookup
+        )
     }
 
 

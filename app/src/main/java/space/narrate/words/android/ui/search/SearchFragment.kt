@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.words.android.*
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
@@ -51,7 +51,7 @@ import space.narrate.words.android.util.KeyboardManager
  * user journey is to search and define a word. This journey should be as ergonomic, quick and
  * seamless as possible.
  */
-class SearchFragment : BaseUserFragment(), SearchItemAdapter.SearchItemListener, TextWatcher {
+class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, TextWatcher {
 
     private lateinit var collapsedContainer: ConstraintLayout
     private lateinit var shelfContainer: FrameLayout

@@ -47,6 +47,7 @@
     <string name="menu_share_title">Share</string>
 
     <!--Errors-->
+    <string name="auth_error_message_no_current_user">No user is currently signed in</string>
     <string name="auth_error_message_unknown">An unknown error occurred during authentication</string>
     <string name="auth_error_message_anon_login_unknown">Unable to log in anonymously</string>
     <string name="auth_error_message_login_unknown">An unknown error occurred during log in</string>

@@ -7,7 +7,7 @@ package space.narrate.words.android.data.disk.mw
  * For example, <i>quiescent</i> will have a [Uro] for <i>quiescently</i>.
  */
 data class Uro(
-        val ure: String,
-        val fl: String
+    val ure: String,
+    val fl: String
 )
 

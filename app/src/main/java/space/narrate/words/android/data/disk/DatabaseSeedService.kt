@@ -53,12 +53,12 @@ class DatabaseSeedService: Service(), CoroutineScope {
         createDataNotificationChannel()
 
         val notification = NotificationCompat.Builder(this, DATA_NOTIFICATION_CHANNEL_ID)
-                .setContentTitle(getString(R.string.data_seed_notification_title))
-                .setContentText(getString(R.string.data_seed_notification_text))
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(R.drawable.ic_logo_notif)
-                .setProgress(0, 0, true)
-                .build()
+            .setContentTitle(getString(R.string.data_seed_notification_title))
+            .setContentText(getString(R.string.data_seed_notification_text))
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setSmallIcon(R.drawable.ic_logo_notif)
+            .setProgress(0, 0, true)
+            .build()
 
         startForeground(DATA_SEED_NOTIFICATION_ID, notification)
 
@@ -95,27 +95,27 @@ class DatabaseSeedService: Service(), CoroutineScope {
 
                 for ((_, value) in letter) {
                     val word = Word(
-                            value.word,
-                            0,
-                            OffsetDateTime.now(),
-                            OffsetDateTime.now()
+                        value.word,
+                        0,
+                        OffsetDateTime.now(),
+                        OffsetDateTime.now()
                     )
                     //insert word
                     words.add(word)
 
                     for (m in value.meanings ?: emptyList()) {
                         val meaning = Meaning(
-                                value.word,
-                                m.def ?: "",
-                                if (m.example == null) emptyList() else listOf(Example(m.example, OffsetDateTime.now(), OffsetDateTime.now())),
-                                m.speechPart ?: "unknown part of speech",
-                                m.synonyms?.filter { it != null }?.map { Synonym(it!!, OffsetDateTime.now(), OffsetDateTime.now()) }
-                                        ?: emptyList(),
-                                value.labels?.map {
-                                    Label(it.name
-                                            ?: "unknown region", it.isDialect
-                                            ?: false, OffsetDateTime.now(), OffsetDateTime.now())
-                                } ?: emptyList()
+                            value.word,
+                            m.def ?: "",
+                            if (m.example == null) emptyList() else listOf(Example(m.example, OffsetDateTime.now(), OffsetDateTime.now())),
+                            m.speechPart ?: "unknown part of speech",
+                            m.synonyms?.filter { it != null }?.map { Synonym(it!!, OffsetDateTime.now(), OffsetDateTime.now()) }
+                                ?: emptyList(),
+                            value.labels?.map {
+                                Label(it.name
+                                    ?: "unknown region", it.isDialect
+                                    ?: false, OffsetDateTime.now(), OffsetDateTime.now())
+                            } ?: emptyList()
                         )
                         //insert meaning
                         meanings.add(meaning)
@@ -161,25 +161,25 @@ class DatabaseSeedService: Service(), CoroutineScope {
     }
 
     data class BaseWord(
-            @SerializedName("word") val word: String,
-            @SerializedName("wordset_id") val wordsetId: String?,
-            @SerializedName("meanings") val meanings: List<BaseMeaning>?,
-            @SerializedName("editors") val editors: List<String?>?,
-            @SerializedName("contributors") val contributors: List<String?>?,
-            @SerializedName("labels") val labels: List<BaseLabel>?
+        @SerializedName("word") val word: String,
+        @SerializedName("wordset_id") val wordsetId: String?,
+        @SerializedName("meanings") val meanings: List<BaseMeaning>?,
+        @SerializedName("editors") val editors: List<String?>?,
+        @SerializedName("contributors") val contributors: List<String?>?,
+        @SerializedName("labels") val labels: List<BaseLabel>?
     )
 
     data class BaseMeaning(
-            @SerializedName("id") val id: String?,
-            @SerializedName("def") val def: String?,
-            @SerializedName("example") val example: String?,
-            @SerializedName("speech_part") val speechPart: String?,
-            @SerializedName("synonyms") val synonyms: List<String?>?
+        @SerializedName("id") val id: String?,
+        @SerializedName("def") val def: String?,
+        @SerializedName("example") val example: String?,
+        @SerializedName("speech_part") val speechPart: String?,
+        @SerializedName("synonyms") val synonyms: List<String?>?
     )
 
     data class BaseLabel(
-            @SerializedName("name") val name: String?,
-            @SerializedName("is_dialect") val isDialect: Boolean?
+        @SerializedName("name") val name: String?,
+        @SerializedName("is_dialect") val isDialect: Boolean?
     )
 
 

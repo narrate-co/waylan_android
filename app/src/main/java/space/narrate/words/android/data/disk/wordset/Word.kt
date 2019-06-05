@@ -7,10 +7,10 @@ import org.threeten.bp.OffsetDateTime
 
 @Entity(tableName = "words")
 data class Word(
-        @PrimaryKey
-        val word: String,
-        val popularity: Int,
-        val created: OffsetDateTime,
-        val modified: OffsetDateTime
+    @PrimaryKey
+    val word: String,
+    val popularity: Int,
+    val created: OffsetDateTime,
+    val modified: OffsetDateTime
 )
 

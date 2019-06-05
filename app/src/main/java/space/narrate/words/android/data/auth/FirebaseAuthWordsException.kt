@@ -11,6 +11,12 @@ sealed class FirebaseAuthWordsException(
 
     val localizedMessageRes: Int = errorMessageRes
 
+    object NoCurrentUserException : FirebaseAuthWordsException(
+        "ncu",
+        "No user is currently signed in",
+        R.string.auth_error_message_no_current_user
+    )
+
     object AnonException : FirebaseAuthWordsException(
         "au",
         "An unknown authentication error occurred",

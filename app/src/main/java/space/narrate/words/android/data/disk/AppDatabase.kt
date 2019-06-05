@@ -57,36 +57,36 @@ abstract class AppDatabase: RoomDatabase() {
 
 
         fun getInstance(context: Context): AppDatabase =
-                instance ?: synchronized(this) {
-                    instance ?: (
-                            if (SHOULD_SEED_DATABASE) {
-                                seedAndBuildDatabase(context.applicationContext, DATABASE_NAME)
-                            }
-                            else {
-                                buildDatabase(context.applicationContext, DATABASE_NAME)
-                            }).also {
-                                instance = it
-                            }
+            instance ?: synchronized(this) {
+                instance ?: (
+                    if (SHOULD_SEED_DATABASE) {
+                        seedAndBuildDatabase(context.applicationContext, DATABASE_NAME)
+                    }
+                    else {
+                        buildDatabase(context.applicationContext, DATABASE_NAME)
+                    }).also {
+                    instance = it
                 }
+            }
 
         // Used if building the database instead of copying an included .db file
         private fun seedAndBuildDatabase(context: Context, dbName: String): AppDatabase {
             return Room
-                    .databaseBuilder(context, AppDatabase::class.java, dbName)
-                    .addCallback(object : Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            context.startService(Intent(context, DatabaseSeedService::class.java))
-                        }
-                    })
-                    .build()
+                .databaseBuilder(context, AppDatabase::class.java, dbName)
+                .addCallback(object : Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        context.startService(Intent(context, DatabaseSeedService::class.java))
+                    }
+                })
+                .build()
         }
 
         // Copy the .db file on first load, otherwise return the AppDatabase instance
         private fun buildDatabase(context: Context, dbName: String): AppDatabase {
             return RoomAsset
-                    .databaseBuilder(context, AppDatabase::class.java, "$dbName.db")
-                    .build()
+                .databaseBuilder(context, AppDatabase::class.java, "$dbName.db")
+                .build()
         }
 
     }

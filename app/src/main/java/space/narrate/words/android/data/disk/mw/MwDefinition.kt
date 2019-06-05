@@ -9,8 +9,8 @@ package space.narrate.words.android.data.disk.mw
  * weak "id" of sorts.
  */
 data class MwDefinition(
-     val sn: String,
-     val def: String
+    val sn: String,
+    val def: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == null) return false

@@ -24,7 +24,7 @@ import space.narrate.words.android.ui.MainActivity
 import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.R
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.util.*
 
 /**
@@ -32,7 +32,7 @@ import space.narrate.words.android.util.*
  * secondary content about what is in the main fragment container. This Fragment presents
  * things like a filter for filtering a list.
  */
-class ContextualFragment : BaseUserFragment() {
+class ContextualFragment : BaseFragment() {
 
     private lateinit var contextualFrame: FrameLayout
     private lateinit var closeImageView: AppCompatImageView

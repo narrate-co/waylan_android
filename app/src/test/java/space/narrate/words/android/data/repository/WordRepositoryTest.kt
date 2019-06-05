@@ -4,10 +4,18 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.MockitoAnnotations.initMocks
+import space.narrate.words.android.CoroutinesTestRule
 import org.mockito.Mockito.`when` as whenever
 import space.narrate.words.android.data.auth.AuthenticationStore
 import space.narrate.words.android.data.disk.AppDatabase
@@ -18,8 +26,11 @@ import space.narrate.words.android.data.firestore.users.UserWordType
 import space.narrate.words.android.data.mw.MerriamWebsterStore
 import space.narrate.words.android.data.spell.SymSpellStore
 import space.narrate.words.android.LiveDataTestUtils
+import space.narrate.words.android.data.Result
+import space.narrate.words.android.util.LiveDataUtils
 import space.narrate.words.android.valueBlocking
 
+@ExperimentalCoroutinesApi
 class WordRepositoryTest {
 
     // Mock AppDatabase
@@ -39,12 +50,18 @@ class WordRepositoryTest {
 
     private lateinit var wordRepository: WordRepository
 
+    @get:Rule
+    val coroutinesTestRule = CoroutinesTestRule()
+
     // Mock Android's getMainLooper()
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
+        user.value = User(
+            "abc"
+        )
         user1Word.value = UserWord(
             "123",
             "quiescent",
@@ -67,17 +84,17 @@ class WordRepositoryTest {
 
     @Test
     fun getUserWord_shouldReturnWhenAuthenticated() {
-        whenever(authenticationStore.uid).thenReturn("abc")
+        whenever(authenticationStore.user).thenReturn(user)
         whenever(firestoreStore.getUserWordLive("123", "abc")).thenReturn(user1Word)
 
-        assertThat(wordRepository.getUserWord("123").value).isEqualTo(user1Word.value)
+        assertThat(wordRepository.getUserWord("123").valueBlocking).isEqualTo(user1Word.value)
     }
 
     // Test get UserWord unauthenticated. Authenticating after observing
     // should update value.
     @Test
     fun getUserWord_shouldChangeWhenAuthenticationChanges() {
-        whenever(authenticationStore.uid).thenReturn("abc")
+        whenever(authenticationStore.user).thenReturn(user)
 
         whenever(firestoreStore.getUserWordLive("123", "abc")).thenReturn(user1Word)
         whenever(firestoreStore.getUserWordLive("123", "bcd")).thenReturn(user2Word)
@@ -97,4 +114,28 @@ class WordRepositoryTest {
         // verify user word 123 is user 2's
         assertThat(result.valueBlocking).isEqualTo(user2Word.value)
     }
+
+    @Test
+    fun setUserWordFavoritedWithUser_shouldCallFirestoreStore() =
+        coroutinesTestRule.testDispatcher.runBlockingTest {
+            whenever(authenticationStore.user).thenReturn(user)
+
+            val id = "123"
+            val favorited = true
+
+            wordRepository.setUserWordFavorite(id, favorited)
+
+            verify(firestoreStore).setFavorite(id, "abc", favorited)
+        }
+
+    @Test
+    fun setUserWordFavoritedWithoutUser_shouldNotCallFirestore() =
+        coroutinesTestRule.testDispatcher.runBlockingTest {
+            whenever(authenticationStore.user).thenReturn(LiveDataUtils.empty())
+
+            wordRepository.setUserWordFavorite("123", true)
+
+            verifyNoMoreInteractions(firestoreStore)
+        }
+
 }

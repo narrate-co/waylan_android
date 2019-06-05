@@ -12,8 +12,10 @@ private val User.totalStateDuration: Long
 val User.merriamWebsterState: PluginState
     get() {
         return when {
-            merriamWebsterPurchaseToken.isNotBlank() -> PluginState.Purchased(merriamWebsterStarted, merriamWebsterPurchaseToken)
-            else -> PluginState.FreeTrial(isAnonymous, merriamWebsterStarted)
+            merriamWebsterPurchaseToken.isNotBlank() ->
+                PluginState.Purchased(merriamWebsterStarted, merriamWebsterPurchaseToken)
+            else ->
+                PluginState.FreeTrial(isAnonymous, merriamWebsterStarted)
         }
     }
 

@@ -1,25 +1,18 @@
 package space.narrate.words.android.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.updatePadding
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.R
-import space.narrate.words.android.ui.common.BaseUserFragment
-import space.narrate.words.android.ui.list.ListType
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.ui.search.SearchFragment
 
 /**
@@ -27,7 +20,7 @@ import space.narrate.words.android.ui.search.SearchFragment
  * and Settings. The List destinations (Trending, Recents, Favorites) all contain previews of
  * their list.
  */
-class HomeFragment: BaseUserFragment(), HomeItemAdapter.HomeItemListener {
+class HomeFragment: BaseFragment(), HomeItemAdapter.HomeItemListener {
 
     private lateinit var statusBarScrimView: View
     private lateinit var recyclerView: RecyclerView

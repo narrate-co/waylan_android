@@ -22,7 +22,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.words.android.*
 import space.narrate.words.android.ui.MainViewModel
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.ui.search.ContextualFragment
 import space.narrate.words.android.util.*
 import space.narrate.words.android.ui.widget.ElasticTransition
@@ -33,7 +33,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
  * AppBarLayout (faked) titleRes is set to.
  *
  */
-class ListFragment: BaseUserFragment(), ListItemAdapter.ListItemListener {
+class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var navigationIcon: AppCompatImageButton
@@ -92,7 +92,7 @@ class ListFragment: BaseUserFragment(), ListItemAdapter.ListItemListener {
         // Set the toolbarTitle according to the above listType
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
-            // from them. For more info, see [BaseUserFragment.setUnconsumedNavigationMethod]
+            // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
             sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
         }
 

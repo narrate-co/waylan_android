@@ -28,6 +28,3 @@ fun getFirestoreNotFoundException(docId: String) =
                 "Document $docId not found",
                 FirebaseFirestoreException.Code.NOT_FOUND
         )
-
-fun getFirestoreUnknownException(message: String) =
-        FirebaseFirestoreException(message, FirebaseFirestoreException.Code.UNKNOWN)

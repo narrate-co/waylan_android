@@ -15,7 +15,7 @@ import com.google.android.material.appbar.AppBarLayout
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.words.android.ui.MainViewModel
 import space.narrate.words.android.R
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.ui.list.ListItemDividerDecoration
 import space.narrate.words.android.Navigator
 import space.narrate.words.android.data.prefs.ThirdPartyLibrary
@@ -25,7 +25,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
 /**
  * A simple fragment that displays a static list of [ThirdPartyLibrary]
  */
-class ThirdPartyLibrariesFragment : BaseUserFragment(), ThirdPartyLibraryAdapter.Listener {
+class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Listener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout

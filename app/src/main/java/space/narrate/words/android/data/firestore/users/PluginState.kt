@@ -23,12 +23,18 @@ sealed class PluginState(val started: Date, val duration: Long, val purchaseToke
      * A plugin which has never been purchased but should be available for an initial period after
      * [started]
      */
-    class FreeTrial(isAnonymous: Boolean, started: Date = Date()): PluginState(started, if (isAnonymous) 7L else 30L, "")
+    class FreeTrial(
+        isAnonymous: Boolean,
+        started: Date = Date()
+    ): PluginState(started, if (isAnonymous) 7L else 30L, "")
 
     /**
      * A plugin which has been purchased and has an associated Google Play Billing [purchaseToken]
      */
-    class Purchased(started: Date = Date(), purchaseToken: String) : PluginState(started, 365L, purchaseToken)
+    class Purchased(
+        started: Date = Date(),
+        purchaseToken: String
+    ) : PluginState(started, 365L, purchaseToken)
 
 
 

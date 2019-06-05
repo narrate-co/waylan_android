@@ -42,7 +42,6 @@ class UserRepository(
 
     val user: LiveData<User>
         get() = authenticationStore.user
-            .switchMapTransform { firestoreStore.getUserLive(it.uid) }
 
     /** Shared Preferences */
 
@@ -53,119 +52,98 @@ class UserRepository(
     /** Gloabl scoped Shared Preferences */
 
     var orientationLock: Orientation
-        get() = preferenceStore.orientationLock
-        set(value) {
-            preferenceStore.orientationLock = value
-        }
+        get() = preferenceStore.orientationLock.getValue()
+        set(value) = preferenceStore.orientationLock.setValue(value)
 
-    val orientationLockLive: LiveData<Orientation> = preferenceStore.orientationLockLive
+    val orientationLockLive: LiveData<Orientation>
+        get() = preferenceStore.orientationLock.getLive()
 
     var nightMode: NightMode
-        get() = preferenceStore.nightMode
-        set(value) {
-            preferenceStore.nightMode = value
-        }
+        get() = preferenceStore.nightMode.getValue()
+        set(value) = preferenceStore.nightMode.setValue(value)
 
-    val nightModeLive: LiveData<NightMode> = preferenceStore.nightModeLive
+    val nightModeLive: LiveData<NightMode>
+        get() = preferenceStore.nightMode.getLive()
 
 
     /** User scoped Shared Preferences */
 
     var hasSeenRecentsBanner: Boolean
-        get() = userPreferenceStore.hasSeenRecentsBanner
-        set(value) {
-            userPreferenceStore.hasSeenRecentsBanner = value
-        }
+        get() = userPreferenceStore.hasSeenRecentsBanner.getValue()
+        set(value) = userPreferenceStore.hasSeenRecentsBanner.setValue(value)
 
-    val hasSeenRecentsBannerLive: LiveData<Boolean> =
-        userPreferenceStore.hasSeenRecentsBannerLive
+    val hasSeenRecentsBannerLive: LiveData<Boolean>
+    get() = userPreferenceStore.hasSeenRecentsBanner.getLive()
 
     var hasSeenFavoritesBanner: Boolean
-        get() = userPreferenceStore.hasSeenFavoritesBanner
-        set(value) {
-            userPreferenceStore.hasSeenFavoritesBanner = value
-        }
+        get() = userPreferenceStore.hasSeenFavoritesBanner.getValue()
+        set(value) = userPreferenceStore.hasSeenFavoritesBanner.setValue(value)
 
-    val hasSeenFavoritesBannerLive: LiveData<Boolean> =
-        userPreferenceStore.hasSeenFavoritesBannerLive
+    val hasSeenFavoritesBannerLive: LiveData<Boolean>
+        get() = userPreferenceStore.hasSeenFavoritesBanner.getLive()
 
     var hasSeenTrendingBanner: Boolean
-        get() = userPreferenceStore.hasSeenTrendingBanner
-        set(value) {
-            userPreferenceStore.hasSeenTrendingBanner = value
-        }
+        get() = userPreferenceStore.hasSeenTrendingBanner.getValue()
+        set(value) = userPreferenceStore.hasSeenTrendingBanner.setValue(value)
 
-    val hasSeenTrendingBannerLive: LiveData<Boolean> =
-        userPreferenceStore.hasSeenTrendingBannerLive
+    val hasSeenTrendingBannerLive: LiveData<Boolean>
+        get() = userPreferenceStore.hasSeenTrendingBanner.getLive()
 
     var hasSeenDragDismissOverlay: Boolean
-        get() = userPreferenceStore.hasSeenDragDismissOverlay
-        set(value) {
-            userPreferenceStore.hasSeenDragDismissOverlay = value
-        }
+        get() = userPreferenceStore.hasSeenDragDismissOverlay.getValue()
+        set(value) = userPreferenceStore.hasSeenDragDismissOverlay.setValue(value)
 
     var hasSeenMerriamWebsterPermissionPane: Boolean
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane
-        set(value) {
-            userPreferenceStore.hasSeenMerriamWebsterPermissionPane = value
-        }
+        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getValue()
+        set(value) = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(value)
 
-    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean> =
-        userPreferenceStore.hasSeenMerriamWebsterPermissionPaneLive
+    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean>
+        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getLive()
 
     var recentsListFilter: List<Period>
-        get() = userPreferenceStore.recentsListFilter
-        set(value) {
-          userPreferenceStore.recentsListFilter = value
-        }
+        get() = userPreferenceStore.recentsListFilter.getValue()
+        set(value) = userPreferenceStore.recentsListFilter.setValue(value)
 
-    val recentsListFilterLive: LiveData<List<Period>> = userPreferenceStore.recentsListFilterLive
+    val recentsListFilterLive: LiveData<List<Period>>
+        get() = userPreferenceStore.recentsListFilter.getLive()
 
     var trendingListFilter: List<Period>
-        get() = userPreferenceStore.trendingListFilter
-        set(value) {
-            userPreferenceStore.trendingListFilter = value
-        }
+        get() = userPreferenceStore.trendingListFilter.getValue()
+        set(value) = userPreferenceStore.trendingListFilter.setValue(value)
 
-    val trendingListFilterLive: LiveData<List<Period>> = userPreferenceStore.trendingListFilterLive
+    val trendingListFilterLive: LiveData<List<Period>>
+        get() = userPreferenceStore.trendingListFilter.getLive()
 
     var favoritesListFilter: List<Period>
-        get() = userPreferenceStore.favoritesListFilter
-        set(value) {
-            userPreferenceStore.favoritesListFilter = value
-        }
+        get() = userPreferenceStore.favoritesListFilter.getValue()
+        set(value) = userPreferenceStore.favoritesListFilter.setValue(value)
 
-    val favoritesListFilterLive: LiveData<List<Period>> =
-        userPreferenceStore.favoritesListFilterLive
+    val favoritesListFilterLive: LiveData<List<Period>>
+        get() = userPreferenceStore.favoritesListFilter.getLive()
 
     var useTestSkus: Boolean
-        get() = userPreferenceStore.useTestSkus
-        set(value) {
-            userPreferenceStore.useTestSkus = value
-        }
+        get() = userPreferenceStore.useTestSkus.getValue()
+        set(value) = userPreferenceStore.useTestSkus.setValue(value)
 
-    val useTestSkusLive: LiveData<Boolean> = userPreferenceStore.useTestSkusLive
+    val useTestSkusLive: LiveData<Boolean>
+        get() = userPreferenceStore.useTestSkus.getLive()
 
     var portraitToLandscapeOrientationChangeCount: Long
-        get() = userPreferenceStore.portraitToLandscapeOrientationChangeCount
-        set(value) {
-            userPreferenceStore.portraitToLandscapeOrientationChangeCount = value
-        }
+        get() = userPreferenceStore.portraitToLandscapeOrientationChangeCount.getValue()
+        set(value) = userPreferenceStore.portraitToLandscapeOrientationChangeCount.setValue(value)
 
     var landscapeToPortraitOrientationChangeCount: Long
-        get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount
-        set(value) {
-            userPreferenceStore.landscapeToPortraitOrientationChangeCount
-        }
+        get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
+        set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
 
     val allThirdPartyLibraries: List<ThirdPartyLibrary> = thirdPartyLibraryStore.all
 
     fun setUserMerriamWebsterState(state: PluginState) {
-        val uid = authenticationStore.uid ?: return
+        val uid = authenticationStore.user.value?.uid ?: return
 
         // Launch and forget
         launch {
-            userPreferenceStore.hasSeenMerriamWebsterPermissionPane = false
+            userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(false)
             firestoreStore.setUserMerriamWebsterState(uid, state)
         }
     }

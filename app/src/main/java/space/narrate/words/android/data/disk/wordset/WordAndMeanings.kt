@@ -6,9 +6,9 @@ import space.narrate.words.android.data.disk.wordset.Meaning
 import space.narrate.words.android.data.disk.wordset.Word
 
 data class WordAndMeanings(
-        @Embedded
-        var word: Word? = null,
-        @Relation(parentColumn = "word", entityColumn = "parentWord")
-        var meanings: List<Meaning> = ArrayList()
+    @Embedded
+    var word: Word? = null,
+    @Relation(parentColumn = "word", entityColumn = "parentWord")
+    var meanings: List<Meaning> = ArrayList()
 )
 

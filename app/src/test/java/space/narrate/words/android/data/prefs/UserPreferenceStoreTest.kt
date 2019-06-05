@@ -40,28 +40,28 @@ class UserPreferenceStoreTest : KoinTest {
 
     @Test
     fun hasSeenRecentsBanner_shouldReturnDefaultValue() {
-        assertThat(userPreferenceStore.hasSeenRecentsBanner).isFalse()
+        assertThat(userPreferenceStore.hasSeenRecentsBanner.getValue()).isFalse()
     }
 
     @Test
     fun hasSeenDragDismissOverlay_persistsAcrossUserChanges() {
         // No user is set. UPS should be using default shared preferences
-        assertThat(userPreferenceStore.hasSeenDragDismissOverlay).isFalse()
+        assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isFalse()
 
         // User 1 is set. UPS should switch to using shared preferences for user 1
         user.value = User("USER1")
-        userPreferenceStore.hasSeenDragDismissOverlay = true
-        assertThat(userPreferenceStore.hasSeenDragDismissOverlay).isTrue()
+        userPreferenceStore.hasSeenDragDismissOverlay.setValue(true)
+        assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isTrue()
 
         // User 2 is set. UPS should switch to using shared preferences for user 2
         // Ensure User 2 is given the default preference value of false.
         user.value = User("USER2")
-        assertThat(userPreferenceStore.hasSeenDragDismissOverlay).isFalse()
+        assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isFalse()
 
         // User 1 is set. UPS should switch to using shared preferences for user 2
         // Ensure that switching back to user 1 recalls our previous value of 'true'.
         user.value = User("USER1")
-        assertThat(userPreferenceStore.hasSeenDragDismissOverlay).isTrue()
+        assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isTrue()
     }
 
 }

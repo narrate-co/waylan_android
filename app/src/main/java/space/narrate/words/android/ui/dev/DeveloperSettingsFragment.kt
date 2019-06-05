@@ -19,7 +19,7 @@ import space.narrate.words.android.R
 import space.narrate.words.android.billing.BillingConfig
 import space.narrate.words.android.data.firestore.users.PluginState
 import space.narrate.words.android.data.firestore.users.User
-import space.narrate.words.android.ui.common.BaseUserFragment
+import space.narrate.words.android.ui.common.BaseFragment
 import space.narrate.words.android.ui.common.SnackbarModel
 import space.narrate.words.android.util.configError
 import space.narrate.words.android.util.configInformative
@@ -43,7 +43,7 @@ import space.narrate.words.android.ui.widget.ElasticTransition
  * [R.id.informative_snackbar_preference] Trigger an informative Snackbar to test UI/UX.
  * [R.id.error_snackbar_preference] Trigger an error Snackbar to test UI/UX.
  */
-class DeveloperSettingsFragment : BaseUserFragment() {
+class DeveloperSettingsFragment : BaseFragment() {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout

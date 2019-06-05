@@ -294,7 +294,7 @@ class FirestoreStore(
         }
     }
 
-    //allow users to add, edit and delete their own definitions, set to either public or private
+    // Allow users to add, edit and delete their own definitions, set to either public or private
     //TODO add meaning
 
     //TODO edit meaning (synonyms, examples, part of speech, labels)
