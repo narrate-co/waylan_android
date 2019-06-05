@@ -86,8 +86,6 @@ public class SymSpell {
                 break;
         }
 
-        System.out.println("SymSpell capturePercentage = " + countThresholdCapturePercentage + ", shift: " + shift + ", minCount: " + minCount + ", maxCount: " + maxCount);
-
         init(initialCapacity, maxDictionaryEditDistance, prefixLength, minCount, maxCount);
     }
 
@@ -207,7 +205,6 @@ public class SymSpell {
 
         // what we have at this point is a new, above threshold word
         words.put(key, count);
-        if(key.equals("can't")) System.out.println("Added to words..!");
 
         //edits/suggestions are created only once, no matter how often word occurs
         //edits/suggestions are created only as soon as the word occurs in the corpus,
@@ -268,7 +265,7 @@ public class SymSpell {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(corpus), decoder));
 //            br = Files.newBufferedReader(Paths.get(corpus), StandardCharsets.UTF_8);
         }catch (IOException ex){
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
         if (br == null) { return false; }
         return loadDictionary(br, termIndex, countIndex);
@@ -317,12 +314,11 @@ public class SymSpell {
                 createDeletes(word.getKey(), staging);
             }
         }catch (IOException ex){
+            ex.printStackTrace();
             System.out.println(ex.getMessage());
         }
         if (this.deletes == null) this.deletes = new HashMap<>(staging.deleteCount());
         commitStaged(staging);
-
-        System.out.println("loadDictionary words: " + words.size() + ", below: " + belowThresholdWords.size() + ", above: " + aboveThresholdWords.size() + ", minCount: " + minCountThreshold + ", minDictCount: " + minDictionaryCountThreshold + ", maxCount: " + maxCountThreshold + ", maxDictCount: " + maxDictionaryCountThreshold + ", averageCount: " + getAverageCount());
 
         purgeBelowThresholdWords();
         purgeAboveThresholdWords();

@@ -21,7 +21,6 @@ class TrimmedStack<T>(private var array: MutableList<T?>): Iterable<T?> {
     fun push(t: T) {
         Collections.rotate(array, 1)
         array[0] = t
-        println("TrimmedStack::push. new ")
     }
 
     fun peek(): T? {
