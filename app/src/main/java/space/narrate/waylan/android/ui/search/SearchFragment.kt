@@ -277,11 +277,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     private fun setUpSmartShelf() {
 
         viewModel.shouldShowOrientationPrompt.observe(this, Observer { event ->
-            event.getUnhandledContent()?.let {
-                DelayedLifecycleAction(this, 500) {
-                    expandSmartShelf(it)
-                }
-            }
+            event.getUnhandledContent()?.let { expandSmartShelf(it) }
         })
 
         // observe for orientation/rotation changes in the viewModel

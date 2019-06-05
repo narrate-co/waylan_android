@@ -44,7 +44,8 @@ object RotationUtils {
     fun isLikelyUnlockDesiredScenario(
             pattern: List<RotationManager.RotationEvent>,
             lockedTo: Int,
-            observedSince: Long, now: Long
+            observedSince: Long,
+            now: Long
     ): Boolean {
 
         var maxPeriodBetweenRotations: Long = -1L

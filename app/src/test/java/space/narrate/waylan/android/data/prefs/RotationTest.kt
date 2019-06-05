@@ -2,12 +2,13 @@ package space.narrate.waylan.android.data.prefs
 
 import android.content.pm.ActivityInfo
 import com.google.common.truth.Truth.assertThat
+import org.junit.Before
 import org.junit.Test
 
 class RotationTest {
 
     @Test
-    fun should_meet_basic_scenario_and_match_pattern() {
+    fun shouldMeetBasicScenarioAndMatchPattern() {
         // Time we subscribe to RotationManager
         val observedSince = System.nanoTime()
         val now: Long = (observedSince +
@@ -25,20 +26,39 @@ class RotationTest {
     }
 
     @Test
-    fun should_not_meet_basic_scenario() {
-        // Time we subscribe to RotationManager
-        val observedSince = System.nanoTime()
-        val now: Long = (observedSince +
-                (RotationUtils.FRESH_INTERACTION_ROTATION_ACCLAMATION_PERIOD_NANOS * .75F)).toLong()
+    fun shouldExceedValidRotationEventPeriod() {
 
-        //A list of rotation events that all happen with less than 1500 millis apart and
-        // between observedSince and now
+        // Configure a valid start and end observation period
+        val observedSince = System.nanoTime()
+        val now = (observedSince +
+            (RotationUtils.FRESH_INTERACTION_ROTATION_ACCLAMATION_PERIOD_NANOS * .99F)).toLong()
+
         val lockedTo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        val patterns = RotationManager.PATTERN_L_P_L.mapIndexed { index, i ->
-            RotationManager.RotationEvent(i, observedSince - index)
+        val invalidEventPeriod = RotationUtils.MAX_PERIOD_BETWEEN_ROTATIONS_FOR_VALID_PATTERN_NANOS + 1L
+        val patterns = RotationManager.PATTERN_L_P_L.mapIndexed { index, pattern ->
+            val timeStamp = when (index) {
+                0 -> observedSince
+                else -> observedSince + index + invalidEventPeriod
+            }
+            RotationManager.RotationEvent(pattern, timeStamp)
         }
 
-        //An observeSince time that's qualifies
+        assertThat(
+            RotationUtils.isLikelyUnlockDesiredScenario(patterns, lockedTo, observedSince, now)
+        ).isFalse()
+    }
+
+    @Test
+    fun shouldExceedValidAcclamationPeriod() {
+
+        val observedSince = System.nanoTime()
+        val now = observedSince + (RotationUtils.FRESH_INTERACTION_ROTATION_ACCLAMATION_PERIOD_NANOS + 1L)
+
+        val lockedTo = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val patterns = RotationManager.PATTERN_L_P_L.mapIndexed { index, pattern ->
+            RotationManager.RotationEvent(pattern, observedSince + index)
+        }
+
         assertThat(
             RotationUtils.isLikelyUnlockDesiredScenario(patterns, lockedTo, observedSince, now)
         ).isFalse()
