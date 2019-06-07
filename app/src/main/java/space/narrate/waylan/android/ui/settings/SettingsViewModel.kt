@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import space.narrate.waylan.android.billing.BillingConfig
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.ui.common.Event
 import space.narrate.waylan.android.ui.auth.AuthRoute
+import space.narrate.waylan.android.util.mapTransform
 
 /**
  * A ViewModel used by [SettingsFragment] and [DeveloperSettingsFragment]. Handles the manipulation
@@ -24,23 +26,25 @@ class SettingsViewModel(
         private val userRepository: UserRepository
 ): ViewModel() {
 
-    val user: LiveData<User> = userRepository.user
+    val nightMode: LiveData<NightMode>
+        get() = userRepository.nightModeLive
 
-    val nightMode: LiveData<NightMode> = userRepository.nightModeLive
+    val orientation: LiveData<Orientation>
+        get() = userRepository.orientationLockLive
 
-    var orientation: LiveData<Orientation> = userRepository.orientationLockLive
-
-    val bannerModel: LiveData<MwBannerModel> = Transformations.map(userRepository.user) {
-        MwBannerModel.create(it)
-    }
+    val bannerModel: LiveData<MwBannerModel>
+        get() = userRepository.user.mapTransform {
+            MwBannerModel.create(it)
+        }
 
     private val _shouldLaunchAuth: MutableLiveData<Event<AuthRoute>> =
         MutableLiveData()
     val shouldLaunchAuth: LiveData<Event<AuthRoute>>
         get() = _shouldLaunchAuth
 
-    private val _shouldLaunchMwPurchaseFlow: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    val shouldLaunchMwPurchaseFlow: LiveData<Event<Boolean>>
+    private val _shouldLaunchMwPurchaseFlow: MutableLiveData<Event<PurchaseFlowModel>> =
+        MutableLiveData()
+    val shouldLaunchMwPurchaseFlow: LiveData<Event<PurchaseFlowModel>>
         get() = _shouldLaunchMwPurchaseFlow
 
     private val _shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>>
@@ -57,25 +61,16 @@ class SettingsViewModel(
         when (action) {
             MwBannerAction.LOG_IN -> _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
             MwBannerAction.SIGN_UP -> _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
-            MwBannerAction.LAUNCH_PURCHASE_FLOW -> _shouldLaunchMwPurchaseFlow.value = Event(true)
+            MwBannerAction.LAUNCH_PURCHASE_FLOW -> {
+                val sku = if (userRepository.useTestSkus) {
+                    BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+                } else {
+                    BillingConfig.SKU_MERRIAM_WEBSTER
+                }
+                _shouldLaunchMwPurchaseFlow.value = Event(PurchaseFlowModel(sku))
+            }
         }
     }
-
-//    fun onBannerTopButtonClicked() {
-//        if (user.value?.isAnonymous == true) {
-//            _shouldLaunchAuth.value = Event(AuthRoute.SIGN_UP)
-//        } else {
-//            _shouldLaunchMwPurchaseFlow.value = Event(true)
-//        }
-//    }
-//
-//    fun onBannerBottomButtonClicked() {
-//        if (user.value?.isAnonymous == true) {
-//            _shouldLaunchAuth.value = Event(AuthRoute.LOG_IN)
-//        } else {
-//            _shouldLaunchMwPurchaseFlow.value = Event(true)
-//        }
-//    }
 
     fun onNightModePreferenceClicked() {
         val currentNightMode = userRepository.nightMode

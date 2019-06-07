@@ -120,7 +120,7 @@ class SettingsFragment : BaseFragment() {
             event.getUnhandledContent()?.let {
                 billingManager.initiatePurchaseFlow(
                     requireActivity(),
-                    BillingConfig.SKU_MERRIAM_WEBSTER
+                    it.skuId
                 )
             }
         })

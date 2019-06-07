@@ -53,8 +53,8 @@ class WordRepository(
     }
 
     fun getUserWord(id: String): LiveData<UserWord> {
-        return authenticationStore.user.switchMapTransform { user ->
-            firestoreStore.getUserWordLive(id, user.uid)
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserWordLive(id, it)
         }
     }
 
@@ -70,14 +70,14 @@ class WordRepository(
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
-        return authenticationStore.user.switchMapTransform { user ->
-            firestoreStore.getFavorites(user.uid, limit)
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getFavorites(it, limit)
         }
     }
 
     fun setUserWordFavorite(id: String, favorite: Boolean) {
         if (id.isBlank()) return
-        val uid = authenticationStore.user.value?.uid ?: return
+        val uid = authenticationStore.uid.value ?: return
 
         // Launch and forget
         launch {
@@ -86,14 +86,14 @@ class WordRepository(
     }
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
-        return authenticationStore.user.switchMapTransform { user ->
-            firestoreStore.getRecents(user.uid, limit)
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getRecents(it, limit)
         }
     }
 
     fun setUserWordRecent(id: String) {
         if (id.isBlank()) return
-        val uid = authenticationStore.user.value?.uid ?: return
+        val uid = authenticationStore.uid.value ?: return
 
         // Launch and forget
         launch {

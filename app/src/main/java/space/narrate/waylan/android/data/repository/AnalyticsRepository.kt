@@ -30,8 +30,8 @@ class AnalyticsRepository(
     }
 
     init {
-        authenticationStore.user.observeForever {
-            firebaseAnalytics.setUserId(it.uid)
+        authenticationStore.uid.observeForever {
+            firebaseAnalytics.setUserId(it)
         }
     }
 

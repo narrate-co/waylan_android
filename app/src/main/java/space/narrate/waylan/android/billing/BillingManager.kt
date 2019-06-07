@@ -60,15 +60,15 @@ class BillingManager(
         skuId: String,
         @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
     ) {
-        val sku = if (userRepository.useTestSkus) {
-            when (skuId) {
-                BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
-                else -> BillingConfig.TEST_SKU_PURCHASED
-            }
-        } else {
-            skuId
-        }
-        initiatePurchaseFlow(activity, sku, null, billingType)
+//        val sku = if (userRepository.useTestSkus) {
+//            when (skuId) {
+//                BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+//                else -> BillingConfig.TEST_SKU_PURCHASED
+//            }
+//        } else {
+//            skuId
+//        }
+        initiatePurchaseFlow(activity, skuId, null, billingType)
     }
 
     private fun initiatePurchaseFlow(
