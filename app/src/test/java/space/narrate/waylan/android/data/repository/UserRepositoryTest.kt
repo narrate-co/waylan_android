@@ -45,7 +45,7 @@ class UserRepositoryTest {
     private val preferenceStore = mock(PreferenceStore::class.java)
     private val thirdPartyLibraryStore = mock(ThirdPartyLibraryStore::class.java)
 
-    private val user: MutableLiveData<User> = MutableLiveData()
+    private val uid: MutableLiveData<String> = MutableLiveData()
     private val user1Word: MutableLiveData<UserWord> = MutableLiveData()
     private val user2Word: MutableLiveData<UserWord> = MutableLiveData()
 
@@ -60,7 +60,7 @@ class UserRepositoryTest {
 
     @Before
     fun setUp() {
-        user.value = testDatabase.users[0].user
+        uid.value = testDatabase.users[0].user.uid
         user1Word.value = testDatabase.users[0].userWords[0]
         user2Word.value = testDatabase.users[1].userWords[1]
 
@@ -76,7 +76,7 @@ class UserRepositoryTest {
     @Test
     fun setUserMerriamWebsterState_shouldResetHasSeenPermissionPane_shouldCallFirestore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
-            whenever(authenticationStore.user).thenReturn(user)
+            whenever(authenticationStore.uid).thenReturn(uid)
 
             val preference = mock(Preference::class.java)
             whenever(userPreferenceStore.hasSeenMerriamWebsterPermissionPane)
@@ -87,6 +87,6 @@ class UserRepositoryTest {
             userRepository.setUserMerriamWebsterState(state)
 
             verify(userPreferenceStore.hasSeenMerriamWebsterPermissionPane).setValue(false)
-            verify(firestoreStore).setUserMerriamWebsterState(user.value!!.uid, state)
+            verify(firestoreStore).setUserMerriamWebsterState(uid.value!!, state)
         }
 }

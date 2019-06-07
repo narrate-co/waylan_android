@@ -46,11 +46,15 @@ class AuthenticationStore(
         get() = firebaseAuth.currentUser != null
 
     val hasUser: Boolean
-        get() = _user.value != null
+        get() = _uid.value != null
 
-    private val _user: MutableLiveData<User> = MutableLiveData()
-    val user: LiveData<User>
-        get() = _user
+    private val _uid: MutableLiveData<String> = MutableLiveData()
+    val uid: LiveData<String>
+        get() = _uid
+
+//    private val _user: MutableLiveData<User> = MutableLiveData()
+//    val user: LiveData<User>
+//        get() = _user
 
     suspend fun authenticate(): Result<User> {
         val firebaseUser = firebaseAuth.currentUser
@@ -60,7 +64,7 @@ class AuthenticationStore(
 
         if (result is Result.Success) {
             // Launch and forget an update. This shouldn't block the authentication process
-            _user.value = result.data
+            _uid.value = result.data.uid
 
             GlobalScope.launch {
                 firestoreStore.updateUser(result.data.uid) {

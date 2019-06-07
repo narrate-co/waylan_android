@@ -18,7 +18,7 @@ import space.narrate.waylan.android.data.firestore.users.User
 @RunWith(RobolectricTestRunner::class)
 class UserPreferenceStoreTest : KoinTest {
 
-    private val user: MutableLiveData<User> = MutableLiveData()
+    private val uid: MutableLiveData<String> = MutableLiveData()
 
     private val authenticationStore = mock(AuthenticationStore::class.java)
 
@@ -26,7 +26,7 @@ class UserPreferenceStoreTest : KoinTest {
 
     @Before
     fun setUp() {
-        whenever(authenticationStore.user).thenReturn(user)
+        whenever(authenticationStore.uid).thenReturn(uid)
         userPreferenceStore = UserPreferenceStore(
             ApplicationProvider.getApplicationContext(),
             authenticationStore
@@ -49,18 +49,18 @@ class UserPreferenceStoreTest : KoinTest {
         assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isFalse()
 
         // User 1 is set. UPS should switch to using shared preferences for user 1
-        user.value = User("USER1")
+        uid.value = "USER1"
         userPreferenceStore.hasSeenDragDismissOverlay.setValue(true)
         assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isTrue()
 
         // User 2 is set. UPS should switch to using shared preferences for user 2
         // Ensure User 2 is given the default preference value of false.
-        user.value = User("USER2")
+        uid.value = "USER2"
         assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isFalse()
 
         // User 1 is set. UPS should switch to using shared preferences for user 2
         // Ensure that switching back to user 1 recalls our previous value of 'true'.
-        user.value = User("USER1")
+        uid.value = "USER1"
         assertThat(userPreferenceStore.hasSeenDragDismissOverlay.getValue()).isTrue()
     }
 

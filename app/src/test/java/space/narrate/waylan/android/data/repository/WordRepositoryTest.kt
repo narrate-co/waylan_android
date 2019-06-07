@@ -44,7 +44,7 @@ class WordRepositoryTest {
     // Mock SymSpellStore
     private val symSpellStore = mock(SymSpellStore::class.java)
 
-    private val user: MutableLiveData<User> = MutableLiveData()
+    private val uid: MutableLiveData<String> = MutableLiveData()
     private val user1Word: MutableLiveData<UserWord> = MutableLiveData()
     private val user2Word: MutableLiveData<UserWord> = MutableLiveData()
 
@@ -59,9 +59,7 @@ class WordRepositoryTest {
 
     @Before
     fun setUp() {
-        user.value = User(
-            "abc"
-        )
+        uid.value = "abc"
         user1Word.value = UserWord(
             "123",
             "quiescent",
@@ -84,7 +82,7 @@ class WordRepositoryTest {
 
     @Test
     fun getUserWord_shouldReturnWhenAuthenticated() {
-        whenever(authenticationStore.user).thenReturn(user)
+        whenever(authenticationStore.uid).thenReturn(uid)
         whenever(firestoreStore.getUserWordLive("123", "abc")).thenReturn(user1Word)
 
         assertThat(wordRepository.getUserWord("123").valueBlocking).isEqualTo(user1Word.value)
@@ -94,13 +92,13 @@ class WordRepositoryTest {
     // should update value.
     @Test
     fun getUserWord_shouldChangeWhenAuthenticationChanges() {
-        whenever(authenticationStore.user).thenReturn(user)
+        whenever(authenticationStore.uid).thenReturn(uid)
 
         whenever(firestoreStore.getUserWordLive("123", "abc")).thenReturn(user1Word)
         whenever(firestoreStore.getUserWordLive("123", "bcd")).thenReturn(user2Word)
 
         // set authentication to user 1
-        user.value = User("abc")
+        uid.value = "abc"
 
         // observe user word 123
         val result = wordRepository.getUserWord("123")
@@ -109,7 +107,7 @@ class WordRepositoryTest {
         assertThat(result.valueBlocking).isEqualTo(user1Word.value)
 
         // set authentication to user 2
-        user.value = User("bcd")
+        uid.value = "bcd"
 
         // verify user word 123 is user 2's
         assertThat(result.valueBlocking).isEqualTo(user2Word.value)
@@ -118,7 +116,7 @@ class WordRepositoryTest {
     @Test
     fun setUserWordFavoritedWithUser_shouldCallFirestoreStore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
-            whenever(authenticationStore.user).thenReturn(user)
+            whenever(authenticationStore.uid).thenReturn(uid)
 
             val id = "123"
             val favorited = true
@@ -131,7 +129,7 @@ class WordRepositoryTest {
     @Test
     fun setUserWordFavoritedWithoutUser_shouldNotCallFirestore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
-            whenever(authenticationStore.user).thenReturn(LiveDataUtils.empty())
+            whenever(authenticationStore.uid).thenReturn(LiveDataUtils.empty())
 
             wordRepository.setUserWordFavorite("123", true)
 

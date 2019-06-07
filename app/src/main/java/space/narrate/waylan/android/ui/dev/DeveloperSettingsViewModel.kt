@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.billing.BillingConfig
+import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.data.firestore.users.PluginState
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
@@ -13,18 +16,20 @@ import space.narrate.waylan.android.data.firestore.users.oneDayPastExpiration
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.ui.common.Event
 import space.narrate.waylan.android.ui.common.SnackbarModel
+import space.narrate.waylan.android.util.mapTransform
+import java.util.*
 
 class DeveloperSettingsViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    val user: LiveData<User> = userRepository.user
+    val mwState: LiveData<PluginState>
+        get() = userRepository.user.mapTransform {
+            it.merriamWebsterState
+        }
 
-    val mwState: LiveData<PluginState> = Transformations.map(user) {
-        it.merriamWebsterState
-    }
-
-    var useTestSkus: LiveData<Boolean> = userRepository.useTestSkusLive
+    val useTestSkus: LiveData<Boolean>
+        get() = userRepository.useTestSkusLive
 
     private val _mwBillingResponse: MutableLiveData<String> = MutableLiveData()
     val mwBillingResponse: LiveData<String>
@@ -47,39 +52,51 @@ class DeveloperSettingsViewModel(
         ))
     }
 
-    fun onMwStatePreferenceClicked() {
+    fun onMwStatePreferenceClicked() = viewModelScope.launch {
         // cycle state
-        val user = user.value ?: return
+        val result = userRepository.getUser()
 
-        val state = user.merriamWebsterState
-        val newState = when {
-            //None -> Free Trial (valid)
-            state is PluginState.None -> {
-                PluginState.FreeTrial(user.isAnonymous)
+        when (result) {
+            is Result.Success -> {
+                val user = result.data
+                val state = user.merriamWebsterState
+                val newState = when {
+                    //None -> Free Trial (valid)
+                    state is PluginState.None -> {
+                        PluginState.FreeTrial(user.isAnonymous)
+                    }
+                    //FreeTrial (valid) -> FreeTrial (expired)
+                    state is PluginState.FreeTrial && state.isValid -> {
+                        PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
+                    }
+                    //FreeTrial (expired) -> Purchased (valid)
+                    state is PluginState.FreeTrial && !state.isValid -> {
+                        PluginState.Purchased(purchaseToken = UUID.randomUUID().toString())
+                    }
+                    //Purchased (valid) -> Purchased (expired)
+                    state is PluginState.Purchased && state.isValid -> {
+                        PluginState.Purchased(
+                            user.oneDayPastExpiration,
+                            user.merriamWebsterPurchaseToken
+                        )
+                    }
+                    //Purchased (expired) -> FreeTrial (valid)
+                    state is PluginState.Purchased && !state.isValid -> {
+                        PluginState.FreeTrial(user.isAnonymous)
+                    }
+                    //Default
+                    else -> PluginState.None()
+                }
+                userRepository.setUserMerriamWebsterState(newState)
             }
-            //FreeTrial (valid) -> FreeTrial (expired)
-            state is PluginState.FreeTrial && state.isValid -> {
-                PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
+            is Result.Error -> {
+                _shouldShowSnackbar.value = Event(SnackbarModel(
+                    R.string.auth_error_message_no_current_user,
+                    isError = true
+                ))
             }
-            //FreeTrial (expired) -> Purchased (valid)
-            state is PluginState.FreeTrial && !state.isValid -> {
-                PluginState.Purchased(purchaseToken = user.merriamWebsterPurchaseToken)
-            }
-            //Purchased (valid) -> Purchased (expired)
-            state is PluginState.Purchased && state.isValid -> {
-                PluginState.Purchased(
-                    user.oneDayPastExpiration,
-                    user.merriamWebsterPurchaseToken
-                )
-            }
-            //Purchased (expired) -> FreeTrial (valid)
-            state is PluginState.Purchased && !state.isValid -> {
-                PluginState.FreeTrial(user.isAnonymous)
-            }
-            //Default
-            else -> PluginState.None()
         }
-        userRepository.setUserMerriamWebsterState(newState)
+
     }
 
     fun onUseTestSkusPreferenceClicked() {

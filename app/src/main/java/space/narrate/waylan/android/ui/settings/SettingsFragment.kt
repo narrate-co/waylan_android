@@ -120,7 +120,7 @@ class SettingsFragment : BaseFragment() {
             event.getUnhandledContent()?.let {
                 billingManager.initiatePurchaseFlow(
                     requireActivity(),
-                    BillingConfig.SKU_MERRIAM_WEBSTER
+                    it.skuId
                 )
             }
         })
@@ -248,6 +248,6 @@ class SettingsFragment : BaseFragment() {
     }
 
     companion object {
-        const val SUPPORT_EMAIL_ADDRESS = "words@narrate.space"
+        const val SUPPORT_EMAIL_ADDRESS = "waylan@narrate.space"
     }
 }

@@ -12,7 +12,9 @@ import space.narrate.waylan.android.data.prefs.UserPreferenceStore
 import space.narrate.waylan.android.ui.search.Period
 import space.narrate.waylan.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
+import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.data.auth.AuthenticationStore
+import space.narrate.waylan.android.data.auth.FirebaseAuthWordsException
 import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
 import space.narrate.waylan.android.data.prefs.ThirdPartyLibraryStore
@@ -41,7 +43,9 @@ class UserRepository(
     /** Firestore User */
 
     val user: LiveData<User>
-        get() = authenticationStore.user
+        get() = authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserLive(it)
+        }
 
     /** Shared Preferences */
 
@@ -138,8 +142,15 @@ class UserRepository(
 
     val allThirdPartyLibraries: List<ThirdPartyLibrary> = thirdPartyLibraryStore.all
 
+    suspend fun getUser(): Result<User> {
+        val uid = authenticationStore.uid.value
+            ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
+
+        return firestoreStore.getUser(uid)
+    }
+
     fun setUserMerriamWebsterState(state: PluginState) {
-        val uid = authenticationStore.user.value?.uid ?: return
+        val uid = authenticationStore.uid.value ?: return
 
         // Launch and forget
         launch {

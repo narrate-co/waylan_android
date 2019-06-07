@@ -28,9 +28,9 @@ class UserPreferenceStore(
     )
 
     init {
-        authenticationStore.user.observeForever {
+        authenticationStore.uid.observeForever {
             sharedPrefs.value = applicationContext.getSharedPreferences(
-                it.uid,
+                it,
                 Context.MODE_PRIVATE
             )
         }
