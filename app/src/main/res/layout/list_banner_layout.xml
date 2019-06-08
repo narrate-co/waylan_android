@@ -13,6 +13,6 @@
     app:bannerBottomButtonText="Dismiss"
     app:cardElevation="@dimen/plane_00"
     app:cardCornerRadius="@dimen/keyline_2"
-    app:cardBackgroundColor="?android:windowBackground"
+    app:cardBackgroundColor="@android:color/transparent"
     android:tag="header"
     />

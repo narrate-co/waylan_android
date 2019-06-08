@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
             event.getUnhandledContent()?.let {
-                findNavController().navigate(R.id.action_homeFragment_to_detailsFragment)
+                findNavController().navigate(R.id.action_global_detailsFragment)
             }
         })
 
