@@ -69,7 +69,6 @@
         <item name="styleEditTextArea">@style/Widget.Words.EditText.Area</item>
         <item name="styleTextLabel">@style/Widget.Words.TextLabel</item>
         <item name="styleBottomSheetStandard">@style/Widget.Words.BottomSheet.Standard</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Words.Dialog.Alert</item>
 
         <!--Android Framework-->
         <item name="colorPrimaryDark">?colorPrimaryVariant</item>

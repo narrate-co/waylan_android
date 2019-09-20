@@ -64,7 +64,7 @@ private fun Snackbar.config(
 
     val background = context.getDrawable(R.drawable.snackbar_background)
     val elevationOverlayProvider = ElevationOverlayProvider(context)
-    val backgroundTint = elevationOverlayProvider.layerOverlayIfNeeded(
+    val backgroundTint = elevationOverlayProvider.compositeOverlayIfNeeded(
         context.getColorFromAttr(bgColorAttr),
         context.resources.getDimension(R.dimen.plane_03)
     )

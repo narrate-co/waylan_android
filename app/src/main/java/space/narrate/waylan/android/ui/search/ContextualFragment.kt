@@ -49,7 +49,7 @@ class ContextualFragment : BaseFragment() {
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
-        BottomSheetBehavior.from(view)
+        BottomSheetBehavior.from(requireView())
     }
 
     override fun onCreateView(

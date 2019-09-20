@@ -52,10 +52,6 @@ class AuthenticationStore(
     val uid: LiveData<String>
         get() = _uid
 
-//    private val _user: MutableLiveData<User> = MutableLiveData()
-//    val user: LiveData<User>
-//        get() = _user
-
     suspend fun authenticate(): Result<User> {
         val firebaseUser = firebaseAuth.currentUser
             ?: return Result.Error(FirebaseAuthWordsException.LoginException)
@@ -85,7 +81,14 @@ class AuthenticationStore(
                 if (email.isNotBlank() && password.isNotBlank()) {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
-                            cont.resume(it.user)
+                            val user = it.user
+                            if (user != null) {
+                                cont.resume(user)
+                            } else {
+                                cont.resumeWithFirebaseAuthException(
+                                    FirebaseAuthWordsException.LoginException
+                                )
+                            }
                         }
                         .addOnFailureListener {
                             cont.resumeWithFirebaseAuthException(
@@ -133,7 +136,14 @@ class AuthenticationStore(
             suspendCancellableCoroutine<FirebaseUser> { cont ->
                 firebaseAuth.signInAnonymously()
                     .addOnSuccessListener {
-                        cont.resume(it.user)
+                        val user = it.user
+                        if (user != null) {
+                            cont.resume(user)
+                        } else {
+                            cont.resumeWithFirebaseAuthException(
+                                FirebaseAuthWordsException.AnonSignUpFailedException
+                            )
+                        }
                     }
                     .addOnFailureListener {
                         cont.resumeWithFirebaseAuthException(
@@ -158,7 +168,14 @@ class AuthenticationStore(
         if (currentUser != null) {
             currentUser.linkWithCredential(credentials)
                 .addOnSuccessListener {
-                    cont.resume(it.user)
+                    val user = it.user
+                    if (user != null) {
+                        cont.resume(user)
+                    } else {
+                        cont.resumeWithFirebaseAuthException(
+                            FirebaseAuthWordsException.AnonSignUpFailedException
+                        )
+                    }
                 }
                 .addOnFailureListener {
                     cont.resumeWithFirebaseAuthException(
@@ -180,7 +197,14 @@ class AuthenticationStore(
     ) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                cont.resume(it.user)
+                val user = it.user
+                if (user != null) {
+                    cont.resume(user)
+                } else {
+                    cont.resumeWithFirebaseAuthException(
+                        FirebaseAuthWordsException.SignUpFailedException
+                    )
+                }
             }
             .addOnFailureListener {
                 cont.resumeWithFirebaseAuthException(

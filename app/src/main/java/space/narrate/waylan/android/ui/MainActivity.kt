@@ -46,12 +46,12 @@ class MainActivity : AppCompatActivity() {
 
     // SearchFragment's BottomSheetBehavior
     private val searchSheetBehavior by lazy {
-        BottomSheetBehavior.from(searchFragment.view)
+        BottomSheetBehavior.from(searchFragment.requireView())
     }
 
     // ContextualFragments's BottomSheetBehavior
     private val contextualSheetBehavior by lazy {
-        BottomSheetBehavior.from(contextualFragment.view)
+        BottomSheetBehavior.from(contextualFragment.requireView())
     }
 
     val contextualSheetCallback = BottomSheetCallbackCollection()
