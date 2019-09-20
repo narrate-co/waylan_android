@@ -16,7 +16,6 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.google.android.material.shape.ShapePathModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.util.getColorFromAttr
 
@@ -160,7 +159,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     // Background to use for the parent CoordinatorLayout. Used to animate edge and corner
     // shape with drag values
-    private lateinit var materialShapeDrawable: MaterialShapeDrawable
+    private val materialShapeDrawable: MaterialShapeDrawable
 
     // Reference to this ABL's parent CoordinatorLayout
     private var parentCoordinatorLayout: CoordinatorLayout? = null
@@ -216,8 +215,10 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             // Shadows do not currently show due to how the Android framework handles its material
             // light source. Shadows are only rendered on the sides and bottom of views with a light
             // source coming from the top of the screen
-            isShadowEnabled = true
-            shadowElevation = context.resources.getDimensionPixelSize(R.dimen.elastic_view_behavior_background_elevation)
+            shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_DEFAULT
+            elevation = context.resources.getDimension(
+                R.dimen.elastic_view_behavior_background_elevation
+            )
             paintStyle = Paint.Style.FILL
         }
 

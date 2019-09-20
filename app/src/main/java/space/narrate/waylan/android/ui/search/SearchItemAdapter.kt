@@ -32,6 +32,7 @@ class SearchItemAdapter(
         parent: ViewGroup,
         viewType: Int
     ): SearchItemViewHolder<SearchItemModel> {
+        @Suppress("UNCHECKED_CAST")
         return when (viewType) {
             VIEW_TYPE_HEADER -> SearchItemViewHolder.HeaderViewHolder(parent, listener)
             VIEW_TYPE_WORD -> SearchItemViewHolder.WordViewHolder(parent, listener)

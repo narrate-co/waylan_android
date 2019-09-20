@@ -27,6 +27,7 @@ class Preference<T>(
     }
 
     // get value
+    @Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
     fun getValue(): T {
         val prefs = sharedPreferences.valueOrDefault
 
@@ -41,6 +42,7 @@ class Preference<T>(
     }
 
     // set value
+    @Suppress("UNCHECKED_CAST")
     fun setValue(value: T) {
         sharedPreferences.valueOrDefault.edit {
             when (value) {

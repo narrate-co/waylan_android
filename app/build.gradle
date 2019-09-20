@@ -30,18 +30,15 @@ android {
     }
 
     // Add shared test dir to be used by both unit and instrumented tests
-    android {
-        sourceSets {
-            String sharedTestDir = 'src/sharedTest/java'
-            test {
-                java.srcDir sharedTestDir
-            }
-            androidTest {
-                java.srcDir sharedTestDir
-            }
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
         }
     }
-
 
     testOptions {
         unitTests {
