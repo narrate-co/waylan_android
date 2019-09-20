@@ -30,6 +30,7 @@ class PreferenceLiveData<T>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun getPreference(): T {
         return  when (default) {
             is Boolean -> sharedPrefs.getBoolean(key, default) as T

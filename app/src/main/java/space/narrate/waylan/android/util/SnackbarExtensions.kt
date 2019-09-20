@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
@@ -62,9 +63,12 @@ private fun Snackbar.config(
         SnackbarType.INFORMATIVE -> R.attr.colorSurface
     }
 
-    val background = context.getDrawable(R.drawable.snackbar_background)
+    val background = AppCompatResources.getDrawable(
+        context,
+        R.drawable.snackbar_background
+    )!!
     val elevationOverlayProvider = ElevationOverlayProvider(context)
-    val backgroundTint = elevationOverlayProvider.layerOverlayIfNeeded(
+    val backgroundTint = elevationOverlayProvider.compositeOverlayIfNeeded(
         context.getColorFromAttr(bgColorAttr),
         context.resources.getDimension(R.dimen.plane_03)
     )

@@ -34,6 +34,7 @@ class ListViewModel(
 
     val list: LiveData<List<ListItemModel>> = listType
         .switchMapTransform { type ->
+            @Suppress("UNCHECKED_CAST")
             when (type) {
                 ListType.TRENDING -> userRepository.trendingListFilterLive
                     .switchMapTransform { filter ->

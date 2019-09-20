@@ -1,6 +1,5 @@
 package space.narrate.waylan.android.util
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Build
@@ -19,8 +18,8 @@ import java.util.*
 
 val isAtLeastQ: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 
+@Suppress("DEPRECATION")
 val String.fromHtml: Spanned
-    @SuppressLint("NewApi")
     get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
     } else {

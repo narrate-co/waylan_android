@@ -20,15 +20,29 @@ android {
         buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
     }
 
-    android {
-        sourceSets {
-            String sharedTestDir = 'src/sharedTest/java'
-            test {
-                java.srcDir sharedTestDir
-            }
-            androidTest {
-                java.srcDir sharedTestDir
-            }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    // Add shared test dir to be used by both unit and instrumented tests
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
         }
     }
 
@@ -40,12 +54,6 @@ android {
 
         debug {
             debuggable true
-        }
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
         }
     }
 

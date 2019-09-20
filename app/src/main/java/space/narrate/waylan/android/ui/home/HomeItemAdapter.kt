@@ -27,6 +27,7 @@ class HomeItemAdapter(
         parent: ViewGroup,
         viewType: Int
     ): HomeItemViewHolder<HomeItemModel> {
+        @Suppress("UNCHECKED_CAST")
         return when (viewType) {
             VIEW_TYPE_ITEM -> HomeItemViewHolder.ItemViewHolder(parent, listener)
             VIEW_TYPE_DIVIDER -> HomeItemViewHolder.DividerViewHolder(parent)

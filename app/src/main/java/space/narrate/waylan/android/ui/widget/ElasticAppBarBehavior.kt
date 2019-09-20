@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapePathModel
+import com.google.android.material.shape.ShapeAppearanceModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.util.getColorFromAttr
 
@@ -159,7 +159,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     // Background to use for the parent CoordinatorLayout. Used to animate edge and corner
     // shape with drag values
-    private val materialShapeDrawable = MaterialShapeDrawable(ShapePathModel())
+    private val materialShapeDrawable: MaterialShapeDrawable
 
     // Reference to this ABL's parent CoordinatorLayout
     private var parentCoordinatorLayout: CoordinatorLayout? = null
@@ -203,18 +203,25 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
         // TODO support custom corner and edge shapes, set through xml/allow setting of a client's
         // TODO own MaterialShapeDrawable as a background
-        val cornerTreatment = SquareToRoundCornerTreatment(context!!.resources.getDimension(R.dimen.elastic_view_behavior_max_corner_radius))
-        materialShapeDrawable.shapedViewModel?.topRightCorner = cornerTreatment
-        materialShapeDrawable.shapedViewModel?.topLeftCorner = cornerTreatment
+        materialShapeDrawable = MaterialShapeDrawable().apply {
+            val cornerTreatment = SquareToRoundCornerTreatment(context!!.resources.getDimension(R.dimen.elastic_view_behavior_max_corner_radius))
+            shapeAppearanceModel = ShapeAppearanceModel.Builder()
+                .setTopLeftCorner(cornerTreatment)
+                .setTopRightCorner(cornerTreatment)
+                .build()
 
-        // TODO update to MDC 1.1.0 and use compat shadows to get shadows on the very top of
-        // TODO this view
-        // Shadows do not currently show due to how the Android framework handles its material
-        // light source. Shadows are only rendered on the sides and bottom of views with a light
-        // source coming from the top of the screen
-        materialShapeDrawable.isShadowEnabled = true
-        materialShapeDrawable.shadowElevation = context.resources.getDimensionPixelSize(R.dimen.elastic_view_behavior_background_elevation)
-        materialShapeDrawable.paintStyle = Paint.Style.FILL
+            // TODO update to MDC 1.1.0 and use compat shadows to get shadows on the very top of
+            // TODO this view
+            // Shadows do not currently show due to how the Android framework handles its material
+            // light source. Shadows are only rendered on the sides and bottom of views with a light
+            // source coming from the top of the screen
+            shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_DEFAULT
+            elevation = context.resources.getDimension(
+                R.dimen.elastic_view_behavior_background_elevation
+            )
+            paintStyle = Paint.Style.FILL
+        }
+
 
         // TODO possibly allow tagging other child views with a custom attr to have them included in
         // TODO property animations

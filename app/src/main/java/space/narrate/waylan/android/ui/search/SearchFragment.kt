@@ -70,7 +70,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
-        BottomSheetBehavior.from(view)
+        BottomSheetBehavior.from(requireView())
     }
 
     private val adapter by lazy { SearchItemAdapter(this) }

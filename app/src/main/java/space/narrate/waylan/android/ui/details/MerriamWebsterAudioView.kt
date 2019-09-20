@@ -146,6 +146,7 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
                 playPauseButton.setImageResource(R.drawable.ic_round_play_arrow_24px)
                 progressUnderlineView.stopProgress()
             }
+            // TODO: Handle AudioState.Error
         }
     }
 
@@ -160,6 +161,7 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
             AudioClipHelper.AudioState.PREPARED,
             AudioClipHelper.AudioState.PLAYING -> stop()
             AudioClipHelper.AudioState.STOPPED -> play()
+            // TODO: Handle AudioState.Error
         }
     }
 

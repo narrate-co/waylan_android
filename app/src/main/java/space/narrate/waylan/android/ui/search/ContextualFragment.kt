@@ -49,7 +49,7 @@ class ContextualFragment : BaseFragment() {
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
-        BottomSheetBehavior.from(view)
+        BottomSheetBehavior.from(requireView())
     }
 
     override fun onCreateView(
@@ -165,6 +165,7 @@ class ContextualFragment : BaseFragment() {
         sharedViewModel.currentDestination.observe(this, Observer { dest ->
             when (dest) {
                 Navigator.Destination.TRENDING -> setExpandedContainer("Filter trending")
+                else -> { /* Ignore or add other filterable lists in the future */ }
             }
         })
 

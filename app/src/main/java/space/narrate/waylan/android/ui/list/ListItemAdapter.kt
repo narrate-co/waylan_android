@@ -33,6 +33,7 @@ class ListItemAdapter(
             parent: ViewGroup,
             viewType: Int
     ): ListItemViewHolder<ListItemModel> {
+        @Suppress("UNCHECKED_CAST")
         return when (viewType) {
             VIEW_TYPE_HEADER -> ListItemViewHolder.HeaderViewHolder(parent, listener)
             VIEW_TYPE_USER_WORD -> ListItemViewHolder.UserWordViewHolder(parent, listener)
