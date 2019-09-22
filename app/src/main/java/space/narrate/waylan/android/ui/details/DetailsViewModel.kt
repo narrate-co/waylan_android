@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.data.repository.*
-import space.narrate.waylan.android.ui.common.Event
-import space.narrate.waylan.android.ui.common.SnackbarModel
+import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.util.mapOnTransform
 import space.narrate.waylan.android.util.mapTransform
 import space.narrate.waylan.android.util.notNullTransform

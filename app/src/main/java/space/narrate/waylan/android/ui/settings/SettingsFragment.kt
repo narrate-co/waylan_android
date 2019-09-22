@@ -18,10 +18,9 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.*
-import space.narrate.waylan.android.billing.BillingConfig
 import space.narrate.waylan.android.billing.BillingManager
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.util.configError
 import space.narrate.waylan.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.waylan.android.util.gone

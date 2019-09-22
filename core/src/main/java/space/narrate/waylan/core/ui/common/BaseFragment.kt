@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.common
+package space.narrate.waylan.core.ui.common
 
 import android.os.Bundle
 import android.view.View

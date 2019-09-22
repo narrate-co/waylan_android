@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import space.narrate.waylan.android.ui.common.Diffable
+import space.narrate.waylan.core.ui.common.Diffable
 
 object AdapterUtils {
 

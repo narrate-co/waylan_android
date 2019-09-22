@@ -2,14 +2,12 @@ package space.narrate.waylan.android.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.billing.BillingConfig
-import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.ui.common.Event
+import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.ui.auth.AuthRoute
 import space.narrate.waylan.android.util.mapTransform
 

@@ -1,39 +1,30 @@
-package space.narrate.waylan.about.ui
+package space.narrate.waylan.about.ui.thirdparty
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.core.widget.NestedScrollView
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.appbar.AppBarLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import space.narrate.waylan.android.BuildConfig
+import space.narrate.waylan.about.databinding.FragmentThirdPartyLibrariesBinding
+import space.narrate.waylan.android.Navigator
+import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.about.R
-import space.narrate.waylan.about.databinding.FragmentAboutBinding
-import space.narrate.waylan.android.R as waylanR
-import space.narrate.waylan.android.ui.common.BaseFragment
-import space.narrate.waylan.android.util.setUpWithElasticBehavior
-import space.narrate.waylan.android.ui.widget.CheckPreferenceView
+import space.narrate.waylan.android.ui.list.ListItemDividerDecoration
 import space.narrate.waylan.android.ui.widget.ElasticTransition
-
+import space.narrate.waylan.android.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.android.R as waylanR
 
 /**
- * A Fragment to display a short about copy as well as miscellaneous items about the Words
- * application and software
- *
- * [R.id.aboutBody] A copy explaining what Words is as a product/company
- * [R.id.version_preference] The build's version name and listType
- * [R.id.third_party_libs_preference] Leads to [ThirdPartyLibrariesFragment]
+ * A simple fragment that displays a static list of [ThirdPartyLibrary]
  */
-class AboutFragment: BaseFragment() {
+class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Listener {
 
-    private lateinit var binding: FragmentAboutBinding
+    private lateinit var binding: FragmentThirdPartyLibrariesBinding
 
     private val sharedViewModel: MainViewModel by sharedViewModel()
 
@@ -47,7 +38,7 @@ class AboutFragment: BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAboutBinding.inflate(inflater, container, false)
+        binding = FragmentThirdPartyLibrariesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,24 +51,15 @@ class AboutFragment: BaseFragment() {
                 this.javaClass.simpleName,
                 sharedViewModel,
                 listOf(navigationIcon),
-                listOf(scrollView, appBar)
+                listOf(recyclerView, appBar)
             )
 
             navigationIcon.setOnClickListener {
                 sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
             }
-
-            // Version preference
-            versionPreference.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
-
-            // Third Party Libs preference
-            thirdPartyLibsPreference.setOnClickListener {
-                findNavController().navigate(
-                    waylanR.id.action_aboutFragment_to_thirdPartyLibrariesFragment
-                )
-            }
         }
 
+        setUpList()
         startPostponedEnterTransition()
     }
 
@@ -88,8 +70,28 @@ class AboutFragment: BaseFragment() {
                 insets.systemWindowInsetTop,
                 insets.systemWindowInsetRight
             )
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
+            recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
         return super.handleApplyWindowInsets(insets)
+    }
+
+    private fun setUpList() {
+        val adapter = ThirdPartyLibraryAdapter(this)
+        binding.run {
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = adapter
+
+            val itemDivider = ListItemDividerDecoration(
+                ContextCompat.getDrawable(requireContext(), waylanR.drawable.list_item_divider)
+            )
+            recyclerView.addItemDecoration(itemDivider)
+
+        }
+
+        adapter.submitList(sharedViewModel.thirdPartyLibraries)
+    }
+
+    override fun onClick(lib: ThirdPartyLibrary) {
+        Navigator.launchWebsite(requireContext(), lib.url)
     }
 }

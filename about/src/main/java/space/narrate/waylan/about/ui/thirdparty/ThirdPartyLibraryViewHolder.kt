@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.third_party
+package space.narrate.waylan.about.ui.thirdparty
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

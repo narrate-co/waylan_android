@@ -22,7 +22,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.*
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.ui.widget.ElasticTransition

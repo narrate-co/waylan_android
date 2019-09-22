@@ -19,8 +19,8 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.billing.BillingConfig
 import space.narrate.waylan.android.data.firestore.users.PluginState
 import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.ui.common.BaseFragment
-import space.narrate.waylan.android.ui.common.SnackbarModel
+import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.util.configError
 import space.narrate.waylan.android.util.configInformative
 import space.narrate.waylan.android.util.setUpWithElasticBehavior

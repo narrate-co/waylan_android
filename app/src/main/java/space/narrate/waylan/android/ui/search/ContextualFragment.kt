@@ -24,7 +24,7 @@ import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.util.*
 
 /**

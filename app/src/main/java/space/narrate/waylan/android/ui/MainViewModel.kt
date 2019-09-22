@@ -9,7 +9,7 @@ import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.ui.common.Event
+import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.ui.search.ContextualFilterModel
 import space.narrate.waylan.android.ui.search.Period
 import space.narrate.waylan.android.ui.search.SearchShelfActionsModel

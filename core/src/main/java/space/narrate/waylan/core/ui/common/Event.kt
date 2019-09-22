@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.common
+package space.narrate.waylan.core.ui.common
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
