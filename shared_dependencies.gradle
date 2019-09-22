@@ -1,0 +1,25 @@
+dependencies {
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+
+    // AndroidX
+    implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+
+    // Material
+    implementation "com.google.android.material:material:${versions.material}"
+
+    // KTX
+    implementation "androidx.core:core-ktx:${versions.androidX}"
+
+    // Koin
+    implementation "org.koin:koin-android-viewmodel:${versions.koin}"
+    implementation "org.koin:koin-java:${versions.koin}"
+}

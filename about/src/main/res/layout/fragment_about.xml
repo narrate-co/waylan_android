@@ -5,13 +5,13 @@
     android:id="@+id/scrim_frame"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="?colorScrim">
+    android:background="?attr/colorScrim">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/coordinator_layout"
-        android:background="?android:windowBackground">
+        android:background="?android:colorBackground">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -20,7 +20,6 @@
             android:overScrollMode="never"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
             <LinearLayout
                 android:id="@+id/content_container"
                 android:layout_width="match_parent"
@@ -28,7 +27,7 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:textAppearance="?textAppearanceBody1"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:id="@+id/aboutBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,8 +38,7 @@
                     android:id="@+id/version_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="Version"
-                    />
+                    app:title="@string/about_version_title" />
 
                 <space.narrate.waylan.android.ui.widget.CheckPreferenceView
                     android:id="@+id/third_party_libs_preference"
@@ -48,7 +46,6 @@
                     android:layout_height="wrap_content"
                     app:title="@string/about_third_party_lib_title"
                     app:desc="@string/about_third_party_lib_desc"/>
-
 
             </LinearLayout>
 
@@ -69,36 +66,33 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="@dimen/keyline_3"
                 android:layout_marginRight="@dimen/keyline_3"
-                app:layout_scrollFlags="scroll|enterAlways"
-                >
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/navigation_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
+                    android:paddingTop="@dimen/keyline_3"
+                    android:paddingBottom="@dimen/keyline_3"
                     android:layout_gravity="left|center_vertical"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_round_arrow_down_24px"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:textAppearance="?textAppearanceHeadline5"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/keyline_2"
-                    android:text="@string/about_title"
-                    />
+                    android:text="@string/about_title" />
 
                 <View
-                    android:layout_width="72dp"
-                    android:layout_height="2dp"
+                    android:layout_width="@dimen/underline_width"
+                    android:layout_height="@dimen/underline_height"
                     android:background="@drawable/title_underline_background"
-                    android:layout_marginTop="@dimen/keyline_3"/>
+                    android:layout_marginTop="@dimen/keyline_3" />
 
             </LinearLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 

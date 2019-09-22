@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.about
+package space.narrate.waylan.about.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,9 @@ import com.google.android.material.appbar.AppBarLayout
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.waylan.android.BuildConfig
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.R
+import space.narrate.waylan.about.R
+import space.narrate.waylan.about.databinding.FragmentAboutBinding
+import space.narrate.waylan.android.R as waylanR
 import space.narrate.waylan.android.ui.common.BaseFragment
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
 import space.narrate.waylan.android.ui.widget.CheckPreferenceView
@@ -31,12 +33,7 @@ import space.narrate.waylan.android.ui.widget.ElasticTransition
  */
 class AboutFragment: BaseFragment() {
 
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var scrollView: NestedScrollView
-    private lateinit var navigationIcon: AppCompatImageButton
-    private lateinit var versionPreference: CheckPreferenceView
-    private lateinit var thirdPartyLibrariesPreference: CheckPreferenceView
+    private lateinit var binding: FragmentAboutBinding
 
     private val sharedViewModel: MainViewModel by sharedViewModel()
 
@@ -50,48 +47,49 @@ class AboutFragment: BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_about, container, false)
+        binding = FragmentAboutBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
-        appBarLayout = view.findViewById(R.id.app_bar)
-        scrollView = view.findViewById(R.id.scroll_view)
-        navigationIcon = view.findViewById(R.id.navigation_icon)
-        versionPreference = view.findViewById(R.id.version_preference)
-        thirdPartyLibrariesPreference = view.findViewById(R.id.third_party_libs_preference)
-
         postponeEnterTransition()
 
-        appBarLayout.setUpWithElasticBehavior(
-            this.javaClass.simpleName,
-            sharedViewModel,
-            listOf(navigationIcon),
-            listOf(scrollView, appBarLayout)
-        )
+        binding.run {
+            appBar.setUpWithElasticBehavior(
+                this.javaClass.simpleName,
+                sharedViewModel,
+                listOf(navigationIcon),
+                listOf(scrollView, appBar)
+            )
 
-        navigationIcon.setOnClickListener {
-            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+            navigationIcon.setOnClickListener {
+                sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+            }
+
+            // Version preference
+            versionPreference.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
+
+            // Third Party Libs preference
+            thirdPartyLibsPreference.setOnClickListener {
+                findNavController().navigate(
+                    waylanR.id.action_aboutFragment_to_thirdPartyLibrariesFragment
+                )
+            }
         }
 
-        // Version preference
-        versionPreference.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
-
-        // Third Party Libs preference
-        thirdPartyLibrariesPreference.setOnClickListener {
-            findNavController().navigate(R.id.action_aboutFragment_to_thirdPartyLibrariesFragment)
-        }
         startPostponedEnterTransition()
     }
 
     override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        coordinatorLayout.updatePadding(
-            insets.systemWindowInsetLeft,
-            insets.systemWindowInsetTop,
-            insets.systemWindowInsetRight
-        )
-        scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
+        binding.run {
+            coordinatorLayout.updatePadding(
+                insets.systemWindowInsetLeft,
+                insets.systemWindowInsetTop,
+                insets.systemWindowInsetRight
+            )
+            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
+        }
         return super.handleApplyWindowInsets(insets)
     }
 }

@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="space.narrate.waylan.android.ui.about.AboutFragment"
+        android:name="space.narrate.waylan.about.ui.AboutFragment"
         android:label="AboutFragment" >
         <action
             android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
