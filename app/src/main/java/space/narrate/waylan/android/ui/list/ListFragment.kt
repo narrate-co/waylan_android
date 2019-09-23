@@ -25,7 +25,8 @@ import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.util.*
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 
 /**
  * A flexible Fragment that handles the display of a [ListType]. Each [ListType] configuration is

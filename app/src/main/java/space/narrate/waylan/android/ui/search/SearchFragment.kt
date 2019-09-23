@@ -39,6 +39,10 @@ import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.core.util.displayHeightPx
+import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.getDimensionPixelSizeFromAttr
+import space.narrate.waylan.core.util.swapImageResource
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,

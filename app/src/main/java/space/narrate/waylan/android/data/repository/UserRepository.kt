@@ -10,16 +10,11 @@ import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.data.prefs.PreferenceStore
 import space.narrate.waylan.android.data.prefs.UserPreferenceStore
 import space.narrate.waylan.android.ui.search.Period
-import space.narrate.waylan.android.util.LiveDataUtils
 import kotlinx.coroutines.launch
 import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.data.auth.AuthenticationStore
 import space.narrate.waylan.android.data.auth.FirebaseAuthWordsException
 import space.narrate.waylan.android.data.prefs.NightMode
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibraryStore
-import space.narrate.waylan.android.ui.settings.NightModeRadioItemModel
-import space.narrate.waylan.android.ui.settings.OrientationRadioItemModel
 import space.narrate.waylan.android.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 
@@ -27,14 +22,12 @@ import kotlin.coroutines.CoroutineContext
  * A repository for all data access to all User data.
  *
  * This repository aggregates access to Firestore [User] and local User Shared Preferences
- *
  */
 class UserRepository(
     private val authenticationStore: AuthenticationStore,
     private val firestoreStore: FirestoreStore,
     private val userPreferenceStore: UserPreferenceStore,
-    private val preferenceStore: PreferenceStore,
-    private val thirdPartyLibraryStore: ThirdPartyLibraryStore
+    private val preferenceStore: PreferenceStore
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -140,7 +133,6 @@ class UserRepository(
         get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
         set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
 
-    val allThirdPartyLibraries: List<ThirdPartyLibrary> = thirdPartyLibraryStore.all
 
     suspend fun getUser(): Result<User> {
         val uid = authenticationStore.uid.value

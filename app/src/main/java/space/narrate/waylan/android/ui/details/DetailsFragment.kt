@@ -20,7 +20,7 @@ import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.ui.search.SearchFragment
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.ElasticTransition
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment

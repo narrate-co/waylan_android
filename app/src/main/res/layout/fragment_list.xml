@@ -28,7 +28,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="space.narrate.waylan.android.ui.widget.ElasticAppBarBehavior"
+            app:layout_behavior="space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior"
             app:dragDismissDirection="down"
             android:background="@android:color/transparent"
             app:elevation="@dimen/plane_00">

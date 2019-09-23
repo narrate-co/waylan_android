@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.AdapterUtils
+import space.narrate.waylan.core.util.AdapterUtils
 import space.narrate.waylan.android.ui.widget.BannerCardView
 
 sealed class SearchItemViewHolder<T : SearchItemModel>(

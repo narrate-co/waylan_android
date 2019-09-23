@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.util
+package space.narrate.waylan.core.util
 
 import android.view.LayoutInflater
 import android.view.View

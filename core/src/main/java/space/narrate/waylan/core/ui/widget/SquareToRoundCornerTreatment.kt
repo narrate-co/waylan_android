@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.widget
+package space.narrate.waylan.core.ui.widget
 
 import com.google.android.material.shape.CornerTreatment
 import com.google.android.material.shape.ShapePath

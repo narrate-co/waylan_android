@@ -3,9 +3,9 @@ package space.narrate.waylan.about.ui.thirdparty
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
-import space.narrate.waylan.android.util.AdapterUtils
+import space.narrate.waylan.about.data.ThirdPartyLibrary
+import space.narrate.waylan.about.databinding.ThirdPartyPreferenceListItemBinding
+import space.narrate.waylan.core.util.AdapterUtils
 
 class ThirdPartyLibraryAdapter(
     private val listener: Listener
@@ -21,8 +21,14 @@ class ThirdPartyLibraryAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ThirdPartyLibraryViewHolder {
-        return ThirdPartyLibraryViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.settings_check_preference_list_item, parent, false), listener)
+        return ThirdPartyLibraryViewHolder(
+            ThirdPartyPreferenceListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ),
+            listener
+        )
     }
 
     override fun onBindViewHolder(holder: ThirdPartyLibraryViewHolder, position: Int) {

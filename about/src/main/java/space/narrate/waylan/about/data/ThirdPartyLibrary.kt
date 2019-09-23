@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.data.prefs
+package space.narrate.waylan.about.data
 
 /**
  * An object that represents all data needed to display a 3p library

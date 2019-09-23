@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.widget
+package space.narrate.waylan.core.ui.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -16,8 +16,8 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.getColorFromAttr
+import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.getColorFromAttr
 
 /**
  * A [CoordinatorLayout.Behavior] to add elastic dragging by animating an AppBar's parent
@@ -170,7 +170,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissDirection)) {
                 val dir = a.getInteger(
                         R.styleable.ElasticViewBehavior_dragDismissDirection,
-                        DIRECTION_DOWN
+                    DIRECTION_DOWN
                 )
                 shouldDismissUp = dir.containsFlag(DIRECTION_UP)
                 shouldDismissDown = dir.containsFlag(DIRECTION_DOWN)

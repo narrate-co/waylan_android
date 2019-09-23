@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.android.ui.widget.CheckPreferenceView xmlns:android="http://schemas.android.com/apk/res/android"
+<space.narrate.waylan.core.ui.widget.CheckPreferenceView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/preference"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginTop="@dimen/keyline_2"
-    app:showDivider="false"
-    />
+    app:showDivider="false" />

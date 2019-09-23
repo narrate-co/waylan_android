@@ -9,14 +9,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.about.data.ThirdPartyLibrary
 import space.narrate.waylan.about.databinding.FragmentThirdPartyLibrariesBinding
-import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.list.ListItemDividerDecoration
-import space.narrate.waylan.android.ui.widget.ElasticTransition
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
+import space.narrate.waylan.core.util.launchWebsite
 import space.narrate.waylan.android.R as waylanR
 
 /**
@@ -27,6 +28,8 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
     private lateinit var binding: FragmentThirdPartyLibrariesBinding
 
     private val sharedViewModel: MainViewModel by sharedViewModel()
+
+    private val thirdPartyLibrariesViewModel: ThirdPartyLibrariesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,10 +91,8 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
 
         }
 
-        adapter.submitList(sharedViewModel.thirdPartyLibraries)
+        adapter.submitList(thirdPartyLibrariesViewModel.thirdPartyLibraries)
     }
 
-    override fun onClick(lib: ThirdPartyLibrary) {
-        Navigator.launchWebsite(requireContext(), lib.url)
-    }
+    override fun onClick(lib: ThirdPartyLibrary) { requireContext().launchWebsite(lib.url) }
 }

@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.widget
+package space.narrate.waylan.core.ui.widget
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -6,10 +6,10 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.children
 import androidx.transition.Fade
 import androidx.transition.TransitionValues
-import space.narrate.waylan.android.R
-
+import java.util.*
 
 /**
  * A Transition that animates a Fragment with a root view that acts as a scrim and a single child
@@ -52,8 +52,7 @@ class ElasticTransition : Fade() {
     }
 
     private fun captureValues(transitionValues: TransitionValues) {
-        val coordinatorLayout: CoordinatorLayout? =
-                transitionValues.view.findViewById(R.id.coordinator_layout)
+        val coordinatorLayout = findChildCoordinator(transitionValues.view)
         transitionValues.values[PROPNAME_TRANSLATION_Y] = coordinatorLayout?.translationY ?: 0F
     }
 
@@ -64,8 +63,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
-                ?: return null
+        val coordinatorLayout = findChildCoordinator(view) ?: return null
 
         val set = AnimatorSet()
 
@@ -73,7 +71,7 @@ class ElasticTransition : Fade() {
         val coordinatorAnim = ObjectAnimator.ofFloat(
                 coordinatorLayout,
                 "translationY",
-                TRANSLATION_DISTANCE,
+            TRANSLATION_DISTANCE,
                 0F
         )
         coordinatorAnim.duration = DEFAULT_DURATION
@@ -97,8 +95,7 @@ class ElasticTransition : Fade() {
             startValues: TransitionValues?,
             endValues: TransitionValues?
     ): Animator? {
-        val coordinatorLayout: CoordinatorLayout? = view?.findViewById(R.id.coordinator_layout)
-                ?: return null
+        val coordinatorLayout = findChildCoordinator(view) ?: return null
 
         val startY = startValues?.values?.get(PROPNAME_TRANSLATION_Y) as? Float ?: 0F
         val endY = startY + TRANSLATION_DISTANCE
@@ -125,5 +122,15 @@ class ElasticTransition : Fade() {
         return set
     }
 
-
+    private fun findChildCoordinator(root: View?): CoordinatorLayout? {
+        val queue = LinkedList<View?>()
+        queue.add(root)
+        while (queue.isNotEmpty()) {
+            when (val v = queue.poll()) {
+                is CoordinatorLayout -> return v
+                is ViewGroup -> v.children.forEach { queue.add(it) }
+            }
+        }
+        return null
+    }
 }

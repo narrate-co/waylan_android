@@ -24,8 +24,9 @@ import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.util.configError
 import space.narrate.waylan.android.util.configInformative
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
-import space.narrate.waylan.android.ui.widget.CheckPreferenceView
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.ui.widget.CheckPreferenceView
+import space.narrate.waylan.core.ui.widget.ElasticTransition
 
 
 /**

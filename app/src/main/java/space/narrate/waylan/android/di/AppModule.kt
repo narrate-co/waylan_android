@@ -16,7 +16,6 @@ import space.narrate.waylan.android.data.mw.MerriamWebsterStore
 import space.narrate.waylan.android.data.mw.RetrofitService
 import space.narrate.waylan.android.data.prefs.PreferenceStore
 import space.narrate.waylan.android.data.prefs.RotationManager
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibraryStore
 import space.narrate.waylan.android.data.prefs.UserPreferenceStore
 import space.narrate.waylan.android.data.repository.AnalyticsRepository
 import space.narrate.waylan.android.data.repository.UserRepository
@@ -39,8 +38,6 @@ val appModule = module {
 
     single { SymSpellStore(androidContext()) }
 
-    single { ThirdPartyLibraryStore }
-
     single { AuthenticationStore(FirebaseAuth.getInstance(), get()) }
 
     single { FirestoreStore(FirebaseFirestore.getInstance(), get()) }
@@ -59,7 +56,7 @@ val appModule = module {
 
     single { WordRepository(get(), get(), get(), get(), get()) }
 
-    single { UserRepository(get(), get(), get(), get(), get()) }
+    single { UserRepository(get(), get(), get(), get()) }
 
     // Managers
     single { RotationManager(androidContext()) }

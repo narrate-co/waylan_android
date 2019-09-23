@@ -1,24 +1,22 @@
 package space.narrate.waylan.about.ui.thirdparty
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
-import space.narrate.waylan.android.ui.widget.CheckPreferenceView
+import space.narrate.waylan.about.data.ThirdPartyLibrary
+import space.narrate.waylan.about.databinding.ThirdPartyPreferenceListItemBinding
 
 /**
  * A simple ViewHolder to hold and bind a [ThirdPartyLibrary] to a RecyclerView item view.
  */
 class ThirdPartyLibraryViewHolder(
-        private val view: View,
-        private val listener: ThirdPartyLibraryAdapter.Listener
-): RecyclerView.ViewHolder(view) {
-
-    private val preferenceView: CheckPreferenceView = view.findViewById(R.id.preference)
+    private val binding: ThirdPartyPreferenceListItemBinding,
+    private val listener: ThirdPartyLibraryAdapter.Listener
+): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(lib: ThirdPartyLibrary) {
-        view.setOnClickListener { listener.onClick(lib) }
-        preferenceView.setTitle(lib.name)
-        preferenceView.setDesc(lib.url)
+        binding.run {
+            root.setOnClickListener { listener.onClick(lib) }
+            preference.setTitle(lib.name)
+            preference.setDesc(lib.url)
+        }
     }
 }

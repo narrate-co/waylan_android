@@ -6,11 +6,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
-import space.narrate.waylan.android.util.children
-import space.narrate.waylan.android.util.getColorFromAttr
-import space.narrate.waylan.android.util.invisible
-import space.narrate.waylan.android.util.visible
+import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.invisible
+import space.narrate.waylan.core.util.visible
 
 /**
  * A FrameLayout which adds a status bar scrim to the top of the screen.

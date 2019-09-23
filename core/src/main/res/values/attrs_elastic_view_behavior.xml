@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <declare-styleable name="ElasticViewBehavior">
         <attr name="dragDismissDirection">
             <flag name="up" value="0x1"/>

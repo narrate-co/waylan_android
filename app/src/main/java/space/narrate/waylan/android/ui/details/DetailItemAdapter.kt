@@ -2,7 +2,7 @@ package space.narrate.waylan.android.ui.details
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import space.narrate.waylan.android.util.AdapterUtils
+import space.narrate.waylan.core.util.AdapterUtils
 import java.lang.IllegalArgumentException
 
 class DetailItemAdapter(

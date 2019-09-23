@@ -1,9 +1,7 @@
 package space.narrate.waylan.android
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavDestination
 import space.narrate.waylan.android.ui.MainActivity
@@ -89,33 +87,6 @@ object Navigator {
             intent.putExtras(filterIntent)
         }
         context.startActivity(intent)
-    }
-
-    /**
-     * Launch the user's default email client directly into a newly composed email.
-     *
-     * @param toEmail The addressee's email address
-     * @param subject The email titleRes
-     * @param body The email's content
-     * @param shareTitle The titleRes of the share picker sheet the client will be offered to choose
-     *  their desired email client
-     * @throws ActivityNotFoundException If the user doesn't have an email client installed, this
-     *  method will throw an ActivityNotFound exception
-     */
-    @Throws(ActivityNotFoundException::class)
-    fun launchEmail(context: Context, toEmail: String, subject: String = "", body: String = "") {
-        val intent = Intent(Intent.ACTION_SENDTO)
-        val mailTo = "mailto:$toEmail?subject=${Uri.encode(subject)}&body=${Uri.encode(body)}"
-        intent.data = Uri.parse(mailTo)
-        context.startActivity(intent)
-    }
-
-    /**
-     * Open a [url] with the default browser
-     */
-    fun launchWebsite(context: Context, url: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        context.startActivity(browserIntent)
     }
 }
 

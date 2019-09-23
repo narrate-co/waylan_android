@@ -10,11 +10,12 @@ import androidx.navigation.fragment.findNavController
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.waylan.about.R
 import space.narrate.waylan.about.databinding.FragmentAboutBinding
+import space.narrate.waylan.about.di.loadAboutModule
 import space.narrate.waylan.android.BuildConfig
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.widget.ElasticTransition
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.android.R as waylanR
 
 /**
@@ -33,6 +34,7 @@ class AboutFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadAboutModule()
         enterTransition = ElasticTransition()
     }
 

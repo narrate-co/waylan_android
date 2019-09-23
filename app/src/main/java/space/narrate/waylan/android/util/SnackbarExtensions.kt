@@ -2,7 +2,6 @@ package space.narrate.waylan.android.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
@@ -12,6 +11,7 @@ import androidx.core.widget.TextViewCompat
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.waylan.android.R
+import space.narrate.waylan.core.util.getColorFromAttr
 
 /**
  * Possible ways in which a Words [Snackbar] can be styled

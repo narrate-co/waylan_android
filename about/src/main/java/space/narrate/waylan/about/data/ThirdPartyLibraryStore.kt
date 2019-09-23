@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.data.prefs
+package space.narrate.waylan.about.data
 
 object ThirdPartyLibraryStore {
     val all = listOf(

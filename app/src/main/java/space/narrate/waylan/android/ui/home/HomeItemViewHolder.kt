@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.AdapterUtils
+import space.narrate.waylan.core.util.AdapterUtils
 
 sealed class HomeItemViewHolder<T : HomeItemModel>(val view: View) : RecyclerView.ViewHolder(view) {
 

@@ -1,12 +1,12 @@
-package space.narrate.waylan.android.ui.list
+package space.narrate.waylan.core.ui.widget
 
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.children
+import space.narrate.waylan.core.R
 
 /**
  * A [RecyclerView.ItemDecoration] that draws a divider above all items in a RecyclerView

@@ -1,15 +1,22 @@
-package space.narrate.waylan.android.ui.widget
+package space.narrate.waylan.core.ui.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.LinearLayout
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.gone
-import space.narrate.waylan.android.util.invisible
-import space.narrate.waylan.android.util.swapImageResource
-import space.narrate.waylan.android.util.visible
-import kotlinx.android.synthetic.main.check_preference_view_layout.view.*
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.core.content.res.use
+import space.narrate.waylan.core.R
+import space.narrate.waylan.core.databinding.CheckPreferenceViewLayoutBinding
+import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.invisible
+import space.narrate.waylan.core.util.swapImageResource
+import space.narrate.waylan.core.util.visible
 
 /**
  * A compound ViewGroup which displays an preference item containing a titleRes, a description and
@@ -37,14 +44,18 @@ class CheckPreferenceView @JvmOverloads constructor(
     private var checked = false
     private var showDivider = true
 
+    private val container: RelativeLayout
+    private val titleTextView: TextView
+    private val descTextView: TextView
+    private val checkbox: ImageButton
+    private val divider: View
+
     // TODO add ability for custom check drawables and avds
 
     init {
         orientation = LinearLayout.VERTICAL
 
-        val a = context.obtainStyledAttributes(attrs, R.styleable.CheckPreferenceView, 0, 0)
-
-        if (a != null) {
+        context.obtainStyledAttributes(attrs, R.styleable.CheckPreferenceView, 0, 0).use { a ->
             if (a.hasValue(R.styleable.CheckPreferenceView_title)) {
                 title = a.getString(R.styleable.CheckPreferenceView_title) ?: ""
             }
@@ -62,10 +73,13 @@ class CheckPreferenceView @JvmOverloads constructor(
             }
         }
 
-        a?.recycle()
-
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.check_preference_view_layout, this, true)
+        val innerView = inflater.inflate(R.layout.check_preference_view_layout, this, true)
+        titleTextView = innerView.findViewById(R.id.titleTextView)
+        descTextView = innerView.findViewById(R.id.descTextView)
+        divider = innerView.findViewById(R.id.divider)
+        checkbox = innerView.findViewById(R.id.checkbox)
+        container = innerView.findViewById(R.id.container)
 
         setTitle(title)
         setDesc(desc)
@@ -89,13 +103,16 @@ class CheckPreferenceView @JvmOverloads constructor(
      */
     fun setDesc(desc: String?) {
         this.desc = desc
-        if (desc != null) {
-            descTextView.text = desc
-            descTextView.visible()
-        } else {
-            descTextView.text = ""
-            descTextView.gone()
+        descTextView.run {
+            if (desc != null) {
+                text = desc
+                visible()
+            } else {
+                text = ""
+                gone()
+            }
         }
+
     }
 
     /**
@@ -105,10 +122,8 @@ class CheckPreferenceView @JvmOverloads constructor(
      */
     fun setCheckable(checkable: Boolean) {
         this.checkable = checkable
-        if (checkable) {
-            checkbox.visible()
-        } else {
-            checkbox.gone()
+        checkbox.run {
+            if (checkable) visible() else gone()
         }
     }
 
@@ -119,10 +134,14 @@ class CheckPreferenceView @JvmOverloads constructor(
      */
     fun setChecked(checked: Boolean) {
         this.checked = checked
-        if (checked) {
-            checkbox.swapImageResource(R.drawable.ic_round_check_circle_24px)
-        } else {
-            checkbox.swapImageResource(R.drawable.ic_round_check_circle_outline_24px)
+        checkbox.run {
+            swapImageResource(
+                if (checked) {
+                    R.drawable.ic_round_check_circle_24px
+                } else {
+                    R.drawable.ic_round_check_circle_outline_24px
+                }
+            )
         }
     }
 
@@ -133,10 +152,8 @@ class CheckPreferenceView @JvmOverloads constructor(
      */
     fun setShowDivider(showDivider: Boolean) {
         this.showDivider = showDivider
-        if (showDivider) {
-            divider.visible()
-        } else {
-            divider.invisible()
+        divider.run {
+            if (showDivider) visible() else invisible()
         }
     }
 

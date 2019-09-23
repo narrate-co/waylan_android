@@ -1,7 +1,6 @@
 package space.narrate.waylan.android.ui.dialog
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -9,13 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapeAppearanceModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.children
-import space.narrate.waylan.android.util.getColorFromAttr
 
 class RadioGroupAlertDialog<T : RadioItemModel>(
     context: Context,

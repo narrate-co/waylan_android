@@ -9,7 +9,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.getStringOrNull
+import space.narrate.waylan.core.util.getStringOrNull
 
 /**
  * A composite [MaterialCardView] which encapsulates Banner logic
