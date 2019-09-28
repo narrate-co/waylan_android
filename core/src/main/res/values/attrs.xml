@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Color system-->
     <attr name="colorInformative" format="color"/>
 
     <attr name="colorBackgroundArea" format="color"/>

@@ -1,3 +1,6 @@
+// :about is the module which contains the About fragment, showing all information about the app
+// and all of it's sub-screens including Third Party libraries.
+
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -6,15 +9,18 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion versions.compileSdk
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
     }
 
+    // View/Data binding
+    viewBinding {
+        enabled = true
+    }
+
+    // Compile options
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -24,8 +30,12 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
-        enabled = true
+    // Testing
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 

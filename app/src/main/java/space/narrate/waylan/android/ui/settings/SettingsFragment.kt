@@ -25,7 +25,7 @@ import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.waylan.android.ui.widget.BannerCardView
 import space.narrate.waylan.core.ui.widget.CheckPreferenceView
-import space.narrate.waylan.android.util.configError
+import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition

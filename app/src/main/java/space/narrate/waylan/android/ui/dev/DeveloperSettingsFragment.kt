@@ -21,10 +21,9 @@ import space.narrate.waylan.android.data.firestore.users.PluginState
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.android.util.configError
-import space.narrate.waylan.android.util.configInformative
+import space.narrate.waylan.core.util.configError
+import space.narrate.waylan.core.util.configInformative
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
-import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.ui.widget.CheckPreferenceView
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 

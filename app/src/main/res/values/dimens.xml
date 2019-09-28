@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Text label dimens (modified chips)-->
+    <dimen name="text_label_height">40dp</dimen>
+    <dimen name="text_label_corner_radius">20dp</dimen> <!--50% rounded-->
+
+    <!--Search box dimens -->
+    <dimen name="search_box_height">52dp</dimen>
+    <dimen name="search_box_corner_radius">26dp</dimen> <!--50% rounded-->
+
+    <!--Search & contextual sheet dimens-->
+    <dimen name="search_min_peek_height">80dp</dimen>
+    <dimen name="contextual_collapsed_container_height">52dp</dimen>
+    <dimen name="contextual_min_peek_height">132dp</dimen>
+
+    <!--Edu. overlay dot dimens-->
+    <dimen name="educational_overlay_dot_diameter">36dp</dimen>
+</resources>

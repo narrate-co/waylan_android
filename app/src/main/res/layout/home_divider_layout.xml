@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.android.ui.widget.ProgressUnderlineView
+<space.narrate.waylan.core.ui.widget.ProgressUnderlineView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/divider"

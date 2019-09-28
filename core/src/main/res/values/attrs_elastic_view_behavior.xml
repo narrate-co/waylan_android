@@ -13,4 +13,8 @@
         <attr name="dragElasticity" format="float"/>
     </declare-styleable>
 
+    <dimen name="elastic_view_behavior_max_corner_radius">42dp</dimen>
+    <dimen name="elastic_view_behavior_background_elevation">24dp</dimen>
+    <dimen name="elastic_view_dismiss_distance">100dp</dimen>
+
 </resources>

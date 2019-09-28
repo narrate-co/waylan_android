@@ -7,5 +7,4 @@
         <attr name="android:checked" format="boolean"/>
         <attr name="showDivider" format="boolean"/>
     </declare-styleable>
-
 </resources>

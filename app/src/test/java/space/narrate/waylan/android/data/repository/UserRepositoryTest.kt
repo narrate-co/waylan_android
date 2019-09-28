@@ -10,16 +10,15 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import space.narrate.waylan.android.CoroutinesTestRule
-import org.mockito.Mockito.`when` as whenever
 import space.narrate.waylan.android.data.auth.AuthenticationStore
 import space.narrate.waylan.android.data.firestore.FirestoreStore
-import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.firestore.users.PluginState
+import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.prefs.Preference
 import space.narrate.waylan.android.data.prefs.PreferenceStore
-import space.narrate.waylan.about.data.ThirdPartyLibraryStore
 import space.narrate.waylan.android.data.prefs.UserPreferenceStore
 import space.narrate.waylan.android.testDatabase
+import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 class UserRepositoryTest {
@@ -28,7 +27,6 @@ class UserRepositoryTest {
     private val firestoreStore = mock(FirestoreStore::class.java)
     private val userPreferenceStore = mock(UserPreferenceStore::class.java)
     private val preferenceStore = mock(PreferenceStore::class.java)
-    private val thirdPartyLibraryStore = mock(space.narrate.waylan.about.data.ThirdPartyLibraryStore::class.java)
 
     private val uid: MutableLiveData<String> = MutableLiveData()
     private val user1Word: MutableLiveData<UserWord> = MutableLiveData()
@@ -53,11 +51,11 @@ class UserRepositoryTest {
             authenticationStore,
             firestoreStore,
             userPreferenceStore,
-            preferenceStore,
-            thirdPartyLibraryStore
+            preferenceStore
         )
     }
 
+    // TODO: This test is flakey and should be fixed or removed.
     @Test
     fun setUserMerriamWebsterState_shouldResetHasSeenPermissionPane_shouldCallFirestore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {

@@ -32,7 +32,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.ui.widget.ProgressUnderlineView
+import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
 import space.narrate.waylan.core.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 

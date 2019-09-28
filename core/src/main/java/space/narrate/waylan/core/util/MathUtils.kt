@@ -1,11 +1,14 @@
-package space.narrate.waylan.android.util
+package space.narrate.waylan.core.util
+
+import kotlin.math.max
+import kotlin.math.min
 
 object MathUtils {
     /**
      * Ensure [value] is no less than [min] and no greater than [max]
      */
     fun constrained(value: Float, min: Float, max: Float): Float {
-        return Math.min(Math.max(value, min), max)
+        return min(max(value, min), max)
     }
 
     /**

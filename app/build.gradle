@@ -1,7 +1,10 @@
+// :app is the main application module which holds the Waylan's single MainActivity and basic
+// user-facing functionality.
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android-extensions' //TODO: Remove in favor of viewBinding.
 apply plugin: 'io.fabric'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -9,45 +12,21 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion versions.compileSdk
     defaultConfig {
         applicationId "space.narrate.words.android"
-        minSdkVersion 23
-        targetSdkVersion 29
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode 7
         versionName "0.0.07.debug"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // Merriam Webster Key
+        // Merriam Webster Key - hidden from VCS
         buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    // Add shared test dir to be used by both unit and instrumented tests
-    sourceSets {
-        String sharedTestDir = 'src/sharedTest/java'
-        test {
-            java.srcDir sharedTestDir
-        }
-        androidTest {
-            java.srcDir sharedTestDir
-        }
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
+    // Build configurations
     buildTypes {
         release {
             minifyEnabled false
@@ -59,21 +38,53 @@ android {
         }
     }
 
+    // View/Data binding
+    viewBinding {
+        enabled = true
+    }
+
+    // Dynamic feature modules
+    dynamicFeatures = [":about"]
+
+    // Compile options
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     lintOptions {
         checkReleaseBuilds false
     }
 
+    // Testing
+    // Add shared test dir to be used by both unit and instrumented tests
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
+
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    // Documentation
     dokka {
         includes = ['app.md']
         outputFormat = 'html'
         outputDirectory = "$buildDir/javadoc"
     }
-
-    viewBinding {
-        enabled = true
-    }
-
-    dynamicFeatures = [":about"]
 }
 
 kapt {
@@ -82,17 +93,14 @@ kapt {
     }
 }
 
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
 
-    // AndroidX
-    implementation "android.arch.paging:runtime:${versions.paging}"
-
     // Room
     implementation "androidx.room:room-runtime:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
+    // TODO: Remove in favor of Room 2.2's createFromAsset.
     implementation "com.github.humazed:RoomAsset:${versions.roomAsset}"
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 
@@ -116,51 +124,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-simplexml:${versions.retrofit}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp3}"
-
-    // Unit tests
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
-    testImplementation "androidx.arch.core:core-testing:${versions.lifecycle}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
-    testImplementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
-    testImplementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
-    testImplementation "com.google.truth:truth:${versions.googleTruth}"
-    testImplementation "org.koin:koin-test:${versions.koin}"
-
-    // Android Unit tests
-    androidTestImplementation "junit:junit:${versions.junit}"
-    androidTestImplementation "org.mockito:mockito-core:${versions.mockito}"
-    androidTestImplementation "org.mockito:mockito-inline:${versions.mockito}"
-
-    // AndroidX JVM tests
-    testImplementation "androidx.test:core-ktx:${versions.testCoreKtx}"
-    testImplementation "androidx.test.ext:junit-ktx:${versions.testExtKotlinRunner}"
-    testImplementation "androidx.test:rules:${versions.testRules}"
-    // Once https://issuetracker.google.com/127986458 is fixed this can be testImplementation
-    implementation "androidx.fragment:fragment-testing:${versions.fragment}"
-    implementation "androidx.test:core:${versions.testCore}"
-    implementation "androidx.fragment:fragment:${versions.fragment}"
-
-    // Instrumented tests
-    androidTestImplementation "androidx.test:core-ktx:${versions.testCoreKtx}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${versions.testExtKotlinRunner}"
-    androidTestImplementation "androidx.test:rules:${versions.testRules}"
-    androidTestImplementation "androidx.room:room-testing:${versions.room}"
-    androidTestImplementation "androidx.arch.core:core-testing:${versions.lifecycle}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:${versions.espresso}"
-    androidTestImplementation "org.robolectric:annotations:${versions.robolectric}"
-    implementation "androidx.test.espresso:espresso-idling-resource:${versions.espresso}"
-
-    androidTestImplementation "androidx.appcompat:appcompat:${versions.appCompat}"
-    androidTestImplementation "com.google.android.material:material:${versions.material}"
 }
 
 apply plugin: 'com.google.gms.google-services'

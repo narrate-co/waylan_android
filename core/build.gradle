@@ -1,3 +1,6 @@
+// :core is a library module which holds dependencies and implementations which are used across
+// all modules.
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -6,19 +9,29 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply from: '../shared_dependencies.gradle'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
-
+    compileSdkVersion versions.compileSdk
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
+    // Build configurations
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // View/Data binding
+    viewBinding {
+        enabled = true
+    }
+
+    // Compile options
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -28,15 +41,12 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    // Testing
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
         }
-    }
-
-    viewBinding {
-        enabled = true
     }
 }
 

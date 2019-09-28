@@ -6,29 +6,25 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
+        android:background="?attr/selectableItemBackground"
         android:padding="@dimen/keyline_3">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:textAppearance="?textAppearanceSubtitle2"
+        <TextView
+            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="56dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:text="Dark mode" />
+            android:layout_marginVertical="@dimen/keyline_0_25" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:textAppearance="?textAppearanceBody2"
             android:id="@+id/descTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleTextView"
             android:layout_marginRight="56dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:text="Reading late at night? Keep looking up words and give your eyes a break." />
+            android:layout_marginVertical="@dimen/keyline_0_25" />
 
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -39,14 +35,14 @@
             android:src="@drawable/ic_round_check_circle_outline_24px"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true" />
+
     </RelativeLayout>
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/keyline_2"
-        android:layout_marginBottom="@dimen/keyline_2"
+        android:layout_marginVertical="@dimen/keyline_2"
         android:layout_marginLeft="@dimen/keyline_3"
         android:background="@drawable/list_item_divider" />
 

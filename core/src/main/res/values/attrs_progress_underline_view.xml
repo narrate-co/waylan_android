@@ -4,5 +4,4 @@
         <attr name="trackColor" format="color"/>
         <attr name="indicatorColor" format="color"/>
     </declare-styleable>
-
 </resources>

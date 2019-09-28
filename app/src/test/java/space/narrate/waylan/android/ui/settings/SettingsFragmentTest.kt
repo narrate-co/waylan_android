@@ -97,11 +97,9 @@ class SettingsFragmentTest: AutoCloseKoinTest() {
         val addedBody = context.getString(R.string.settings_header_registered_subscribed_body)
         onView(withText(addButton)).check(matches(isDisplayed()))
         onView(withText(addBody)).check(matches(isDisplayed()))
-//        onView(withText(addedLabel)).check(matches(not(isDisplayed())))
 
         bannerModel.value = MwBannerModel.create(FirestoreTestData.registeredPurchasedValidUser)
 
-//        onView(withText(addButton)).check(matches(not(isDisplayed())))
         onView(withText(addedBody)).check(matches(isDisplayed()))
         onView(withText(addedLabel)).check(matches(isDisplayed()))
     }

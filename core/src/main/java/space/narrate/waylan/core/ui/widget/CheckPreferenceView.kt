@@ -1,18 +1,15 @@
 package space.narrate.waylan.core.ui.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.use
 import space.narrate.waylan.core.R
-import space.narrate.waylan.core.databinding.CheckPreferenceViewLayoutBinding
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.invisible
 import space.narrate.waylan.core.util.swapImageResource
@@ -53,7 +50,7 @@ class CheckPreferenceView @JvmOverloads constructor(
     // TODO add ability for custom check drawables and avds
 
     init {
-        orientation = LinearLayout.VERTICAL
+        orientation = VERTICAL
 
         context.obtainStyledAttributes(attrs, R.styleable.CheckPreferenceView, 0, 0).use { a ->
             if (a.hasValue(R.styleable.CheckPreferenceView_title)) {

@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.util
+package space.narrate.waylan.core.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,8 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
-import space.narrate.waylan.android.R
-import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.R
 
 /**
  * Possible ways in which a Words [Snackbar] can be styled
@@ -55,8 +54,8 @@ fun Snackbar.configError(context: Context): Snackbar {
  */
 @SuppressLint("ResourceType")
 private fun Snackbar.config(
-        type: SnackbarType,
-        context: Context
+    type: SnackbarType,
+    context: Context
 ): Snackbar {
     val bgColorAttr = when (type) {
         SnackbarType.ERROR -> R.attr.colorError

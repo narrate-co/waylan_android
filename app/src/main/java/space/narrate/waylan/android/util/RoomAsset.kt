@@ -13,6 +13,8 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper
 /**
  * A fork of <a>https://github.com/humazed/RoomAsset</a> that copies a Room database file into the
  * storage when the app is first run.
+ *
+ * TODO: Remove in favor of Room 2.2's new createFromAsset.
  */
 class RoomAsset {
 

@@ -21,6 +21,8 @@ import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.configError
+import space.narrate.waylan.core.util.configInformative
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment

@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.widget
+package space.narrate.waylan.core.ui.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -8,8 +8,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
 import androidx.core.graphics.withTranslation
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.MathUtils
+import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.MathUtils
 
 /**
  * A View that acts as a simple underline when not showing progress and a linear, indeterminate
@@ -33,12 +33,6 @@ class ProgressUnderlineView @JvmOverloads constructor(
         defStyleAttr: Int = 0,
         defStyleRes: Int = DEF_STYLE_RES
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
-
-    companion object {
-        private const val DEF_STYLE_RES = R.style.Widget_Words_ProgressUnderlineView
-
-        private const val ANIM_DURATION = 2000L
-    }
 
     private var trackPaint: Paint
     private var trackRect: RectF = RectF()
@@ -193,4 +187,8 @@ class ProgressUnderlineView @JvmOverloads constructor(
         isAnimating = false
     }
 
+    companion object {
+        private val DEF_STYLE_RES = R.style.Widget_Words_ProgressUnderlineView
+        private const val ANIM_DURATION = 2000L
+    }
 }
