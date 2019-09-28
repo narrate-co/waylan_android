@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ElasticViewBehavior">
+        <attr name="dragDismissDirection">
+            <flag name="up" value="0x1"/>
+            <flag name="down" value="0x2"/>
+            <flag name="right" value="0x4"/>
+            <flag name="left" value="0x8"/>
+        </attr>
+        <attr name="dragDismissDistance" format="dimension"/>
+        <attr name="dragDismissFraction" format="float"/>
+        <attr name="dragDismissScale" format="float"/>
+        <attr name="dragElasticity" format="float"/>
+    </declare-styleable>
+
+    <dimen name="elastic_view_behavior_max_corner_radius">42dp</dimen>
+    <dimen name="elastic_view_behavior_background_elevation">24dp</dimen>
+    <dimen name="elastic_view_dismiss_distance">100dp</dimen>
+
+</resources>

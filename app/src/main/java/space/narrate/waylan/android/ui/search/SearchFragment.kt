@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.waylan.android.*
-import space.narrate.waylan.android.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
@@ -38,8 +38,12 @@ import space.narrate.waylan.android.data.prefs.RotationManager
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.*
-import space.narrate.waylan.android.util.DelayedLifecycleAction
 import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.core.util.MathUtils
+import space.narrate.waylan.core.util.displayHeightPx
+import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.getDimensionPixelSizeFromAttr
+import space.narrate.waylan.core.util.swapImageResource
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,

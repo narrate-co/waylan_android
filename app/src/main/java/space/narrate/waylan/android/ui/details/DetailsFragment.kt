@@ -15,12 +15,14 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
-import space.narrate.waylan.android.ui.common.SnackbarModel
+import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.ui.search.SearchFragment
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.configError
+import space.narrate.waylan.core.util.configInformative
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment

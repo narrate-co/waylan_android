@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.ui.home
 
-import space.narrate.waylan.android.ui.common.Diffable
+import space.narrate.waylan.core.ui.common.Diffable
 import space.narrate.waylan.android.ui.list.ListType
 
 sealed class HomeItemModel : Diffable<HomeItemModel> {

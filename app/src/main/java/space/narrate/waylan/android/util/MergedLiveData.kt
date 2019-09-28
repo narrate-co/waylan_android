@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import java.lang.UnsupportedOperationException
 
 /**
- * A LiveData class that waits for two sources to be fulfilled before setting [LiveData.value]
+ * A LiveData class that waits for two sources to be fulfilled before setting [LiveData.setValue].
  */
 class MergedLiveData<T, K, S>(
         source1: LiveData<T>,

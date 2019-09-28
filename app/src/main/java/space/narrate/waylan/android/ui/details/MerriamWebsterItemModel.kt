@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.ui.details
 
-import space.narrate.waylan.android.ui.common.Diffable
+import space.narrate.waylan.core.ui.common.Diffable
 
 /**
  * A sealed class of all item types to be shown by [MerriamWebsterItemAdapter].

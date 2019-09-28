@@ -5,7 +5,7 @@ import space.narrate.waylan.android.data.disk.wordset.Example
 import space.narrate.waylan.android.data.disk.wordset.WordAndMeanings
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
-import space.narrate.waylan.android.ui.common.Diffable
+import space.narrate.waylan.core.ui.common.Diffable
 
 sealed class DetailItemModel : Diffable<DetailItemModel> {
 

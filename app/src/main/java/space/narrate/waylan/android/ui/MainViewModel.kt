@@ -6,10 +6,9 @@ import space.narrate.waylan.android.data.repository.AnalyticsRepository
 import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibrary
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.ui.common.Event
+import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.ui.search.ContextualFilterModel
 import space.narrate.waylan.android.ui.search.Period
 import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
@@ -89,9 +88,6 @@ class MainViewModel(
 
     val orientation: LiveData<Orientation>
         get() = userRepository.orientationLockLive
-
-    val thirdPartyLibraries: List<ThirdPartyLibrary>
-        get() = userRepository.allThirdPartyLibraries
 
     private val _shouldNavigateBack: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldNavigateBack: LiveData<Event<Boolean>>

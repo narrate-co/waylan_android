@@ -13,7 +13,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.disk.mw.MwWordAndDefinitionGroups
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
-import space.narrate.waylan.android.ui.widget.ProgressUnderlineView
+import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
 
 /**
  * A composite view which shows a play/stop button above a [ProgressUnderlineView].

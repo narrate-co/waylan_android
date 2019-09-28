@@ -81,7 +81,7 @@ class DatabaseSeedService: Service(), CoroutineScope {
 
         //Seed all data from JSON
         val gson = Gson()
-        val files = assets.list("wordset")
+        val files = assets.list("wordset")!!
 
         for (file in files) {
             // Get json string from asset file

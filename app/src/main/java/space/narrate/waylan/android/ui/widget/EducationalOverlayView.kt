@@ -14,7 +14,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.animation.doOnEnd
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.getColorFromAttr
+import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 
 /**
  * A View that lays itself out full screen, attached to the root of the window (or close to it)

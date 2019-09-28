@@ -11,10 +11,10 @@ import space.narrate.waylan.android.data.disk.wordset.Example
 import kotlinx.android.synthetic.main.details_merriam_webster_item_layout.view.*
 import kotlinx.android.synthetic.main.details_title_item_layout.view.*
 import kotlinx.android.synthetic.main.details_wordset_item_layout.view.*
-import space.narrate.waylan.android.util.AdapterUtils
-import space.narrate.waylan.android.util.gone
+import space.narrate.waylan.core.util.AdapterUtils
+import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.android.util.toChip
-import space.narrate.waylan.android.util.visible
+import space.narrate.waylan.core.util.visible
 
 sealed class DetailItemViewHolder<T : DetailItemModel>(
     val view: View

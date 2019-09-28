@@ -14,7 +14,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
@@ -22,6 +21,8 @@ import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
 import space.narrate.waylan.android.util.*
+import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.visible
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a

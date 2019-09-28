@@ -17,19 +17,21 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.*
-import space.narrate.waylan.android.billing.BillingConfig
+import space.narrate.waylan.android.BuildConfig
+import space.narrate.waylan.android.Navigator
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.billing.BillingManager
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.common.BaseFragment
-import space.narrate.waylan.android.util.configError
 import space.narrate.waylan.android.ui.dialog.RadioGroupAlertDialog
-import space.narrate.waylan.android.util.gone
-import space.narrate.waylan.android.util.setUpWithElasticBehavior
-import space.narrate.waylan.android.util.visible
 import space.narrate.waylan.android.ui.widget.BannerCardView
-import space.narrate.waylan.android.ui.widget.CheckPreferenceView
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.widget.CheckPreferenceView
+import space.narrate.waylan.core.util.configError
+import space.narrate.waylan.android.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.launchEmail
+import space.narrate.waylan.core.util.visible
 
 /**
  * A [Fragment] that displays the main settings screen with an account banner (plugins and
@@ -44,7 +46,7 @@ import space.narrate.waylan.android.ui.widget.ElasticTransition
  * [R.id.sign_out_preference] Should only show for registered users and allows the user to log out
  *  and sign in with different credentials or create a new account
  * [R.id.about_preference] Leads to [AboutFragment]
- * [R.id.contact_preference] Calls [Navigator.launchEmail]
+ * [R.id.contact_preference] Calls [ContextExtensions.launchEmail]
  * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
  *  builds
  */
@@ -144,7 +146,7 @@ class SettingsFragment : BaseFragment() {
         contactPreference.setShowDivider(BuildConfig.DEBUG)
         contactPreference.setOnClickListener {
             try {
-                Navigator.launchEmail(context!!, SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
+                requireContext().launchEmail(SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
             } catch (e: ActivityNotFoundException) {
                 Snackbar.make(
                     coordinatorLayout,

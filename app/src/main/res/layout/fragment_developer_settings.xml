@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/clear_user_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -35,14 +35,14 @@
                     app:desc="@string/developer_settings_clear_user_preferences_desc"
                     />
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_state_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="@string/developer_settings_toggle_merriam_webster_state_title"
                     />
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/use_test_skus_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,21 +51,21 @@
                     app:checkable="true"
                     />
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_billing_response_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Toggle Merriam-Webster Billing response"
                     />
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/informative_snackbar_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Informative Snackbar"
                     app:desc="Show a test of an informative snackbar"/>
 
-                <space.narrate.waylan.android.ui.widget.CheckPreferenceView
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/error_snackbar_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:colorBackground"
-            app:layout_behavior="space.narrate.waylan.android.ui.widget.ElasticAppBarBehavior"
+            app:layout_behavior="space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior"
             app:elevation="@dimen/plane_00">
 
             <LinearLayout

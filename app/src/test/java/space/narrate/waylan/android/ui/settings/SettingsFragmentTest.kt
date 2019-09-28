@@ -31,7 +31,7 @@ import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthRoute
-import space.narrate.waylan.android.ui.common.Event
+import space.narrate.waylan.core.ui.common.Event
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest
@@ -97,11 +97,9 @@ class SettingsFragmentTest: AutoCloseKoinTest() {
         val addedBody = context.getString(R.string.settings_header_registered_subscribed_body)
         onView(withText(addButton)).check(matches(isDisplayed()))
         onView(withText(addBody)).check(matches(isDisplayed()))
-//        onView(withText(addedLabel)).check(matches(not(isDisplayed())))
 
         bannerModel.value = MwBannerModel.create(FirestoreTestData.registeredPurchasedValidUser)
 
-//        onView(withText(addButton)).check(matches(not(isDisplayed())))
         onView(withText(addedBody)).check(matches(isDisplayed()))
         onView(withText(addedLabel)).check(matches(isDisplayed()))
     }

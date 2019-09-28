@@ -6,7 +6,7 @@ import space.narrate.waylan.android.data.repository.AnalyticsRepository
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.data.repository.WordRepository
 import space.narrate.waylan.android.data.prefs.*
-import space.narrate.waylan.android.ui.common.Event
+import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.util.mapTransform
 import space.narrate.waylan.android.util.switchMapTransform
 import space.narrate.waylan.android.util.MergedLiveData
