@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.ui.MainViewModel
@@ -20,6 +21,8 @@ import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.ui.search.SearchFragment
+import space.narrate.waylan.core.details.DetailAdapterListener
+import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
@@ -29,7 +32,7 @@ import space.narrate.waylan.core.util.configInformative
  * handles showing the aggregation of WordSet data, Merriam-Webster data and Firestore data
  * for a given word.
  */
-class DetailsFragment: BaseFragment(), DetailItemAdapter.Listener {
+class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
     private lateinit var coordinatorLayout: CoordinatorLayout
     private lateinit var appBarLayout: AppBarLayout
@@ -43,7 +46,8 @@ class DetailsFragment: BaseFragment(), DetailItemAdapter.Listener {
     // This Fragment's ViewModel
     private val viewModel: DetailsViewModel by viewModel()
 
-    private val adapter: DetailItemAdapter = DetailItemAdapter(this)
+    private val detailItemProviderRegistry: DetailItemProviderRegistry by inject()
+    private val adapter: DetailItemAdapter = DetailItemAdapter(detailItemProviderRegistry, this)
 
     private val audioClipHelper by lazy {
         AudioClipHelper(requireContext(), this)

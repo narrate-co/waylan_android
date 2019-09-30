@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/play_pause_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="@dimen/keyline_1"
+        android:paddingLeft="@dimen/keyline_1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_round_play_arrow_24px" />
+
+    <space.narrate.waylan.core.ui.widget.ProgressUnderlineView
+        android:id="@+id/underline"
+        android:layout_width="@dimen/underline_width"
+        android:layout_height="@dimen/underline_height"
+        app:trackColor="?attr/colorDivider"
+        app:indicatorColor="?attr/colorPrimary"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:layout_gravity="right" />
+</merge>

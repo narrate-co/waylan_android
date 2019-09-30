@@ -1,7 +1,6 @@
 package space.narrate.waylan.android.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,24 +8,18 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
-import org.mockito.MockitoAnnotations.initMocks
 import space.narrate.waylan.android.CoroutinesTestRule
 import org.mockito.Mockito.`when` as whenever
 import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.disk.AppDatabase
+import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
 import space.narrate.waylan.android.data.firestore.FirestoreStore
-import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.firestore.users.UserWordType
-import space.narrate.waylan.android.data.mw.MerriamWebsterStore
+import space.narrate.waylan.merriamwebster.data.mw.MerriamWebsterStore
 import space.narrate.waylan.android.data.spell.SymSpellStore
-import space.narrate.waylan.android.LiveDataTestUtils
-import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.util.LiveDataUtils
 import space.narrate.waylan.android.valueBlocking
 
@@ -34,7 +27,7 @@ import space.narrate.waylan.android.valueBlocking
 class WordRepositoryTest {
 
     // Mock AppDatabase
-    private val db = mock(AppDatabase::class.java)
+    private val db = mock(WordsetDatabase::class.java)
     // Mock AuthenticationStore
     private val authenticationStore = mock(AuthenticationStore::class.java)
     // Mock FirestoreStore

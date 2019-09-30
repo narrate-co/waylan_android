@@ -3,15 +3,8 @@ package space.narrate.waylan.android.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.edit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import space.narrate.waylan.android.ui.settings.NightModeRadioItemModel
-import space.narrate.waylan.android.ui.settings.OrientationRadioItemModel
 import space.narrate.waylan.android.util.DefaultingMutableLiveData
-import space.narrate.waylan.android.util.isAtLeastQ
-import space.narrate.waylan.android.util.mapTransform
+import space.narrate.waylan.core.util.isAtLeastQ
 
 /**
  * A top-level store for default (non user tied) [SharedPreferences]

@@ -43,6 +43,8 @@ import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.util.getDimensionPixelSizeFromAttr
+import space.narrate.waylan.core.util.hideSoftKeyboard
+import space.narrate.waylan.core.util.showSoftKeyboard
 import space.narrate.waylan.core.util.swapImageResource
 
 /**

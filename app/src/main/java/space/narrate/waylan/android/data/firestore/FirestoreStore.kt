@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
-import space.narrate.waylan.android.data.disk.AppDatabase
+import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
 import space.narrate.waylan.android.data.firestore.util.*
 import space.narrate.waylan.android.data.firestore.words.GlobalWord
 import space.narrate.waylan.android.ui.search.Period
@@ -30,7 +30,7 @@ import kotlin.coroutines.suspendCoroutine
  */
 class FirestoreStore(
     private val firestore: FirebaseFirestore,
-    private val db: AppDatabase
+    private val db: WordsetDatabase
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext

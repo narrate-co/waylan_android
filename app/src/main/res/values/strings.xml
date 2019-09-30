@@ -22,20 +22,6 @@
     <string name="orientation_prompt_locked_label">Locked</string>
     <string name="orientation_prompt_unlocked_label">Unlocked</string>
 
-    <!--Details-->
-    <string name="details_merriam_webster_card_details_button">Details</string>
-    <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
-
-    <!--MerriamWebsterCardView-->
-    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
-    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
-    <string name="mw_card_view_plugin_expired">Plugin expired</string>
-    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
-
-    <!--MerriamWebsterAudioView-->
-    <string name="mw_audio_view_no_audio_available_error">No audio available</string>
-    <string name="mw_audio_view_requires_mw_plugin_error">Audio pronunciation requires the Merriam-Webster plugin</string>
-
     <!--Notifications-->
     <string name="data_notification_channel_name">Data Notification</string>
     <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
@@ -114,6 +100,11 @@
     <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
     <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
 
+    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
+    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
+    <string name="mw_card_view_plugin_expired">Plugin expired</string>
+    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
+
     <!--Third Party Libraries-->
     <string name="third_party_libraries_title">Third Party Libraries</string>
 
@@ -140,14 +131,16 @@
     <string name="developer_settings_informative_snackbar_test_action">Okay</string>
     <string name="developer_settings_error_snackbar_test_action">Report</string>
     <string name="developer_settings_error_snackbar_test_message">A test error message</string>
+
+    <string name="item_desc">This is a sample description and should be deleted</string>
+    <string name="item_title">Sample title</string>
+    <string name="title_about">About</string>
+    <string name="title_merriamwebster">Merriam-Webster</string>
+
+    <!--AudioClipHelper-->
     <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
     <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
     <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
     <string name="audio_clip_no_network_available">No network available</string>
     <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
-    <string name="item_desc">This is a sample description and should be deleted</string>
-    <string name="item_title">Sample title</string>
-    <string name="title_about">About</string>
-
-
 </resources>

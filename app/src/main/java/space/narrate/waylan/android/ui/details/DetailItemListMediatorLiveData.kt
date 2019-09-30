@@ -2,39 +2,41 @@ package space.narrate.waylan.android.ui.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import space.narrate.waylan.core.details.DetailItemModel
+import space.narrate.waylan.core.details.DetailItemType
 
 class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>() {
 
-    private var titleModel: DetailItemModel.TitleModel? = null
-    private var mwModel: DetailItemModel.MerriamWebsterModel? = null
-    private var wordsetModel: DetailItemModel.WordsetModel? = null
-    private var examplesModel: DetailItemModel.ExamplesModel? = null
+    private var titleModel: DetailItemModel? = null
+    private var mwModel: DetailItemModel? = null
+    private var wordsetModel: DetailItemModel? = null
+    private var examplesModel: DetailItemModel? = null
 
     fun <T : DetailItemModel> addSource(data: LiveData<T>) {
         addSource(data) { set(it) }
     }
 
     private fun <T : DetailItemModel> set(item: T) {
-        when (item) {
-            is DetailItemModel.TitleModel -> {
+        when (item.itemType) {
+            DetailItemType.TITLE -> {
                 if (shouldUpdateList(titleModel, item)) {
                     titleModel = item
                     updateList()
                 }
             }
-            is DetailItemModel.MerriamWebsterModel -> {
+            DetailItemType.MERRIAM_WEBSTER -> {
                 if (shouldUpdateList(mwModel, item)) {
                     mwModel = item
                     updateList()
                 }
             }
-            is DetailItemModel.WordsetModel -> {
+            DetailItemType.WORDSET -> {
                 if (shouldUpdateList(wordsetModel, item)) {
                     wordsetModel = item
                     updateList()
                 }
             }
-            is DetailItemModel.ExamplesModel -> {
+            DetailItemType.EXAMPLE -> {
                 if (shouldUpdateList(examplesModel, item)) {
                     examplesModel = item
                     updateList()
@@ -50,12 +52,14 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
     }
 
     private fun updateList() {
-        postValue(listOfNotNull(
-            titleModel,
-            mwModel,
-            wordsetModel,
-            examplesModel
-        ))
+        postValue(
+            listOfNotNull(
+                titleModel,
+                mwModel,
+                wordsetModel,
+                examplesModel
+            ).sortedBy { it.itemType.order }
+        )
     }
 
 }

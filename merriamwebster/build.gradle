@@ -1,0 +1,58 @@
+// :merriamwebster is a dynamic feature module which includes all code necessary to work with the
+// the Merriam-Webster api and display it's data.
+
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply from: '../shared_dependencies.gradle'
+
+android {
+    compileSdkVersion versions.compileSdk
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+    }
+
+    // View/Data binding
+    viewBinding {
+        enabled = true
+    }
+
+    // Compile options
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    // Testing
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app')
+    implementation project(':core')
+
+    // TODO: Deprecated in 1.1.0-alpha01 and should be replaced with LiveData
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+
+    // Room
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-simplexml:${versions.retrofit}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp3}"
+}

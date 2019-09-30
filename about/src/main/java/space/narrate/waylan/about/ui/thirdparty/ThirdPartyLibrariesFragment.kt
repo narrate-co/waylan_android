@@ -18,7 +18,7 @@ import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.launchWebsite
-import space.narrate.waylan.android.R as waylanR
+import space.narrate.waylan.android.R as appR
 
 /**
  * A simple fragment that displays a static list of [ThirdPartyLibrary]
@@ -85,7 +85,7 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
             recyclerView.adapter = adapter
 
             val itemDivider = ListItemDividerDecoration(
-                ContextCompat.getDrawable(requireContext(), waylanR.drawable.list_item_divider)
+                ContextCompat.getDrawable(requireContext(), appR.drawable.list_item_divider)
             )
             recyclerView.addItemDecoration(itemDivider)
 

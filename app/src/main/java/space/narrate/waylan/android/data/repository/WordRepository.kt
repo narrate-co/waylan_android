@@ -3,20 +3,17 @@ package space.narrate.waylan.android.data.repository
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import space.narrate.waylan.android.data.disk.AppDatabase
+import kotlinx.coroutines.launch
+import space.narrate.waylan.android.data.auth.AuthenticationStore
+import space.narrate.waylan.android.data.disk.wordset.Word
+import space.narrate.waylan.android.data.disk.wordset.WordAndMeanings
+import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
 import space.narrate.waylan.android.data.firestore.FirestoreStore
 import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.firestore.words.GlobalWord
-import space.narrate.waylan.android.data.mw.MerriamWebsterStore
+import space.narrate.waylan.android.data.spell.SuggestItem
 import space.narrate.waylan.android.data.spell.SymSpellStore
 import space.narrate.waylan.android.ui.search.Period
-import space.narrate.waylan.android.util.LiveDataUtils
-import kotlinx.coroutines.launch
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.disk.mw.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.disk.wordset.Word
-import space.narrate.waylan.android.data.disk.wordset.WordAndMeanings
-import space.narrate.waylan.android.data.spell.SuggestItem
 import space.narrate.waylan.android.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 
@@ -26,11 +23,10 @@ import kotlin.coroutines.CoroutineContext
  * access word-related data through [WordRepository].
  */
 class WordRepository(
-        private val db: AppDatabase,
-        private val authenticationStore: AuthenticationStore,
-        private val firestoreStore: FirestoreStore,
-        private val merriamWebsterStore: MerriamWebsterStore,
-        private val symSpellStore: SymSpellStore
+    private val db: WordsetDatabase,
+    private val authenticationStore: AuthenticationStore,
+    private val firestoreStore: FirestoreStore,
+    private val symSpellStore: SymSpellStore
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -56,10 +52,6 @@ class WordRepository(
         return authenticationStore.uid.switchMapTransform {
             firestoreStore.getUserWordLive(id, it)
         }
-    }
-
-    fun getMerriamWebsterWord(word: String): LiveData<List<MwWordAndDefinitionGroups>> {
-        return merriamWebsterStore.getWordAndDefinitions(word)
     }
 
     fun getGlobalWordTrending(

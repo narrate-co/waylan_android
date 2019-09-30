@@ -16,7 +16,7 @@ import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
-import space.narrate.waylan.android.R as waylanR
+import space.narrate.waylan.android.R as appR
 
 /**
  * A Fragment to display a short about copy as well as miscellaneous items about the Words
@@ -69,7 +69,7 @@ class AboutFragment: BaseFragment() {
             // Third Party Libs preference
             thirdPartyLibsPreference.setOnClickListener {
                 findNavController().navigate(
-                    waylanR.id.action_aboutFragment_to_thirdPartyLibrariesFragment
+                    appR.id.action_aboutFragment_to_thirdPartyLibrariesFragment
                 )
             }
         }

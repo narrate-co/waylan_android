@@ -5,3 +5,4 @@ include ':app'
 // About is a dynamic feature module that includes the about screen and third
 // party libraries screen as well as the static data consumed by each.
 include ':about'
+include ':merriamwebster'
