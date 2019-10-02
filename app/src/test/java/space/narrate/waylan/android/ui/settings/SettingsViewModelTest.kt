@@ -9,14 +9,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when` as whenever
-import space.narrate.waylan.android.CoroutinesTestRule
 import space.narrate.waylan.android.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.test_common.CoroutinesTestRule
+import space.narrate.waylan.test_common.valueBlocking
 import java.util.*
+import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi

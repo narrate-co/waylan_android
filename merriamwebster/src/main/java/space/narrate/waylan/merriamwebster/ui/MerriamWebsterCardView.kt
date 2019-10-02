@@ -14,6 +14,10 @@ import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
 
+/**
+ * A composite view which is able to display all content retrieved from
+ * Merriam-Webster for a given word.
+ */
 class MerriamWebsterCardView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

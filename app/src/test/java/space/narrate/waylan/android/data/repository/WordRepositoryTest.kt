@@ -11,17 +11,16 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
-import space.narrate.waylan.android.CoroutinesTestRule
-import org.mockito.Mockito.`when` as whenever
 import space.narrate.waylan.android.data.auth.AuthenticationStore
 import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
 import space.narrate.waylan.android.data.firestore.FirestoreStore
 import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.firestore.users.UserWordType
-import space.narrate.waylan.merriamwebster.data.mw.MerriamWebsterStore
 import space.narrate.waylan.android.data.spell.SymSpellStore
 import space.narrate.waylan.android.util.LiveDataUtils
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.test_common.CoroutinesTestRule
+import space.narrate.waylan.test_common.valueBlocking
+import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 class WordRepositoryTest {
@@ -32,8 +31,6 @@ class WordRepositoryTest {
     private val authenticationStore = mock(AuthenticationStore::class.java)
     // Mock FirestoreStore
     private val firestoreStore = mock(FirestoreStore::class.java)
-    // Mock MerriamWebsterStore
-    private val merriamWebsterStore = mock(MerriamWebsterStore::class.java)
     // Mock SymSpellStore
     private val symSpellStore = mock(SymSpellStore::class.java)
 
@@ -68,7 +65,6 @@ class WordRepositoryTest {
             db,
             authenticationStore,
             firestoreStore,
-            merriamWebsterStore,
             symSpellStore
         )
     }
@@ -106,6 +102,12 @@ class WordRepositoryTest {
         assertThat(result.valueBlocking).isEqualTo(user2Word.value)
     }
 
+
+    /**
+     * TODO: This test is flakey and should be fixed or removed.
+     *
+     * Note: This test passes if run individually, but not during a full run of this test class.
+     */
     @Test
     fun setUserWordFavoritedWithUser_shouldCallFirestoreStore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {

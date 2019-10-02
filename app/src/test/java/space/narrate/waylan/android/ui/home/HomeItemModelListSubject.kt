@@ -3,8 +3,6 @@ package space.narrate.waylan.android.ui.home
 import com.google.common.truth.Fact
 import com.google.common.truth.FailureMetadata
 import com.google.common.truth.Subject
-import com.google.common.truth.Truth.assertAbout
-
 
 class HomeItemModelListSubject(
     failureMetadata: FailureMetadata,

@@ -1,5 +1,6 @@
 package space.narrate.waylan.merriamwebster.data.remote
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -138,6 +139,7 @@ class MerriamWebsterStore(
     }
 
     companion object {
+        @VisibleForTesting
         private const val DEV_KEY = BuildConfig.MERRIAM_WEBSTER_KEY
     }
 }

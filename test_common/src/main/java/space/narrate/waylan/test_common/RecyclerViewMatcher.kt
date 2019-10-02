@@ -1,14 +1,11 @@
-package space.narrate.waylan.android
+package space.narrate.waylan.test_common
 
 import android.content.res.Resources
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.ViewInteraction
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
-import java.lang.Exception
 
 class RecyclerViewMatcher(private val recyclerViewId: Int) {
 

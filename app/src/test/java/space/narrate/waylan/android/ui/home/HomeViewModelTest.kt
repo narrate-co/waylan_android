@@ -7,13 +7,13 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import space.narrate.waylan.android.R
-import org.mockito.Mockito.`when` as whenever
-import space.narrate.waylan.android.data.repository.WordRepository
 import space.narrate.waylan.android.FirestoreTestData
-import space.narrate.waylan.android.LiveDataTestUtils
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.android.R
+import space.narrate.waylan.android.data.repository.WordRepository
 import space.narrate.waylan.android.ui.list.ListType
+import space.narrate.waylan.test_common.LiveDataTestUtils
+import space.narrate.waylan.test_common.valueBlocking
+import org.mockito.Mockito.`when` as whenever
 
 class HomeViewModelTest {
 

@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 import space.narrate.waylan.merriamwebster.data.remote.MerriamWebsterStore
 
+/**
+ * A repository which knows how to query for Merriam-Webster data.
+ */
 class MerriamWebsterRepository(
     private val merriamWebsterStore: MerriamWebsterStore
 ) {

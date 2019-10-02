@@ -8,6 +8,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import space.narrate.waylan.core.data.RoomTypeConverters
 
+/**
+ * Database which acts as an offline cache for Merriam-Webster data. When a new word is querried,
+ * the word is retrieved from thw Merriam-Webster API and placed into this database before being fed
+ * to the UI. Subsequent lookups will pull directly from this db instead of calling the API.
+ */
 @Database(
     entities = [
         MwWord::class,

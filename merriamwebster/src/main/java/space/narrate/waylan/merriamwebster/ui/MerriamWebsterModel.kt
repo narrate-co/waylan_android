@@ -6,7 +6,10 @@ import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 
-
+/**
+ * Merriam-Webster's data item model which is used to construct a DataItemViewHolder that is able
+ * to be displayed by the details screen.
+ */
 class MerriamWebsterModel(
     val entries: List<MwWordAndDefinitionGroups>,
     val user: User?

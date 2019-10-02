@@ -21,7 +21,6 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
-import org.mockito.Mockito.`when` as whenever
 import org.mockito.Mockito.mock
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
@@ -32,6 +31,7 @@ import space.narrate.waylan.android.data.prefs.Orientation
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthRoute
 import space.narrate.waylan.core.ui.common.Event
+import org.mockito.Mockito.`when` as whenever
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest

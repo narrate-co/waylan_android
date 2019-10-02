@@ -10,6 +10,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply from: '../shared_dependencies.gradle'
+apply from: '../test_dependencies.gradle'
 
 android {
     compileSdkVersion versions.compileSdk

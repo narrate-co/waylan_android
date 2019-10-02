@@ -7,7 +7,7 @@ import org.aaronhe.threetengson.ThreeTenGsonAdapter
 import org.threeten.bp.format.DateTimeFormatter
 
 /**
- * Type converters for unsupported types in Room objects
+ * Type converters for unsupported types in Merriam-Webster entities.
  */
 object MerriamWebsterTypeConverters {
 

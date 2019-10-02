@@ -1,4 +1,4 @@
-package space.narrate.waylan.android
+package space.narrate.waylan.test_common
 
 import org.mockito.ArgumentCaptor
 

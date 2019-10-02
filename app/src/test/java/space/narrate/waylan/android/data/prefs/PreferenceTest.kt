@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
@@ -14,13 +13,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when` as whenever
 import org.robolectric.RobolectricTestRunner
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.util.DefaultingMutableLiveData
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.test_common.valueBlocking
 
 @RunWith(RobolectricTestRunner::class)
 class PreferenceTest : KoinTest {
