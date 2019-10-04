@@ -25,6 +25,12 @@ android {
 
         // Merriam Webster Key - hidden from VCS
         buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     // Build configurations

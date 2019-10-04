@@ -8,7 +8,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import space.narrate.waylan.core.data.RoomTypeConverters
+import java.io.File
+import java.lang.Exception
 
 /**
  *
@@ -84,6 +88,23 @@ abstract class WordsetDatabase: RoomDatabase() {
                 .databaseBuilder(context, WordsetDatabase::class.java, "$dbName.db")
                 .createFromAsset("databases/$dbName.db")
                 .build()
+        }
+
+        private suspend fun deleteDatabaseFile(
+            context: Context,
+            dbName: String
+        ) = withContext(Dispatchers.IO){
+            val databases = File("${context.applicationInfo.dataDir}/databases")
+            val database = File(databases, dbName)
+            val journal = File(databases, "$dbName-journal")
+            try {
+                if (database.exists()) database.delete()
+                if (journal.exists()) journal.delete()
+                println("DELETED DATABASE $dbName")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("UNABLE TO DELETE DATABASE $dbName")
+            }
         }
     }
 }
