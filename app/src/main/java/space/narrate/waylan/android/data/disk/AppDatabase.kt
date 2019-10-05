@@ -8,13 +8,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import space.narrate.waylan.android.data.disk.mw.MwDefinitionGroup
 import space.narrate.waylan.android.data.disk.mw.MwDao
+import space.narrate.waylan.android.data.disk.mw.MwDefinitionGroup
 import space.narrate.waylan.android.data.disk.wordset.Meaning
 import space.narrate.waylan.android.data.disk.wordset.MeaningDao
 import space.narrate.waylan.android.data.disk.wordset.Word
 import space.narrate.waylan.android.data.disk.wordset.WordDao
-import space.narrate.waylan.android.util.RoomAsset
 
 /**
  *
@@ -84,11 +83,11 @@ abstract class AppDatabase: RoomDatabase() {
 
         // Copy the .db file on first load, otherwise return the AppDatabase instance
         private fun buildDatabase(context: Context, dbName: String): AppDatabase {
-            return RoomAsset
+            return Room
                 .databaseBuilder(context, AppDatabase::class.java, "$dbName.db")
+                .createFromAsset("databases/word-db.db")
                 .build()
         }
-
     }
 }
 

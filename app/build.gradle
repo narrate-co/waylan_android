@@ -100,9 +100,6 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
-    // TODO: Remove in favor of Room 2.2's createFromAsset.
-    implementation "com.github.humazed:RoomAsset:${versions.roomAsset}"
-    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
 
     // ThreeTen BP - Date & Time and GSON adapter
     implementation "org.threeten:threetenbp:${versions.threetenbp}"
