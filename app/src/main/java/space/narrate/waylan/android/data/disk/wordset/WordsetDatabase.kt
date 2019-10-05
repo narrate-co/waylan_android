@@ -10,6 +10,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import space.narrate.waylan.core.data.RoomTypeConverters
 import java.io.File
 import java.lang.Exception
@@ -87,6 +89,15 @@ abstract class WordsetDatabase: RoomDatabase() {
             return Room
                 .databaseBuilder(context, WordsetDatabase::class.java, "$dbName.db")
                 .createFromAsset("databases/$dbName.db")
+                .addCallback(object : Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        // Clean up orphaned databases used before each module had its own database.
+                        GlobalScope.launch {
+                            deleteDatabaseFile(context, "word-db")
+                        }
+                    }
+                })
                 .build()
         }
 
@@ -95,11 +106,9 @@ abstract class WordsetDatabase: RoomDatabase() {
             dbName: String
         ) = withContext(Dispatchers.IO){
             val databases = File("${context.applicationInfo.dataDir}/databases")
-            val database = File(databases, dbName)
-            val journal = File(databases, "$dbName-journal")
+            val database = File(databases, "$dbName.db")
             try {
                 if (database.exists()) database.delete()
-                if (journal.exists()) journal.delete()
                 println("DELETED DATABASE $dbName")
             } catch (e: Exception) {
                 e.printStackTrace()
