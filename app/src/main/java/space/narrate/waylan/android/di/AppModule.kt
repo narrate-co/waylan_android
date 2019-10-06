@@ -5,9 +5,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import space.narrate.waylan.android.BuildConfig
-import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.billing.BillingManager
 import space.narrate.waylan.android.data.auth.AuthenticationStore
 import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
@@ -19,6 +19,7 @@ import space.narrate.waylan.android.data.repository.AnalyticsRepository
 import space.narrate.waylan.android.data.repository.UserRepository
 import space.narrate.waylan.android.data.repository.WordRepository
 import space.narrate.waylan.android.data.spell.SymSpellStore
+import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
 import space.narrate.waylan.android.ui.details.ExampleDetailDataProvider
@@ -32,12 +33,9 @@ import space.narrate.waylan.android.ui.home.HomeViewModel
 import space.narrate.waylan.android.ui.list.ListViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
 import space.narrate.waylan.android.ui.settings.SettingsViewModel
-import space.narrate.waylan.core.details.DetailDataProvider
-import space.narrate.waylan.core.details.DetailDataProviderFactory
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
-import space.narrate.waylan.core.details.DetailItemProvider
-import space.narrate.waylan.core.details.DetailItemProviderFactory
+import space.narrate.waylan.core.details.DetailProviderFactory
 
 val appModule = module {
 
@@ -87,17 +85,24 @@ val appModule = module {
 
     viewModel { AuthViewModel(get(), get(), get()) }
 
+    // Use reflection to get an instance of :merriamwebster's DetailProviderFactory.
+    // TODO Move this into :merriamwebster when mw becomes not installed at runtime.
+    single(named("merriamWebsterDetailProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.merriamwebster.di.MerriamWebsterModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
     // Details
     single {
         val detailDataProviderRegistry = DetailDataProviderRegistry()
 
-        val merriamWebsterModuleProviderFactory = Class.forName(
-            "space.narrate.waylan.merriamwebster.di.MerriamWebsterModuleProviderFactory"
-        ).newInstance() as DetailDataProviderFactory
+        val merriamWebsterDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterDetailProviderFactory"))
 
         detailDataProviderRegistry.addProviders(
             TitleDetailDataProvider(get()),
-            merriamWebsterModuleProviderFactory.getDetailDataProvider(),
+            merriamWebsterDetailProviderFactory.getDetailDataProvider(),
             WordsetDetailDataProvider(get()),
             ExampleDetailDataProvider(get())
         )
@@ -107,17 +112,14 @@ val appModule = module {
 
     single {
         val detailItemFactory = DetailItemProviderRegistry()
-        // Use reflection to add the Merriam Webster item provider. If :merriamwebster become a
-        // dynamic feature that is not included at install, this should be moved out of coreModule
-        // and instead added/removed whenever the :merriamwebster module is loaded/unloaded.
-        val merriamWebsterModuleProviderFactory = Class.forName(
-            "space.narrate.waylan.merriamwebster.di.MerriamWebsterModuleProviderFactory"
-        ).newInstance() as DetailItemProviderFactory
+
+        val merriamWebsterDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterDetailProviderFactory"))
 
         // Add the Merriam-Webster provider to the detailItemFactory
         detailItemFactory.addProviders(
             TitleDetailItemProvider(),
-            merriamWebsterModuleProviderFactory.getDetailItemProvider(),
+            merriamWebsterDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),
             ExamplesDetailItemProvider()
         )

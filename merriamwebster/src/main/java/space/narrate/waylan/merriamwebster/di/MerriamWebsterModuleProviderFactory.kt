@@ -1,12 +1,10 @@
 package space.narrate.waylan.merriamwebster.di
 
 import org.koin.core.context.loadKoinModules
-import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.getKoin
 import space.narrate.waylan.core.details.DetailDataProvider
-import space.narrate.waylan.core.details.DetailDataProviderFactory
 import space.narrate.waylan.core.details.DetailItemProvider
-import space.narrate.waylan.core.details.DetailItemProviderFactory
+import space.narrate.waylan.core.details.DetailProviderFactory
 import space.narrate.waylan.merriamwebster.ui.MerriamWebsterDetailDataProvider
 import space.narrate.waylan.merriamwebster.ui.MerriamWebsterDetailItemProvider
 
@@ -21,7 +19,7 @@ private var isModuleLoaded: Boolean = false
  * This class also serves as the surface of this module, showing what is exposed and what can
  * be used by other modules.
  */
-class MerriamWebsterModuleProviderFactory : DetailDataProviderFactory, DetailItemProviderFactory {
+class MerriamWebsterModuleProviderFactory : DetailProviderFactory {
 
     init {
         synchronized(isModuleLoaded) {

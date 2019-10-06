@@ -84,36 +84,11 @@ abstract class WordsetDatabase: RoomDatabase() {
                 .build()
         }
 
-        // Copy the .db file on first load, otherwise return the AppDatabase instance
         private fun buildDatabase(context: Context, dbName: String): WordsetDatabase {
             return Room
                 .databaseBuilder(context, WordsetDatabase::class.java, "$dbName.db")
                 .createFromAsset("databases/$dbName.db")
-                .addCallback(object : Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                        // Clean up orphaned databases used before each module had its own database.
-                        GlobalScope.launch {
-                            deleteDatabaseFile(context, "word-db")
-                        }
-                    }
-                })
                 .build()
-        }
-
-        private suspend fun deleteDatabaseFile(
-            context: Context,
-            dbName: String
-        ) = withContext(Dispatchers.IO){
-            val databases = File("${context.applicationInfo.dataDir}/databases")
-            val database = File(databases, "$dbName.db")
-            try {
-                if (database.exists()) database.delete()
-                println("DELETED DATABASE $dbName")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                println("UNABLE TO DELETE DATABASE $dbName")
-            }
         }
     }
 }
