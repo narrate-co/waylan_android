@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
-import space.narrate.waylan.android.data.disk.wordset.Synonym
-import space.narrate.waylan.android.util.*
 import kotlinx.android.synthetic.main.list_item_layout.view.*
 import org.threeten.bp.OffsetDateTime
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.data.disk.wordset.Synonym
 import space.narrate.waylan.android.ui.widget.BannerCardView
+import space.narrate.waylan.android.util.toChip
 import space.narrate.waylan.core.util.AdapterUtils
 
 sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView.ViewHolder(view) {

@@ -1,0 +1,61 @@
+// :test_common hold all test dependencies that are used across modules for both unit and
+// instrumentation tests.
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versions.compileSdk
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    // Build configurations
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Compile options
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    // Testing
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+
+    implementation "junit:junit:${versions.junit}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+    implementation "org.mockito:mockito-core:${versions.mockito}"
+    implementation "org.mockito:mockito-inline:${versions.mockito}"
+    implementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
+    implementation "androidx.test.espresso:espresso-core:${versions.espresso}"
+    implementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
+    implementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
+}

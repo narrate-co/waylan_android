@@ -47,6 +47,7 @@ buildscript {
         keyProperties = new Properties()
         keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
         mwApiKey = keyProperties.getProperty("merriamWebster.key", "")
+        kotlin_version = '1.3.50'
     }
 
     repositories {

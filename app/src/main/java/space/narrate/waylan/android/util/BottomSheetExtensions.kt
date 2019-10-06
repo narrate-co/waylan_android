@@ -3,6 +3,7 @@ package space.narrate.waylan.android.util
 import android.app.Activity
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import space.narrate.waylan.core.util.hideSoftKeyboard
 
 fun <V: View?> BottomSheetBehavior<V>.hide(activity: Activity? = null): Boolean {
     if (state != BottomSheetBehavior.STATE_HIDDEN && isHideable) {

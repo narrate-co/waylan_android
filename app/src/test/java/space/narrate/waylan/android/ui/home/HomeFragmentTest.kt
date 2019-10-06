@@ -23,15 +23,15 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
-import org.mockito.Mockito.`when` as whenever
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.RecyclerViewMatcher
 import space.narrate.waylan.android.ui.list.ListType
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
+import space.narrate.waylan.test_common.RecyclerViewMatcher
+import org.mockito.Mockito.`when` as whenever
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest

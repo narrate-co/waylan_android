@@ -20,9 +20,10 @@ import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
-import space.narrate.waylan.android.util.*
 import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
+import kotlin.math.max
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -213,8 +214,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        contextualSheetBehavior.setBottomSheetCallback(contextualSheetCallback)
-        searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
+        contextualSheetBehavior.bottomSheetCallback = contextualSheetCallback
+        searchSheetBehavior.bottomSheetCallback = searchSheetCallback
     }
 
     /**
@@ -235,7 +236,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
-        bottomSheetScrimView.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
+        bottomSheetScrimView.alpha = max(searchSheetSlide, contextualSheetSlide)
     }
 
     private fun setOrientation(orientation: Orientation) {

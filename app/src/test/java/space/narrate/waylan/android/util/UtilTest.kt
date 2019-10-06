@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.util
 
-import space.narrate.waylan.android.util.peekOrNull
+import space.narrate.waylan.core.util.peekOrNull
 import org.junit.Test
 import java.util.*
 import org.junit.Assert.*

@@ -10,6 +10,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply from: '../shared_dependencies.gradle'
+apply from: '../test_dependencies.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -24,6 +25,12 @@ android {
 
         // Merriam Webster Key - hidden from VCS
         buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     // Build configurations
@@ -44,7 +51,7 @@ android {
     }
 
     // Dynamic feature modules
-    dynamicFeatures = [":about"]
+    dynamicFeatures = [":about", ":merriamwebster"]
 
     // Compile options
     compileOptions {
@@ -85,6 +92,8 @@ android {
         outputFormat = 'html'
         outputDirectory = "$buildDir/javadoc"
     }
+
+
 }
 
 kapt {
@@ -101,13 +110,6 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
 
-    // ThreeTen BP - Date & Time and GSON adapter
-    implementation "org.threeten:threetenbp:${versions.threetenbp}"
-    implementation "org.aaronhe:threetenbp-gson-adapter:${versions.threetenbpGson}"
-
-    // GSON
-    implementation "com.google.code.gson:gson:${versions.gson}"
-
     // Firebase & Firestore
     implementation "com.google.firebase:firebase-core:${versions.firebaseCore}"
     implementation "com.google.firebase:firebase-auth:${versions.firebaseAuth}"
@@ -117,10 +119,6 @@ dependencies {
     // Google Play Billing
     implementation "com.android.billingclient:billing:${versions.googlePlayBilling}"
 
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:converter-simplexml:${versions.retrofit}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp3}"
 }
 
 apply plugin: 'com.google.gms.google-services'

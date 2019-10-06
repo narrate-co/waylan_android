@@ -16,6 +16,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
 
+    // Room
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+
     // Material
     implementation "com.google.android.material:material:${versions.material}"
 
@@ -25,6 +29,13 @@ dependencies {
     // Koin
     implementation "org.koin:koin-android-viewmodel:${versions.koin}"
     implementation "org.koin:koin-java:${versions.koin}"
+
+    // ThreeTen BP - Date & Time and GSON adapter
+    implementation "org.threeten:threetenbp:${versions.threetenbp}"
+    implementation "org.aaronhe:threetenbp-gson-adapter:${versions.threetenbpGson}"
+
+    // GSON
+    implementation "com.google.code.gson:gson:${versions.gson}"
 
     // Unit tests
     testImplementation "junit:junit:${versions.junit}"

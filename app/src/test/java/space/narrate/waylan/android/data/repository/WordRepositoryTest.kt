@@ -1,7 +1,6 @@
 package space.narrate.waylan.android.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,38 +8,29 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
-import org.mockito.MockitoAnnotations.initMocks
-import space.narrate.waylan.android.CoroutinesTestRule
-import org.mockito.Mockito.`when` as whenever
 import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.disk.AppDatabase
+import space.narrate.waylan.android.data.disk.wordset.WordsetDatabase
 import space.narrate.waylan.android.data.firestore.FirestoreStore
-import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.firestore.users.UserWordType
-import space.narrate.waylan.android.data.mw.MerriamWebsterStore
 import space.narrate.waylan.android.data.spell.SymSpellStore
-import space.narrate.waylan.android.LiveDataTestUtils
-import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.util.LiveDataUtils
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.test_common.CoroutinesTestRule
+import space.narrate.waylan.test_common.valueBlocking
+import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 class WordRepositoryTest {
 
     // Mock AppDatabase
-    private val db = mock(AppDatabase::class.java)
+    private val db = mock(WordsetDatabase::class.java)
     // Mock AuthenticationStore
     private val authenticationStore = mock(AuthenticationStore::class.java)
     // Mock FirestoreStore
     private val firestoreStore = mock(FirestoreStore::class.java)
-    // Mock MerriamWebsterStore
-    private val merriamWebsterStore = mock(MerriamWebsterStore::class.java)
     // Mock SymSpellStore
     private val symSpellStore = mock(SymSpellStore::class.java)
 
@@ -75,7 +65,6 @@ class WordRepositoryTest {
             db,
             authenticationStore,
             firestoreStore,
-            merriamWebsterStore,
             symSpellStore
         )
     }
@@ -113,6 +102,12 @@ class WordRepositoryTest {
         assertThat(result.valueBlocking).isEqualTo(user2Word.value)
     }
 
+
+    /**
+     * TODO: This test is flakey and should be fixed or removed.
+     *
+     * Note: This test passes if run individually, but not during a full run of this test class.
+     */
     @Test
     fun setUserWordFavoritedWithUser_shouldCallFirestoreStore() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
