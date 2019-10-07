@@ -5,48 +5,48 @@ dependencies {
     testImplementation project(':test_common')
 
     // Unit tests
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
-    testImplementation "androidx.arch.core:core-testing:${versions.lifecycle}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
-    testImplementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
-    testImplementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
-    testImplementation "com.google.truth:truth:${versions.googleTruth}"
-    testImplementation "org.koin:koin-test:${versions.koin}"
+    testImplementation Libs.junit
+    testImplementation Libs.mockito
+    testImplementation Libs.mockitoInline
+    testImplementation Libs.hamcrest
+    testImplementation Libs.archCoreTesting
+    testImplementation Libs.kotlinCoroutinesTest
+    testImplementation Libs.kotlinCoroutinesAndroid
+    testImplementation Libs.robolectric
+    testImplementation Libs.espresso
+    testImplementation Libs.espressoContrib
+    testImplementation Libs.espressoIntents
+    testImplementation Libs.truth
+    testImplementation Libs.koinTest
 
     // Android Unit tests
-    androidTestImplementation "junit:junit:${versions.junit}"
-    androidTestImplementation "org.mockito:mockito-core:${versions.mockito}"
-    androidTestImplementation "org.mockito:mockito-inline:${versions.mockito}"
+    androidTestImplementation Libs.junit
+    androidTestImplementation Libs.mockito
+    androidTestImplementation Libs.mockitoInline
 
     // AndroidX JVM tests
-    testImplementation "androidx.test:core-ktx:${versions.testCoreKtx}"
-    testImplementation "androidx.test.ext:junit-ktx:${versions.testExtKotlinRunner}"
-    testImplementation "androidx.test:rules:${versions.testRules}"
-    implementation "androidx.fragment:fragment-testing:${versions.fragment}"
-    implementation "androidx.test:core:${versions.testCore}"
-    implementation "androidx.fragment:fragment:${versions.fragment}"
+    implementation Libs.testCore
+    testImplementation Libs.testCoreKtx
+    testImplementation Libs.junitKtx
+    testImplementation Libs.testRules
+    implementation Libs.fragment
+    implementation Libs.fragmentTesting
 
     // Instrumented tests
-    androidTestImplementation "androidx.test:core-ktx:${versions.testCoreKtx}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${versions.testExtKotlinRunner}"
-    androidTestImplementation "androidx.test:rules:${versions.testRules}"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-    androidTestImplementation "androidx.room:room-testing:${versions.room}"
-    androidTestImplementation "androidx.arch.core:core-testing:${versions.lifecycle}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:${versions.espresso}"
-    androidTestImplementation "org.robolectric:annotations:${versions.robolectric}"
-    implementation "androidx.test.espresso:espresso-idling-resource:${versions.espresso}"
+    androidTestImplementation Libs.testCoreKtx
+    androidTestImplementation Libs.junitKtx
+    androidTestImplementation Libs.testRules
+    androidTestImplementation Libs.kotlinCoroutinesTest
+    androidTestImplementation Libs.kotlinCoroutinesAndroid
+    androidTestImplementation Libs.roomTesting
+    androidTestImplementation Libs.archCoreTesting
+    androidTestImplementation Libs.espresso
+    androidTestImplementation Libs.espressoContrib
+    androidTestImplementation Libs.espressoIntents
+    implementation Libs.espressoIdlingResource
+    androidTestImplementation Libs.espressoIdlingConcurrent
+    androidTestImplementation Libs.robolectricAnnotations
 
-    androidTestImplementation "androidx.appcompat:appcompat:${versions.appCompat}"
-    androidTestImplementation "com.google.android.material:material:${versions.material}"
+    androidTestImplementation Libs.appCompat
+    androidTestImplementation Libs.material
 }

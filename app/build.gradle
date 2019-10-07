@@ -13,11 +13,11 @@ apply from: '../shared_dependencies.gradle'
 apply from: '../test_dependencies.gradle'
 
 android {
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion Versions.compileSdk
     defaultConfig {
         applicationId "space.narrate.words.android"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
         versionCode 7
         versionName "0.0.07.debug"
 
@@ -107,18 +107,17 @@ dependencies {
     implementation project(':core')
 
     // Room
-    implementation "androidx.room:room-runtime:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
 
     // Firebase & Firestore
-    implementation "com.google.firebase:firebase-core:${versions.firebaseCore}"
-    implementation "com.google.firebase:firebase-auth:${versions.firebaseAuth}"
-    implementation "com.google.firebase:firebase-firestore:${versions.firestore}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+    implementation Libs.firebase
+    implementation Libs.firebaseAuth
+    implementation Libs.firebaseFirestore
+    implementation Libs.crashlytics
 
     // Google Play Billing
-    implementation "com.android.billingclient:billing:${versions.googlePlayBilling}"
-
+    implementation Libs.playBilling
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -6,10 +6,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion Versions.compileSdk
     defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -45,17 +45,17 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+    implementation Libs.appCompat
 
-    implementation "junit:junit:${versions.junit}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
-    implementation "org.mockito:mockito-core:${versions.mockito}"
-    implementation "org.mockito:mockito-inline:${versions.mockito}"
-    implementation "org.hamcrest:hamcrest-all:${versions.hamcrest}"
-    implementation "androidx.test.espresso:espresso-core:${versions.espresso}"
-    implementation "androidx.test.espresso:espresso-contrib:${versions.espresso}"
-    implementation "androidx.test.espresso:espresso-intents:${versions.espresso}"
+    implementation Libs.junit
+    implementation Libs.kotlinCoroutinesTest
+    implementation Libs.kotlinCoroutinesAndroid
+    implementation Libs.lifecycleExtensions
+    kapt Libs.lifecycleCompiler
+    implementation Libs.mockito
+    implementation Libs.mockitoInline
+    implementation Libs.hamcrest
+    implementation Libs.espresso
+    implementation Libs.espressoContrib
+    implementation Libs.espressoIntents
 }
