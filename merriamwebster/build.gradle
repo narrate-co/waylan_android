@@ -10,10 +10,10 @@ apply from: '../shared_dependencies.gradle'
 apply from: '../test_dependencies.gradle'
 
 android {
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion Versions.compileSdk
     defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -55,11 +55,11 @@ dependencies {
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 
     // Room
-    implementation "androidx.room:room-runtime:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:converter-simplexml:${versions.retrofit}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp3}"
+    implementation Libs.retrofit
+    implementation Libs.retrofitConverterSimpleXml
+    implementation Libs.retrofitLoggingInterceptor
 }
