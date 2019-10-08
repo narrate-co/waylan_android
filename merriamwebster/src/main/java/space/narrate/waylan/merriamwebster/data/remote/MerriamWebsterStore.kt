@@ -10,7 +10,7 @@ import org.threeten.bp.temporal.ChronoUnit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import space.narrate.waylan.android.BuildConfig
+import space.narrate.waylan.merriamwebster.BuildConfig
 import space.narrate.waylan.core.util.contentEquals
 import space.narrate.waylan.merriamwebster.data.local.MwDao
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups

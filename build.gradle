@@ -1,12 +1,6 @@
 // Waylan's top-level build file that holds configuration options and versioning for all modules.
 
 buildscript {
-    ext {
-        keyProperties = new Properties()
-        keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
-        mwApiKey = keyProperties.getProperty("merriamWebster.key", "")
-    }
-
     repositories {
         google()
         jcenter()
