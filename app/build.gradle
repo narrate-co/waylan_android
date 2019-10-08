@@ -23,9 +23,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // Merriam Webster Key - hidden from VCS
-        buildConfigField "String", "MERRIAM_WEBSTER_KEY", "$mwApiKey"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
