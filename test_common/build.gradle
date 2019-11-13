@@ -54,6 +54,7 @@ dependencies {
     kapt Libs.lifecycleCompiler
     implementation Libs.mockito
     implementation Libs.mockitoInline
+    implementation Libs.okhttp3MockWebServer
     implementation Libs.hamcrest
     implementation Libs.espresso
     implementation Libs.espressoContrib

@@ -18,6 +18,7 @@ dependencies {
     testImplementation Libs.espressoIntents
     testImplementation Libs.truth
     testImplementation Libs.koinTest
+    testImplementation Libs.okhttp3MockWebServer
 
     // Android Unit tests
     androidTestImplementation Libs.junit

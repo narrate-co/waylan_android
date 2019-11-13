@@ -78,14 +78,14 @@ class MerriamWebsterStore(
      * data.
      */
     private fun getMerriamWebsterApiWordCallback(word: String) = object : Callback<EntryList> {
-        override fun onFailure(call: Call<EntryList>?, t: Throwable?) {
+        override fun onFailure(call: Call<EntryList>, t: Throwable) {
             // TODO: Handle failure.
-            t?.printStackTrace()
+            t.printStackTrace()
         }
 
-        override fun onResponse(call: Call<EntryList>?, response: Response<EntryList>?) {
+        override fun onResponse(call: Call<EntryList>, response: Response<EntryList>) {
             //Save to db
-            response?.body()?.let { entryList ->
+            response.body()?.let { entryList ->
                 launch {
 
 

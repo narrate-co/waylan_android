@@ -1,0 +1,282 @@
+[
+  {
+    "meta": {
+      "id": "quiescent",
+      "uuid": "3992fd8a-89a2-46ea-a418-c5d0019db0fd",
+      "src": "coll_thes",
+      "section": "alpha",
+      "target": {
+        "tuuid": "aa7ede81-ce49-4c73-8c5c-ea593cc3784d",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "quiescent",
+        "quiescently"
+      ],
+      "syns": [
+        [
+          "dull",
+          "inactive",
+          "inert",
+          "lethargic",
+          "sleepy",
+          "sluggish",
+          "torpid"
+        ]
+      ],
+      "ants": [
+        [
+          "active"
+        ]
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "quiescent"
+    },
+    "fl": "adjective",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "slow to move or act "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "a group of {it}quiescent{\/it} loungers recovering from the Thanksgiving feast"
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "dull"
+                    },
+                    {
+                      "wd": "inactive"
+                    },
+                    {
+                      "wd": "inert"
+                    },
+                    {
+                      "wd": "lethargic"
+                    },
+                    {
+                      "wd": "sleepy"
+                    },
+                    {
+                      "wd": "sluggish"
+                    },
+                    {
+                      "wd": "torpid"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "ambitionless"
+                    },
+                    {
+                      "wd": "apathetic"
+                    },
+                    {
+                      "wd": "indolent"
+                    },
+                    {
+                      "wd": "languorous"
+                    },
+                    {
+                      "wd": "lazy"
+                    },
+                    {
+                      "wd": "lazyish"
+                    },
+                    {
+                      "wd": "listless"
+                    },
+                    {
+                      "wd": "shiftless"
+                    },
+                    {
+                      "wd": "slack"
+                    },
+                    {
+                      "wd": "slothful"
+                    },
+                    {
+                      "wd": "sluggard"
+                    },
+                    {
+                      "wd": "sluggardly"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "dormant"
+                    },
+                    {
+                      "wd": "inanimate"
+                    },
+                    {
+                      "wd": "motionless"
+                    },
+                    {
+                      "wd": "resting"
+                    },
+                    {
+                      "wd": "sedentary"
+                    },
+                    {
+                      "wd": "static"
+                    },
+                    {
+                      "wd": "still"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "dead"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "dopey",
+                      "wvrs": [
+                        {
+                          "wvl": "also",
+                          "wva": "dopy"
+                        }
+                      ]
+                    },
+                    {
+                      "wd": "drugged"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "asleep"
+                    },
+                    {
+                      "wd": "drowsy"
+                    },
+                    {
+                      "wd": "somnambulant"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "catatonic"
+                    },
+                    {
+                      "wd": "comatose"
+                    }
+                  ]
+                ],
+                "near_list": [
+                  [
+                    {
+                      "wd": "busy"
+                    },
+                    {
+                      "wd": "engaged"
+                    },
+                    {
+                      "wd": "occupied"
+                    },
+                    {
+                      "wd": "working"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "animated"
+                    },
+                    {
+                      "wd": "bouncing"
+                    },
+                    {
+                      "wd": "dynamic"
+                    },
+                    {
+                      "wd": "energetic"
+                    },
+                    {
+                      "wd": "kinetic"
+                    },
+                    {
+                      "wd": "lively"
+                    },
+                    {
+                      "wd": "peppy"
+                    },
+                    {
+                      "wd": "perky"
+                    },
+                    {
+                      "wd": "spirited"
+                    },
+                    {
+                      "wd": "sprightly"
+                    },
+                    {
+                      "wd": "springy"
+                    },
+                    {
+                      "wd": "vigorous"
+                    },
+                    {
+                      "wd": "vital"
+                    },
+                    {
+                      "wd": "vivacious"
+                    },
+                    {
+                      "wd": "zippy"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "assiduous"
+                    },
+                    {
+                      "wd": "diligent"
+                    },
+                    {
+                      "wd": "hardworking"
+                    },
+                    {
+                      "wd": "industrious"
+                    },
+                    {
+                      "wd": "sedulous"
+                    }
+                  ]
+                ],
+                "ant_list": [
+                  [
+                    {
+                      "wd": "active"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "slow to move or act"
+    ]
+  }
+]

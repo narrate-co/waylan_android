@@ -35,8 +35,11 @@ object Versions {
     const val lifecycle = "2.1.0"
     const val material = "1.2.0-alpha02"
     const val mockito = "2.27.0"
+    const val moshi = "1.9.1"
+    const val moshiConverter = "2.6.2"
     const val navigation = "2.1.0"
     const val okhttp3 = "3.10.0"
+    const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.4.0"
     const val robolectric = "4.3"
     const val room = "2.2.0-rc01"
@@ -117,9 +120,17 @@ object Libs {
     val mockito =  "org.mockito:mockito-core:${Versions.mockito}"
     val mockitoInline = "org.mockito:mockito-inline:${Versions.mockito}"
 
+    val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
+    val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
+
+
     // Navigation
     val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+
+    //OkHttp
+    val okhttp3MockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp3MockWebServer}"
 
     // Google Play Billing
     val playBilling = "com.android.billingclient:billing:${Versions.googlePlayBilling}"
@@ -127,6 +138,7 @@ object Libs {
     // Retrofit
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofitConverterSimpleXml = "com.squareup.retrofit2:converter-simplexml:${Versions.retrofit}"
+    val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.moshiConverter}"
     val retrofitLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
 
     // Robolectric

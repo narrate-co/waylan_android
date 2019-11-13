@@ -48,7 +48,7 @@ android {
     }
 
     // Dynamic feature modules
-    dynamicFeatures = [":about", ":merriamwebster"]
+    dynamicFeatures = [":about", ":merriamwebster", ":merriamwebster_thesaurus"]
 
     // Compile options
     compileOptions {
