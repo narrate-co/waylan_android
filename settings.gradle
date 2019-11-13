@@ -11,3 +11,4 @@ include ':merriamwebster'
 // Test Common holds all testing code which is shared between module tests, both unit and
 // instrumentation tests. This includes things like utilities, extensions, rules, etc.
 include ':test_common'
+include ':merriamwebster_thesaurus'
