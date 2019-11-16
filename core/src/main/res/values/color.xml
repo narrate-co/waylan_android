@@ -62,9 +62,8 @@
     <color name="colorBlue900">#24353e</color>
 
     <color name="colorIvory50">#faf8f2</color>
-    <color name="colorIvory100">#f8f5ee</color>
-    <!--<color name="colorIvory100">#f7f3f0</color>-->
-    <!--<color name="colorIvory100">#f3f0eb</color>-->
+<!--    <color name="colorIvory100">#f8f5ee</color>-->
+    <color name="colorIvory100">#F3EDE4</color>
     <color name="colorIvory200">#f2efea</color>
     <color name="colorIvory300">#efeee9</color>
     <color name="colorIvory400">#eae9e5</color>
