@@ -6,7 +6,7 @@ import java.io.File
 /**
  * Load a json file as the body of a MockResponse.
  */
-fun MockResponse.setBodyFromJson(path: String): MockResponse {
+fun MockResponse.setBodyFromJsonResource(path: String): MockResponse {
     val uri = this.javaClass.classLoader!!.getResource(path)
     val file = File(uri.path)
     return setBody(String(file.readBytes()))

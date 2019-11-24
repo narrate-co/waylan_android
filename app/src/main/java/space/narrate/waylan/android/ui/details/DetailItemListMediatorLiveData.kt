@@ -9,6 +9,7 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
 
     private var titleModel: DetailItemModel? = null
     private var mwModel: DetailItemModel? = null
+    private var mwThesaurusModel: DetailItemModel? = null
     private var wordsetModel: DetailItemModel? = null
     private var examplesModel: DetailItemModel? = null
 
@@ -27,6 +28,12 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
             DetailItemType.MERRIAM_WEBSTER -> {
                 if (shouldUpdateList(mwModel, item)) {
                     mwModel = item
+                    updateList()
+                }
+            }
+            DetailItemType.MERRIAM_WEBSTER_THESAURUS -> {
+                if (shouldUpdateList(mwThesaurusModel, item)) {
+                    mwThesaurusModel = item
                     updateList()
                 }
             }
@@ -56,6 +63,7 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
             listOfNotNull(
                 titleModel,
                 mwModel,
+                mwThesaurusModel,
                 wordsetModel,
                 examplesModel
             ).sortedBy { it.itemType.order }

@@ -1,5 +1,6 @@
 package space.narrate.waylan.merriamwebster_thesaurus.data.remote
 
+import androidx.lifecycle.LiveData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,6 +14,6 @@ interface MerriamWebsterThesaurusService {
     fun getWord(
         @Path("word") word: String,
         @Query("key") developerKey: String
-    ): Call<List<ThesaurusEntry>>
+    ): Call<List<RemoteThesaurusEntry>>
 }
 

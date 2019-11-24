@@ -30,11 +30,9 @@ class MerriamWebsterModuleProviderFactory : DetailProviderFactory {
         }
     }
 
-    override fun getDetailDataProvider(): DetailDataProvider {
-        return getKoin().get<MerriamWebsterDetailDataProvider>()
-    }
+    override fun getDetailDataProvider(): DetailDataProvider =
+        getKoin().get<MerriamWebsterDetailDataProvider>()
 
-    override fun getDetailItemProvider(): DetailItemProvider {
-        return getKoin().get<MerriamWebsterDetailItemProvider>()
-    }
+    override fun getDetailItemProvider(): DetailItemProvider =
+        getKoin().get<MerriamWebsterDetailItemProvider>()
 }

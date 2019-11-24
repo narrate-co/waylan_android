@@ -93,16 +93,26 @@ val appModule = module {
         ).newInstance() as DetailProviderFactory
     }
 
-    // Details
+    single(named("merriamWebsterThesaurusDetailDataProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.merriamwebster_thesaurus.di.MerriamWebsterThesaurusModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
+    // DetailDataProviderRegistry
     single {
         val detailDataProviderRegistry = DetailDataProviderRegistry()
 
         val merriamWebsterDetailProviderFactory: DetailProviderFactory =
             get(named("merriamWebsterDetailProviderFactory"))
 
+        val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
+
         detailDataProviderRegistry.addProviders(
             TitleDetailDataProvider(get()),
             merriamWebsterDetailProviderFactory.getDetailDataProvider(),
+            merriamWebsterThesaurusDetailProviderFactory.getDetailDataProvider(),
             WordsetDetailDataProvider(get()),
             ExampleDetailDataProvider(get())
         )
@@ -110,16 +120,21 @@ val appModule = module {
         detailDataProviderRegistry
     }
 
+    // DetailItemProviderRegistry
     single {
         val detailItemFactory = DetailItemProviderRegistry()
 
         val merriamWebsterDetailProviderFactory: DetailProviderFactory =
             get(named("merriamWebsterDetailProviderFactory"))
 
+        val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
+
         // Add the Merriam-Webster provider to the detailItemFactory
         detailItemFactory.addProviders(
             TitleDetailItemProvider(),
             merriamWebsterDetailProviderFactory.getDetailItemProvider(),
+            merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),
             ExamplesDetailItemProvider()
         )
