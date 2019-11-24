@@ -59,4 +59,5 @@ dependencies {
     implementation Libs.espresso
     implementation Libs.espressoContrib
     implementation Libs.espressoIntents
+    implementation Libs.retrofit
 }

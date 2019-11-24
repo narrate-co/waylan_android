@@ -8,11 +8,12 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.MerriamWebsterThesaurusService
-import space.narrate.waylan.merriamwebster_thesaurus.data.remote.ThesaurusEntry
-import space.narrate.waylan.test_common.setBodyFromJson
+import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RemoteThesaurusEntry
+import space.narrate.waylan.test_common.setBodyFromJsonResource
 import java.net.HttpURLConnection
 
-private const val TEST_WORD = "quiescent"
+private const val QUIESCENT = "quiescent"
+private const val RENDEZVOUS = "rendezvous"
 
 class MerriamWebsterThesaurusServiceTest {
 
@@ -33,14 +34,16 @@ class MerriamWebsterThesaurusServiceTest {
 
     @Test
     fun getWord_shouldReturnSuccessfully() {
-        val response = getSynchronousResponse()
+        val responseQuiescent = getSynchronousResponse(QUIESCENT)
+        val responseRendezvous = getSynchronousResponse(RENDEZVOUS)
 
-        assertThat(response.isSuccessful)
+        assertThat(responseQuiescent.isSuccessful)
+        assertThat(responseRendezvous.isSuccessful)
     }
 
     @Test
     fun getWord_shouldContainHw() {
-         val response = getSynchronousResponse()
+         val response = getSynchronousResponse(QUIESCENT)
 
         val hw = response.body()?.map { it.hwi.hw }?.firstOrNull()
         assertThat(hw).isEqualTo("quiescent")
@@ -48,7 +51,7 @@ class MerriamWebsterThesaurusServiceTest {
 
     @Test
     fun getWord_shouldContainShortDef() {
-        val response = getSynchronousResponse()
+        val response = getSynchronousResponse(QUIESCENT)
 
         val shortDefs = response.body()?.map { it.shortdef }?.flatten()
         assertThat(shortDefs?.contains("slow to move or act"))
@@ -56,7 +59,7 @@ class MerriamWebsterThesaurusServiceTest {
 
     @Test
     fun getWord_shouldContainMetadata() {
-        val response = getSynchronousResponse()
+        val response = getSynchronousResponse(QUIESCENT)
 
         val meta = response.body()?.map { it.meta }?.firstOrNull()!!
 
@@ -77,23 +80,100 @@ class MerriamWebsterThesaurusServiceTest {
     }
 
     @Test
-    fun getWord_shouldContainDef() {
-        val response = getSynchronousResponse()
+    fun getQuiescent_shouldContainDef() {
+        val response = getSynchronousResponse(QUIESCENT)
 
-        val def = response.body()?.map { it.def }?.first()?.first()?.sseq?.first()?.first()
-        def?.forEach {
-            println("In def, type: ${it.javaClass}, $it")
-        }
+        val allEntries = response.body()?.map { it.def }?.map { it.entries }?.flatten()!!
+
+        // Contains synonyms
+        assertThat(
+            allEntries.map { it.syn_list }.flatten().flatten().map { it.wd }
+        ).containsExactly(
+            "dull",
+            "inactive",
+            "inert",
+            "lethargic",
+            "sleepy",
+            "sluggish",
+            "torpid"
+        )
+
+        // Contains related words
+        assertThat(
+            allEntries.map { it.rel_list }.flatten().flatten().map { it.wd }
+        ).containsAtLeastElementsIn(listOf(
+            "ambitionless",
+            "apathetic",
+            "indolent",
+            "languorous",
+            "lazy",
+            "lazyish",
+            "listless",
+            "shiftless",
+            "slack",
+            "slothful",
+            "sluggardly",
+            "dormant",
+            "dead"
+        ))
+
+        // Contains near words
+        assertThat(
+            allEntries.map { it.near_list }.flatten().flatten().map { it.wd }
+        ).containsAtLeastElementsIn(listOf(
+            "busy",
+            "working",
+            "animated",
+            "dynamic",
+            "assiduous",
+            "sedulous"
+        ))
+
+        // Contains antonyms
+        assertThat(
+            allEntries.map { it.ant_list }.flatten().flatten().map { it.wd }
+        ).containsAtLeastElementsIn(listOf(
+            "active"
+        ))
     }
 
-    private fun getSynchronousResponse(): Response<List<ThesaurusEntry>> {
+    @Test
+    fun getRendezvous_shouldContainDef() {
+        val response = getSynchronousResponse(RENDEZVOUS)
+
+        val allEntries = response.body()?.map { it.def }?.map { it.entries }?.flatten()!!
+
+        assertThat(
+            allEntries.map { it.syn_list }.flatten().flatten().map { it.wd }
+        ).containsAtLeastElementsIn(listOf(
+            "hangout",
+            "purlieu",
+            "resort",
+            "appointment",
+            "date",
+            "tryst",
+            "cluster",
+            "convene"
+        ))
+    }
+
+    @Test
+    fun getWord_shouldHaveShortDef() {
+        val response = getSynchronousResponse(QUIESCENT)
+
+        assertThat(response.body()?.first()?.shortdef?.first())
+            .isEqualTo("slow to move or act")
+    }
+
+    private fun getSynchronousResponse(word: String): Response<List<RemoteThesaurusEntry>> {
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBodyFromJson("quiescent.json")
+            .setBodyFromJsonResource("$word.json")
+
         mockWebServer.enqueue(response)
 
         return merriamWebsterService.getWord(
-            TEST_WORD,
+            word,
             BuildConfig.MERRIAM_WEBSTER_THESAURUS_KEY
         ).execute()
     }

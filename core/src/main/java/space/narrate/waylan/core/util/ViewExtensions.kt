@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -26,6 +27,9 @@ fun View.invisible() {
 fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
 }
+
+val View.inflater: LayoutInflater
+    get() = LayoutInflater.from(context)
 
 fun ImageView.swapImageResource(imgRes: Int) {
     // Check if the drawable being set is the same as what is already present

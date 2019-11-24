@@ -40,12 +40,10 @@ class WordRepositoryTest {
 
     private lateinit var wordRepository: WordRepository
 
-    @get:Rule
-    val coroutinesTestRule = CoroutinesTestRule()
+    @get:Rule val coroutinesTestRule = CoroutinesTestRule()
 
     // Mock Android's getMainLooper()
-    @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
