@@ -20,7 +20,7 @@ class MerriamWebsterThesaurusDetailItemProvider : DetailItemProvider {
         listener: DetailAdapterListener
     ): DetailItemViewHolder {
         return MerriamWebsterThesaurusViewHolder(
-            MwThesaurusItemLayoutBinding.inflate(parent.inflater),
+            MwThesaurusItemLayoutBinding.inflate(parent.inflater, parent, false),
             listener
         )
     }
