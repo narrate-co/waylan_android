@@ -24,7 +24,7 @@
         android:background="@drawable/permission_pane_area"/>
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         style="?attr/styleTextButton"
         android:id="@+id/details_button"
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_gravity="right" />
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         style="?attr/styleTextButton"
         android:id="@+id/dismiss_button"
         android:layout_width="wrap_content"

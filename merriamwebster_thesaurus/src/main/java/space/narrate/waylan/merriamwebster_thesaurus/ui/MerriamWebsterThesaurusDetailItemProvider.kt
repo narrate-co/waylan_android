@@ -6,9 +6,7 @@ import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
-import space.narrate.waylan.core.util.AdapterUtils
 import space.narrate.waylan.core.util.inflater
-import space.narrate.waylan.merriamwebster_thesaurus.R
 import space.narrate.waylan.merriamwebster_thesaurus.databinding.MwThesaurusItemLayoutBinding
 
 class MerriamWebsterThesaurusDetailItemProvider : DetailItemProvider {
@@ -32,8 +30,13 @@ class MerriamWebsterThesaurusViewHolder(
 ) : DetailItemViewHolder(
     binding.root
 ) {
+
+    init {
+        binding.detailsComponentMerriamWebsterThesaurusCard.setListener(listener)
+    }
+
     override fun bind(item: DetailItemModel) {
         if (item !is MerriamWebsterThesaurusModel) return
-        // TODO: bind stuff
+        binding.detailsComponentMerriamWebsterThesaurusCard.setSource(item.entries, item.user)
     }
 }

@@ -172,6 +172,10 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         viewModel.onMerriamWebsterPermissionPaneDismissClicked()
     }
 
+    override fun onMwThesaurusChipClicked(word: String) {
+        sharedViewModel.onChangeCurrentWord(word)
+    }
+
     private fun showSnackbar(model: SnackbarModel) {
         val snackbar = Snackbar.make(coordinatorLayout, model.textRes, when (model.length) {
             SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE

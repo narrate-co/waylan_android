@@ -17,10 +17,11 @@
             android:text="Free trial: 30d"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:textAppearance="?attr/textAppearanceSubtitle2"
             android:id="@+id/mw_subtitle_text_view"
             android:layout_width="wrap_content"
@@ -28,7 +29,7 @@
             android:layout_marginTop="@dimen/keyline_2"
             android:layout_marginStart="@dimen/keyline_3"
             android:layout_marginEnd="@dimen/keyline_3"
-            android:text="@string/mw_thesarus_card_title"
+            android:text="@string/mw_thesaurus_card_title"
             app:layout_constraintTop_toBottomOf="@+id/text_label"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -36,9 +37,23 @@
             android:id="@+id/list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_3"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
             app:layout_constraintTop_toBottomOf="@+id/mw_subtitle_text_view"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/expand_collapse_button"/>
+
+        <Button
+            android:id="@+id/expand_collapse_button"
+            style="?attr/styleTextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:layout_marginHorizontal="14dp"
+            android:text="@string/mw_thesaurus_expand_chip_groups_button_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

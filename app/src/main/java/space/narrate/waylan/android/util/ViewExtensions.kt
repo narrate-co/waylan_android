@@ -13,6 +13,7 @@ import space.narrate.waylan.android.data.disk.wordset.Synonym
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 import space.narrate.waylan.core.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.util.toChip
 
 fun AppBarLayout.setUpWithElasticBehavior(
     currentDestination: String,
@@ -48,36 +49,7 @@ fun Synonym.toChip(
     chipGroup: ChipGroup?,
     onClick: ((synonym: Synonym) -> Unit)? = null
 ): Chip {
-    val chip: Chip = LayoutInflater.from(context).inflate(
-        R.layout.details_chip_layout,
-        chipGroup,
-        false
-    ) as Chip
-    chip.text = this.synonym
-    chip.setOnClickListener {
-        if (onClick != null) onClick(this)
+   return synonym.toChip(context, chipGroup) {
+        if (onClick != null && it == synonym) onClick(this)
     }
-    return chip
 }
-
-fun String.toRelatedChip(
-    context: Context,
-    chipGroup: ChipGroup?,
-    onClick: ((word: String) -> Unit)? = null
-): Chip {
-    val chip: Chip = LayoutInflater.from(context).inflate(
-        R.layout.details_related_chip_layout,
-        chipGroup,
-        false
-    ) as Chip
-    val underlinedString = SpannableString(this)
-    underlinedString.setSpan(UnderlineSpan(),0,this.length,0)
-    chip.text = underlinedString
-    chip.setOnClickListener {
-        if (onClick != null) onClick(this)
-    }
-    return chip
-}
-
-
-
