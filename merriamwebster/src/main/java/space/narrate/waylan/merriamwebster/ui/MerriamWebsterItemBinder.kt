@@ -4,10 +4,10 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.ChipGroup
-import space.narrate.waylan.merriamwebster.R
-import space.narrate.waylan.android.R as appR
-import space.narrate.waylan.android.util.toRelatedChip
 import space.narrate.waylan.core.util.fromHtml
+import space.narrate.waylan.merriamwebster.R
+import space.narrate.waylan.merriamwebster.util.toRelatedChip
+import space.narrate.waylan.android.R as appR
 
 /**
  * A sealed class which holds object that know how to bind a [MerriamWebsterList] to the view
