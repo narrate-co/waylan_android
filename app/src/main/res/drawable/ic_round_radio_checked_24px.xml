@@ -3,7 +3,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24"
-    android:tint="?colorOnBackgroundHighEmphasis">
+    android:tint="@color/material_on_background_emphasis_high_type">
   <path
       android:fillColor="#FF000000"
       android:pathData="M12,12m-5.28,0a5.28,5.28 0,1 1,10.56 0a5.28,5.28 0,1 1,-10.56 0"/>

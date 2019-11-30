@@ -3,31 +3,35 @@
 
     <!--Color system-->
     <attr name="colorInformative" format="color"/>
-
-    <attr name="colorBackgroundArea" format="color"/>
-    <attr name="colorSurfaceArea" format="color"/>
-    <attr name="colorErrorArea" format="color"/>
-
     <attr name="colorOnInformative" format="color"/>
 
-    <attr name="colorOnBackgroundHighEmphasis" format="color"/>
-    <attr name="colorOnBackgroundMediumEmphasis" format="color"/>
-    <attr name="colorOnBackgroundLowEmphasis" format="color"/>
+    <!--A color which will be used on top of background and surface colors in cojunction -->
+    <!--with alphaEmphasisArea to create a "modal" color which can be applied once, or multiple-->
+    <!--times on itself, creating visually distinct areas.-->
+    <attr name="colorArea" format="color"/>
 
+    <!--The color of content on colorBackground when the content is to denote an error state-->
     <attr name="colorOnBackgroundError" format="color"/>
-
-    <attr name="colorOnSurfaceHighEmphasis" format="color"/>
-    <attr name="colorOnSurfaceMediumEmphasis" format="color"/>
-    <attr name="colorOnSurfaceLowEmphasis" format="color"/>
-
-    <attr name="colorOnErrorHighEmphasis" format="color"/>
-    <attr name="colorOnErrorMediumEmphasis" format="color"/>
-    <attr name="colorOnErrorLowEmphasis" format="color"/>
 
     <attr name="colorRipple" format="color"/>
     <attr name="colorScrim" format="color"/>
     <attr name="colorDivider" format="color"/>
     <attr name="colorHairline" format="color"/>
+
+    <!--Alphas-->
+    <!--Alphas are used in conjunction with the color system to create color resources for -->
+    <!--varying degrees of emphasis.-->
+    <attr name="alphaEmphasisHighType" format="float"/>
+    <attr name="alphaEmphasisMedium" format="float"/>
+    <attr name="alphaEmphasisDisabled" format="float"/>
+    <!--An alpha applied to colors which will be overlaid on background or surfaces -->
+    <!--and possibly on each other, creating darker and darker (or lighter and lighter)-->
+    <!--areas.-->
+    <attr name="alphaEmphasisArea" format="float"/>
+    <attr name="alphaEmphasisScrim" format="float"/>
+    <attr name="alphaEmphasisDivider" format="float"/>
+    <attr name="alphaEmphasisHairline" format="float"/>
+
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>
@@ -36,5 +40,6 @@
     <attr name="styleEditTextArea" format="reference"/>
     <attr name="styleTextLabel" format="reference"/>
     <attr name="styleBottomSheetStandard" format="reference"/>
+    <attr name="styleScrimWindow" format="reference"/>
 
 </resources>

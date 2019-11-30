@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="gone"
-        android:background="?colorScrim"/>
+        android:background="@color/scrim"/>
 
     <fragment
         android:id="@+id/contextual_fragment"

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout
+<space.narrate.waylan.core.ui.widget.ScrimWindowLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrim_frame"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:background="?colorScrim">
+    android:layout_width="match_parent">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -99,6 +98,6 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</space.narrate.waylan.android.ui.widget.ScrimmedFrameLayout>
+</space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
 
 

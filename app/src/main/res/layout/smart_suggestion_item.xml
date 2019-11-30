@@ -7,9 +7,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="@dimen/keyline_2"
-    android:background="?selectableItemBackground"
-    >
-    
+    android:background="?attr/selectableItemBackground">
+
     <com.google.android.material.button.MaterialButton
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
         android:id="@+id/smartButton"
@@ -17,15 +16,14 @@
         android:layout_height="wrap_content"
         app:iconSize="18dp"
         app:icon="@drawable/ic_round_orientation_lock_24px"
-        app:iconTint="?colorOnSurfaceHighEmphasis"
+        app:iconTint="@color/material_on_surface_emphasis_high_type"
         app:iconGravity="start"
         android:text="Lock screen to portrait"
-        android:textAppearance="?textAppearanceBody1"
-        android:textColor="?colorOnSurfaceHighEmphasis"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
         android:backgroundTint="@android:color/transparent"
         android:layout_gravity="center"
-        app:rippleColor="?colorRipple"
-        />
+        app:rippleColor="?attr/colorRipple" />
 
 </LinearLayout>
 

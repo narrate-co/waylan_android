@@ -16,7 +16,7 @@
         android:id="@+id/underline"
         android:layout_width="@dimen/underline_width"
         android:layout_height="@dimen/underline_height"
-        app:trackColor="?attr/colorDivider"
+        app:trackColor="@color/divider"
         app:indicatorColor="?attr/colorPrimary"
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_gravity="right" />

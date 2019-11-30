@@ -14,14 +14,14 @@
         android:layout_height="28dp"
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_marginBottom="@dimen/keyline_1"
-        android:background="@drawable/permission_pane_background"/>
+        android:background="@drawable/permission_pane_area"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="@dimen/keyline_1"
         android:layout_marginBottom="@dimen/keyline_2"
-        android:background="@drawable/permission_pane_background"/>
+        android:background="@drawable/permission_pane_area"/>
 
 
     <com.google.android.material.button.MaterialButton

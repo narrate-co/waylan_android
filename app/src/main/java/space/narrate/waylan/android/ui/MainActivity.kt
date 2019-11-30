@@ -214,8 +214,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        contextualSheetBehavior.bottomSheetCallback = contextualSheetCallback
-        searchSheetBehavior.bottomSheetCallback = searchSheetCallback
+        contextualSheetBehavior.addBottomSheetCallback(contextualSheetCallback)
+        searchSheetBehavior.addBottomSheetCallback(searchSheetCallback)
     }
 
     /**

@@ -13,8 +13,10 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -300,8 +302,14 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
-                val errorTextColor = getColorFromAttr(R.attr.colorOnErrorHighEmphasis)
-                val errorHintColor = getColorFromAttr(R.attr.colorOnErrorLowEmphasis)
+                val errorTextColor = ContextCompat.getColor(
+                    this,
+                    R.color.on_error_emphasis_high_type
+                )
+                val errorHintColor = ContextCompat.getColor(
+                    this,
+                    R.color.on_error_emphasis_disabled
+                )
                 TransitionManager.beginDelayedTransition(containerLayout)
                 emailEditText.setTextColor(errorTextColor)
                 emailEditText.setHintTextColor(errorHintColor)
