@@ -57,7 +57,6 @@ class UserRepositoryTest {
 
     /**
      * TODO: This test is flakey and should be fixed or removed.
-     *
      * Note: This test passes if run individually, but not during a full run of this test class.
      */
     @Test

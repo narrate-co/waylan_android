@@ -570,7 +570,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     }
 
     companion object {
-        
+
         private const val DEF_STYLE_ATTR = R.attr.styleBottomSheetStandard
         private const val DEF_STYLE_RES = R.style.Widget_Waylan_BottomSheet_Standard
 

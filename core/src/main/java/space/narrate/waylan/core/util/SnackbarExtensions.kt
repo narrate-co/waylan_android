@@ -72,8 +72,8 @@ private fun Snackbar.config(
         context.resources.getDimension(R.dimen.plane_03)
     )
     DrawableCompat.setTint(background, backgroundTint)
-    val textAppearance = R.style.TextAppearance_Words_Body1
-    val buttonTextAppearance = R.style.TextAppearance_Words_Button
+    val textAppearance = R.style.TextAppearance_Waylan_Body1
+    val buttonTextAppearance = R.style.TextAppearance_Waylan_Button
     val textColor = when (type) {
         SnackbarType.ERROR -> context.getColorFromAttr(R.attr.colorOnError)
         SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.colorOnSurface)
