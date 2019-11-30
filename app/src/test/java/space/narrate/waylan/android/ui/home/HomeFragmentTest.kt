@@ -145,7 +145,7 @@ class HomeFragmentTest: AutoCloseKoinTest() {
 
     private fun launchFragment(navController: NavController? = null) {
         val scenario = launchFragmentInContainer<HomeFragment>(
-            themeResId = R.style.Theme_Words_DayNight
+            themeResId = R.style.Theme_Waylan_DayNight
         )
         scenario.onFragment {
             if (navController != null) {

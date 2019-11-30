@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.AuthActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/logo_image_view"
         android:layout_width="127dp"
         android:layout_height="127dp"
@@ -23,8 +23,8 @@
         android:layout_width="100dp"
         android:layout_height="2dp"
         android:layout_gravity="center_horizontal"
-        app:indicatorColor="?colorPrimary"
-        app:trackColor="?colorDivider"
+        app:indicatorColor="?attr/colorPrimary"
+        app:trackColor="@color/divider"
         android:visibility="invisible"
         android:alpha="0"/>
 
@@ -56,7 +56,7 @@
                 android:paddingBottom="@dimen/keyline_3"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     style="?attr/styleEditTextArea"
                     android:id="@+id/email_edit_text"
                     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                     android:hint="@string/auth_email_hint"
                     android:inputType="textEmailAddress" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     style="?attr/styleEditTextArea"
                     android:id="@+id/password_edit_text"
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                     android:hint="@string/auth_password_hint"
                     android:inputType="textPassword" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     style="?attr/styleEditTextArea"
                     android:id="@+id/confirm_password_edit_text"
                     android:layout_width="match_parent"
@@ -112,7 +112,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:textAppearance="?textAppearanceCaption"
             android:id="@+id/error_text_view"
             android:layout_width="match_parent"
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/keyline_2">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 style="?attr/styleTextButton"
                 android:id="@+id/alternate_credintial_type_button"
                 android:layout_width="wrap_content"
@@ -141,10 +141,10 @@
                 android:paddingLeft="@dimen/keyline_3"
                 android:text="@string/auth_log_in_button"
                 android:textSize="14sp"
-                android:textColor="?colorOnBackgroundMediumEmphasis"
+                android:textColor="@color/material_on_background_emphasis_medium"
                 android:layout_gravity="left|center_vertical" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 style="?attr/styleTextButton"
                 android:id="@+id/done_button"
                 android:layout_width="wrap_content"
@@ -158,7 +158,7 @@
 
         </FrameLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             style="?styleTextButton"
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"

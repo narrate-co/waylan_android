@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--Underline dimens-->
     <dimen name="underline_width">72dp</dimen>
     <dimen name="underline_height">2dp</dimen>
+
+    <!--Text label dimens (modified chips)-->
+    <dimen name="text_label_height">40dp</dimen>
+    <dimen name="text_label_corner_radius">20dp</dimen> <!--50% rounded-->
 </resources>

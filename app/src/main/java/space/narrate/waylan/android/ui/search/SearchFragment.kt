@@ -115,16 +115,19 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         val materialShapeDrawable = MaterialShapeDrawable(
             requireContext(),
             null,
-            R.attr.styleBottomSheetStandard,
-            R.style.Widget_Words_BottomSheet_Standard
+            DEF_STYLE_ATTR,
+            DEF_STYLE_RES
         ).apply {
             initializeElevationOverlay(requireContext())
             elevation = collapsedContainer.elevation
             fillColor = ColorStateList.valueOf(
                 requireContext().getColorFromAttr(R.attr.colorSurface)
             )
+            // Add a stroke to emphasize the shadow on the top of this bottom sheet.
+            // The stroke is very light as the sheet moves towards the bottom of the screen
+            // due to how Android's light source, used for shadow calculation, works.
             strokeColor = ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), R.color.colorBlackAlpha005)
+                ContextCompat.getColor(requireContext(), R.color.shadow_emphasis_color)
             )
             strokeWidth = 3F
         }
@@ -567,6 +570,9 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     }
 
     companion object {
+        
+        private const val DEF_STYLE_ATTR = R.attr.styleBottomSheetStandard
+        private const val DEF_STYLE_RES = R.style.Widget_Waylan_BottomSheet_Standard
 
         private fun getBottomInset(context: Context, insets: WindowInsetsCompat): Int {
             return insets.systemWindowInsetBottom +

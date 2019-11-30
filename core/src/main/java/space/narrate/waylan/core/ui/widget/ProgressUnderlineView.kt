@@ -2,14 +2,22 @@ package space.narrate.waylan.core.ui.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.*
+import android.content.res.ColorStateList
+import android.content.res.TypedArray
+import android.graphics.Canvas
+import android.graphics.Outline
+import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
+import androidx.annotation.StyleableRes
 import androidx.core.graphics.withTranslation
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.MathUtils
+import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.getColorStateList
 
 /**
  * A View that acts as a simple underline when not showing progress and a linear, indeterminate
@@ -77,11 +85,19 @@ class ProgressUnderlineView @JvmOverloads constructor(
         )
 
         trackPaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColor(R.styleable.ProgressUnderlineView_trackColor, 0)
+            color = a.getColorStateList(
+                context,
+                R.styleable.ProgressUnderlineView_trackColor,
+                R.attr.colorControlNormal
+            ).defaultColor
             style = Paint.Style.FILL
         }
         indicatorPaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = a.getColor(R.styleable.ProgressUnderlineView_indicatorColor, 0)
+            color = a.getColorStateList(
+                context,
+                R.styleable.ProgressUnderlineView_indicatorColor,
+                R.attr.colorPrimary
+            ).defaultColor
             style = Paint.Style.FILL
         }
 
@@ -188,7 +204,7 @@ class ProgressUnderlineView @JvmOverloads constructor(
     }
 
     companion object {
-        private val DEF_STYLE_RES = R.style.Widget_Words_ProgressUnderlineView
+        private val DEF_STYLE_RES = R.style.Widget_Waylan_ProgressUnderlineView
         private const val ANIM_DURATION = 2000L
     }
 }

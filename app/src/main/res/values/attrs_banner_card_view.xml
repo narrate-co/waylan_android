@@ -6,5 +6,4 @@
         <attr name="bannerTopButtonText" format="string"/>
         <attr name="bannerBottomButtonText" format="string"/>
     </declare-styleable>
-
 </resources>

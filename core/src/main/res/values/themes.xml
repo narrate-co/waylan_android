@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Words.DayNight" parent="Theme.Words"/>
+    <style name="Theme.Waylan.DayNight" parent="Theme.Waylan"/>
 
-    <style name="Theme.Words" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Waylan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--Color-->
-        <item name="colorPrimary">@color/words_color_brand</item>
-        <item name="colorPrimaryVariant">@color/words_color_brand</item>
-        <item name="colorSecondary">@color/words_color_brand</item>
-        <item name="colorSecondaryVariant">@color/words_color_brand</item>
+        <item name="colorPrimary">@color/colorPink900</item>
+        <item name="colorPrimaryVariant">@color/colorPink900</item>
+        <item name="colorSecondary">@color/colorPink900</item>
+        <item name="colorSecondaryVariant">@color/colorPink900</item>
 
-        <item name="android:colorBackground">@color/words_color_background</item>
-        <item name="colorSurface">@color/words_color_surface</item>
-        <item name="colorError">@color/words_color_error</item>
-        <item name="colorInformative">@color/words_color_informative</item>
+        <item name="android:colorBackground">@color/colorIvory100</item>
+        <item name="colorSurface">@color/colorIvory100</item>
+        <item name="colorError">@color/colorMauve100</item>
+        <item name="colorInformative">@color/colorPink50</item>
+        <item name="colorArea">@color/colorGray900</item>
 
-        <item name="colorBackgroundArea">@color/words_color_background_area</item>
-        <item name="colorSurfaceArea">@color/words_color_surface_area</item>
-        <item name="colorErrorArea">@color/words_color_error_area</item>
+        <item name="colorOnPrimary">@color/colorGray900</item>
+        <item name="colorOnSecondary">@color/colorGray900</item>
 
-        <item name="colorOnPrimary">@color/words_color_on_brand</item>
-        <item name="colorOnSecondary">@color/words_color_on_brand</item>
+        <item name="colorOnBackground">@color/colorGray900</item>
+        <item name="colorOnBackgroundError">@color/colorMauve400</item>
+        <item name="colorOnSurface">@color/colorGray900</item>
+        <item name="colorOnError">@color/colorGray900</item>
+        <item name="colorOnInformative">@color/colorPink900</item>
 
-        <item name="colorOnBackground">@color/words_color_on_background</item>
-        <item name="colorOnBackgroundHighEmphasis">@color/words_color_on_background_high_emphasis</item>
-        <item name="colorOnBackgroundMediumEmphasis">@color/words_color_on_background_medium_emphasis</item>
-        <item name="colorOnBackgroundLowEmphasis">@color/words_color_on_background_low_emphasis</item>
+        <item name="colorRipple">@color/colorIvory300</item>
+        <item name="colorScrim">@color/colorGray900</item>
+        <item name="colorDivider">@color/colorGray900</item>
+        <item name="colorHairline">@color/colorGray900</item>
 
-        <item name="colorOnBackgroundError">@color/words_color_on_background_error</item>
-
-        <item name="colorOnSurface">@color/words_color_on_surface</item>
-        <item name="colorOnSurfaceHighEmphasis">@color/words_color_on_surface_high_emphasis</item>
-        <item name="colorOnSurfaceMediumEmphasis">@color/words_color_on_surface_medium_emphasis</item>
-        <item name="colorOnSurfaceLowEmphasis">@color/words_color_on_surface_low_emphasis</item>
-
-        <item name="colorOnError">@color/words_color_on_error</item>
-        <item name="colorOnErrorHighEmphasis">@color/words_color_on_error_high_emphasis</item>
-        <item name="colorOnErrorMediumEmphasis">@color/words_color_on_error_medium_emphasis</item>
-        <item name="colorOnErrorLowEmphasis">@color/words_color_on_error_low_emphasis</item>
-
-        <item name="colorOnInformative">@color/words_color_on_informative</item>
-
-        <item name="colorRipple">@color/words_color_ripple</item>
-        <item name="colorScrim">@color/words_color_scrim</item>
-        <item name="colorDivider">@color/words_color_divider</item>
-        <item name="colorHairline">@color/words_color_hairline</item>
+        <!--Alpha emphasis-->
+        <item name="alphaEmphasisHighType">0.87</item>
+        <item name="alphaEmphasisMedium">0.60</item>
+        <item name="alphaEmphasisDisabled">0.38</item>
+        <item name="alphaEmphasisArea">0.05</item>
+        <item name="alphaEmphasisScrim">0.05</item>
+        <item name="alphaEmphasisDivider">0.05</item>
+        <item name="alphaEmphasisHairline">0.25</item>
 
         <!--Typography-->
-        <item name="textAppearanceHeadline2">@style/TextAppearance.Words.Headline2</item>
-        <item name="textAppearanceHeadline4">@style/TextAppearance.Words.Headline4</item>
-        <item name="textAppearanceHeadline5">@style/TextAppearance.Words.Headline5</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.Words.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/TextAppearance.Words.Subtitle2</item>
-        <item name="textAppearanceBody1">@style/TextAppearance.Words.Body1</item>
-        <item name="textAppearanceBody2">@style/TextAppearance.Words.Body2</item>
-        <item name="textAppearanceCaption">@style/TextAppearance.Words.Caption</item>
-        <item name="textAppearanceOverline">@style/TextAppearance.Words.Overline</item>
-        <item name="textAppearanceButton">@style/TextAppearance.Words.Button</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Waylan.Headline2</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Waylan.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Waylan.Headline5</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Waylan.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Waylan.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Waylan.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Waylan.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Waylan.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Waylan.Overline</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Waylan.Button</item>
 
         <!--Shape-->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Words.SmallComponent</item>
@@ -63,16 +56,16 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Words.LargeComponent</item>
 
         <!--Styles-->
-        <item name="styleTextButton">@style/Widget.Words.Button.TextButton</item>
-        <item name="styleChipOutlined">@style/Widget.Words.Chip.Outlined</item>
-        <item name="styleChipOpen">@style/Widget.Words.Chip.Open</item>
-        <item name="styleEditTextArea">@style/Widget.Words.EditText.Area</item>
-        <item name="styleTextLabel">@style/Widget.Words.TextLabel</item>
-        <item name="styleBottomSheetStandard">@style/Widget.Words.BottomSheet.Standard</item>
+        <item name="styleTextButton">@style/Widget.Waylan.Button.TextButton</item>
+        <item name="styleChipOutlined">@style/Widget.Waylan.Chip.Outlined</item>
+        <item name="styleChipOpen">@style/Widget.Waylan.Chip.Open</item>
+        <item name="styleEditTextArea">@style/Widget.Waylan.EditText.Area</item>
+        <item name="styleTextLabel">@style/Widget.Waylan.TextLabel</item>
+        <item name="styleBottomSheetStandard">@style/Widget.Waylan.BottomSheet.Standard</item>
 
         <!--Android Framework-->
-        <item name="colorPrimaryDark">?colorPrimaryVariant</item>
-        <item name="colorAccent">?colorSecondary</item>
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+        <item name="colorAccent">?attr/colorSecondary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">?android:colorBackground</item>
         <item name="colorControlHighlight">?colorRipple</item>
