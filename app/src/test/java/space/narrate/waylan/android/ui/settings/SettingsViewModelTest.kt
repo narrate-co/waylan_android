@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import space.narrate.waylan.android.FirestoreTestData
+import space.narrate.waylan.android.util.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.firestore.users.User
 import space.narrate.waylan.android.data.repository.UserRepository

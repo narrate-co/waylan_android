@@ -7,7 +7,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import space.narrate.waylan.android.FirestoreTestData
+import space.narrate.waylan.android.util.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.repository.WordRepository
 import space.narrate.waylan.android.ui.list.ListType

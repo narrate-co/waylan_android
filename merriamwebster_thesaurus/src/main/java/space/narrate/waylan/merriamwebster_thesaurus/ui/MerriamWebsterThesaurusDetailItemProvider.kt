@@ -26,7 +26,7 @@ class MerriamWebsterThesaurusDetailItemProvider : DetailItemProvider {
 
 class MerriamWebsterThesaurusViewHolder(
     private val binding: MwThesaurusItemLayoutBinding,
-    private val listener: DetailAdapterListener
+    listener: DetailAdapterListener
 ) : DetailItemViewHolder(
     binding.root
 ) {

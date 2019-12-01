@@ -24,7 +24,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito.mock
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
-import space.narrate.waylan.android.FirestoreTestData
+import space.narrate.waylan.android.util.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.data.prefs.NightMode
 import space.narrate.waylan.android.data.prefs.Orientation

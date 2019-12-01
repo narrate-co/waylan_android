@@ -12,7 +12,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import space.narrate.waylan.android.FirestoreTestData
+import space.narrate.waylan.android.util.FirestoreTestData
 import space.narrate.waylan.android.data.Result
 import space.narrate.waylan.android.data.firestore.users.PluginState
 import space.narrate.waylan.android.data.firestore.users.User

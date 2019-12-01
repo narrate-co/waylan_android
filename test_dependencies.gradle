@@ -26,12 +26,12 @@ dependencies {
     androidTestImplementation Libs.mockitoInline
 
     // AndroidX JVM tests
-    implementation Libs.testCore
+    debugImplementation Libs.testCore
     testImplementation Libs.testCoreKtx
     testImplementation Libs.junitKtx
     testImplementation Libs.testRules
-    implementation Libs.fragment
-    implementation Libs.fragmentTesting
+    debugImplementation Libs.fragment
+    debugImplementation Libs.fragmentTesting
 
     // Instrumented tests
     androidTestImplementation Libs.testCoreKtx
@@ -44,7 +44,7 @@ dependencies {
     androidTestImplementation Libs.espresso
     androidTestImplementation Libs.espressoContrib
     androidTestImplementation Libs.espressoIntents
-    implementation Libs.espressoIdlingResource
+    debugImplementation Libs.espressoIdlingResource
     androidTestImplementation Libs.espressoIdlingConcurrent
     androidTestImplementation Libs.robolectricAnnotations
 

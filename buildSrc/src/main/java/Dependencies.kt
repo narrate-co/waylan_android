@@ -58,108 +58,108 @@ object Versions {
  */
 object Libs {
     // AppCompat
-    val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+    const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
 
     // Arch
-    val archCoreTesting = "androidx.arch.core:core-testing:${Versions.lifecycle}"
+    const val archCoreTesting = "androidx.arch.core:core-testing:${Versions.lifecycle}"
 
     // Core
-    val coreKtx = "androidx.core:core-ktx:${Versions.androidX}"
+    const val coreKtx = "androidx.core:core-ktx:${Versions.androidX}"
 
     // Constraint
-    val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
 
     // Crashlytics
-    val crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+    const val crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
 
     // Espresso
-    val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
-    val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
-    val espressoIdlingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
-    val espressoIdlingConcurrent = "androidx.test.espresso.idling:idling-concurrent:${Versions.espresso}"
-    val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
+    const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
+    const val espressoIdlingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.espresso}"
+    const val espressoIdlingConcurrent = "androidx.test.espresso.idling:idling-concurrent:${Versions.espresso}"
+    const val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
 
     // Firebase & Firestore
-    val firebase = "com.google.firebase:firebase-core:${Versions.firebaseCore}"
-    val firebaseAuth = "com.google.firebase:firebase-auth:${Versions.firebaseAuth}"
-    val firebaseFirestore = "com.google.firebase:firebase-firestore:${Versions.firestore}"
+    const val firebase = "com.google.firebase:firebase-core:${Versions.firebaseCore}"
+    const val firebaseAuth = "com.google.firebase:firebase-auth:${Versions.firebaseAuth}"
+    const val firebaseFirestore = "com.google.firebase:firebase-firestore:${Versions.firestore}"
 
     // Fragment
-    val fragment = "androidx.fragment:fragment:${Versions.fragment}"
-    val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragment}"
+    const val fragment = "androidx.fragment:fragment:${Versions.fragment}"
+    const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragment}"
 
     // GSON
-    val gson = "com.google.code.gson:gson:${Versions.gson}"
+    const val gson = "com.google.code.gson:gson:${Versions.gson}"
 
     // Hamcrest
-    val hamcrest = "org.hamcrest:hamcrest-all:${Versions.hamcrest}"
+    const val hamcrest = "org.hamcrest:hamcrest-all:${Versions.hamcrest}"
 
     // Unit tests
-    val junit = "junit:junit:${Versions.junit}"
-    val junitKtx = "androidx.test.ext:junit-ktx:${Versions.testExtKotlinRunner}"
+    const val junit = "junit:junit:${Versions.junit}"
+    const val junitKtx = "androidx.test.ext:junit-ktx:${Versions.testExtKotlinRunner}"
 
     // Koin
-    val koin = "org.koin:koin-java:${Versions.koin}"
-    val koinAndroidViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
-    val koinTest = "org.koin:koin-test:${Versions.koin}"
+    const val koin = "org.koin:koin-java:${Versions.koin}"
+    const val koinAndroidViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
+    const val koinTest = "org.koin:koin-test:${Versions.koin}"
 
     // Kotlin
-    val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
-    val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-    val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-    val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 
     // AndroidX
-    val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
-    val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
+    const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
 
     // Material
-    val material = "com.google.android.material:material:${Versions.material}"
+    const val material = "com.google.android.material:material:${Versions.material}"
 
     // Mockito
-    val mockito =  "org.mockito:mockito-core:${Versions.mockito}"
-    val mockitoInline = "org.mockito:mockito-inline:${Versions.mockito}"
+    const val mockito =  "org.mockito:mockito-core:${Versions.mockito}"
+    const val mockitoInline = "org.mockito:mockito-inline:${Versions.mockito}"
 
-    val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
-    val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
-    val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    const val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
+    const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
 
 
     // Navigation
-    val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
-    val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+    const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
 
     //OkHttp
-    val okhttp3MockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp3MockWebServer}"
+    const val okhttp3MockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp3MockWebServer}"
 
     // Google Play Billing
-    val playBilling = "com.android.billingclient:billing:${Versions.googlePlayBilling}"
+    const val playBilling = "com.android.billingclient:billing:${Versions.googlePlayBilling}"
 
     // Retrofit
-    val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    val retrofitConverterSimpleXml = "com.squareup.retrofit2:converter-simplexml:${Versions.retrofit}"
-    val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.moshiConverter}"
-    val retrofitLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    const val retrofitConverterSimpleXml = "com.squareup.retrofit2:converter-simplexml:${Versions.retrofit}"
+    const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.moshiConverter}"
+    const val retrofitLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
 
     // Robolectric
-    val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
-    val robolectricAnnotations = "org.robolectric:annotations:${Versions.robolectric}"
+    const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
+    const val robolectricAnnotations = "org.robolectric:annotations:${Versions.robolectric}"
 
     // Room
-    val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
-    val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
-    val roomTesting = "androidx.room:room-testing:${Versions.room}"
+    const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
+    const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+    const val roomTesting = "androidx.room:room-testing:${Versions.room}"
 
     // ThreeTen BP - Date & Time and GSON adapter
-    val threeTenBp = "org.threeten:threetenbp:${Versions.threetenbp}"
-    val threeTenBpGsonAdapter = "org.aaronhe:threetenbp-gson-adapter:${Versions.threetenbpGson}"
+    const val threeTenBp = "org.threeten:threetenbp:${Versions.threetenbp}"
+    const val threeTenBpGsonAdapter = "org.aaronhe:threetenbp-gson-adapter:${Versions.threetenbpGson}"
 
     // AndroidX Testing
-    val testCore = "androidx.test:core:${Versions.testCore}"
-    val testCoreKtx = "androidx.test:core-ktx:${Versions.testCoreKtx}"
-    val testRules = "androidx.test:rules:${Versions.testRules}"
+    const val testCore = "androidx.test:core:${Versions.testCore}"
+    const val testCoreKtx = "androidx.test:core-ktx:${Versions.testCoreKtx}"
+    const val testRules = "androidx.test:rules:${Versions.testRules}"
 
     // Google Truth
-    val truth = "com.google.truth:truth:${Versions.googleTruth}"
+    const val truth = "com.google.truth:truth:${Versions.googleTruth}"
 
 }
