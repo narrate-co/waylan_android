@@ -124,7 +124,6 @@ object Libs {
     const val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
 
-
     // Navigation
     const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
