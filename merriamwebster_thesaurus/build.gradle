@@ -1,3 +1,5 @@
+// :merriamwebster_thesaurus is a dynamic feature module which includes all code necessary to
+// work with the the Merriam-Webster Thesaurus api and display it's data.
 
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
@@ -13,7 +15,7 @@ android {
         minSdkVersion Versions.minSdk
         targetSdkVersion Versions.targetSdk
 
-        // Merriam Webster Key - hidden from VCS
+        // Merriam Webster Thesaurus key - hidden from VCS
         def keyProperties = new Properties()
         keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
         def mwThesApiKey = keyProperties.getProperty("merriamWebsterThesaurus.key", "")

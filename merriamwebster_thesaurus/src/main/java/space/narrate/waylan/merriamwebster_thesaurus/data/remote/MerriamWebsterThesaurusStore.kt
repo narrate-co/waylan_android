@@ -11,6 +11,10 @@ import space.narrate.waylan.merriamwebster_thesaurus.BuildConfig
 import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusEntry
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * A data store which is able to retrieve remote Merriam-Webster thesaurus entries and convert
+ * those responses to local objects to be used in Waylan.
+ */
 class MerriamWebsterThesaurusStore(
     private val merriamWebsterThesaurusService: MerriamWebsterThesaurusService
 ) : CoroutineScope {

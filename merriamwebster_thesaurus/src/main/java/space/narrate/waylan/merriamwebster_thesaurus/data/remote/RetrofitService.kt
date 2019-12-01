@@ -11,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 /**
  * A RetrofitService singleton that creates [MerriamWebsterThesaurusService].
  *
- * TODO: Expose a moshi builder to be used in testing.
+ * TODO: Expose a moshi builder to be reused in testing.
  */
 object RetrofitService {
     private var instance: MerriamWebsterThesaurusService? = null

@@ -9,6 +9,10 @@ import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.util.inflater
 import space.narrate.waylan.merriamwebster_thesaurus.databinding.MwThesaurusItemLayoutBinding
 
+/**
+ * A [DetailItemProvider] which knows how to create a ViewHolder for the
+ * [DetailItemType.MERRIAM_WEBSTER_THESAURUS] item type
+ */
 class MerriamWebsterThesaurusDetailItemProvider : DetailItemProvider {
 
     override val itemType: DetailItemType = DetailItemType.MERRIAM_WEBSTER_THESAURUS

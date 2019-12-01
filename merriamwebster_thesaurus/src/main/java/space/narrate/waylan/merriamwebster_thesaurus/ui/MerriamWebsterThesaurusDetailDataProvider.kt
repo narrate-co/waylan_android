@@ -7,6 +7,10 @@ import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusRepository
 
+/**
+ * A [DetailDataProvider] which knows how to fetch a [MerriamWebsterThesaurusModel] to be displayed
+ * by the details screen.
+ */
 class MerriamWebsterThesaurusDetailDataProvider(
     private val repository: MerriamWebsterThesaurusRepository,
     private val userRepository: UserRepository

@@ -21,7 +21,7 @@ android {
             }
         }
 
-        // Merriam Webster Key - hidden from VCS
+        // Merriam Webster key - hidden from VCS
         def keyProperties = new Properties()
         keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
         def mwApiKey = keyProperties.getProperty("merriamWebster.key", "")

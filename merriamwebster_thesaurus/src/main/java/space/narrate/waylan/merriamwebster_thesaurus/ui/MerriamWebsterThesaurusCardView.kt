@@ -15,7 +15,7 @@ import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusEntry
 import space.narrate.waylan.merriamwebster_thesaurus.databinding.MwThesaurusCardChipGroupLayoutBinding
 
 /**
- * A [MaterialCardView] that displays groups of thesaurus words for a given dictionary entry.
+ * A [MaterialCardView] that displays groups of thesaurus words for a given thesaurus entry.
  */
 class MerriamWebsterThesaurusCardView @JvmOverloads constructor(
     context: Context,

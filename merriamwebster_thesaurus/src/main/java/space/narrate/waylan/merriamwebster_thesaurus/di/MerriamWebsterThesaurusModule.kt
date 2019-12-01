@@ -7,6 +7,9 @@ import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RetrofitService
 import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusDetailDataProvider
 import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusDetailItemProvider
 
+/**
+ * All module dependencies for :merriamwebseter_thesaurus.
+ */
 val merriamWebsterThesaurusModule = module {
 
     single {

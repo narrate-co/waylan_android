@@ -3,9 +3,10 @@ package space.narrate.waylan.merriamwebster_thesaurus.data.remote
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.MediaType
-import okhttp3.ResponseBody
 
+/**
+ * The remote representation of a response from the Merriam-Webster thesaurus API.
+ */
 data class RemoteThesaurusEntry(
     // Metadata about an entry
     val meta: Meta,

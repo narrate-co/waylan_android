@@ -11,6 +11,14 @@ import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusD
 @Volatile
 private var isModuleLoaded: Boolean = false
 
+/**
+ * The only class which should be instantiated using reflection from other modules when needing
+ * instances from :merriamwebster_thesaurus. This class ensures all of :merriamwebster_thesaursu's
+ * module dependencies are created before providing any instances.
+ *
+ * This class also serves as the surface of this module, showing what is exposed and what can
+ * be used by other modules.
+ */
 class MerriamWebsterThesaurusModuleProviderFactory : DetailProviderFactory {
 
     init {

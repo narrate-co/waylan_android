@@ -1,13 +1,12 @@
 package space.narrate.waylan.merriamwebster_thesaurus.data.remote
 
-import androidx.lifecycle.LiveData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
- * Merriam-Webster [RetrofitService]
+ * Merriam-Webster thesaurus [RetrofitService].
  */
 interface MerriamWebsterThesaurusService {
     @GET("{word}")
