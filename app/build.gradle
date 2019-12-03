@@ -48,7 +48,7 @@ android {
     }
 
     // Dynamic feature modules
-    dynamicFeatures = [":about", ":merriamwebster"]
+    dynamicFeatures = [":about", ":merriamwebster", ":merriamwebster_thesaurus"]
 
     // Compile options
     compileOptions {
@@ -63,18 +63,18 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
-
-    // Testing
-    // Add shared test dir to be used by both unit and instrumented tests
-    sourceSets {
-        String sharedTestDir = 'src/sharedTest/java'
-        test {
-            java.srcDir sharedTestDir
-        }
-        androidTest {
-            java.srcDir sharedTestDir
-        }
-    }
+//
+//    // Testing
+//    // Add shared test dir to be used by both unit and instrumented tests
+//    sourceSets {
+//        String sharedTestDir = 'src/sharedTest/java'
+//        test {
+//            java.srcDir sharedTestDir
+//        }
+//        androidTest {
+//            java.srcDir sharedTestDir
+//        }
+//    }
 
     // Include Android resources for robolectric unit testing.
     testOptions {

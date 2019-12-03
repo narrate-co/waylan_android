@@ -16,7 +16,7 @@ import space.narrate.waylan.android.data.firestore.users.UserWord
 import space.narrate.waylan.android.data.prefs.Preference
 import space.narrate.waylan.android.data.prefs.PreferenceStore
 import space.narrate.waylan.android.data.prefs.UserPreferenceStore
-import space.narrate.waylan.android.testDatabase
+import space.narrate.waylan.android.util.testDatabase
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import org.mockito.Mockito.`when` as whenever
 

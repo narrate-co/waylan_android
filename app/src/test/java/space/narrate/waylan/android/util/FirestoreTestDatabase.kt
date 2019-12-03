@@ -1,4 +1,4 @@
-package space.narrate.waylan.android
+package space.narrate.waylan.android.util
 
 import space.narrate.waylan.android.data.firestore.DataOwners
 import space.narrate.waylan.android.data.firestore.users.User

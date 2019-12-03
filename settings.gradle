@@ -1,4 +1,5 @@
-// Core is the base Android library module which holds all code shared between modules.
+// Core is the base Android library module which holds all code shared between modules. This is
+// also where Waylan's design system is held.
 include ':core'
 // App is the base Android application
 include ':app'
@@ -8,6 +9,11 @@ include ':about'
 // Merriam-Webster is a dynamic feature module that include all logic related to working with
 // Merriam-Webster data. This module also exposes providers to display Merriam-Webster data.
 include ':merriamwebster'
+// Merriam-Webster Thesaurus is a dynamic feature module that includes all logic related to working
+// with Merriam-Webster thesaurus data. this module exposes providers to display Merriam-Webster
+// Thesaurus data.
+include ':merriamwebster_thesaurus'
 // Test Common holds all testing code which is shared between module tests, both unit and
 // instrumentation tests. This includes things like utilities, extensions, rules, etc.
 include ':test_common'
+

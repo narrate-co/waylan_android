@@ -1,0 +1,466 @@
+[
+  {
+    "meta": {
+      "id": "rendezvous",
+      "uuid": "ed3026fd-3780-4515-a592-fbb44b4315ee",
+      "src": "coll_thes",
+      "section": "alpha",
+      "target": {
+        "tuuid": "48c0a949-32d6-4cd0-9b16-3c52d3f934b9",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "rendezvous"
+      ],
+      "syns": [
+        [
+          "hangout",
+          "haunt",
+          "purlieu",
+          "resort",
+          "stamping ground",
+          "stomping ground"
+        ],
+        [
+          "appointment",
+          "assignation",
+          "date",
+          "engagement",
+          "tryst"
+        ]
+      ],
+      "ants": [],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "rendezvous"
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "a place for spending time or for socializing "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "the arcade was the {it}rendezvous{\/it} of choice for most of the teenagers in town"
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "hangout"
+                    },
+                    {
+                      "wd": "haunt"
+                    },
+                    {
+                      "wd": "purlieu"
+                    },
+                    {
+                      "wd": "resort"
+                    },
+                    {
+                      "wd": "stamping ground"
+                    },
+                    {
+                      "wd": "stomping ground"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "camp"
+                    },
+                    {
+                      "wd": "canteen"
+                    },
+                    {
+                      "wd": "club"
+                    },
+                    {
+                      "wd": "clubhouse"
+                    },
+                    {
+                      "wd": "country club"
+                    },
+                    {
+                      "wd": "key club"
+                    },
+                    {
+                      "wd": "service club"
+                    },
+                    {
+                      "wd": "union"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "harbor"
+                    },
+                    {
+                      "wd": "harborage"
+                    },
+                    {
+                      "wd": "haven"
+                    },
+                    {
+                      "wd": "nest"
+                    },
+                    {
+                      "wd": "refuge"
+                    },
+                    {
+                      "wd": "retreat"
+                    },
+                    {
+                      "wd": "sanctuary"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "an agreement to be present at a specified time and place "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "I have a {it}rendezvous{\/it} with him at lunchtime"
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "appointment"
+                    },
+                    {
+                      "wd": "assignation"
+                    },
+                    {
+                      "wd": "date"
+                    },
+                    {
+                      "wd": "engagement"
+                    },
+                    {
+                      "wd": "tryst"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "arrangement"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "invitation"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "interview"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "get-together"
+                    },
+                    {
+                      "wd": "meeting"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "call"
+                    },
+                    {
+                      "wd": "visit"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "schedule"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "a place for spending time or for socializing",
+      "an agreement to be present at a specified time and place"
+    ]
+  },
+  {
+    "meta": {
+      "id": "rendezvous",
+      "uuid": "1e04c02c-8315-4194-b950-4c36ad90ef0a",
+      "src": "coll_thes",
+      "section": "alpha",
+      "target": {
+        "tuuid": "d98da91c-d1aa-4b89-91b7-d373bf9a72de",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "rendezvous",
+        "rendezvoused",
+        "rendezvouses",
+        "rendezvousing"
+      ],
+      "syns": [
+        [
+          "assemble",
+          "cluster",
+          "collect",
+          "concenter",
+          "concentrate",
+          "conglomerate",
+          "congregate",
+          "convene",
+          "converge",
+          "forgather",
+          "gather",
+          "meet"
+        ]
+      ],
+      "ants": [
+        [
+          "break up",
+          "disband",
+          "disperse",
+          "split (up)"
+        ]
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "rendezvous"
+    },
+    "fl": "verb",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "to come together into one body or place "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "we'll {it}rendezvous{\/it} at the entrance to the park at 6:00 p.m."
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "assemble"
+                    },
+                    {
+                      "wd": "cluster"
+                    },
+                    {
+                      "wd": "collect"
+                    },
+                    {
+                      "wd": "concenter"
+                    },
+                    {
+                      "wd": "concentrate"
+                    },
+                    {
+                      "wd": "conglomerate"
+                    },
+                    {
+                      "wd": "congregate"
+                    },
+                    {
+                      "wd": "convene"
+                    },
+                    {
+                      "wd": "converge"
+                    },
+                    {
+                      "wd": "forgather",
+                      "wvrs": [
+                        {
+                          "wvl": "or",
+                          "wva": "foregather"
+                        }
+                      ]
+                    },
+                    {
+                      "wd": "gather"
+                    },
+                    {
+                      "wd": "meet"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "affiliate"
+                    },
+                    {
+                      "wd": "ally"
+                    },
+                    {
+                      "wd": "associate"
+                    },
+                    {
+                      "wd": "band (together)"
+                    },
+                    {
+                      "wd": "caucus"
+                    },
+                    {
+                      "wd": "club"
+                    },
+                    {
+                      "wd": "collaborate"
+                    },
+                    {
+                      "wd": "confederate"
+                    },
+                    {
+                      "wd": "conjoin"
+                    },
+                    {
+                      "wd": "consolidate"
+                    },
+                    {
+                      "wd": "consort"
+                    },
+                    {
+                      "wd": "cooperate"
+                    },
+                    {
+                      "wd": "couple"
+                    },
+                    {
+                      "wd": "federate"
+                    },
+                    {
+                      "wd": "gang up"
+                    },
+                    {
+                      "wd": "join"
+                    },
+                    {
+                      "wd": "merge"
+                    },
+                    {
+                      "wd": "unite"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "reassemble"
+                    },
+                    {
+                      "wd": "reconvene"
+                    },
+                    {
+                      "wd": "regather"
+                    },
+                    {
+                      "wd": "remeet"
+                    }
+                  ]
+                ],
+                "phrase_list": [
+                  [
+                    {
+                      "wd": "get together"
+                    }
+                  ]
+                ],
+                "near_list": [
+                  [
+                    {
+                      "wd": "depart"
+                    },
+                    {
+                      "wd": "leave"
+                    },
+                    {
+                      "wd": "take off"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "disjoin"
+                    },
+                    {
+                      "wd": "dissociate"
+                    },
+                    {
+                      "wd": "disunite"
+                    }
+                  ]
+                ],
+                "ant_list": [
+                  [
+                    {
+                      "wd": "break up"
+                    },
+                    {
+                      "wd": "disband"
+                    },
+                    {
+                      "wd": "disperse"
+                    },
+                    {
+                      "wd": "split (up)"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "to come together into one body or place"
+    ]
+  }
+]

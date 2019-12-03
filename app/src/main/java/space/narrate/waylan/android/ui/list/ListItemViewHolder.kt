@@ -55,7 +55,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             wordTextView.text = item.userWord.word
 
             //Set part of speech
-            partOfSpeechTextView.text = item.userWord.partOfSpeechPreview.keys.first()
+            partOfSpeechTextView.text = item.userWord.partOfSpeechPreview.keys.firstOrNull() ?: ""
 
             //Set definition
             item.userWord.defPreview.map { it.key }.firstOrNull()?.let {
@@ -64,8 +64,8 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
 
             //Set synonym chips
             chipGroup.removeAllViews()
-            item.userWord.synonymPreview.forEach {
-                val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
+            item.userWord.synonymPreview.forEach {syn ->
+                val synonym = Synonym(syn.key, OffsetDateTime.now(), OffsetDateTime.now())
                 chipGroup.addView(
                         synonym.toChip(view.context, view.expanded_chip_group) {
                             listener.onWordClicked(it.synonym)

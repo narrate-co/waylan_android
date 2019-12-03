@@ -8,8 +8,8 @@ import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.merriamwebster.data.MerriamWebsterRepository
 
 /**
- * A data provider which knows how to fetch a [MerriamWebsterModel] to be displayed by the
- * details screen.
+ * A [DetailDataProvider] which knows how to fetch a [MerriamWebsterModel] to be displayed by
+ * the details screen.
  *
  * TODO: Moved user permission pane check from DetailsViewModel to here.
  */

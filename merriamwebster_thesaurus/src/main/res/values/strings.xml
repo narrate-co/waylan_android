@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mw_thesaurus_card_title">Merriam-Webster Thesaurus</string>
+    <string name="mw_thesaurus_expand_chip_groups_button_title">Expand all</string>
+    <string name="mw_thesaurus_collapse_chip_groups_button_title">Collapse</string>
+    <string name="mw_thesaurus_synonyms_title">Synonyms</string>
+    <string name="mw_thesaurus_near_title">Near</string>
+    <string name="mw_thesaurus_related_title">Related</string>
+    <string name="mw_thesaurus_antonyms_title">Antonyms</string>
+</resources>

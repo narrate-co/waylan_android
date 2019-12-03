@@ -10,8 +10,8 @@ import space.narrate.waylan.core.util.AdapterUtils
 import space.narrate.waylan.merriamwebster.R
 
 /**
- * An item provider which knows how to create a ViewHolder for the [DetailItemType.MERRIAM_WEBSTER]
- * item type
+ * A [DetailItemProvider] which knows how to create a ViewHolder for the
+ * [DetailItemType.MERRIAM_WEBSTER] item type
  */
 class MerriamWebsterDetailItemProvider : DetailItemProvider {
 

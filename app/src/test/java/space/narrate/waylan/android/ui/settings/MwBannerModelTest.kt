@@ -2,7 +2,7 @@ package space.narrate.waylan.android.ui.settings
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import space.narrate.waylan.android.FirestoreTestData
+import space.narrate.waylan.android.util.FirestoreTestData
 import space.narrate.waylan.android.R
 
 class MwBannerModelTest {

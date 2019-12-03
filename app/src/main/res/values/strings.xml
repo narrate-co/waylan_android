@@ -143,4 +143,5 @@
     <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
     <string name="audio_clip_no_network_available">No network available</string>
     <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
+    <string name="title_merriamwebster_thesaurus">Merriam-Webster Thesaurus</string>
 </resources>

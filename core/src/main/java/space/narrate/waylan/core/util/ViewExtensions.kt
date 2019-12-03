@@ -4,16 +4,19 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import space.narrate.waylan.core.R
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
-import java.lang.IllegalArgumentException
 
 fun View.gone() {
     if (visibility != View.GONE) visibility = View.GONE
@@ -26,6 +29,9 @@ fun View.invisible() {
 fun View.visible() {
     if (visibility != View.VISIBLE) visibility = View.VISIBLE
 }
+
+val View.inflater: LayoutInflater
+    get() = LayoutInflater.from(context)
 
 fun ImageView.swapImageResource(imgRes: Int) {
     // Check if the drawable being set is the same as what is already present
@@ -64,6 +70,24 @@ fun AppBarLayout.setUpWithElasticBehavior(
         ?: throw IllegalArgumentException("AppBarLayout must use ElasticAppBarBehavior")
 
     behavior.addCallback(callback)
+}
+
+
+fun String.toChip(
+    context: Context,
+    chipGroup: ChipGroup?,
+    onClick: ((value: String) -> Unit)? = null
+): Chip {
+    val chip: Chip = LayoutInflater.from(context).inflate(
+        R.layout.chip_layout,
+        chipGroup,
+        false
+    ) as Chip
+    chip.text = this
+    chip.setOnClickListener {
+        if (onClick != null) onClick(this)
+    }
+    return chip
 }
 
 
