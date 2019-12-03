@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginBottom="@dimen/keyline_2"
-        android:textAppearance="?attr/textAppearanceCaption"
+        android:textAppearance="?attr/textAppearanceOverline"
         tools:text="Synonyms"/>
 
     <com.google.android.material.chip.ChipGroup

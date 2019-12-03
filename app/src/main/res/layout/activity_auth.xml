@@ -102,7 +102,7 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:indeterminate="true"
                 android:indeterminateOnly="false"
-                android:indeterminateTint="?colorPrimary"
+                android:indeterminateTint="?attr/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_marginBottom="-4dp"
@@ -113,7 +113,6 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:textAppearance="?textAppearanceCaption"
             android:id="@+id/error_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,9 +120,10 @@
             android:paddingRight="@dimen/keyline_3"
             android:layout_marginTop="@dimen/keyline_2"
             android:layout_marginBottom="@dimen/keyline_2"
-            tools:text="Password must contain at least one number or symbol."
             android:alpha="0"
-            android:textColor="?colorOnBackgroundError" />
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="?attr/colorOnBackgroundError"
+            tools:text="Password must contain at least one number or symbol." />
 
         <FrameLayout
             android:layout_width="match_parent"

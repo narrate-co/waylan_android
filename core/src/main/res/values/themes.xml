@@ -39,10 +39,17 @@
         <item name="alphaEmphasisHairline">0.25</item>
 
         <!--Typography-->
+        <item name="fontFamilyPrimary">@font/ibm_plex_serif_regular</item>
+        <item name="fontFamilyPrimaryMedium">@font/ibm_plex_serif_medium</item>
+        <item name="fontFamilyPrimarySemiBold">@font/ibm_plex_serif_semibold</item>
+
+        <item name="fontFamilySecondary">@font/ibm_plex_mono_regular</item>
+        <item name="fontFamilySecondaryMedium">@font/ibm_plex_mono_medium</item>
+
         <item name="textAppearanceHeadline2">@style/TextAppearance.Waylan.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Waylan.Headline3</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.Waylan.Headline4</item>
         <item name="textAppearanceHeadline5">@style/TextAppearance.Waylan.Headline5</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.Waylan.Subtitle1</item>
         <item name="textAppearanceSubtitle2">@style/TextAppearance.Waylan.Subtitle2</item>
         <item name="textAppearanceBody1">@style/TextAppearance.Waylan.Body1</item>
         <item name="textAppearanceBody2">@style/TextAppearance.Waylan.Body2</item>

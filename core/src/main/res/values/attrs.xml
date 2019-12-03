@@ -32,6 +32,13 @@
     <attr name="alphaEmphasisDivider" format="float"/>
     <attr name="alphaEmphasisHairline" format="float"/>
 
+    <!--Typography-->
+    <attr name="fontFamilyPrimary" format="reference"/>
+    <attr name="fontFamilyPrimaryMedium" format="reference"/>
+    <attr name="fontFamilyPrimarySemiBold" format="reference"/>
+    <attr name="fontFamilySecondary" format="reference"/>
+    <attr name="fontFamilySecondaryMedium" format="reference"/>
+
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>
