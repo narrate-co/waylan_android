@@ -15,7 +15,8 @@
     <color name="colorMauve300">#ce8e8f</color>
     <color name="colorMauve400">#bb6366</color>
 
-    <color name="colorGray500">#242424</color>
+<!--    <color name="colorGray500">#242424</color>-->
+    <color name="colorGray600">#2E2C2A</color>
     <color name="colorGray900">#131314</color>
 
     <!--A color used as a stroke to emphasize the shadow on the top of views near the bottom of -->
