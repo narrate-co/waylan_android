@@ -10,7 +10,7 @@
 
     <!--Chips-->
     <style name="Widget.Waylan.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
         <item name="chipBackgroundColor">?android:colorBackground</item>
         <item name="rippleColor">?attr/colorRipple</item>
         <item name="chipStrokeColor">@color/hairline</item>
@@ -18,7 +18,7 @@
     </style>
 
     <style name="Widget.Waylan.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
         <item name="chipBackgroundColor">@android:color/transparent</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="chipStrokeColor">@android:color/transparent</item>

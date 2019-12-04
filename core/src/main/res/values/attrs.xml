@@ -39,6 +39,8 @@
     <attr name="fontFamilySecondary" format="reference"/>
     <attr name="fontFamilySecondaryMedium" format="reference"/>
 
+    <attr name="textAppearanceBody3" format="reference" />
+
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>

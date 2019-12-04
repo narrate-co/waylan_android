@@ -43,9 +43,13 @@
     </style>
 
     <style name="TextAppearance.Waylan.Body2" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="fontFamily">?attr/fontFamilySecondary</item>
+        <item name="fontFamily">?attr/fontFamilyPrimary</item>
         <item name="android:textColor">@color/material_on_background_emphasis_medium</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.Waylan.Body3" parent="TextAppearance.Waylan.Body2">
+        <item name="fontFamily">?attr/fontFamilySecondary</item>
     </style>
 
     <style name="TextAppearance.Waylan.Caption" parent="TextAppearance.MaterialComponents.Caption">
