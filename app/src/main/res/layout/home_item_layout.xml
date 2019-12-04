@@ -9,7 +9,7 @@
     android:layout_marginVertical="@dimen/keyline_0_25"
     android:padding="@dimen/keyline_3">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textAppearance="?attr/textAppearanceHeadline5"
         tools:text="@string/title_trending" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/preview_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -33,6 +33,8 @@
     <attr name="alphaEmphasisHairline" format="float"/>
 
     <!--Typography-->
+    <!--The type system supports two font families. These attributes allow each family, and -->
+    <!--their available weight variants, to be set once globally.-->
     <attr name="fontFamilyPrimary" format="reference"/>
     <attr name="fontFamilyPrimaryMedium" format="reference"/>
     <attr name="fontFamilyPrimarySemiBold" format="reference"/>

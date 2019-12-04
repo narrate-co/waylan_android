@@ -42,13 +42,13 @@
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:textAppearance="?textAppearanceHeadline3"
+                    android:textAppearance="?attr/textAppearanceHeadline3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -62,7 +62,7 @@
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:layout_gravity="left|center_vertical"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:layout_constraintBottom_toTopOf="@+id/toolbar_title_collapsed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -70,13 +70,13 @@
                     app:layout_constraintVertical_chainStyle="packed"
                     app:srcCompat="@drawable/ic_round_arrow_down_24px" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/toolbar_title_collapsed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:text="Favorite"
-                    android:textAppearance="?textAppearanceHeadline5"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
                     app:layout_constraintBottom_toTopOf="@+id/underline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/navigation_icon" />
