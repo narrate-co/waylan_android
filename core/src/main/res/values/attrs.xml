@@ -32,6 +32,17 @@
     <attr name="alphaEmphasisDivider" format="float"/>
     <attr name="alphaEmphasisHairline" format="float"/>
 
+    <!--Typography-->
+    <!--The type system supports two font families. These attributes allow each family, and -->
+    <!--their available weight variants, to be set once globally.-->
+    <attr name="fontFamilyPrimary" format="reference"/>
+    <attr name="fontFamilyPrimaryMedium" format="reference"/>
+    <attr name="fontFamilyPrimarySemiBold" format="reference"/>
+    <attr name="fontFamilySecondary" format="reference"/>
+    <attr name="fontFamilySecondaryMedium" format="reference"/>
+
+    <attr name="textAppearanceBody3" format="reference" />
+
 
     <!--Widget Styles-->
     <attr name="styleTextButton" format="reference"/>

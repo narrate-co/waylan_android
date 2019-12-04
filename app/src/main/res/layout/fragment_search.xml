@@ -43,7 +43,7 @@
             android:layout_marginStart="@dimen/keyline_2"
             android:layout_marginEnd="@dimen/keyline_2"
             android:focusable="true"
-            android:hint="Search Words"
+            android:hint="@string/search_bar_hint"
             android:imeOptions="actionDone"
             android:maxLines="1"
             android:paddingStart="8dp"

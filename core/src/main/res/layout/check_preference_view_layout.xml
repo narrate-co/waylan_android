@@ -10,24 +10,25 @@
         android:padding="@dimen/keyline_3">
 
         <TextView
-            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="56dp"
-            android:layout_marginVertical="@dimen/keyline_0_25" />
+            android:layout_marginVertical="@dimen/keyline_0_25"
+            android:textAppearance="?attr/textAppearanceSubtitle2" />
 
         <TextView
-            android:textAppearance="?textAppearanceBody2"
             android:id="@+id/descTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleTextView"
             android:layout_marginRight="56dp"
-            android:layout_marginVertical="@dimen/keyline_0_25" />
+            android:layout_marginVertical="@dimen/keyline_0_25"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/material_on_background_emphasis_medium" />
 
-
-        <androidx.appcompat.widget.AppCompatImageButton
+        <!--TODO: Replace with themed checkbox-->
+        <ImageView
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

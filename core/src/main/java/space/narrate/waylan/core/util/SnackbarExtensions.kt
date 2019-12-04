@@ -86,13 +86,15 @@ private fun Snackbar.config(
     val tv = view.findViewById<TextView>(R.id.snackbar_text)
     TextViewCompat.setTextAppearance(tv, textAppearance)
     tv.setTextColor(textColor)
-    tv.typeface = ResourcesCompat.getFont(context, R.font.source_sans_pro)
+    // TODO: Use fontFamily theme attributes
+    tv.typeface = ResourcesCompat.getFont(context, R.font.ibm_plex_serif_regular)
 
     //alter action
     val action = view.findViewById<TextView>(R.id.snackbar_action)
     TextViewCompat.setTextAppearance(action, buttonTextAppearance)
     action.setTextColor(textColor)
-    action.typeface = ResourcesCompat.getFont(context, R.font.source_code_pro_medium)
+    // TODO: Use fontFamily theme attributes
+    action.typeface = ResourcesCompat.getFont(context, R.font.ibm_plex_mono_medium)
     action.isAllCaps = false
 
     return this
