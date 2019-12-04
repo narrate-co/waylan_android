@@ -15,9 +15,10 @@
     <color name="colorMauve300">#ce8e8f</color>
     <color name="colorMauve400">#bb6366</color>
 
-<!--    <color name="colorGray500">#242424</color>-->
-    <color name="colorGray600">#2E2C2A</color>
-    <color name="colorGray900">#131314</color>
+    <color name="colorGray500">#2E2C2A</color>
+    <color name="colorGray600">#232120</color>
+    <color name="colorGray800">#131314</color>
+    <color name="colorGray900">#000000</color>
 
     <!--A color used as a stroke to emphasize the shadow on the top of views near the bottom of -->
     <!--the screen. This is necessary due to how Android's light source works.-->
