@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import kotlinx.android.synthetic.main.details_examples_item_layout.view.*
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.disk.wordset.Example
+import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider

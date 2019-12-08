@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.ui.settings
 
-import space.narrate.waylan.android.data.prefs.NightMode
+import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.android.ui.dialog.RadioItemModel
 
 class NightModeRadioItemModel(

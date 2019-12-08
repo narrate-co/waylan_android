@@ -16,9 +16,9 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.billing.BillingConfig
-import space.narrate.waylan.android.data.firestore.users.PluginState
-import space.narrate.waylan.android.data.firestore.users.User
+import space.narrate.waylan.core.billing.BillingConfig
+import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.configError

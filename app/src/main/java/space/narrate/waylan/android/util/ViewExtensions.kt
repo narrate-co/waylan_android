@@ -1,15 +1,11 @@
 package space.narrate.waylan.android.util
 
 import android.content.Context
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
-import android.view.LayoutInflater
 import android.view.View
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.disk.wordset.Synonym
+import space.narrate.waylan.core.data.wordset.Synonym
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 import space.narrate.waylan.core.util.setUpWithElasticBehavior

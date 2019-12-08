@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.disk.wordset.WordsetDatabaseSeedService" />
+        <service android:name="space.narrate.waylan.core.data.wordset.WordsetDatabaseSeedService" />
 
         <meta-data android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

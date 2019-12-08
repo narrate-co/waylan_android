@@ -2,17 +2,17 @@ package space.narrate.waylan.android.ui
 
 import androidx.lifecycle.*
 import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.data.firestore.users.UserWord
-import space.narrate.waylan.android.data.prefs.NightMode
-import space.narrate.waylan.android.data.prefs.Orientation
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.data.repository.WordRepository
+import space.narrate.waylan.core.data.repo.AnalyticsRepository
+import space.narrate.waylan.core.data.firestore.users.UserWord
+import space.narrate.waylan.core.data.prefs.NightMode
+import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.core.data.repo.WordRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.ui.search.ContextualFilterModel
-import space.narrate.waylan.android.ui.search.Period
+import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
-import space.narrate.waylan.android.util.switchMapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel owned by MainActivity, accessible by all its child Fragments, making data

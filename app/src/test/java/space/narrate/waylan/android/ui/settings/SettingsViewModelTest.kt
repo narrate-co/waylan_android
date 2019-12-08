@@ -9,10 +9,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import space.narrate.waylan.android.util.FirestoreTestData
+import space.narrate.waylan.core.data.repo.FirestoreTestData
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.repository.UserRepository
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.repo.UserRepository
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.valueBlocking
 import java.util.*

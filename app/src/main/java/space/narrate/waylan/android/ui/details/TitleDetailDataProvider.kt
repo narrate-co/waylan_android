@@ -1,9 +1,8 @@
 package space.narrate.waylan.android.ui.details
 
 import androidx.lifecycle.LiveData
-import org.koin.java.KoinJavaComponent.inject
-import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.util.mapTransform
+import space.narrate.waylan.core.data.repo.WordRepository
+import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
 

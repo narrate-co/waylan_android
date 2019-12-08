@@ -20,7 +20,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.BuildConfig
 import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.billing.BillingManager
+import space.narrate.waylan.core.billing.BillingManager
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.dialog.RadioGroupAlertDialog
 import space.narrate.waylan.android.ui.widget.BannerCardView

@@ -1,7 +1,7 @@
 package space.narrate.waylan.android.ui.details
 
-import space.narrate.waylan.android.data.disk.wordset.Example
-import space.narrate.waylan.android.data.disk.wordset.WordAndMeanings
+import space.narrate.waylan.core.data.wordset.Example
+import space.narrate.waylan.core.data.wordset.WordAndMeanings
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 

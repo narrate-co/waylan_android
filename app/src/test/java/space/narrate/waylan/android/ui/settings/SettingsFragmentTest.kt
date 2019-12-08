@@ -24,10 +24,10 @@ import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito.mock
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
-import space.narrate.waylan.android.util.FirestoreTestData
+import space.narrate.waylan.core.data.repo.FirestoreTestData
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.prefs.NightMode
-import space.narrate.waylan.android.data.prefs.Orientation
+import space.narrate.waylan.core.data.prefs.NightMode
+import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthRoute
 import space.narrate.waylan.core.ui.common.Event

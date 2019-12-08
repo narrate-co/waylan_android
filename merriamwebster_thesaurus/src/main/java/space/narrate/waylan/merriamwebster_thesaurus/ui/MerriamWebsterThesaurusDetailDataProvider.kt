@@ -1,7 +1,7 @@
 package space.narrate.waylan.merriamwebster_thesaurus.ui
 
 import androidx.lifecycle.LiveData
-import space.narrate.waylan.android.data.repository.UserRepository
+import space.narrate.waylan.core.data.repo.UserRepository
 import space.narrate.waylan.android.util.MergedLiveData
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel

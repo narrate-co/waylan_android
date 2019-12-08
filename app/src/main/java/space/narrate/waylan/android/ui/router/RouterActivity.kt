@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import org.koin.android.ext.android.inject
 import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.android.data.auth.AuthenticationStore
+import space.narrate.waylan.core.data.auth.AuthenticationStore
 
 
 /**

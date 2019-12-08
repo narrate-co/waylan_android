@@ -1,6 +1,6 @@
 package space.narrate.waylan.merriamwebster_thesaurus.ui
 
-import space.narrate.waylan.android.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusEntry

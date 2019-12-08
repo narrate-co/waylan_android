@@ -6,15 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.billing.BillingConfig
-import space.narrate.waylan.android.data.Result
-import space.narrate.waylan.android.data.firestore.users.PluginState
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
-import space.narrate.waylan.android.data.firestore.users.oneDayPastExpiration
-import space.narrate.waylan.android.data.repository.UserRepository
+import space.narrate.waylan.core.billing.BillingConfig
+import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.oneDayPastExpiration
+import space.narrate.waylan.core.data.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.android.util.mapTransform
+import space.narrate.waylan.core.util.mapTransform
 import java.util.*
 
 class DeveloperSettingsViewModel(

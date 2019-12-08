@@ -2,9 +2,9 @@ package space.narrate.waylan.android.ui.settings
 
 import android.content.Context
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.firestore.users.PluginState
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.core.util.getStringOrNull
 
 data class MwBannerModel(

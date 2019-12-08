@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.ui.settings
 
-import space.narrate.waylan.android.data.prefs.Orientation
+import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.android.ui.dialog.RadioItemModel
 
 class OrientationRadioItemModel(

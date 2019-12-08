@@ -9,9 +9,9 @@ import com.google.android.material.chip.Chip
 import space.narrate.waylan.merriamwebster.R
 import space.narrate.waylan.android.R as appR
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.firestore.users.PluginState
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
 
 /**
