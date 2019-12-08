@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import com.google.android.material.card.MaterialCardView
-import space.narrate.waylan.android.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.merriamwebster_thesaurus.MerriamWebsterThesaurusCardListener
 import space.narrate.waylan.core.util.toChip
 import space.narrate.waylan.merriamwebster_thesaurus.R

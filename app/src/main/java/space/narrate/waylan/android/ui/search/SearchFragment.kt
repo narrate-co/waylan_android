@@ -32,9 +32,9 @@ import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.data.firestore.users.UserWord
-import space.narrate.waylan.android.data.firestore.users.UserWordType
-import space.narrate.waylan.android.data.prefs.RotationManager
+import space.narrate.waylan.core.data.firestore.users.UserWord
+import space.narrate.waylan.core.data.firestore.users.UserWordType
+import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.*

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.NavDestination
 import space.narrate.waylan.android.ui.MainActivity
-import space.narrate.waylan.android.ui.auth.AuthActivity
-import space.narrate.waylan.android.ui.auth.AuthRoute
+import space.narrate.waylan.android.auth.AuthActivity
+import space.narrate.waylan.android.auth.AuthRoute
 import space.narrate.waylan.android.ui.list.ListFragmentArgs
 import space.narrate.waylan.android.ui.list.ListType
 

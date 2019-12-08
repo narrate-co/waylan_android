@@ -3,7 +3,7 @@ package space.narrate.waylan.android.ui.search
 import androidx.lifecycle.LifecycleOwner
 import androidx.transition.Transition
 import androidx.transition.TransitionListenerAdapter
-import space.narrate.waylan.android.util.DelayedLifecycleAction
+import space.narrate.waylan.core.util.DelayedLifecycleAction
 
 
 /**

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="space.narrate.waylan.android.ui.home.HomeFragment"
+        android:name="space.narrate.waylan.android.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_listFragment"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="space.narrate.waylan.android.ui.settings.SettingsFragment"
+        android:name="space.narrate.waylan.android.settings.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_aboutFragment"
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/developerSettingsFragment"
-        android:name="space.narrate.waylan.android.ui.dev.DeveloperSettingsFragment"
+        android:name="space.narrate.waylan.android.dev.DeveloperSettingsFragment"
         android:label="DeveloperSettingsFragment" />
     <fragment
         android:id="@+id/thirdPartyLibrariesFragment"

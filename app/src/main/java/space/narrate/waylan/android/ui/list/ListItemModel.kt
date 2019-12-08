@@ -1,7 +1,7 @@
 package space.narrate.waylan.android.ui.list
 
-import space.narrate.waylan.android.data.firestore.users.UserWord
-import space.narrate.waylan.android.data.firestore.words.GlobalWord
+import space.narrate.waylan.core.data.firestore.users.UserWord
+import space.narrate.waylan.core.data.firestore.words.GlobalWord
 import space.narrate.waylan.core.ui.common.Diffable
 
 sealed class ListItemModel : Diffable<ListItemModel> {

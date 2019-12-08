@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.User
 import java.lang.IllegalArgumentException
 
 /**

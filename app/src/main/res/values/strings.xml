@@ -23,34 +23,15 @@
     <string name="orientation_prompt_locked_label">Locked</string>
     <string name="orientation_prompt_unlocked_label">Unlocked</string>
 
-    <!--Notifications-->
-    <string name="data_notification_channel_name">Data Notification</string>
-    <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
-    <string name="data_seed_notification_title">Initializing Dictionary</string>
-    <string name="data_seed_notification_text">Unpacking and loading words…</string>
-
     <!--Menus-->
     <string name="menu_favorite_title">Favorite</string>
     <string name="menu_share_title">Share</string>
-
-    <!--Errors-->
-    <string name="auth_error_message_no_current_user">No user is currently signed in</string>
-    <string name="auth_error_message_unknown">An unknown error occurred during authentication</string>
-    <string name="auth_error_message_anon_login_unknown">Unable to log in anonymously</string>
-    <string name="auth_error_message_login_unknown">An unknown error occurred during log in</string>
-    <string name="auth_error_message_login_failed">Failed to log in</string>
-    <string name="auth_error_message_signup_unknown">An unknown error occurred during sign up</string>
-    <string name="auth_error_message_signup_failed">Failed to sign up</string>
-    <string name="auth_error_message_passwords_mismatch">Passwords don\'t match</string>
-    <string name="auth_error_message_no_current_user_to_link">No current user is available to create account with</string>
 
     <!--Auth Screen-->
     <string name="auth_email_hint">Email</string>
     <string name="auth_password_hint">Password</string>
     <string name="auth_confirm_password_hint">Confirm Password</string>
     <string name="auth_cancel_button">Cancel</string>
-    <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
-    <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
 
     <!--Settings Screen-->
     <string name="settings_night_mode_title">Night mode</string>
@@ -80,26 +61,6 @@
     <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
     <string name="settings_developer_title">Developer Settings</string>
     <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
-    <string name="settings_night_mode_set_by_battery_saver_title">Set by Battery Saver</string>
-    <string name="settings_night_mode_set_by_battery_saver_desc">Night mode will automatically be enabled if Battery Saver is turned on</string>
-    <string name="settings_night_mode_system_default_title">System default</string>
-    <string name="settings_night_mode_system_default_desc">Night mode will be used depending on if dark theme is turned on in system settings</string>
-    <string name="settings_night_mode_follows_system_title">Follows system</string>
-    <string name="settings_night_mode_auto_title">Auto</string>
-    <string name="settings_night_mode_yes_title">Yes</string>
-    <string name="settings_night_mode_no_title">No</string>
-    <string name="settings_night_mode_auto_desc">Night mode turns on between sunset and sunrise</string>
-    <string name="settings_night_mode_yes_desc">Always use night mode</string>
-    <string name="settings_night_mode_no_desc">Never use night mode</string>
-    <string name="settings_night_mode_follows_system_desc">Night mode usage is determined by your global system settings</string>
-    <string name="settings_orientation_unspecified_title">None</string>
-    <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
-    <string name="settings_orientation_portrait_title">Portrait</string>
-    <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
-    <string name="settings_orientation_landscape_title">Landscape (Left)</string>
-    <string name="settings_orientation_landscape_desc">Only allow landscape (90° counter-clockwise)</string>
-    <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
-    <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
 
     <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
     <string name="mw_card_view_free_trial_expired">Free trial expired</string>
@@ -120,13 +81,7 @@
     <string name="auth_log_in_button">Log in</string>
 
     <!--Contextual Fragment-->
-    <string name="period_label_minute">minute</string>
-    <string name="period_label_hour">hour</string>
-    <string name="period_label_day">day</string>
-    <string name="period_label_week">week</string>
-    <string name="period_label_month">month</string>
-    <string name="period_label_year">year</string>
-    <string name="period_label_all_time">all time</string>
+
     <string name="developer_settings_all_preferences_cleared">All user preferences cleared</string>
     <string name="developer_settings_informative_snackbar_test_message">A test piece of information</string>
     <string name="developer_settings_informative_snackbar_test_action">Okay</string>

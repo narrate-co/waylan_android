@@ -26,6 +26,7 @@ import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.util.*
+import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.getColorFromAttr
 

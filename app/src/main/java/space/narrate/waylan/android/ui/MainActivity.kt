@@ -13,9 +13,9 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.prefs.Orientation
-import space.narrate.waylan.android.ui.home.HomeFragment
+import space.narrate.waylan.core.data.auth.AuthenticationStore
+import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.android.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.AuthActivity">
+    tools:context="space.narrate.waylan.android.auth.AuthActivity">
 
     <ImageView
         android:id="@+id/logo_image_view"

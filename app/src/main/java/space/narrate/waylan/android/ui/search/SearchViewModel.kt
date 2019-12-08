@@ -2,22 +2,24 @@ package space.narrate.waylan.android.ui.search
 
 import androidx.lifecycle.*
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.data.prefs.*
+import space.narrate.waylan.core.data.repo.AnalyticsRepository
+import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.core.data.repo.WordRepository
 import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.android.util.mapTransform
-import space.narrate.waylan.android.util.switchMapTransform
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.android.util.MergedLiveData
+import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.core.data.prefs.RotationManager
+import space.narrate.waylan.core.data.prefs.RotationUtils
 
 /**
  * A ViewModel for [SearchFragment]
  */
 class SearchViewModel(
-        private val wordRepository: WordRepository,
-        private val userRepository: UserRepository,
-        private val analyticsRepository: AnalyticsRepository
+    private val wordRepository: WordRepository,
+    private val userRepository: UserRepository,
+    private val analyticsRepository: AnalyticsRepository
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
     private val searchInput: MutableLiveData<String> = MutableLiveData()
@@ -104,16 +106,16 @@ class SearchViewModel(
     // RotationManager callbacks
 
     override fun onLockedRotate(
-            old: RotationManager.RotationEvent,
-            new: RotationManager.RotationEvent,
-            lockedTo: Int
+        old: RotationManager.RotationEvent,
+        new: RotationManager.RotationEvent,
+        lockedTo: Int
     ) {
         //do nothing
     }
 
     override fun onUnlockedOrientationChange(
-            old: RotationManager.RotationEvent,
-            new: RotationManager.RotationEvent
+        old: RotationManager.RotationEvent,
+        new: RotationManager.RotationEvent
     ) {
         if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
@@ -133,9 +135,9 @@ class SearchViewModel(
     }
 
     override fun onLockedRotatePatternSeen(
-            pattern: List<RotationManager.RotationEvent>,
-            lockedTo: Int,
-            observedSince: Long
+        pattern: List<RotationManager.RotationEvent>,
+        lockedTo: Int,
+        observedSince: Long
     ) {
         if (RotationUtils.isLikelyUnlockDesiredScenario(
                         pattern,

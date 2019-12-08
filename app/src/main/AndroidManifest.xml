@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Waylan.DayNight"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.auth.AuthActivity">
+        <activity android:name="space.narrate.waylan.android.auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.disk.wordset.WordsetDatabaseSeedService" />
+        <service android:name="space.narrate.waylan.core.data.wordset.WordsetDatabaseSeedService" />
 
         <meta-data android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

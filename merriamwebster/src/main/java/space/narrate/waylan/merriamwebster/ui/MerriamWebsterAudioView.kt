@@ -10,8 +10,8 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.android.ui.details.AudioClipHelper
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
 import space.narrate.waylan.merriamwebster.R

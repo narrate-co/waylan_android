@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.util.mapTransform
-import space.narrate.waylan.android.util.switchMapTransform
+import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.core.data.repo.WordRepository
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * ViewModel for [ListFragment]
  */
 class ListViewModel(
-        private val wordRepository: WordRepository,
-        private val userRepository: UserRepository
+    private val wordRepository: WordRepository,
+    private val userRepository: UserRepository
 ): ViewModel() {
 
     private val _listType: MutableLiveData<ListType> = MutableLiveData()

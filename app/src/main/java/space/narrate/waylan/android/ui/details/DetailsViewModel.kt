@@ -3,9 +3,9 @@ package space.narrate.waylan.android.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.util.mapOnTransform
-import space.narrate.waylan.android.util.switchMapTransform
+import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.core.util.mapOnTransform
+import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType

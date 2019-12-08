@@ -1,8 +1,8 @@
 package space.narrate.waylan.merriamwebster.ui
 
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 

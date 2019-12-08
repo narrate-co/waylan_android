@@ -3,8 +3,8 @@ package space.narrate.waylan.merriamwebster.ui
 import space.narrate.waylan.merriamwebster.data.local.MwDefinition
 import space.narrate.waylan.merriamwebster.data.local.MwWord
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.firestore.users.merriamWebsterState
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 
 /**
  * An object which handles generating a list of [MerriamWebsterItemModel] which should be displayed

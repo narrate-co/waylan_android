@@ -53,4 +53,17 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Room
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
+
+    // Firebase & Firestore
+    implementation Libs.firebase
+    implementation Libs.firebaseAuth
+    implementation Libs.firebaseFirestore
+    implementation Libs.crashlytics
+
+    // Google Play Billing
+    implementation Libs.playBilling
 }
