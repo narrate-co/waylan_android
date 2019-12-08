@@ -20,7 +20,7 @@ import space.narrate.waylan.core.data.repo.UserRepository
 import space.narrate.waylan.core.data.repo.WordRepository
 import space.narrate.waylan.core.data.spell.SymSpellStore
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.auth.AuthViewModel
+import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
 import space.narrate.waylan.android.ui.details.ExampleDetailDataProvider
 import space.narrate.waylan.android.ui.details.ExamplesDetailItemProvider
@@ -28,11 +28,11 @@ import space.narrate.waylan.android.ui.details.TitleDetailDataProvider
 import space.narrate.waylan.android.ui.details.TitleDetailItemProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailDataProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailItemProvider
-import space.narrate.waylan.android.dev.DeveloperSettingsViewModel
-import space.narrate.waylan.android.home.HomeViewModel
+import space.narrate.waylan.android.ui.dev.DeveloperSettingsViewModel
+import space.narrate.waylan.android.ui.home.HomeViewModel
 import space.narrate.waylan.android.ui.list.ListViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
-import space.narrate.waylan.android.settings.SettingsViewModel
+import space.narrate.waylan.android.ui.settings.SettingsViewModel
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.details.DetailProviderFactory

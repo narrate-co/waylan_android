@@ -15,7 +15,7 @@ import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.auth.AuthenticationStore
 import space.narrate.waylan.core.data.prefs.Orientation
-import space.narrate.waylan.android.home.HomeFragment
+import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment

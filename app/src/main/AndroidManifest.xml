@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Waylan.DayNight"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="space.narrate.waylan.android.auth.AuthActivity">
+        <activity android:name=".ui.auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
