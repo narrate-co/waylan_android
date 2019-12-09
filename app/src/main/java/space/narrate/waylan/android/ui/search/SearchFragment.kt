@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.prefs.RotationManager
@@ -39,6 +40,8 @@ import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.*
 import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.getColorFromAttr
@@ -66,6 +69,8 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     private lateinit var recyclerView: RecyclerView
     private lateinit var actionOneImageView: AppCompatImageView
     private lateinit var actionTwoImageView: AppCompatImageView
+
+    private val navigator: Navigator by inject()
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
@@ -147,12 +152,12 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
             }
         })
 
-        sharedViewModel.currentDestination.observe(this, Observer {
+        navigator.currentDestination.observe(this, Observer {
             when (it) {
-                Navigator.Destination.SETTINGS,
-                Navigator.Destination.ABOUT,
-                Navigator.Destination.THIRD_PARTY,
-                Navigator.Destination.DEV_SETTINGS -> {
+                Destination.SETTINGS,
+                Destination.ABOUT,
+                Destination.THIRD_PARTY,
+                Destination.DEV_SETTINGS -> {
                     bottomSheetBehavior.isHideable = true
                     bottomSheetBehavior.hide(requireActivity())
                 }
@@ -333,9 +338,9 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
 
         // Hide filter action if contextual sheet is expanded
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = sharedViewModel.currentDestination.value
-                ?: Navigator.Destination.HOME
-            if (currentDest == Navigator.Destination.TRENDING) {
+            val currentDest = navigator.currentDestination.value
+                ?: Destination.HOME
+            if (currentDest == Destination.TRENDING) {
                 setSheetSlideOffsetForActions(
                         (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
                         offset

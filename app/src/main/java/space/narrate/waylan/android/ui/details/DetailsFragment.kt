@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.ui.common.BaseFragment
@@ -23,9 +24,11 @@ import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
+import space.narrate.waylan.core.util.setUpWithElasticBehavior
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
@@ -38,6 +41,8 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var navigationIcon: AppCompatImageButton
     private lateinit var recyclerView: RecyclerView
+
+    private val navigator: Navigator by inject()
 
     // The MainViewModel which is used to for data shared between MainActivity and
     // its child fragments (HomeFragment, ListFragment and DetailsFragment)
@@ -79,7 +84,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
         appBarLayout.setUpWithElasticBehavior(
             this.javaClass.simpleName,
-            sharedViewModel,
+            navigator,
             listOf(appBarLayout),
             listOf(recyclerView, appBarLayout)
         )
@@ -87,7 +92,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+            navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

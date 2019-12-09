@@ -8,16 +8,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 import space.narrate.waylan.about.data.ThirdPartyLibrary
 import space.narrate.waylan.about.databinding.FragmentThirdPartyLibrariesBinding
-import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.launchWebsite
+import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.android.R as appR
 
 /**
@@ -27,7 +28,7 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
 
     private lateinit var binding: FragmentThirdPartyLibrariesBinding
 
-    private val sharedViewModel: MainViewModel by sharedViewModel()
+    private val navigator: Navigator by inject()
 
     private val thirdPartyLibrariesViewModel: ThirdPartyLibrariesViewModel by viewModel()
 
@@ -52,13 +53,13 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
         binding.run {
             appBar.setUpWithElasticBehavior(
                 this.javaClass.simpleName,
-                sharedViewModel,
+                navigator,
                 listOf(navigationIcon),
                 listOf(recyclerView, appBar)
             )
 
             navigationIcon.setOnClickListener {
-                sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+                navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
         }
 

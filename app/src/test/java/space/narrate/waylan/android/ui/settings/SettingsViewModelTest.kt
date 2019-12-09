@@ -13,6 +13,8 @@ import space.narrate.waylan.core.data.repo.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.settings.MwBannerAction
+import space.narrate.waylan.settings.SettingsViewModel
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.valueBlocking
 import java.util.*

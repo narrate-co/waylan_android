@@ -11,7 +11,6 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.auth.AuthenticationStore
 import space.narrate.waylan.core.data.prefs.Orientation
@@ -20,6 +19,7 @@ import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetScrimView: View
 
     private val authenticationStore: AuthenticationStore by inject()
+
+    private val navigator: Navigator by inject()
 
     /**
      * A single callback aggregator which attached added to [SearchFragment]'s BottomSheetBehavior.
@@ -79,9 +81,7 @@ class MainActivity : AppCompatActivity() {
         decor.systemUiVisibility = flags
 
         findNavController().addOnDestinationChangedListener { _, destination, arguments ->
-            sharedViewModel.onDestinationChanged(
-                Navigator.Destination.fromDestinationId(destination, arguments)
-            )
+            navigator.setCurrentDestination(destination, arguments)
         }
 
         searchFragment =
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         coordinatorLayout = findViewById(R.id.coordinator_layout)
         bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
-        sharedViewModel.shouldNavigateBack.observe(this, Observer { event ->
+        navigator.shouldNavigateBack.observe(this, Observer { event ->
             event.getUnhandledContent()?.let { onBackPressed() }
         })
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun ensureAppHasUser() {
         if (!authenticationStore.hasUser) {
-            Navigator.launchAuth(this)
+            navigator.launchAuth(this)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }

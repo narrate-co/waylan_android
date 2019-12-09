@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import space.narrate.waylan.about.R
 import space.narrate.waylan.about.databinding.FragmentAboutBinding
 import space.narrate.waylan.about.di.loadAboutModule
 import space.narrate.waylan.android.BuildConfig
-import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.util.setUpWithElasticBehavior
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.android.R as appR
 
 /**
@@ -30,7 +31,7 @@ class AboutFragment: BaseFragment() {
 
     private lateinit var binding: FragmentAboutBinding
 
-    private val sharedViewModel: MainViewModel by sharedViewModel()
+    private val navigator: Navigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +55,13 @@ class AboutFragment: BaseFragment() {
         binding.run {
             appBar.setUpWithElasticBehavior(
                 this.javaClass.simpleName,
-                sharedViewModel,
+                navigator,
                 listOf(navigationIcon),
                 listOf(scrollView, appBar)
             )
 
             navigationIcon.setOnClickListener {
-                sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+                navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
 
             // Version preference

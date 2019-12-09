@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.list_item_layout.view.*
 import org.threeten.bp.OffsetDateTime
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.wordset.Synonym
-import space.narrate.waylan.android.ui.widget.BannerCardView
+import space.narrate.waylan.core.ui.widget.BannerCardView
 import space.narrate.waylan.android.util.toChip
 import space.narrate.waylan.core.util.AdapterUtils
 

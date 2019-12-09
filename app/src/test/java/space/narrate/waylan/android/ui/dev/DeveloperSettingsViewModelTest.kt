@@ -17,6 +17,7 @@ import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.repo.UserRepository
+import space.narrate.waylan.settings.DeveloperSettingsViewModel
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.capture
 import space.narrate.waylan.test_common.valueBlocking

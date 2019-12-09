@@ -29,8 +29,14 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.auth.AuthRoute
+import space.narrate.waylan.core.data.auth.AuthRoute
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.settings.MwBannerModel
+import space.narrate.waylan.settings.NightModeRadioItemModel
+import space.narrate.waylan.settings.OrientationRadioItemModel
+import space.narrate.waylan.settings.PurchaseFlowModel
+import space.narrate.waylan.settings.SettingsFragment
+import space.narrate.waylan.settings.SettingsViewModel
 import org.mockito.Mockito.`when` as whenever
 
 @RunWith(AndroidJUnit4::class)

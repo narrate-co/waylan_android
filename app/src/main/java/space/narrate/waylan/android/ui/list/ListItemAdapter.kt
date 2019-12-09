@@ -3,7 +3,7 @@ package space.narrate.waylan.android.ui.list
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import space.narrate.waylan.core.util.AdapterUtils
-import space.narrate.waylan.android.ui.widget.BannerCardView
+import space.narrate.waylan.core.ui.widget.BannerCardView
 import java.lang.IllegalArgumentException
 
 class ListItemAdapter(

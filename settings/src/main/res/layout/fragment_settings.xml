@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrim_frame"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/keyline_2"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/content_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <space.narrate.waylan.core.ui.widget.BannerCardView
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/keyline_2"
+                    android:layout_marginEnd="@dimen/keyline_2"
+                    android:layout_marginTop="@dimen/keyline_2"
+                    android:layout_marginBottom="@dimen/keyline_4"
+                    app:cardElevation="@dimen/plane_01"
+                    app:cardCornerRadius="@dimen/keyline_2"
+                    app:cardBackgroundColor="?colorSurface"
+                    />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/night_mode_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/settings_night_mode_title"
+                    />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/orientation_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="Orientation lock"
+                    app:desc="None"
+                    />
+
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/sign_out_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/settings_sign_out_title"
+                    app:desc="@string/settings_sign_out_default_desc"
+                    />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/about_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/settings_about_title"
+                    app:desc="@string/settings_about_desc"
+                    />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/contact_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/settings_contact_title"
+                    app:desc="@string/settings_contact_desc"
+                    />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/developer_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/settings_developer_title"
+                    app:desc="@string/settings_developer_desc"
+                    app:showDivider="false"
+                    />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:colorBackground"
+            app:layout_behavior="space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior"
+            app:elevation="@dimen/plane_00">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="?actionBarSize"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/keyline_3"
+                android:layout_marginRight="@dimen/keyline_3"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/navigation_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:layout_gravity="left|center_vertical"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_round_arrow_down_24px"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:textAppearance="?textAppearanceHeadline5"
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/keyline_2"
+                    android:text="Settings" />
+
+                <View
+                    android:layout_width="72dp"
+                    android:layout_height="2dp"
+                    android:background="@drawable/title_underline_background"
+                    android:layout_marginTop="@dimen/keyline_3"/>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</space.narrate.waylan.core.ui.widget.ScrimWindowLayout>

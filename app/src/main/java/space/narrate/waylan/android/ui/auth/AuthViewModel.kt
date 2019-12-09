@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.auth.AuthRoute
 import space.narrate.waylan.core.data.auth.AuthenticationStore
 import space.narrate.waylan.core.data.auth.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.prefs.NightMode

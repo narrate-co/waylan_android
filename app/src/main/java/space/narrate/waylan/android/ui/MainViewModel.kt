@@ -1,8 +1,6 @@
 package space.narrate.waylan.android.ui
 
 import androidx.lifecycle.*
-import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.core.data.repo.AnalyticsRepository
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
@@ -12,6 +10,8 @@ import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.android.ui.search.ContextualFilterModel
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
+import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.switchMapTransform
 
 /**
@@ -20,22 +20,18 @@ import space.narrate.waylan.core.util.switchMapTransform
  */
 class MainViewModel(
     private val wordRepository: WordRepository,
-    private val analyticsRepository: AnalyticsRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val navigator: Navigator
 ) : ViewModel() {
 
-    private val _currentDestination: MutableLiveData<Navigator.Destination> = MutableLiveData()
-    val currentDestination: LiveData<Navigator.Destination>
-        get() = _currentDestination
-
-    val searchShelfModel: LiveData<SearchShelfActionsModel> = currentDestination
+    val searchShelfModel: LiveData<SearchShelfActionsModel> = navigator.currentDestination
         .switchMapTransform { dest ->
             val result = MediatorLiveData<SearchShelfActionsModel>()
             when (dest) {
-                Navigator.Destination.DETAILS -> result.addSource(currentUserWord) {
+                Destination.DETAILS -> result.addSource(currentUserWord) {
                     result.value = SearchShelfActionsModel.DetailsShelfActions(it)
                 }
-                Navigator.Destination.TRENDING -> result.addSource(
+                Destination.TRENDING -> result.addSource(
                     userRepository.trendingListFilterLive
                 ) {
                     result.value = SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
@@ -46,15 +42,15 @@ class MainViewModel(
             result
         }
 
-    val contextualFilterModel: LiveData<ContextualFilterModel> = currentDestination
+    val contextualFilterModel: LiveData<ContextualFilterModel> = navigator.currentDestination
         .switchMapTransform { dest ->
             val result = MediatorLiveData<ContextualFilterModel>()
 
             result.addSource(
                 when (dest) {
-                    Navigator.Destination.TRENDING -> userRepository.trendingListFilterLive
-                    Navigator.Destination.RECENT -> userRepository.recentsListFilterLive
-                    Navigator.Destination.FAVORITE -> userRepository.favoritesListFilterLive
+                    Destination.TRENDING -> userRepository.trendingListFilterLive
+                    Destination.RECENT -> userRepository.recentsListFilterLive
+                    Destination.FAVORITE -> userRepository.favoritesListFilterLive
                     else -> {
                         // TODO : Clean up
                         val data = MutableLiveData<List<Period>>()
@@ -66,7 +62,7 @@ class MainViewModel(
                 result.value = ContextualFilterModel(
                     dest,
                     filter,
-                    dest == Navigator.Destination.TRENDING
+                    dest == Destination.TRENDING
                 )
             }
 
@@ -88,10 +84,6 @@ class MainViewModel(
 
     val orientation: LiveData<Orientation>
         get() = userRepository.orientationLockLive
-
-    private val _shouldNavigateBack: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    val shouldNavigateBack: LiveData<Event<Boolean>>
-        get() = _shouldNavigateBack
 
     private val _shouldShowDetails: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<Boolean>>
@@ -131,18 +123,6 @@ class MainViewModel(
         setCurrentWordRecented()
     }
 
-    fun onNavigationIconClicked(currentDestination: String): Boolean {
-        analyticsRepository.logNavigationIconEvent(currentDestination)
-        _shouldNavigateBack.value = Event(true)
-        return true
-    }
-
-    fun onDragDismissBackEvent(currentDestination: String): Boolean {
-        analyticsRepository.logDragDismissEvent(currentDestination)
-        _shouldNavigateBack.value = Event(true)
-        return true
-    }
-
     fun onListFilterPeriodClicked(period: Period) {
         setListFilter(listOf(period))
     }
@@ -153,10 +133,6 @@ class MainViewModel(
 
     fun onContextualSheetHidden() {
         onClearListFilter()
-    }
-
-    fun onDestinationChanged(destination: Navigator.Destination) {
-        _currentDestination.value = destination
     }
 
     /**
@@ -183,13 +159,12 @@ class MainViewModel(
 
 
     private fun setListFilter(filter: List<Period>) {
-        val dest = currentDestination.value ?: Navigator.Destination.HOME
+        val dest = navigator.currentDestination.value ?: Destination.HOME
 
         when (dest) {
-            Navigator.Destination.TRENDING -> userRepository.trendingListFilter = filter
-            Navigator.Destination.RECENT -> userRepository.recentsListFilter = filter
-            Navigator.Destination.FAVORITE -> userRepository.favoritesListFilter = filter
+            Destination.TRENDING -> userRepository.trendingListFilter = filter
+            Destination.RECENT -> userRepository.recentsListFilter = filter
+            Destination.FAVORITE -> userRepository.favoritesListFilter = filter
         }
     }
-
 }

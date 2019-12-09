@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Core</string>
 
+    <string name="title_favorite">Favorite</string>
+    <string name="title_recent">Recent</string>
+    <string name="title_trending">Trending</string>
+
     <!--Errors-->
     <string name="auth_error_message_no_current_user">No user is currently signed in</string>
     <string name="auth_error_message_unknown">An unknown error occurred during authentication</string>

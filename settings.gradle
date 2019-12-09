@@ -3,6 +3,8 @@
 include ':core'
 // App is the base Android application
 include ':app'
+// Settings holds all UI and logic to display in-app settings, billing and configuration.
+include ':settings'
 // About is a dynamic feature module that includes the about screen and third
 // party libraries screen as well as the static data consumed by each.
 include ':about'
@@ -16,4 +18,3 @@ include ':merriamwebster_thesaurus'
 // Test Common holds all testing code which is shared between module tests, both unit and
 // instrumentation tests. This includes things like utilities, extensions, rules, etc.
 include ':test_common'
-

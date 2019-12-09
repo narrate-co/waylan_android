@@ -16,6 +16,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 
 fun View.gone() {
@@ -72,6 +73,34 @@ fun AppBarLayout.setUpWithElasticBehavior(
     behavior.addCallback(callback)
 }
 
+fun AppBarLayout.setUpWithElasticBehavior(
+    currentDestination: String,
+    navigator: Navigator,
+    parallaxOnDrag: List<View>,
+    alphaOnDrag: List<View>
+) {
+    val callback = object : ElasticAppBarBehavior.ElasticViewBehaviorCallback {
+        override fun onDrag(
+            dragFraction: Float,
+            dragTo: Float,
+            rawOffset: Float,
+            rawOffsetPixels: Float,
+            dragDismissScale: Float
+        ) {
+            val alpha = 1 - dragFraction
+            val cutDragTo = dragTo * .15F
+
+            parallaxOnDrag.forEach { it.translationY = cutDragTo }
+            alphaOnDrag.forEach { it.alpha = alpha }
+        }
+
+        override fun onDragDismissed(): Boolean {
+            return navigator.back(Navigator.BackType.DRAG, currentDestination)
+        }
+    }
+
+    setUpWithElasticBehavior(callback)
+}
 
 fun String.toChip(
     context: Context,

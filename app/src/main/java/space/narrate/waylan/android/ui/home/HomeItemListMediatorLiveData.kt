@@ -3,7 +3,7 @@ package space.narrate.waylan.android.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.list.ListType
+import space.narrate.waylan.core.ui.ListType
 
 class HomeItemListMediatorLiveData : MediatorLiveData<List<HomeItemModel>>() {
 

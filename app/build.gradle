@@ -102,6 +102,7 @@ kapt {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
+    implementation project(':settings')
 
     // Room
     implementation Libs.roomRuntime

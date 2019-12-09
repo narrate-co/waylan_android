@@ -28,7 +28,7 @@ import org.mockito.Mockito.verify
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.list.ListType
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
 import space.narrate.waylan.test_common.RecyclerViewMatcher
 import org.mockito.Mockito.`when` as whenever

@@ -4,6 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import space.narrate.waylan.core.data.repo.FirestoreTestData
 import space.narrate.waylan.android.R
+import space.narrate.waylan.settings.MwBannerAction
+import space.narrate.waylan.settings.MwBannerModel
 
 class MwBannerModelTest {
 

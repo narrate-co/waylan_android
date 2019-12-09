@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.repo.UserRepository
 import space.narrate.waylan.core.data.repo.WordRepository
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
 

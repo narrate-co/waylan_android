@@ -18,16 +18,19 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 import space.narrate.waylan.android.*
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
-import space.narrate.waylan.android.util.*
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.MathUtils
+import space.narrate.waylan.core.util.setUpWithElasticBehavior
 
 /**
  * A flexible Fragment that handles the display of a [ListType]. Each [ListType] configuration is
@@ -45,6 +48,8 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
     private lateinit var toolbarTitle: AppCompatTextView
     private lateinit var toolbarTitleCollapsed: AppCompatTextView
     private lateinit var underline: View
+
+    private val navigator: Navigator by inject()
 
     // The MainViewModel used to share data between MainActivity and its child Fragments
     private val sharedViewModel: MainViewModel by sharedViewModel()
@@ -86,7 +91,7 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
 
         appBarLayout.setUpWithElasticBehavior(
             this.javaClass.simpleName,
-            sharedViewModel,
+            navigator,
             listOf(appBarLayout),
             listOf(recyclerView, appBarLayout)
         )
@@ -95,7 +100,7 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
+            navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
         }
 
         // Set up expanding/collapsing "toolbar"
