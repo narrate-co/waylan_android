@@ -1,10 +1,10 @@
 package space.narrate.waylan.android.ui.details
 
 import androidx.lifecycle.LiveData
-import space.narrate.waylan.core.data.repo.WordRepository
-import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
+import space.narrate.waylan.core.util.mapTransform
 
 /**
  * A data provider which knows how to fetch a [TitleModel], given a word, to be

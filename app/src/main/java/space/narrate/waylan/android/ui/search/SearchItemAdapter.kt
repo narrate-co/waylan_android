@@ -2,8 +2,8 @@ package space.narrate.waylan.android.ui.search
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import space.narrate.waylan.core.util.AdapterUtils
 import space.narrate.waylan.core.ui.widget.BannerCardView
+import space.narrate.waylan.core.util.AdapterUtils
 
 class SearchItemAdapter(
         private val listener: SearchItemListener

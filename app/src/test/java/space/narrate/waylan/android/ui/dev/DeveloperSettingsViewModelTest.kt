@@ -12,12 +12,12 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import space.narrate.waylan.core.data.repo.FirestoreTestData
+import space.narrate.waylan.core.repo.FirestoreTestData
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.data.repo.UserRepository
-import space.narrate.waylan.settings.DeveloperSettingsViewModel
+import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.settings.ui.developer.DeveloperSettingsViewModel
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.capture
 import space.narrate.waylan.test_common.valueBlocking

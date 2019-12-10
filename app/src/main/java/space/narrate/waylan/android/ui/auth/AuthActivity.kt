@@ -24,8 +24,6 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Observer
 import androidx.transition.TransitionManager
 import com.google.android.material.button.MaterialButton
-import space.narrate.waylan.android.R
-import space.narrate.waylan.core.util.getColorFromAttr
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,10 +31,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
-import space.narrate.waylan.core.data.auth.AuthRoute
+import space.narrate.waylan.android.R
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
+import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 
@@ -155,7 +153,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
         authViewModel.shouldLaunchMain.observe(this, Observer { event ->
             event?.getUnhandledContent()?.let {
-                navigator.launchMain(this@AuthActivity, true, filterIntent)
+                navigator.toHome(this@AuthActivity, true, filterIntent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 finish()
             }

@@ -19,7 +19,6 @@
             android:overScrollMode="never"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
             <LinearLayout
                 android:id="@+id/content_container"
                 android:layout_width="match_parent"
@@ -31,15 +30,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="@string/developer_settings_clear_user_preferences_title"
-                    app:desc="@string/developer_settings_clear_user_preferences_desc"
-                    />
+                    app:desc="@string/developer_settings_clear_user_preferences_desc" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_state_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/developer_settings_toggle_merriam_webster_state_title"
-                    />
+                    app:title="@string/developer_settings_toggle_merriam_webster_state_title" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/use_test_skus_preference"
@@ -47,22 +44,20 @@
                     android:layout_height="wrap_content"
                     app:title="@string/developer_settings_use_test_skus_title"
                     app:desc="@string/developer_settings_use_test_skus_desc"
-                    app:checkable="true"
-                    />
+                    app:checkable="true" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_billing_response_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="Toggle Merriam-Webster Billing response"
-                    />
+                    app:title="Toggle Merriam-Webster Billing response" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/informative_snackbar_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="Informative Snackbar"
-                    app:desc="Show a test of an informative snackbar"/>
+                    app:desc="Show a test of an informative snackbar" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/error_snackbar_preference"
@@ -70,7 +65,7 @@
                     android:layout_height="wrap_content"
                     app:title="Error Snackbar"
                     app:desc="Show a test of an error snackbar"
-                    app:showDivider="false"/>
+                    app:showDivider="false" />
 
             </LinearLayout>
 
@@ -87,31 +82,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="?actionBarSize"
+                android:minHeight="?attr/actionBarSize"
                 android:orientation="vertical"
-                android:layout_marginLeft="@dimen/keyline_3"
-                android:layout_marginRight="@dimen/keyline_3"
-                app:layout_scrollFlags="scroll|enterAlways"
-                >
+                android:layout_marginHorizontal="@dimen/keyline_3"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/navigation_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
+                    android:paddingVertical="14dp"
                     android:layout_gravity="left|center_vertical"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_round_arrow_down_24px"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:textAppearance="?textAppearanceHeadline5"
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/keyline_2"
-                    android:text="@string/developer_settings_title"
-                    />
+                    android:textAppearance="?attr/textAppearanceHeadline5"
+                    android:text="@string/developer_settings_title" />
 
                 <View
                     android:layout_width="72dp"
@@ -120,7 +111,6 @@
                     android:layout_marginTop="@dimen/keyline_3"/>
 
             </LinearLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 

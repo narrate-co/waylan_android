@@ -8,11 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDestination
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.auth.AuthActivity
-import space.narrate.waylan.core.data.auth.AuthRoute
+import space.narrate.waylan.android.ui.auth.AuthRoute
 import space.narrate.waylan.android.ui.list.ListFragmentArgs
-import space.narrate.waylan.core.ui.ListType
-import space.narrate.waylan.core.data.repo.AnalyticsRepository
+import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.Navigator.BackType.DRAG
 import space.narrate.waylan.core.ui.Navigator.BackType.ICON
@@ -30,23 +30,17 @@ class AppNavigator(
     override val shouldNavigateBack: LiveData<Event<Boolean>>
         get() = _shouldNavigateBack
 
-    override fun back(backType: Navigator.BackType, from: String): Boolean {
+    override fun setCurrentDestination(dest: NavDestination, arguments: Bundle?) {
+        _currentDestination.value = fromDestinationId(dest, arguments)
+    }
+
+    override fun toBack(backType: Navigator.BackType, from: String): Boolean {
         when (backType) {
             ICON -> analyticsRepository.logNavigationIconEvent(from)
             DRAG -> analyticsRepository.logDragDismissEvent(from)
         }
         _shouldNavigateBack.value = Event(true)
         return true
-    }
-
-    override fun launchAuth(context: Context, authRoute: AuthRoute?, filterIntent: Intent?)  {
-        val intent = Intent(context, AuthActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        if (authRoute != null) intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
-        if (filterIntent != null) {
-            intent.putExtras(filterIntent)
-        }
-        context.startActivity(intent)
     }
 
     /**
@@ -57,7 +51,7 @@ class AppNavigator(
      *  may be intents which were received by [RouterActivity] or [AuthActivity] and should now
      *  be handled by [MainActivity], such as Intent.ACTION_PROCCESS_TEXT extras.
      */
-    override fun launchMain(context: Context, clearStack: Boolean, filterIntent: Intent?) {
+    override fun toHome(context: Context, clearStack: Boolean, filterIntent: Intent?) {
         val intent = Intent(context, MainActivity::class.java)
         if (clearStack) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -68,9 +62,32 @@ class AppNavigator(
         context.startActivity(intent)
     }
 
-    override fun setCurrentDestination(dest: NavDestination, arguments: Bundle?) {
-        _currentDestination.value = fromDestinationId(dest, arguments)
+    override fun toAuth(context: Context, filterIntent: Intent?) {
+        launchAuth(context, filterIntent = filterIntent)
     }
+
+    override fun toLogIn(context: Context, filterIntent: Intent?) {
+        launchAuth(context, AuthRoute.LOG_IN, filterIntent)
+    }
+
+    override fun toSignUp(context: Context, filterIntent: Intent?) {
+        launchAuth(context, AuthRoute.SIGN_UP, filterIntent)
+    }
+
+    private fun launchAuth(
+        context: Context,
+        authRoute: AuthRoute? = null,
+        filterIntent: Intent? = null
+    )  {
+        val intent = Intent(context, AuthActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (authRoute != null) intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
+        if (filterIntent != null) {
+            intent.putExtras(filterIntent)
+        }
+        context.startActivity(intent)
+    }
+
 
     companion object {
         fun fromDestinationId(destination: NavDestination, args: Bundle?): Destination {

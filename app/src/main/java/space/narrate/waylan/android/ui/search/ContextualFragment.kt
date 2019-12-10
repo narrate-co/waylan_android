@@ -21,14 +21,16 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.R
-import space.narrate.waylan.core.ui.common.BaseFragment
-import space.narrate.waylan.android.util.*
+import space.narrate.waylan.android.util.collapse
+import space.narrate.waylan.android.util.expand
+import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.getColorFromAttr
 

@@ -4,6 +4,8 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import space.narrate.waylan.android.di.appModule
+import space.narrate.waylan.core.di.coreModule
+import space.narrate.waylan.settings.di.settingsModule
 
 class App: Application() {
 
@@ -11,7 +13,7 @@ class App: Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(appModule)
+            modules(listOf(coreModule, appModule, settingsModule))
         }
     }
 }

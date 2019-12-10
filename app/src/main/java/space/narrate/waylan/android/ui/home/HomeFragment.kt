@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 
 /**
  * The fragment displaying the main menu list of possible destinations: Trending, Recents, Favorites

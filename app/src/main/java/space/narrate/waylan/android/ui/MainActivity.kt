@@ -12,13 +12,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.data.auth.AuthenticationStore
-import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
+import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
-import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun ensureAppHasUser() {
         if (!authenticationStore.hasUser) {
-            navigator.launchAuth(this)
+            navigator.toAuth(this)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }

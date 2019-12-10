@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="space.narrate.waylan.settings.SettingsFragment"
+        android:name="space.narrate.waylan.settings.ui.settings.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_aboutFragment"
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="space.narrate.waylan.about.ui.about.AboutFragment"
+        android:name="space.narrate.waylan.settings.ui.about.AboutFragment"
         android:label="AboutFragment" >
         <action
             android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
@@ -60,11 +60,11 @@
     </fragment>
     <fragment
         android:id="@+id/developerSettingsFragment"
-        android:name="space.narrate.waylan.settings.DeveloperSettingsFragment"
+        android:name="space.narrate.waylan.settings.ui.developer.DeveloperSettingsFragment"
         android:label="DeveloperSettingsFragment" />
     <fragment
         android:id="@+id/thirdPartyLibrariesFragment"
-        android:name="space.narrate.waylan.about.ui.thirdparty.ThirdPartyLibrariesFragment"
+        android:name="space.narrate.waylan.settings.ui.thirdparty.ThirdPartyLibrariesFragment"
         android:label="ThirdPartyLibrariesFragment" />
     <action
         android:id="@+id/action_global_detailsFragment"

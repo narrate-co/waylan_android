@@ -95,7 +95,7 @@ fun AppBarLayout.setUpWithElasticBehavior(
         }
 
         override fun onDragDismissed(): Boolean {
-            return navigator.back(Navigator.BackType.DRAG, currentDestination)
+            return navigator.toBack(Navigator.BackType.DRAG, currentDestination)
         }
     }
 

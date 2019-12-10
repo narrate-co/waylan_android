@@ -48,4 +48,16 @@
     <string name="developer_settings_error_snackbar_test_action">Report</string>
     <string name="developer_settings_error_snackbar_test_message">A test error message</string>
 
+    <!--About-->
+    <string name="about_header_body">
+        Waylan is a dictionary concept designed to be an ergonomic, one-handable experience. In addition to being a great tool to improve your vocabulary, Waylan experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and visual balance.
+    </string>
+    <string name="about_version_title">Version</string>
+    <string name="about_third_party_lib_title">Third Party Libraries</string>
+    <string name="about_third_party_lib_desc">Software that\'s helped make Waylan</string>
+    <string name="about_title">About</string>
+
+    <!--Third Party Libraries-->
+    <string name="third_party_libraries_title">Third Party Libraries</string>
+
 </resources>

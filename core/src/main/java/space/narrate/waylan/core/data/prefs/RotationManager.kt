@@ -9,15 +9,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import space.narrate.waylan.core.util.TrimmedStack
-import space.narrate.waylan.core.util.copyMatchedPattern
-import space.narrate.waylan.core.util.emptyTrimmedStack
-import space.narrate.waylan.core.util.doOnDestroy
-import space.narrate.waylan.core.util.doOnNextResume
-import space.narrate.waylan.core.util.doOnResume
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import space.narrate.waylan.core.data.prefs.RotationManager.RotationEvent
+import space.narrate.waylan.core.util.TrimmedStack
+import space.narrate.waylan.core.util.copyMatchedPattern
+import space.narrate.waylan.core.util.doOnDestroy
+import space.narrate.waylan.core.util.doOnNextResume
+import space.narrate.waylan.core.util.doOnResume
+import space.narrate.waylan.core.util.emptyTrimmedStack
 import kotlin.coroutines.CoroutineContext
 
 /**

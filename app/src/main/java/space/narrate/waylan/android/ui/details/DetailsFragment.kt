@@ -1,7 +1,9 @@
 package space.narrate.waylan.android.ui.details
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
@@ -14,17 +16,15 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
-import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.ui.common.BaseFragment
-import space.narrate.waylan.android.util.*
-import space.narrate.waylan.android.ui.widget.EducationalOverlayView
-import space.narrate.waylan.core.ui.common.SnackbarModel
+import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.search.SearchFragment
+import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
@@ -92,7 +92,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
+            navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

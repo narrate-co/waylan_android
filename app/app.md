@@ -1,6 +1,6 @@
 # Module app
 
-# Package space.narrate.waylan.core.billing
+# Package space.narrate.waylan.settings.billing
 
 All classes related to Google Play Billing
 

@@ -1,17 +1,20 @@
 package space.narrate.waylan.android.ui
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import space.narrate.waylan.android.ui.search.ContextualFilterModel
+import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
+import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
-import space.narrate.waylan.core.data.repo.UserRepository
-import space.narrate.waylan.core.data.repo.WordRepository
-import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.android.ui.search.ContextualFilterModel
-import space.narrate.waylan.core.data.firestore.Period
-import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
+import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.util.switchMapTransform
 
 /**

@@ -1,7 +1,6 @@
 package space.narrate.waylan.core.ui.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View

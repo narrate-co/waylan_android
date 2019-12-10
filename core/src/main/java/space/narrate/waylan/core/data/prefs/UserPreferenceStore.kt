@@ -3,7 +3,7 @@ package space.narrate.waylan.core.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import space.narrate.waylan.core.data.auth.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.util.DefaultingMutableLiveData
 

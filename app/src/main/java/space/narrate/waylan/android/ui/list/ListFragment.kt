@@ -21,12 +21,11 @@ import com.google.android.material.appbar.AppBarLayout
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
-import space.narrate.waylan.android.*
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.MathUtils
@@ -100,7 +99,7 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
         navigationIcon.setOnClickListener {
             // Child fragments of MainActivity should report how the user is navigating away
             // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            navigator.back(Navigator.BackType.ICON, this.javaClass.simpleName)
+            navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
         }
 
         // Set up expanding/collapsing "toolbar"
