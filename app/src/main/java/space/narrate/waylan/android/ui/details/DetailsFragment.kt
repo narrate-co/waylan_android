@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -101,35 +101,35 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has
         // searched for a different word than is being displayed and this Fragment should
         // react
-        sharedViewModel.currentWord.observe(this, Observer {
+        sharedViewModel.currentWord.observe(this) {
             viewModel.onCurrentWordChanged(it)
-        })
+        }
 
         // Observe all data sources which will be displayed in the [DetailItemAdapter]
-        viewModel.list.observe(this, Observer {
+        viewModel.list.observe(this) {
             adapter.submitList(it)
-        })
+        }
 
-        viewModel.shouldShowDragDismissOverlay.observe(this, Observer { event ->
+        viewModel.shouldShowDragDismissOverlay.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 EducationalOverlayView.pullDownEducator(appBarLayout).show()
             }
-        })
+        }
 
-        viewModel.audioClipAction.observe(this, Observer { event ->
+        viewModel.audioClipAction.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 when (it) {
                     is AudioClipAction.Play -> audioClipHelper.play(it.url)
                     is AudioClipAction.Stop -> audioClipHelper.stop()
                 }
             }
-        })
+        }
 
-        viewModel.shouldShowSnackbar.observe(this, Observer { event ->
+        viewModel.shouldShowSnackbar.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 showSnackbar(it)
             }
-        })
+        }
 
         // Start enter transition now that things are set up.
         startPostponedEnterTransition()

@@ -110,8 +110,10 @@ object Libs {
     const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 
     // AndroidX
+    const val lifecycleLiveDataCore = "androidx.lifecycle:lifecycle-livedata-core-ktx:${Versions.lifecycle}"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
+
 
     // Material
     const val material = "com.google.android.material:material:${Versions.material}"

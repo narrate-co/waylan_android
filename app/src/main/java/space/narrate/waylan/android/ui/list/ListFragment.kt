@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -135,14 +135,14 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
         )
         recyclerView.addItemDecoration(itemDivider)
 
-        viewModel.listType.observe(this, Observer {
+        viewModel.listType.observe(this) {
             toolbarTitle.text = getString(it.titleRes)
             toolbarTitleCollapsed.text = getString(it.titleRes)
-        })
+        }
 
-        viewModel.list.observe(this, Observer {
+        viewModel.list.observe(this) {
             adapter.submitList(it)
-        })
+        }
     }
 
     /**

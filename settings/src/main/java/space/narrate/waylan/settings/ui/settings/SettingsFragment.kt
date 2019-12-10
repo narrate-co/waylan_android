@@ -10,7 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
@@ -112,22 +112,22 @@ class SettingsFragment : BaseFragment() {
             navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
         }
 
-        viewModel.shouldLaunchLogIn.observe(this, Observer { event ->
+        viewModel.shouldLaunchLogIn.observe(this) { event ->
             event.getUnhandledContent()?.let { navigator.toLogIn(requireContext()) }
-        })
+        }
 
-        viewModel.shouldLaunchSignUp.observe(this, Observer { event ->
+        viewModel.shouldLaunchSignUp.observe(this) { event ->
             event.getUnhandledContent()?.let { navigator.toSignUp(requireContext()) }
-        })
+        }
 
-        viewModel.shouldLaunchMwPurchaseFlow.observe(this, Observer { event ->
+        viewModel.shouldLaunchMwPurchaseFlow.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 billingManager.initiatePurchaseFlow(
                     requireActivity(),
                     it.skuId
                 )
             }
-        })
+        }
 
         setUpBanner()
 
@@ -183,7 +183,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun setUpBanner() {
-        viewModel.bannerModel.observe(this, Observer { model ->
+        viewModel.bannerModel.observe(this) { model ->
             bannerCardView
                 .setText(model.textRes)
                 .setLabel(MwBannerModel.getConcatenatedLabel(
@@ -206,31 +206,31 @@ class SettingsFragment : BaseFragment() {
                 signOutPreference.setDesc(model.email)
                 signOutPreference.visible()
             }
-        })
+        }
     }
 
     private fun setUpNightMode() {
         nightModePreference.setOnClickListener { viewModel.onNightModePreferenceClicked() }
 
-        viewModel.nightMode.observe(this, Observer { mode ->
+        viewModel.nightMode.observe(this) { mode ->
             nightModePreference.setDesc(getString(mode.titleRes))
-        })
+        }
 
-        viewModel.shouldShowNightModeDialog.observe(this, Observer { event ->
+        viewModel.shouldShowNightModeDialog.observe(this) { event ->
             event.getUnhandledContent()?.let { showNightModeDialog(it) }
-        })
+        }
     }
 
     private fun setUpOrientation() {
         orientationPreference.setOnClickListener { viewModel.onOrientationPreferenceClicked() }
 
-        viewModel.orientation.observe(this, Observer {
+        viewModel.orientation.observe(this) {
             orientationPreference.setDesc(getString(it.title))
-        })
+        }
 
-        viewModel.shouldShowOrientationDialog.observe(this, Observer { event ->
+        viewModel.shouldShowOrientationDialog.observe(this) { event ->
             event.getUnhandledContent()?.let { showOrientationDialog(it) }
-        })
+        }
     }
 
     private fun showNightModeDialog(items: List<NightModeRadioItemModel>) {

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,9 +49,9 @@ class HomeFragment: BaseFragment(), HomeItemAdapter.HomeItemListener {
         )
         recyclerView.adapter = adapter
 
-        viewModel.list.observe(this, Observer {
+        viewModel.list.observe(this) {
             adapter.submitList(it)
-        })
+        }
 
     }
 

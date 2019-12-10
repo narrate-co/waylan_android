@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
@@ -142,11 +142,11 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         }
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
-        sharedViewModel.shouldOpenAndFocusSearch.observe(this, Observer { event ->
+        sharedViewModel.shouldOpenAndFocusSearch.observe(this) { event ->
             event.getUnhandledContent()?.let { focusAndOpenSearch() }
-        })
+        }
 
-        viewModel.shouldShowDetails.observe(this, Observer { event ->
+        viewModel.shouldShowDetails.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 sharedViewModel.onChangeCurrentWord(it)
                 val navController = (requireActivity() as MainActivity).findNavController()
@@ -154,9 +154,9 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     navController.navigate(R.id.action_global_detailsFragment)
                 }
             }
-        })
+        }
 
-        navigator.currentDestination.observe(this, Observer {
+        navigator.currentDestination.observe(this) {
             when (it) {
                 Destination.SETTINGS,
                 Destination.ABOUT,
@@ -169,7 +169,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     bottomSheetBehavior.isHideable = false
                 }
             }
-        })
+        }
 
         setUpSheet()
 
@@ -225,7 +225,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         // results), reset the height of the search sheet.
         KeyboardManager(requireActivity(), collapsedContainer)
                 .getKeyboardHeightData()
-                .observe(this, Observer {
+                .observe(this) {
                     val minHeight = Math.max(
                             maxReachableExpandedHeight,
                             (it.height + minVisibleHeightAboveKeyboard).toInt()
@@ -233,7 +233,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     if (it.height != 0 && minHeight != requireView().layoutParams.height) {
                         requireView().layoutParams.height = minHeight
                     }
-                })
+                }
 
         recyclerView.alpha = 0F
         (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
@@ -286,17 +286,17 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
             false
         }
 
-        viewModel.searchResults.observe(this, Observer {
+        viewModel.searchResults.observe(this) {
             adapter.submitList(it)
             recyclerView.scrollToPosition(0)
-        })
+        }
     }
 
     private fun setUpSmartShelf() {
 
-        viewModel.shouldShowOrientationPrompt.observe(this, Observer { event ->
+        viewModel.shouldShowOrientationPrompt.observe(this) { event ->
             event.getUnhandledContent()?.let { expandSmartShelf(it) }
-        })
+        }
 
         // observe for orientation/rotation changes in the viewModel
         rotationManager.observe(this.javaClass.simpleName, this, viewModel)
@@ -315,7 +315,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     // current Fragment
     private fun setUpShelfActions() {
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        sharedViewModel.searchShelfModel.observe(this, Observer { model ->
+        sharedViewModel.searchShelfModel.observe(this) { model ->
             // wait for the next layout step to grantee the actions.width is correctly captured
             view?.post {
                 when (model) {
@@ -330,7 +330,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     is SearchShelfActionsModel.None -> runShelfActionsAnimation(0)
                 }
             }
-        })
+        }
 
         // Hide actions if sheet is expanded
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->

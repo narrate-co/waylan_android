@@ -12,6 +12,7 @@ dependencies {
     implementation Libs.appCompat
     implementation Libs.coreKtx
     implementation Libs.constraintLayout
+    implementation Libs.lifecycleLiveDataCore
     implementation Libs.lifecycleExtensions
     kapt Libs.lifecycleCompiler
     implementation Libs.navigationFragmentKtx

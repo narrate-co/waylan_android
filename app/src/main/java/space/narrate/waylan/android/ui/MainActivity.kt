@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -91,23 +91,23 @@ class MainActivity : AppCompatActivity() {
         coordinatorLayout = findViewById(R.id.coordinator_layout)
         bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
-        navigator.shouldNavigateBack.observe(this, Observer { event ->
+        navigator.shouldNavigateBack.observe(this) { event ->
             event.getUnhandledContent()?.let { onBackPressed() }
-        })
+        }
 
-        sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
+        sharedViewModel.shouldShowDetails.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 findNavController().navigate(R.id.action_global_detailsFragment)
             }
-        })
+        }
 
-        sharedViewModel.nightMode.observe(this, Observer {
+        sharedViewModel.nightMode.observe(this) {
             delegate.localNightMode = it.value
-        })
+        }
 
-        sharedViewModel.orientation.observe(this, Observer {
+        sharedViewModel.orientation.observe(this) {
             setOrientation(it)
-        })
+        }
 
         processText(intent)
 

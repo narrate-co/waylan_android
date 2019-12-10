@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -103,9 +103,9 @@ class ContextualFragment : BaseFragment() {
             sharedViewModel.onClearListFilter()
         }
 
-        sharedViewModel.shouldOpenContextualSheet.observe(this, Observer { event ->
+        sharedViewModel.shouldOpenContextualSheet.observe(this) { event ->
             event.getUnhandledContent()?.let { expand() }
-        })
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -173,21 +173,21 @@ class ContextualFragment : BaseFragment() {
             }
 
         // Configure UI based on current destination
-        navigator.currentDestination.observe(this, Observer { dest ->
+        navigator.currentDestination.observe(this) { dest ->
             when (dest) {
                 Destination.TRENDING -> setExpandedContainer("Filter trending")
                 else -> { /* Ignore or add other filterable lists in the future */ }
             }
-        })
+        }
 
         // Configure bottom sheet state and UI based on current filter.
-        sharedViewModel.contextualFilterModel.observe(this, Observer { model ->
+        sharedViewModel.contextualFilterModel.observe(this) { model ->
             setCollapsedChips(model.filter)
             peekOrHide(
                 model.isFilterable && model.filter.isNotEmpty(),
                 model.filter.isNotEmpty()
             )
-        })
+        }
 
     }
 

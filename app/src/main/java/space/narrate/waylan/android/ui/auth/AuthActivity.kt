@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.transition.TransitionManager
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -117,11 +117,11 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
         cancelButton.setOnClickListener { authViewModel.onCancelClicked() }
 
-        authViewModel.nightMode.observe(this, Observer {
+        authViewModel.nightMode.observe(this) {
             delegate.localNightMode = it.value
-        })
+        }
 
-        authViewModel.shouldShowError.observe(this, Observer { event ->
+        authViewModel.shouldShowError.observe(this) { event ->
             event.getUnhandledContent()?.let { model ->
                 when (model) {
                     is ShowErrorModel.Error -> {
@@ -131,33 +131,33 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                     else -> hideErrorMessage()
                 }
             }
-        })
+        }
 
-        authViewModel.showLoading.observe(this, Observer {
+        authViewModel.showLoading.observe(this) {
             showLoading(it)
-        })
+        }
 
-        authViewModel.authRoute.observe(this, Observer { route ->
+        authViewModel.authRoute.observe(this) { route ->
             when (route) {
                 AuthRoute.LOG_IN -> setToLoginUi()
                 AuthRoute.SIGN_UP -> setToSignUpUi()
                 AuthRoute.ANONYMOUS -> setToAuthenticateUI()
             }
-        })
+        }
 
-        authViewModel.shouldShowCredentials.observe(this, Observer { event ->
+        authViewModel.shouldShowCredentials.observe(this) { event ->
             event?.getUnhandledContent()?.let {
                 showCredentialsUi(it.delayMillis)
             }
-        })
+        }
 
-        authViewModel.shouldLaunchMain.observe(this, Observer { event ->
+        authViewModel.shouldLaunchMain.observe(this) { event ->
             event?.getUnhandledContent()?.let {
                 navigator.toHome(this@AuthActivity, true, filterIntent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 finish()
             }
-        })
+        }
 
         // Get the intended AuthRoute and configure accordingly
         val authRoute = intent.getStringExtra(AUTH_ROUTE_EXTRA_KEY)
