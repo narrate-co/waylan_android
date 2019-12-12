@@ -1,4 +1,4 @@
-package space.narrate.waylan.settings.dialog
+package space.narrate.waylan.settings.ui.dialog
 
 import android.content.Context
 import android.view.LayoutInflater

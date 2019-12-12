@@ -5,7 +5,7 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import space.narrate.waylan.settings.ui.developer.DeveloperSettingsViewModel
 import space.narrate.waylan.settings.ui.settings.SettingsViewModel
-import space.narrate.waylan.settings.billing.BillingManager
+import space.narrate.waylan.core.billing.BillingManager
 import space.narrate.waylan.settings.ui.thirdparty.ThirdPartyLibrariesViewModel
 
 // Dependent on CoreModule

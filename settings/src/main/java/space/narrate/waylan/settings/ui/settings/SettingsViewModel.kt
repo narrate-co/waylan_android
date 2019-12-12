@@ -3,7 +3,7 @@ package space.narrate.waylan.settings.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import space.narrate.waylan.settings.billing.BillingConfig
+import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.repo.UserRepository

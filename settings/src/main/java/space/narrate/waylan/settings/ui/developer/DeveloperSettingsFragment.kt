@@ -20,7 +20,7 @@ import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
 import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.settings.R
-import space.narrate.waylan.settings.billing.BillingConfig
+import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.settings.databinding.FragmentDeveloperSettingsBinding
 
 /**
@@ -42,23 +42,13 @@ class DeveloperSettingsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDeveloperSettingsBinding
 
-//    private lateinit var coordinatorLayout: CoordinatorLayout
-//    private lateinit var appBarLayout: AppBarLayout
-//    private lateinit var scrollView: NestedScrollView
-//    private lateinit var navigationIcon: AppCompatImageButton
-//    private lateinit var clearUserPreference: CheckPreferenceView
-//    private lateinit var mwStatePreference: CheckPreferenceView
-//    private lateinit var useTestSkusPreference: CheckPreferenceView
-//    private lateinit var mwBillingResponsePreference: CheckPreferenceView
-//    private lateinit var informativeSnackbarPreference: CheckPreferenceView
-//    private lateinit var errorSnackbarPreference: CheckPreferenceView
-
     private val navigator: Navigator by inject()
 
     private val viewModel: DeveloperSettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        postponeEnterTransition()
         enterTransition = ElasticTransition()
     }
 
@@ -73,22 +63,8 @@ class DeveloperSettingsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
-//        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
-//        appBarLayout = view.findViewById(R.id.app_bar)
-//        scrollView = view.findViewById(R.id.scroll_view)
-//        navigationIcon = view.findViewById(R.id.navigation_icon)
-//        clearUserPreference = view.findViewById(R.id.clear_user_preference)
-//        mwStatePreference = view.findViewById(R.id.merriam_webster_state_preference)
-//        useTestSkusPreference = view.findViewById(R.id.use_test_skus_preference)
-//        mwBillingResponsePreference = view.findViewById(
-//            R.id.merriam_webster_billing_response_preference
-//        )
-//        informativeSnackbarPreference = view.findViewById(R.id.informative_snackbar_preference)
-//        errorSnackbarPreference = view.findViewById(R.id.error_snackbar_preference)
 
         binding.run {
-
             appBar.setUpWithElasticBehavior(
                 this.javaClass.simpleName,
                 navigator,

@@ -19,7 +19,6 @@ val User.merriamWebsterState: PluginState
         }
     }
 
-
 val User.oneDayPastExpiration: Date
     get() {
         val cal = Calendar.getInstance()

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import space.narrate.waylan.settings.billing.BillingConfig
+import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.merriamWebsterState

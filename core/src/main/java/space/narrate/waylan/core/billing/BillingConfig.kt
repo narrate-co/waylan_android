@@ -1,4 +1,4 @@
-package space.narrate.waylan.settings.billing
+package space.narrate.waylan.core.billing
 
 /**
  * An object to hold billing configuration constants.

@@ -1,4 +1,4 @@
-package space.narrate.waylan.settings.billing
+package space.narrate.waylan.core.billing
 
 import com.android.billingclient.api.BillingClient
 import java.util.*

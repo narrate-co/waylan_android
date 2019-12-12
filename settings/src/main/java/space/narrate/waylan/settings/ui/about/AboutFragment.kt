@@ -32,6 +32,7 @@ class AboutFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        postponeEnterTransition()
         enterTransition = ElasticTransition()
     }
 
@@ -46,7 +47,6 @@ class AboutFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postponeEnterTransition()
 
         binding.run {
             appBar.setUpWithElasticBehavior(
