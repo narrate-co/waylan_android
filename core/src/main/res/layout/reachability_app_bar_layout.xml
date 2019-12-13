@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceHeadline3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6"
+            tools:text="Favorite" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <space.narrate.waylan.core.ui.widget.ReachabilityToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="72dp"
+        app:navigationIcon="@drawable/ic_round_arrow_down_24px">
+
+        <TextView
+            android:id="@+id/toolbar_title_collapsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            tools:text="Favorite" />
+
+    </space.narrate.waylan.core.ui.widget.ReachabilityToolbar>
+
+</merge>

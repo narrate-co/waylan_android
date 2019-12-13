@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="settings_title">Settings</string>
+
     <!--Settings Screen-->
     <string name="settings_night_mode_title">Night mode</string>
     <string name="settings_night_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>

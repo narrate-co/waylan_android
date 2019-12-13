@@ -15,7 +15,6 @@ import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.launchWebsite
-import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.data.ThirdPartyLibrary
 import space.narrate.waylan.settings.databinding.FragmentThirdPartyLibrariesBinding
@@ -50,14 +49,16 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            appBar.setUpWithElasticBehavior(
-                this.javaClass.simpleName,
-                navigator,
-                listOf(navigationIcon),
-                listOf(recyclerView, appBar)
+
+            appBar.doOnElasticDrag(
+                alphaViews = listOf(recyclerView, appBar)
             )
 
-            navigationIcon.setOnClickListener {
+            appBar.doOnElasticDismiss {
+                navigator.toBack(Navigator.BackType.DRAG, this.javaClass.simpleName)
+            }
+
+            appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
         }

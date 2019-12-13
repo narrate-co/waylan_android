@@ -43,8 +43,8 @@
 
     <attr name="textAppearanceBody3" format="reference" />
 
-
     <!--Widget Styles-->
+    <attr name="reachabilityAppBarLayoutStyle" format="reference"/>
     <attr name="styleTextButton" format="reference"/>
     <attr name="styleChipOutlined" format="reference"/>
     <attr name="styleChipOpen" format="reference"/>

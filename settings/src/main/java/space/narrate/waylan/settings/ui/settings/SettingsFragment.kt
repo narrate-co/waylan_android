@@ -19,7 +19,6 @@ import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.launchEmail
-import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.core.util.visible
 import space.narrate.waylan.settings.BuildConfig
 import space.narrate.waylan.settings.R
@@ -89,14 +88,15 @@ class SettingsFragment : BaseFragment() {
         }
 
         binding.run {
-            appBar.setUpWithElasticBehavior(
-                this.javaClass.simpleName,
-                navigator,
-                listOf(navigationIcon),
-                listOf(scrollView, appBar)
+            appBar.doOnElasticDrag(
+                alphaViews = listOf(scrollView, appBar)
             )
 
-            navigationIcon.setOnClickListener {
+            appBar.doOnElasticDismiss {
+                navigator.toBack(Navigator.BackType.DRAG, this.javaClass.simpleName)
+            }
+
+            appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
 

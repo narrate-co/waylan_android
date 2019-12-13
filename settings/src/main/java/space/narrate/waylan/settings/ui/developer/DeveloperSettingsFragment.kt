@@ -10,6 +10,7 @@ import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.ui.Navigator
@@ -18,9 +19,7 @@ import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
-import space.narrate.waylan.core.util.setUpWithElasticBehavior
 import space.narrate.waylan.settings.R
-import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.settings.databinding.FragmentDeveloperSettingsBinding
 
 /**
@@ -65,14 +64,22 @@ class DeveloperSettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-            appBar.setUpWithElasticBehavior(
-                this.javaClass.simpleName,
-                navigator,
-                listOf(navigationIcon),
-                listOf(scrollView, appBar)
+//            appBar.setUpWithElasticBehavior(
+//                this.javaClass.simpleName,
+//                navigator,
+//                listOf(navigationIcon),
+//                listOf(scrollView, appBar)
+//            )
+
+            appBar.doOnElasticDrag(
+                alphaViews = listOf(scrollView, appBar)
             )
 
-            navigationIcon.setOnClickListener {
+            appBar.doOnElasticDismiss {
+                navigator.toBack(Navigator.BackType.DRAG, this.javaClass.simpleName)
+            }
+
+            appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
 

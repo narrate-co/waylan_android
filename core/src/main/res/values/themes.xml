@@ -64,6 +64,7 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Words.LargeComponent</item>
 
         <!--Styles-->
+        <item name="reachabilityAppBarLayoutStyle">@style/Widget.Waylan.ReachabilityAppBarLayout.Flat</item>
         <item name="styleTextButton">@style/Widget.Waylan.Button.TextButton</item>
         <item name="styleChipOutlined">@style/Widget.Waylan.Chip.Outlined</item>
         <item name="styleChipOpen">@style/Widget.Waylan.Chip.Open</item>

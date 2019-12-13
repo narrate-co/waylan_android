@@ -21,48 +21,11 @@
             android:paddingTop="@dimen/keyline_2"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <com.google.android.material.appbar.AppBarLayout
+        <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
-            app:layout_behavior="space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior"
-            app:elevation="@dimen/plane_00">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="?attr/actionBarSize"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="@dimen/keyline_3"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/navigation_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/keyline_3"
-                    android:layout_gravity="left|center_vertical"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:srcCompat="@drawable/ic_round_arrow_down_24px" />
-
-                <TextView
-                    android:textAppearance="?textAppearanceHeadline5"
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/keyline_2"
-                    android:text="@string/third_party_libraries_title" />
-
-                <View
-                    android:layout_width="@dimen/underline_width"
-                    android:layout_height="@dimen/underline_height"
-                    android:background="@drawable/title_underline_background"
-                    android:layout_marginTop="@dimen/keyline_3"/>
-
-            </LinearLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            app:title="@string/third_party_libraries_title"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
