@@ -22,38 +22,13 @@
             android:overScrollMode="never"
             android:clipToPadding="false"/>
 
-        <com.google.android.material.appbar.AppBarLayout
+        <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="@dimen/plane_00"
-            android:background="@android:color/transparent"
-            app:layout_behavior="space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior"
-            app:dragDismissDirection="down">
-
-            <FrameLayout
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:minHeight="?actionBarSize"
-                android:paddingLeft="@dimen/keyline_3"
-                android:paddingRight="@dimen/keyline_3"
-                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/navigation_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|left"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    app:srcCompat="@drawable/ic_round_arrow_down_24px" />
-
-            </FrameLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
+            app:expandedTitleTextAppearance="?attr/textAppearanceHeadline2"
+            app:expandedHeight="352dp"
+            app:title="details"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

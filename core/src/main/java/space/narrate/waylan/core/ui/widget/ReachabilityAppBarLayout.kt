@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -90,6 +91,21 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
             }
         }
 
+    @StyleRes
+    var expandedTitleTextAppearance: Int = R.style.TextAppearance_MaterialComponents_Headline3
+        set(value) {
+            field = value
+            expandedTitle.setTextAppearance(value)
+        }
+
+    var expandedTitleVerticalOffset: Float = 0.6F
+        set(value) {
+            field = value
+            val params = (expandedTitle.layoutParams as ConstraintLayout.LayoutParams)
+            params.verticalBias = value
+            expandedTitle.layoutParams = params
+        }
+
     private var isDragDismissable: Boolean = true
 
     init {
@@ -112,8 +128,20 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
             defStyleAttr,
             DEF_STYLE_RES
         ).use {
+            toolbarContainer.layoutParams.height = it.getDimensionPixelSize(
+                R.styleable.ReachabilityAppBarLayout_expandedHeight,
+                toolbarContainer.height
+            )
             title = it.getString(R.styleable.ReachabilityAppBarLayout_title) ?: ""
             isDragDismissable = it.getBoolean(R.styleable.ReachabilityAppBarLayout_dragDismissable, true)
+            expandedTitleTextAppearance = it.getResourceId(
+                R.styleable.ReachabilityAppBarLayout_expandedTitleTextAppearance,
+                expandedTitleTextAppearance
+            )
+            expandedTitleVerticalOffset = it.getFloat(
+                R.styleable.ReachabilityAppBarLayout_expandedTitleVerticalBias,
+                expandedTitleVerticalOffset
+            )
         }
     }
 

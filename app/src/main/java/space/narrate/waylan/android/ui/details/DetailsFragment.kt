@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
@@ -37,10 +38,7 @@ import space.narrate.waylan.core.util.setUpWithElasticBehavior
  */
 class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var navigationIcon: AppCompatImageButton
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentDetailsBinding
 
     private val navigator: Navigator by inject()
 
@@ -68,7 +66,8 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,31 +76,34 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         // Postpone enter transition until we've set everything up.
         postponeEnterTransition()
 
-        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
-        appBarLayout = view.findViewById(R.id.app_bar)
-        navigationIcon = view.findViewById(R.id.navigation_icon)
-        recyclerView = view.findViewById(R.id.recycler_view)
+        binding.run {
 
-        appBarLayout.setUpWithElasticBehavior(
-            this.javaClass.simpleName,
-            navigator,
-            listOf(appBarLayout),
-            listOf(recyclerView, appBarLayout)
-        )
+            appBar.doOnElasticDrag(
+                alphaViews = listOf(recyclerView, appBar)
+            )
 
-        navigationIcon.setOnClickListener {
-            // Child fragments of MainActivity should report how the user is navigating away
-            // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
+            appBar.doOnElasticDismiss {
+                navigator.toBack(Navigator.BackType.DRAG, this.javaClass.simpleName)
+            }
+
+            appBar.setOnNavigationIconClicked {
+                // Child fragments of MainActivity should report how the user is navigating away
+                // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
+                navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
+            }
+
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.adapter = adapter
+
         }
-
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
 
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has
         // searched for a different word than is being displayed and this Fragment should
         // react
         sharedViewModel.currentWord.observe(this) {
+            binding.appBar.title = it
+            // TODO this doesn't work if a list item is loaded after other items.
+            binding.recyclerView.scrollToPosition(0)
             viewModel.onCurrentWordChanged(it)
         }
 
@@ -112,7 +114,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
         viewModel.shouldShowDragDismissOverlay.observe(this) { event ->
             event.getUnhandledContent()?.let {
-                EducationalOverlayView.pullDownEducator(appBarLayout).show()
+                EducationalOverlayView.pullDownEducator(binding.appBar).show()
             }
         }
 
@@ -136,7 +138,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
     }
 
     override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        coordinatorLayout.setPadding(
+        binding.coordinatorLayout.setPadding(
             insets.systemWindowInsetLeft,
             insets.systemWindowInsetTop,
             insets.systemWindowInsetRight,
@@ -182,11 +184,15 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
     }
 
     private fun showSnackbar(model: SnackbarModel) {
-        val snackbar = Snackbar.make(coordinatorLayout, model.textRes, when (model.length) {
-            SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
-            SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
-            else -> Snackbar.LENGTH_SHORT
-        })
+        val snackbar = Snackbar.make(
+            binding.coordinatorLayout,
+            model.textRes,
+            when (model.length) {
+                SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
+                SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
+                else -> Snackbar.LENGTH_SHORT
+            }
+        )
 
         if (model.isError) {
             snackbar.configError(requireContext())

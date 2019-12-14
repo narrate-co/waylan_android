@@ -67,6 +67,9 @@
         <item name="dragDismissDirection">down</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="elevation">@dimen/plane_00</item>
+        <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadline3</item>
+        <item name="expandedTitleVerticalBias">0.75</item>
+        <item name="expandedHeight">400dp</item>
         <item name="dragDismissable">true</item>
     </style>
 

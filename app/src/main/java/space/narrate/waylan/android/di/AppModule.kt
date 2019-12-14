@@ -9,8 +9,6 @@ import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
 import space.narrate.waylan.android.ui.details.ExampleDetailDataProvider
 import space.narrate.waylan.android.ui.details.ExamplesDetailItemProvider
-import space.narrate.waylan.android.ui.details.TitleDetailDataProvider
-import space.narrate.waylan.android.ui.details.TitleDetailItemProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailDataProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailItemProvider
 import space.narrate.waylan.android.ui.home.HomeViewModel
@@ -65,7 +63,6 @@ val appModule = module {
             get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
 
         detailDataProviderRegistry.addProviders(
-            TitleDetailDataProvider(get()),
             merriamWebsterDetailProviderFactory.getDetailDataProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailDataProvider(),
             WordsetDetailDataProvider(get()),
@@ -87,7 +84,6 @@ val appModule = module {
 
         // Add the Merriam-Webster provider to the detailItemFactory
         detailItemFactory.addProviders(
-            TitleDetailItemProvider(),
             merriamWebsterDetailProviderFactory.getDetailItemProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),

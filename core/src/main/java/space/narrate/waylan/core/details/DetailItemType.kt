@@ -6,7 +6,6 @@ package space.narrate.waylan.core.details
  * [order] is the order in which each item should be displayed vertically.
  */
 enum class DetailItemType(val order: Int) {
-    TITLE(1),
     MERRIAM_WEBSTER(2),
     MERRIAM_WEBSTER_THESAURUS(3),
     WORDSET(4),

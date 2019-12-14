@@ -5,22 +5,6 @@ import space.narrate.waylan.core.data.wordset.WordAndMeanings
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 
-class TitleModel(val word: String): DetailItemModel() {
-
-    override val itemType: DetailItemType = DetailItemType.TITLE
-
-    override fun isSameAs(newOther: DetailItemModel): Boolean {
-        if (newOther !is TitleModel) return false
-        return word == newOther.word
-    }
-
-    override fun isContentSameAs(newOther: DetailItemModel): Boolean {
-        if (newOther !is TitleModel) return false
-        return word == newOther.word
-    }
-}
-
-
 class WordsetModel(val entry: WordAndMeanings): DetailItemModel() {
 
     override val itemType: DetailItemType = DetailItemType.WORDSET
