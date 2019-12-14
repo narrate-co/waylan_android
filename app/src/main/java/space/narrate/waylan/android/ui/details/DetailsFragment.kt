@@ -29,7 +29,6 @@ import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
-import space.narrate.waylan.core.util.setUpWithElasticBehavior
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment

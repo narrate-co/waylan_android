@@ -18,6 +18,11 @@ import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.MathUtils
 import kotlin.math.abs
 
+/**
+ * A large app bar that contains an expanded title and is able to collapse into a normal size
+ * toolbar. By default, this class also handles configuring an elastic behavior on this app bar to
+ * allow clients to drag to dismiss it.
+ */
 class ReachabilityAppBarLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

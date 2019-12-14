@@ -58,50 +58,6 @@ fun ImageView.swapImageResource(imgRes: Int) {
     set.start()
 }
 
-
-fun AppBarLayout.setUpWithElasticBehavior(
-    callback: ElasticAppBarBehavior.ElasticViewBehaviorCallback
-) {
-    val params = layoutParams as? CoordinatorLayout.LayoutParams
-        ?: throw IllegalArgumentException(
-            "AppBarLayout must be a child of CoordinatorLayout to setup with ElasticBehavior"
-        )
-
-    val behavior = params.behavior as? ElasticAppBarBehavior
-        ?: throw IllegalArgumentException("AppBarLayout must use ElasticAppBarBehavior")
-
-    behavior.addCallback(callback)
-}
-
-fun AppBarLayout.setUpWithElasticBehavior(
-    currentDestination: String,
-    navigator: Navigator,
-    parallaxOnDrag: List<View>,
-    alphaOnDrag: List<View>
-) {
-    val callback = object : ElasticAppBarBehavior.ElasticViewBehaviorCallback {
-        override fun onDrag(
-            dragFraction: Float,
-            dragTo: Float,
-            rawOffset: Float,
-            rawOffsetPixels: Float,
-            dragDismissScale: Float
-        ) {
-            val alpha = 1 - dragFraction
-            val cutDragTo = dragTo * .15F
-
-            parallaxOnDrag.forEach { it.translationY = cutDragTo }
-            alphaOnDrag.forEach { it.alpha = alpha }
-        }
-
-        override fun onDragDismissed(): Boolean {
-            return navigator.toBack(Navigator.BackType.DRAG, currentDestination)
-        }
-    }
-
-    setUpWithElasticBehavior(callback)
-}
-
 fun String.toChip(
     context: Context,
     chipGroup: ChipGroup?,
