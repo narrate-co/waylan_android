@@ -7,16 +7,20 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StyleRes
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
-import androidx.core.view.doOnPreDraw
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.MathUtils
+import java.util.*
 import kotlin.math.abs
+import kotlin.math.exp
 
 /**
  * A large app bar that contains an expanded title and is able to collapse into a normal size
@@ -29,10 +33,35 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
     defStyleAttr: Int = R.attr.reachabilityAppBarLayoutStyle
 ) : AppBarLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Enable an app with multiple screens, each with their own app bar, to share the
+     * expanded/collapsed state of their app bars. This makes it such that moving between screens
+     * doesn't require you to always scroll up the app bar or always scroll down an app bar if
+     * before dragging to go back.
+     *
+     * This interface should be implemented by an object which is shared between instances
+     * of app bars.
+     */
+    interface ReachableContinuityNavigator {
+        /**
+         * The state of this app bar.
+         *
+         * [id] is used to uniquely identify an instance of an app bar to avoid broadcasting its
+         * state and having it applied to itself. [expanded] is whether or not it is expanded or
+         * collapsed.
+         */
+        data class State(val id: String, val expanded: Boolean)
+        val reachabilityState: LiveData<State>
+        fun setReachabilityState(state: State)
+    }
+
     private var expandedTitle: TextView
     private lateinit var toolbar: MaterialToolbar
     private lateinit var collapsedTitle: TextView
     private val toolbarContainer: ConstraintLayout
+
+    // A unique identifier for this instance of the app bar.
+    private val id = UUID.randomUUID().toString()
 
     private val elasticBehavior = ElasticAppBarBehavior(context, attrs)
 
@@ -66,14 +95,32 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
         }
     }
 
+    private var reachableContinuityNavigator: ReachableContinuityNavigator? = null
+
+    private var currentlyExpanded = false
+
+    private var currentOffsetPercentage = 0.0F
+        set(value) {
+            field = value
+            val expanded = value <= 0.5F
+            if (expanded != currentlyExpanded) {
+                currentlyExpanded = expanded
+                reachableContinuityNavigator?.setReachabilityState(
+                    ReachableContinuityNavigator.State(id, expanded)
+                )
+            }
+        }
+
     /**
      * An offset listener that shows and hides the collapsed toolbar's title when it nears the
-     * top of the screen.
+     * top of the screen. This listener also keeps track of the current offset and updates
+     * [currentOffsetPercentage] and [isExpanded].
      */
     private val appBarOffsetListener = OnOffsetChangedListener { appBarLayout, verticalOffset ->
         val totalOffset = appBarLayout.totalScrollRange.toFloat()
         val currentOffset = abs(verticalOffset).toFloat()
         val collapsedToolbarHeight = toolbar.height
+        currentOffsetPercentage = currentOffset / totalOffset
 
         // When the collapsed toolbar is twice it's height away from the top edge of the screen,
         // start fading in the title until the collapsed toolbar meets the top edge.
@@ -153,6 +200,17 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setIsDragDismissable(isDragDismissable)
+    }
+
+    /**
+     * A convenience method to allow lifecycleOwners which use a ReachabilityAppBar to setup
+     * and react to changes in other ReachabilityAppBars.
+     */
+    fun setReachableContinuityNavigator(lifecycleOwner: LifecycleOwner, navigator: ReachableContinuityNavigator) {
+        this.reachableContinuityNavigator = navigator
+        navigator.reachabilityState.observe(lifecycleOwner) { state ->
+            if (state.id != id) setExpanded(state.expanded, false)
+        }
     }
 
     fun setIsDragDismissable(isDragDismissable: Boolean) {

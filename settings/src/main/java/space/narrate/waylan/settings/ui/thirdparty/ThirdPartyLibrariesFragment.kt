@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -61,6 +62,8 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
             appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
+
+            appBar.setReachableContinuityNavigator(this@ThirdPartyLibrariesFragment, navigator)
         }
 
         setUpList()

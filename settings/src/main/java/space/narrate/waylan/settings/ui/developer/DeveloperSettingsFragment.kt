@@ -64,12 +64,6 @@ class DeveloperSettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
-//            appBar.setUpWithElasticBehavior(
-//                this.javaClass.simpleName,
-//                navigator,
-//                listOf(navigationIcon),
-//                listOf(scrollView, appBar)
-//            )
 
             appBar.doOnElasticDrag(
                 alphaViews = listOf(scrollView, appBar)
@@ -82,6 +76,8 @@ class DeveloperSettingsFragment : BaseFragment() {
             appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
+
+            appBar.setReachableContinuityNavigator(this@DeveloperSettingsFragment, navigator)
 
             viewModel.shouldShowSnackbar.observe(this@DeveloperSettingsFragment) { event ->
                 event.getUnhandledContent()?.let { showSnackbar(it) }

@@ -17,6 +17,8 @@ import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.Navigator.BackType.DRAG
 import space.narrate.waylan.core.ui.Navigator.BackType.ICON
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+import space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout.*
 
 class AppNavigator(
     private val analyticsRepository: AnalyticsRepository
@@ -30,8 +32,16 @@ class AppNavigator(
     override val shouldNavigateBack: LiveData<Event<Boolean>>
         get() = _shouldNavigateBack
 
+    private val _reachabilityState: MutableLiveData<ReachableContinuityNavigator.State> = MutableLiveData()
+    override val reachabilityState: LiveData<ReachableContinuityNavigator.State>
+        get() = _reachabilityState
+
     override fun setCurrentDestination(dest: NavDestination, arguments: Bundle?) {
         _currentDestination.value = fromDestinationId(dest, arguments)
+    }
+
+    override fun setReachabilityState(state: ReachableContinuityNavigator.State) {
+        _reachabilityState.value = state
     }
 
     override fun toBack(backType: Navigator.BackType, from: String): Boolean {
