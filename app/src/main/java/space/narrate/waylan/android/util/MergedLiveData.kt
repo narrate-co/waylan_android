@@ -3,7 +3,6 @@ package space.narrate.waylan.android.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
-import java.lang.UnsupportedOperationException
 
 /**
  * A LiveData class that waits for two sources to be fulfilled before setting [LiveData.setValue].

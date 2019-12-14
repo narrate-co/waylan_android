@@ -34,8 +34,8 @@ import space.narrate.waylan.core.util.getColorFromAttr
  * supports vertical. Horizontal is still a work in progress.
  */
 class ElasticAppBarBehavior @JvmOverloads constructor(
-        context: Context? = null,
-        attrs: AttributeSet? = null
+    context: Context? = null,
+    attrs: AttributeSet? = null
 ) : AppBarLayout.Behavior(context, attrs), AppBarLayout.OnOffsetChangedListener {
 
 
@@ -55,11 +55,11 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
          * [CoordinatorLayout], creating an elastic drag effect.
          */
         fun onDrag(
-                dragFraction: Float,
-                dragTo: Float,
-                rawOffset: Float,
-                rawOffsetPixels: Float,
-                dragDismissScale: Float
+            dragFraction: Float,
+            dragTo: Float,
+            rawOffset: Float,
+            rawOffsetPixels: Float,
+            dragDismissScale: Float
         )
 
         /**
@@ -169,7 +169,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         if (a != null) {
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissDirection)) {
                 val dir = a.getInteger(
-                        R.styleable.ElasticViewBehavior_dragDismissDirection,
+                    R.styleable.ElasticViewBehavior_dragDismissDirection,
                     DIRECTION_DOWN
                 )
                 shouldDismissUp = dir.containsFlag(DIRECTION_UP)
@@ -180,22 +180,22 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             // Set dragDismissFraction/dragDismissDistanceVertical
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissFraction)) {
                 dragDismissFraction = a.getFloat(R.styleable
-                        .ElasticViewBehavior_dragDismissFraction, dragDismissFraction)
+                    .ElasticViewBehavior_dragDismissFraction, dragDismissFraction)
             } else if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissDistance)) {
                 dragDismissDistanceVertical = a.getDimensionPixelSize(
-                        R.styleable.ElasticViewBehavior_dragDismissDistance,
-                        dragDismissDistanceVertical.toInt()
+                    R.styleable.ElasticViewBehavior_dragDismissDistance,
+                    dragDismissDistanceVertical.toInt()
                 ).toFloat()
             }
 
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragDismissScale)) {
                 dragDismissScale = a.getFloat(R.styleable
-                        .ElasticViewBehavior_dragDismissScale, dragDismissScale)
+                    .ElasticViewBehavior_dragDismissScale, dragDismissScale)
                 shouldScale = dragDismissScale != 1F
             }
             if (a.hasValue(R.styleable.ElasticViewBehavior_dragElasticity)) {
                 dragElasticity = a.getFloat(R.styleable.ElasticViewBehavior_dragElasticity,
-                        dragElasticity)
+                    dragElasticity)
             }
         }
         a?.recycle()
@@ -242,19 +242,19 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     /**
-     * Change any properties of either this AppBarLayout or its parent CoordinatoryLayout during
+     * Change any properties of either this AppBarLayout or its parent CoordinatorLayout during
      * layout.
      */
     override fun onLayoutChild(
-            parent: CoordinatorLayout,
-            abl: AppBarLayout,
-            layoutDirection: Int
+        parent: CoordinatorLayout,
+        abl: AppBarLayout,
+        layoutDirection: Int
     ): Boolean {
         // Set the CoordinatorLayout's background
         val backgroundTint = parent.backgroundTintList
-                ?: ColorStateList.valueOf(
-                        parent.context.getColorFromAttr(android.R.attr.colorBackground)
-                )
+            ?: ColorStateList.valueOf(
+                parent.context.getColorFromAttr(android.R.attr.colorBackground)
+            )
         DrawableCompat.setTintList(materialShapeDrawable, backgroundTint)
         ViewCompat.setBackground(parent, materialShapeDrawable)
 
@@ -275,55 +275,54 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     // GestureDetector to interpret raw touch events on the AppBarLayout itself
     private val gestureDetector = GestureDetectorCompat(
-            context,
-            object : GestureDetector.OnGestureListener {
+        context,
+        object : GestureDetector.OnGestureListener {
 
-                override fun onShowPress(e: MotionEvent?) {
-                }
-
-                override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                    return true
-                }
-
-                override fun onDown(e: MotionEvent?): Boolean {
-                    return true
-                }
-
-                override fun onFling(
-                        e1: MotionEvent?,
-                        e2: MotionEvent?,
-                        velocityX: Float,
-                        velocityY: Float
-                ): Boolean {
-                    if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) {
-                        // We are not currently dragging and should not consume this fling
-                        flinging = true
-                    }
-                    return true
-                }
-
-                override fun onScroll(
-                        e1: MotionEvent?,
-                        e2: MotionEvent?,
-                        distanceX: Float,
-                        distanceY: Float
-                ): Boolean {
-                    dragScaleVertical(parentCoordinatorLayout, distanceY.toInt())
-                    //TODO add dragScaleHorizontal.... which currently breaks things
-                    return true
-                }
-
-                override fun onLongPress(e: MotionEvent?) {
-                }
-
+            override fun onShowPress(e: MotionEvent?) {
             }
+
+            override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                return true
+            }
+
+            override fun onDown(e: MotionEvent?): Boolean {
+                return true
+            }
+
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent?,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) {
+                    // We are not currently dragging and should not consume this fling
+                    flinging = true
+                }
+                return true
+            }
+
+            override fun onScroll(
+                e1: MotionEvent?,
+                e2: MotionEvent?,
+                distanceX: Float,
+                distanceY: Float
+            ): Boolean {
+                dragScaleVertical(parentCoordinatorLayout, distanceY.toInt())
+                //TODO add dragScaleHorizontal.... which currently breaks things
+                return true
+            }
+
+            override fun onLongPress(e: MotionEvent?) {
+            }
+
+        }
     )
 
-
     override fun onInterceptTouchEvent(
-            parent: CoordinatorLayout,
-            child: AppBarLayout,
-            ev: MotionEvent
+        parent: CoordinatorLayout,
+        child: AppBarLayout,
+        ev: MotionEvent
     ): Boolean {
         lastMotionEvent = ev
         if (!hasStartedVerticalDrag) {
@@ -331,13 +330,12 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
         return false
-
     }
 
     override fun onTouchEvent(
-            parent: CoordinatorLayout,
-            child: AppBarLayout,
-            ev: MotionEvent
+        parent: CoordinatorLayout,
+        child: AppBarLayout,
+        ev: MotionEvent
     ): Boolean {
 
         // If this is not a touch event from a nested scrolling source, we're touching the ABL
@@ -367,14 +365,13 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onStartNestedScroll(
-            parent: CoordinatorLayout,
-            child: AppBarLayout,
-            directTargetChild: View,
-            target: View,
-            axes: Int,
-            type: Int
+        parent: CoordinatorLayout,
+        child: AppBarLayout,
+        directTargetChild: View,
+        target: View,
+        axes: Int,
+        type: Int
     ): Boolean {
-
         nestedScrolling = true
         if (flinging) {
             return super.onStartNestedScroll(parent, child, directTargetChild, target, axes, type)
@@ -383,7 +380,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         if ((axes and View.SCROLL_AXIS_VERTICAL) != 0 && (shouldDismissDown || shouldDismissUp)) {
             return true
         } else if (axes.containsFlag(View.SCROLL_AXIS_HORIZONTAL)
-                && (shouldDismissRight || shouldDismissLeft)) {
+            && (shouldDismissRight || shouldDismissLeft)) {
             return true
         } else {
             return super.onStartNestedScroll(parent, child, directTargetChild, target, axes, type)
@@ -393,13 +390,13 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onNestedPreScroll(
-            coordinatorLayout: CoordinatorLayout,
-            child: AppBarLayout,
-            target: View,
-            dx: Int,
-            dy: Int,
-            consumed: IntArray,
-            type: Int
+        coordinatorLayout: CoordinatorLayout,
+        child: AppBarLayout,
+        target: View,
+        dx: Int,
+        dy: Int,
+        consumed: IntArray,
+        type: Int
     ) {
 
         if (draggingDown && dy > 0 || draggingUp && dy < 0) {
@@ -445,11 +442,11 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onNestedPreFling(
-            coordinatorLayout: CoordinatorLayout,
-            child: AppBarLayout,
-            target: View,
-            velocityX: Float,
-            velocityY: Float
+        coordinatorLayout: CoordinatorLayout,
+        child: AppBarLayout,
+        target: View,
+        velocityX: Float,
+        velocityY: Float
     ): Boolean {
         if (!draggingUp && !draggingDown && !draggingRight && !draggingLeft) {
             //we are not currently dragging and should not consume this fling
@@ -459,10 +456,10 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     override fun onStopNestedScroll(
-            coordinatorLayout: CoordinatorLayout,
-            abl: AppBarLayout,
-            target: View,
-            type: Int
+        coordinatorLayout: CoordinatorLayout,
+        abl: AppBarLayout,
+        target: View,
+        type: Int
     ) {
         super.onStopNestedScroll(coordinatorLayout, abl, target, type)
         nestedScrolling = false
@@ -473,7 +470,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         if (coordinatorLayout == null) return
 
         if (Math.abs(totalDragY) >= dragDismissDistanceVertical
-                || Math.abs(totalDragX) >= dragDismissDistanceHorizontal) {
+            || Math.abs(totalDragX) >= dragDismissDistanceHorizontal) {
             dispatchDismissCallback()
         } else {
             if (lastMotionEvent?.action == MotionEvent.ACTION_DOWN) {
@@ -499,9 +496,9 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
     override fun onDependentViewChanged(
-            parent: CoordinatorLayout,
-            child: AppBarLayout,
-            dependency: View
+        parent: CoordinatorLayout,
+        child: AppBarLayout,
+        dependency: View
     ): Boolean {
         if (dragDismissFraction > 0F) {
             dragDismissDistanceVertical = parent.height * dragDismissFraction
@@ -515,7 +512,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     // When scroll is negative, we're dragging down, positive, we're dragging up, zero, we're
     // resting
     private fun dragScaleVertical(view: View?, scroll: Int) {
-       if (scroll == 0 || view == null) return
+        if (scroll == 0 || view == null) return
 
         totalDragY += scroll
 
@@ -531,7 +528,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
         var dragFractionY: Float = Math.log10(
-                ((1 + (Math.abs(totalDragY) / dragDismissDistanceVertical)).toDouble())
+            ((1 + (Math.abs(totalDragY) / dragDismissDistanceVertical)).toDouble())
         ).toFloat()
         var dragToY: Float = dragFractionY * dragDismissDistanceVertical * dragElasticity
 
@@ -543,20 +540,20 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
 
         if (
-                // if dragging down, totalDragY should always be negative
-                (draggingDown && totalDragY >= 0)
-                // if dragging up, totalDragY should always be positive
-                || (draggingUp && totalDragY <= 0)
-                // if should not dismiss up, ignore draggingUp events
-                || (draggingUp && !shouldDismissUp)
-                // if should not dismiss down, ignore draggingDown events
-                || (draggingDown && !shouldDismissDown)
-                // for collapsing toolbars, we should start dismissing down if the AppBarLayout
-                // is not fully expanded
-                || (draggingDown && appBarVerticalOffset < 0)
-                // for collapsing toolbars, we should not start dismissing up if the AppBarLayout
-                // is not fully collapsed
-                || (draggingUp && (Math.abs(appBarVerticalOffset) != appBarTotalScrollRange))
+        // if dragging down, totalDragY should always be negative
+            (draggingDown && totalDragY >= 0)
+            // if dragging up, totalDragY should always be positive
+            || (draggingUp && totalDragY <= 0)
+            // if should not dismiss up, ignore draggingUp events
+            || (draggingUp && !shouldDismissUp)
+            // if should not dismiss down, ignore draggingDown events
+            || (draggingDown && !shouldDismissDown)
+            // for collapsing toolbars, we should start dismissing down if the AppBarLayout
+            // is not fully expanded
+            || (draggingDown && appBarVerticalOffset < 0)
+            // for collapsing toolbars, we should not start dismissing up if the AppBarLayout
+            // is not fully collapsed
+            || (draggingUp && (Math.abs(appBarVerticalOffset) != appBarTotalScrollRange))
         ) {
             totalDragY = 0F
             dragToY = 0F
@@ -571,10 +568,10 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
         dispatchDragCallback(
-                dragFractionY,
-                dragToY,
-                Math.min(1F, Math.abs(totalDragY) / dragDismissDistanceVertical),
-                totalDragY
+            dragFractionY,
+            dragToY,
+            Math.min(1F, Math.abs(totalDragY) / dragDismissDistanceVertical),
+            totalDragY
         )
     }
 
@@ -592,7 +589,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
         var dragFractionX: Float = Math.log10(
-                ((1 + (Math.abs(totalDragX) / dragDismissDistanceHorizontal)).toDouble())
+            ((1 + (Math.abs(totalDragX) / dragDismissDistanceHorizontal)).toDouble())
         ).toFloat()
         var dragToX: Float = dragFractionX * dragDismissDistanceHorizontal * dragElasticity
 
@@ -603,11 +600,11 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         scalePropertiesX(view, dragFractionX, dragToX)
 
         if (
-                (draggingRight && totalDragX >= 0)
+            (draggingRight && totalDragX >= 0)
             || (draggingLeft && totalDragX <= 0)
             || (draggingLeft && !shouldDismissLeft)
             || (draggingRight && !shouldDismissRight)
-                ) {
+        ) {
             totalDragX = 0F
             dragToX = 0F
             dragFractionX = 0F
@@ -626,17 +623,17 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         val totalDrag = dragDismissDistanceVertical * interpolation
 
         val dragFractionY: Float = Math.log10(
-                ((1 + (Math.abs(totalDrag) / dragDismissDistanceVertical)).toDouble())
+            ((1 + (Math.abs(totalDrag) / dragDismissDistanceVertical)).toDouble())
         ).toFloat()
         val dragToY: Float = dragFractionY * dragDismissDistanceVertical * dragElasticity
 
         scalePropertiesY(view, dragFractionY, dragToY)
 
         dispatchDragCallback(
-                dragFractionY,
-                dragToY,
-                Math.min(1F, Math.abs(totalDrag) / dragDismissDistanceVertical),
-                totalDrag
+            dragFractionY,
+            dragToY,
+            Math.min(1F, Math.abs(totalDrag) / dragDismissDistanceVertical),
+            totalDrag
         )
     }
 
@@ -669,14 +666,14 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     private fun resetPropertiesByAnimation(view: View) {
         view.animate()
-                .translationX(0F)
-                .translationY(0F)
-                .scaleX(1F)
-                .scaleY(1F)
-                .setDuration(200L)
-                .setInterpolator(FastOutLinearInInterpolator())
-                .setListener(null)
-                .start()
+            .translationX(0F)
+            .translationY(0F)
+            .scaleX(1F)
+            .scaleY(1F)
+            .setDuration(200L)
+            .setInterpolator(FastOutLinearInInterpolator())
+            .setListener(null)
+            .start()
 
         val valueAnim = ValueAnimator.ofFloat(materialShapeDrawable.interpolation, 1F)
         valueAnim.addUpdateListener {
@@ -696,18 +693,18 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
     }
 
     private fun dispatchDragCallback(
-            elasticOffset: Float,
-            elasticOffsetPixels: Float,
-            rawOffset: Float,
-            rawOffsetPixels: Float
+        elasticOffset: Float,
+        elasticOffsetPixels: Float,
+        rawOffset: Float,
+        rawOffsetPixels: Float
     ) {
         callbacks.forEach {
             it.onDrag(
-                    elasticOffset,
-                    elasticOffsetPixels,
-                    rawOffset,
-                    rawOffsetPixels,
-                    dragDismissScale
+                elasticOffset,
+                elasticOffsetPixels,
+                rawOffset,
+                rawOffsetPixels,
+                dragDismissScale
             )
         }
     }

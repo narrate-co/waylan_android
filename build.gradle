@@ -1,6 +1,9 @@
 // Waylan's top-level build file that holds configuration options and versioning for all modules.
 
 buildscript {
+    ext {
+        kotlin_version = '1.3.50'
+    }
     repositories {
         google()
         jcenter()

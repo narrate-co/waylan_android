@@ -11,7 +11,11 @@ import android.widget.FrameLayout
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 
 /**
  * A class that attempts to calculate the height of the on screen keyboard in order to

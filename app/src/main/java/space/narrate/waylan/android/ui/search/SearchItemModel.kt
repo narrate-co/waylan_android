@@ -1,8 +1,8 @@
 package space.narrate.waylan.android.ui.search
 
-import space.narrate.waylan.core.data.wordset.Word
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.spell.SuggestItem
+import space.narrate.waylan.core.data.wordset.Word
 import space.narrate.waylan.core.ui.common.Diffable
 
 sealed class SearchItemModel : Diffable<SearchItemModel> {

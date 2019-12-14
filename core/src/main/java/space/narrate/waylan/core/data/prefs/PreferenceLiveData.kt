@@ -2,7 +2,6 @@ package space.narrate.waylan.core.data.prefs
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
-import java.lang.RuntimeException
 
 /**
  * A LiveData object that makes it easy to observe values in [SharedPreferences]

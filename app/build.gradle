@@ -48,7 +48,7 @@ android {
     }
 
     // Dynamic feature modules
-    dynamicFeatures = [":about", ":merriamwebster", ":merriamwebster_thesaurus"]
+    dynamicFeatures = [":merriamwebster", ":merriamwebster_thesaurus"]
 
     // Compile options
     compileOptions {
@@ -102,6 +102,7 @@ kapt {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
+    implementation project(':settings')
 
     // Room
     implementation Libs.roomRuntime

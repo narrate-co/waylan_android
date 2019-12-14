@@ -8,14 +8,14 @@ import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.google.android.material.appbar.AppBarLayout
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.animation.doOnEnd
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.google.android.material.appbar.AppBarLayout
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
+import space.narrate.waylan.core.util.getColorFromAttr
 
 /**
  * A View that lays itself out full screen, attached to the root of the window (or close to it)

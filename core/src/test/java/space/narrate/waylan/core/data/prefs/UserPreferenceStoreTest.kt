@@ -12,7 +12,7 @@ import org.koin.test.KoinTest
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 import org.robolectric.RobolectricTestRunner
-import space.narrate.waylan.core.data.auth.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
 
 @RunWith(RobolectricTestRunner::class)
 class UserPreferenceStoreTest : KoinTest {

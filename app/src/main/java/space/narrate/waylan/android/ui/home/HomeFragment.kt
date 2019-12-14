@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
+import space.narrate.waylan.core.ui.common.BaseFragment
 
 /**
  * The fragment displaying the main menu list of possible destinations: Trending, Recents, Favorites
@@ -49,9 +49,9 @@ class HomeFragment: BaseFragment(), HomeItemAdapter.HomeItemListener {
         )
         recyclerView.adapter = adapter
 
-        viewModel.list.observe(this, Observer {
+        viewModel.list.observe(this) {
             adapter.submitList(it)
-        })
+        }
 
     }
 

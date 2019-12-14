@@ -5,10 +5,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
-import space.narrate.waylan.core.data.wordset.WordsetDatabase
-import space.narrate.waylan.core.data.firestore.util.*
-import space.narrate.waylan.core.data.firestore.words.GlobalWord
-import space.narrate.waylan.core.util.isMoreThanOneMinuteAgo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import space.narrate.waylan.core.data.Result
@@ -16,7 +12,15 @@ import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
+import space.narrate.waylan.core.data.firestore.util.getFirestoreNotFoundException
+import space.narrate.waylan.core.data.firestore.util.liveData
+import space.narrate.waylan.core.data.firestore.util.userWords
+import space.narrate.waylan.core.data.firestore.util.users
+import space.narrate.waylan.core.data.firestore.util.words
+import space.narrate.waylan.core.data.firestore.words.GlobalWord
+import space.narrate.waylan.core.data.wordset.WordsetDatabase
 import space.narrate.waylan.core.util.LiveDataUtils
+import space.narrate.waylan.core.util.isMoreThanOneMinuteAgo
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume

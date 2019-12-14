@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-
 /**
  * A helper class to turn a Firestore [QuerySnapshot]
  * [EventListener] into a [LiveData] object

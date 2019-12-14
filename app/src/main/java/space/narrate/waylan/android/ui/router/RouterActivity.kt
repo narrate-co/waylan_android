@@ -4,9 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import org.koin.android.ext.android.inject
-import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.core.data.auth.AuthenticationStore
-
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.ui.Navigator
 
 /**
  * A Theme.NoDisplay Activity that serves as an entry hub for all intent filters which Words
@@ -17,6 +16,8 @@ import space.narrate.waylan.core.data.auth.AuthenticationStore
  */
 class RouterActivity : Activity() {
 
+    private val navigator: Navigator by inject()
+
     private val authenticationStore: AuthenticationStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,7 @@ class RouterActivity : Activity() {
         // defined in AndroidManifest.xml
         if (intent == null) {
             // Default to AuthActivity
-            Navigator.launchAuth(this)
+            navigator.toAuth(this)
             finish()
             return
         }
@@ -36,14 +37,14 @@ class RouterActivity : Activity() {
         if (hasProcessText) {
             if (authenticationStore.hasUser) {
                 // Go straight to MainActivity and pass along intent to be processed
-                Navigator.launchMain(this, true, intent)
+                navigator.toHome(this, true, intent)
             } else {
                 // Go to AuthActivity, authorize, and then MainActivity,
                 // passing along intent to each
-                Navigator.launchAuth(this, null, intent)
+                navigator.toAuth(this, intent)
             }
         } else {
-            Navigator.launchAuth(this, null, intent)
+            navigator.toAuth(this, intent)
         }
 
         finish()

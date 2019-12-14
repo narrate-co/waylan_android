@@ -2,8 +2,6 @@ package space.narrate.waylan.core.ui.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.ColorStateList
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Paint
@@ -12,11 +10,9 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
-import androidx.annotation.StyleableRes
 import androidx.core.graphics.withTranslation
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.MathUtils
-import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.util.getColorStateList
 
 /**

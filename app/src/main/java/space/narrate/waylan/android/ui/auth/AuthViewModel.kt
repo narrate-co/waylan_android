@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import space.narrate.waylan.core.data.Result
-import space.narrate.waylan.core.data.auth.AuthenticationStore
-import space.narrate.waylan.core.data.auth.FirebaseAuthWordsException
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.PreferenceStore
-import space.narrate.waylan.core.data.repo.AnalyticsRepository
+import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.ui.common.Event
-import kotlin.Exception
 
 class AuthViewModel(
     private val authenticationStore: AuthenticationStore,

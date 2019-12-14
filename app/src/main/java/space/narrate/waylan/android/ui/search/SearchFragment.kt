@@ -15,30 +15,37 @@ import android.view.animation.Transformation
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import space.narrate.waylan.android.*
-import space.narrate.waylan.core.ui.common.BaseFragment
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.smart_suggestion_item.view.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.android.R
+import space.narrate.waylan.android.ui.MainActivity
+import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.android.util.collapse
+import space.narrate.waylan.android.util.expand
+import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.prefs.RotationManager
-import space.narrate.waylan.android.ui.MainActivity
-import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.util.*
-import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.getColorFromAttr
@@ -66,6 +73,8 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     private lateinit var recyclerView: RecyclerView
     private lateinit var actionOneImageView: AppCompatImageView
     private lateinit var actionTwoImageView: AppCompatImageView
+
+    private val navigator: Navigator by inject()
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
@@ -133,11 +142,11 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         }
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
-        sharedViewModel.shouldOpenAndFocusSearch.observe(this, Observer { event ->
+        sharedViewModel.shouldOpenAndFocusSearch.observe(this) { event ->
             event.getUnhandledContent()?.let { focusAndOpenSearch() }
-        })
+        }
 
-        viewModel.shouldShowDetails.observe(this, Observer { event ->
+        viewModel.shouldShowDetails.observe(this) { event ->
             event.getUnhandledContent()?.let {
                 sharedViewModel.onChangeCurrentWord(it)
                 val navController = (requireActivity() as MainActivity).findNavController()
@@ -145,14 +154,14 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     navController.navigate(R.id.action_global_detailsFragment)
                 }
             }
-        })
+        }
 
-        sharedViewModel.currentDestination.observe(this, Observer {
+        navigator.currentDestination.observe(this) {
             when (it) {
-                Navigator.Destination.SETTINGS,
-                Navigator.Destination.ABOUT,
-                Navigator.Destination.THIRD_PARTY,
-                Navigator.Destination.DEV_SETTINGS -> {
+                Destination.SETTINGS,
+                Destination.ABOUT,
+                Destination.THIRD_PARTY,
+                Destination.DEV_SETTINGS -> {
                     bottomSheetBehavior.isHideable = true
                     bottomSheetBehavior.hide(requireActivity())
                 }
@@ -160,7 +169,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     bottomSheetBehavior.isHideable = false
                 }
             }
-        })
+        }
 
         setUpSheet()
 
@@ -216,7 +225,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         // results), reset the height of the search sheet.
         KeyboardManager(requireActivity(), collapsedContainer)
                 .getKeyboardHeightData()
-                .observe(this, Observer {
+                .observe(this) {
                     val minHeight = Math.max(
                             maxReachableExpandedHeight,
                             (it.height + minVisibleHeightAboveKeyboard).toInt()
@@ -224,7 +233,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     if (it.height != 0 && minHeight != requireView().layoutParams.height) {
                         requireView().layoutParams.height = minHeight
                     }
-                })
+                }
 
         recyclerView.alpha = 0F
         (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
@@ -277,17 +286,17 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
             false
         }
 
-        viewModel.searchResults.observe(this, Observer {
+        viewModel.searchResults.observe(this) {
             adapter.submitList(it)
             recyclerView.scrollToPosition(0)
-        })
+        }
     }
 
     private fun setUpSmartShelf() {
 
-        viewModel.shouldShowOrientationPrompt.observe(this, Observer { event ->
+        viewModel.shouldShowOrientationPrompt.observe(this) { event ->
             event.getUnhandledContent()?.let { expandSmartShelf(it) }
-        })
+        }
 
         // observe for orientation/rotation changes in the viewModel
         rotationManager.observe(this.javaClass.simpleName, this, viewModel)
@@ -306,7 +315,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     // current Fragment
     private fun setUpShelfActions() {
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        sharedViewModel.searchShelfModel.observe(this, Observer { model ->
+        sharedViewModel.searchShelfModel.observe(this) { model ->
             // wait for the next layout step to grantee the actions.width is correctly captured
             view?.post {
                 when (model) {
@@ -321,7 +330,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
                     is SearchShelfActionsModel.None -> runShelfActionsAnimation(0)
                 }
             }
-        })
+        }
 
         // Hide actions if sheet is expanded
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
@@ -333,9 +342,9 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
 
         // Hide filter action if contextual sheet is expanded
         (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = sharedViewModel.currentDestination.value
-                ?: Navigator.Destination.HOME
-            if (currentDest == Navigator.Destination.TRENDING) {
+            val currentDest = navigator.currentDestination.value
+                ?: Destination.HOME
+            if (currentDest == Destination.TRENDING) {
                 setSheetSlideOffsetForActions(
                         (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
                         offset

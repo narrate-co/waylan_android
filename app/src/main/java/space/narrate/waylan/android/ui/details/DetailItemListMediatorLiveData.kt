@@ -7,7 +7,6 @@ import space.narrate.waylan.core.details.DetailItemType
 
 class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>() {
 
-    private var titleModel: DetailItemModel? = null
     private var mwModel: DetailItemModel? = null
     private var mwThesaurusModel: DetailItemModel? = null
     private var wordsetModel: DetailItemModel? = null
@@ -19,12 +18,6 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
 
     private fun <T : DetailItemModel> set(item: T) {
         when (item.itemType) {
-            DetailItemType.TITLE -> {
-                if (shouldUpdateList(titleModel, item)) {
-                    titleModel = item
-                    updateList()
-                }
-            }
             DetailItemType.MERRIAM_WEBSTER -> {
                 if (shouldUpdateList(mwModel, item)) {
                     mwModel = item
@@ -61,7 +54,6 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
     private fun updateList() {
         postValue(
             listOfNotNull(
-                titleModel,
                 mwModel,
                 mwThesaurusModel,
                 wordsetModel,

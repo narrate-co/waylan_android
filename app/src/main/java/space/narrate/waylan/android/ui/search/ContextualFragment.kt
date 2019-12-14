@@ -14,19 +14,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.MaterialShapeDrawable
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.Navigator
-import space.narrate.waylan.android.R
-import space.narrate.waylan.core.ui.common.BaseFragment
-import space.narrate.waylan.android.util.*
+import space.narrate.waylan.android.util.collapse
+import space.narrate.waylan.android.util.expand
+import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.Period
+import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.getColorFromAttr
 
@@ -45,6 +49,7 @@ class ContextualFragment : BaseFragment() {
     private lateinit var collapsedChipGroup: ChipGroup
     private lateinit var expandedChipGroup: ChipGroup
 
+    private val navigator: Navigator by inject()
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
@@ -98,9 +103,9 @@ class ContextualFragment : BaseFragment() {
             sharedViewModel.onClearListFilter()
         }
 
-        sharedViewModel.shouldOpenContextualSheet.observe(this, Observer { event ->
+        sharedViewModel.shouldOpenContextualSheet.observe(this) { event ->
             event.getUnhandledContent()?.let { expand() }
-        })
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -168,21 +173,21 @@ class ContextualFragment : BaseFragment() {
             }
 
         // Configure UI based on current destination
-        sharedViewModel.currentDestination.observe(this, Observer { dest ->
+        navigator.currentDestination.observe(this) { dest ->
             when (dest) {
-                Navigator.Destination.TRENDING -> setExpandedContainer("Filter trending")
+                Destination.TRENDING -> setExpandedContainer("Filter trending")
                 else -> { /* Ignore or add other filterable lists in the future */ }
             }
-        })
+        }
 
         // Configure bottom sheet state and UI based on current filter.
-        sharedViewModel.contextualFilterModel.observe(this, Observer { model ->
+        sharedViewModel.contextualFilterModel.observe(this) { model ->
             setCollapsedChips(model.filter)
             peekOrHide(
                 model.isFilterable && model.filter.isNotEmpty(),
                 model.filter.isNotEmpty()
             )
-        })
+        }
 
     }
 

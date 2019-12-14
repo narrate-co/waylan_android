@@ -3,8 +3,8 @@ package space.narrate.waylan.android.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.data.repo.WordRepository
-import space.narrate.waylan.android.ui.list.ListType
+import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.util.mapTransform
 
 /**

@@ -1,17 +1,19 @@
 package space.narrate.waylan.android.ui.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.data.repo.AnalyticsRepository
-import space.narrate.waylan.core.data.repo.UserRepository
-import space.narrate.waylan.core.data.repo.WordRepository
-import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.core.util.mapTransform
-import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.android.util.MergedLiveData
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.data.prefs.RotationUtils
+import space.narrate.waylan.core.repo.AnalyticsRepository
+import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel for [SearchFragment]

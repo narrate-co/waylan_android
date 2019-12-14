@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="space.narrate.waylan.android.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="space.narrate.waylan.android.ui.list.ListFragment"
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/action_listFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="true"/>
+        <argument
+            android:name="listType"
+            app:argType="space.narrate.waylan.core.ui.ListType"/>
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="space.narrate.waylan.android.ui.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <action
+            android:id="@+id/action_detailsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="space.narrate.waylan.settings.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_developerSettingsFragment"
+            app:destination="@id/developerSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="space.narrate.waylan.settings.ui.about.AboutFragment"
+        android:label="AboutFragment" >
+        <action
+            android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
+            app:destination="@id/thirdPartyLibrariesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/developerSettingsFragment"
+        android:name="space.narrate.waylan.settings.ui.developer.DeveloperSettingsFragment"
+        android:label="DeveloperSettingsFragment" />
+    <fragment
+        android:id="@+id/thirdPartyLibrariesFragment"
+        android:name="space.narrate.waylan.settings.ui.thirdparty.ThirdPartyLibrariesFragment"
+        android:label="ThirdPartyLibrariesFragment" />
+    <action
+        android:id="@+id/action_global_detailsFragment"
+        app:destination="@id/detailsFragment"
+        app:launchSingleTop="true"/>
+</navigation>

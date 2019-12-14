@@ -5,7 +5,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import space.narrate.waylan.core.util.DefaultingMutableLiveData
 import space.narrate.waylan.core.util.switchMapTransform
-import java.lang.IllegalArgumentException
 
 /**
  * A class which handles getting and setting a SharedPreference value. This class is able to react

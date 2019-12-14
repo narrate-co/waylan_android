@@ -7,10 +7,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import space.narrate.waylan.core.data.repo.FirestoreTestData
+import space.narrate.waylan.core.repo.FirestoreTestData
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.data.repo.WordRepository
-import space.narrate.waylan.android.ui.list.ListType
+import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.test_common.LiveDataTestUtils
 import space.narrate.waylan.test_common.valueBlocking
 import org.mockito.Mockito.`when` as whenever

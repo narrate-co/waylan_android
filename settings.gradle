@@ -3,9 +3,8 @@
 include ':core'
 // App is the base Android application
 include ':app'
-// About is a dynamic feature module that includes the about screen and third
-// party libraries screen as well as the static data consumed by each.
-include ':about'
+// Settings holds all UI and logic to display in-app settings, billing and configuration.
+include ':settings'
 // Merriam-Webster is a dynamic feature module that include all logic related to working with
 // Merriam-Webster data. This module also exposes providers to display Merriam-Webster data.
 include ':merriamwebster'
@@ -16,4 +15,3 @@ include ':merriamwebster_thesaurus'
 // Test Common holds all testing code which is shared between module tests, both unit and
 // instrumentation tests. This includes things like utilities, extensions, rules, etc.
 include ':test_common'
-

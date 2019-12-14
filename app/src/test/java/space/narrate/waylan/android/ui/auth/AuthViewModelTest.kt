@@ -11,10 +11,10 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import space.narrate.waylan.core.data.Result
-import space.narrate.waylan.core.data.auth.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.prefs.PreferenceStore
-import space.narrate.waylan.core.data.repo.AnalyticsRepository
+import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.valueBlocking
 import org.mockito.Mockito.`when` as whenever

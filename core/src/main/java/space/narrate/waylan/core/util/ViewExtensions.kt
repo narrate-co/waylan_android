@@ -16,6 +16,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 
 fun View.gone() {
@@ -56,22 +57,6 @@ fun ImageView.swapImageResource(imgRes: Int) {
     set.playSequentially(alphaOut, alphaIn)
     set.start()
 }
-
-
-fun AppBarLayout.setUpWithElasticBehavior(
-    callback: ElasticAppBarBehavior.ElasticViewBehaviorCallback
-) {
-    val params = layoutParams as? CoordinatorLayout.LayoutParams
-        ?: throw IllegalArgumentException(
-            "AppBarLayout must be a child of CoordinatorLayout to setup with ElasticBehavior"
-        )
-
-    val behavior = params.behavior as? ElasticAppBarBehavior
-        ?: throw IllegalArgumentException("AppBarLayout must use ElasticAppBarBehavior")
-
-    behavior.addCallback(callback)
-}
-
 
 fun String.toChip(
     context: Context,

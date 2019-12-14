@@ -3,7 +3,6 @@ package space.narrate.waylan.core.data.prefs
 import android.content.pm.ActivityInfo
 import space.narrate.waylan.core.R
 
-
 /**
  * All possible screen orientations Words supports by allowing the user to explicitly set via
  * [UserRepository]

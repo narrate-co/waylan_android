@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings_title">Settings</string>
+
+    <!--Settings Screen-->
+    <string name="settings_night_mode_title">Night mode</string>
+    <string name="settings_night_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_desc">Where Waylan came from?</string>
+    <string name="settings_contact_title">Contact</string>
+    <string name="settings_contact_desc">Get in touch</string>
+    <string name="settings_email_compose_subject">Getting in touch</string>
+    <string name="settings_email_compose_no_client_error">Looks like you don\'t have an email app installed</string>
+    <string name="settings_header_create_account_body">Want to save your recent and favorite words? Want to continue to look up words with Merriam Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
+    <string name="settings_header_anonymous_free_trial_body">Want to save your recents and favorites across devices? Want continued access to Merriam-Webster definitions? Create an account to extend your Merriam-Webster trial and keep building your vocabulary or log in to restore your history.</string>
+    <string name="settings_header_anonymous_none_body">Want to save your recents and favorites across devices? Want access to Merriam-Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
+    <string name="settings_header_anonymous_create_account_button">Create Account</string>
+    <string name="settings_header_anonymous_log_in_button">Log in</string>
+    <string name="settings_header_added_label">Added</string>
+    <string name="settings_header_expired_label">Plugin expired</string>
+    <string name="settings_header_free_trial_expired_label">Free trial expired</string>
+    <string name="settings_header_registered_none_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Help support Merriam-Webster and Waylan for an entire year of access.</string>
+    <string name="settings_header_registered_free_trial_expired_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Help support Merriam-Webster and Waylan for an entire year of access.</string>
+    <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Waylan. Help support Merriam-Webster and Waylan and get an entire year of access.</string>
+    <string name="settings_header_registered_subscribed_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. You have unlimited access. Thank you for your support.</string>
+    <string name="settings_header_registered_subscribed_expired_body">Looks like your purchase expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Renew for a whole year of access.</string>
+    <string name="settings_header_registered_add_button">Add</string>
+    <string name="settings_header_renew_top_button">Renew</string>
+    <string name="settings_sign_out_title">Sign out</string>
+    <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
+    <string name="settings_developer_title">Developer Settings</string>
+    <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
+
+    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
+    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
+    <string name="mw_card_view_plugin_expired">Plugin expired</string>
+    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
+
+    <!--Developer Settings-->
+    <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
+    <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
+    <string name="developer_settings_toggle_merriam_webster_state_title">Toggle Merriam-Webster state</string>
+    <string name="developer_settings_use_test_skus_title">Use test skus</string>
+    <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
+    <string name="developer_settings_title">Developer Settings</string>
+
+    <string name="developer_settings_all_preferences_cleared">All user preferences cleared</string>
+    <string name="developer_settings_informative_snackbar_test_message">A test piece of information</string>
+    <string name="developer_settings_informative_snackbar_test_action">Okay</string>
+    <string name="developer_settings_error_snackbar_test_action">Report</string>
+    <string name="developer_settings_error_snackbar_test_message">A test error message</string>
+
+    <!--About-->
+    <string name="about_header_body">
+        Waylan is a dictionary concept designed to be an ergonomic, one-handable experience. In addition to being a great tool to improve your vocabulary, Waylan experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and visual balance.
+    </string>
+    <string name="about_version_title">Version</string>
+    <string name="about_third_party_lib_title">Third Party Libraries</string>
+    <string name="about_third_party_lib_desc">Software that\'s helped make Waylan</string>
+    <string name="about_title">About</string>
+
+    <!--Third Party Libraries-->
+    <string name="third_party_libraries_title">Third Party Libraries</string>
+
+</resources>
