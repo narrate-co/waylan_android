@@ -206,7 +206,10 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
      * A convenience method to allow lifecycleOwners which use a ReachabilityAppBar to setup
      * and react to changes in other ReachabilityAppBars.
      */
-    fun setReachableContinuityNavigator(lifecycleOwner: LifecycleOwner, navigator: ReachableContinuityNavigator) {
+    fun setReachableContinuityNavigator(
+        lifecycleOwner: LifecycleOwner,
+        navigator: ReachableContinuityNavigator
+    ) {
         this.reachableContinuityNavigator = navigator
         navigator.reachabilityState.observe(lifecycleOwner) { state ->
             if (state.id != id) setExpanded(state.expanded, false)
