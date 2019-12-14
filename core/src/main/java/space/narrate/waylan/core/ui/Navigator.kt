@@ -6,8 +6,9 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavDestination
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
 
-interface Navigator {
+interface Navigator : ReachabilityAppBarLayout.ReachableContinuityNavigator {
 
     enum class BackType {
         ICON, DRAG

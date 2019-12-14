@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
+import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
@@ -23,6 +24,7 @@ import space.narrate.waylan.core.util.visible
 import space.narrate.waylan.settings.BuildConfig
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentSettingsBinding
+import space.narrate.waylan.settings.ui.about.AboutFragmentDirections
 import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
 
 /**
@@ -99,6 +101,8 @@ class SettingsFragment : BaseFragment() {
             appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
+
+            appBar.setReachableContinuityNavigator(this@SettingsFragment, navigator)
 
             setUpBanner()
 
