@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import org.koin.android.ext.android.inject
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
