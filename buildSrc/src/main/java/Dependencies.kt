@@ -10,6 +10,9 @@ object Versions {
     const val minSdk = 23
     const val targetSdk = 29
 
+    const val versionCode = 7
+    const val versionName = "0.0.07.debug"
+
     // Library versions
     const val androidX = "1.2.0-alpha04"
     const val appCompat = "1.1.0"
