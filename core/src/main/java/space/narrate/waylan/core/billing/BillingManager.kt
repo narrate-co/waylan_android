@@ -174,6 +174,10 @@ class BillingManager(
                 val pluginState = PluginState.Purchased(startedDate, purchase.purchaseToken)
                 userRepository.setUserMerriamWebsterState(pluginState)
             }
+            BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
+                val pluginState = PluginState.Purchased(startedDate, purchase.purchaseToken)
+                userRepository.setUserMerriamWebsterThesaurusState(pluginState)
+            }
             BillingConfig.TEST_SKU_MERRIAM_WEBSTER,
             BillingConfig.TEST_SKU_PURCHASED,
             BillingConfig.TEST_SKU_CANCELED,

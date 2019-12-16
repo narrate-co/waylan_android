@@ -7,21 +7,8 @@ enum class Destination {
     FAVORITE,
     DETAILS,
     SETTINGS,
+    ADD_ONS,
     ABOUT,
     THIRD_PARTY,
     DEV_SETTINGS;
 }
-
-//sealed class Destination {
-//    object Home
-//    object Trending : List
-//    object Recent : List
-//    object Favorite : List
-//    object Details
-//    object Settings
-//    object About
-//    object ThirdParty
-//    object DeveloperSettings
-//}
-//
-//interface List

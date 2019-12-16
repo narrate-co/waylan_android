@@ -297,6 +297,22 @@ class FirestoreStore(
         }
     }
 
+    suspend fun setUserMerriamWebsterThesaurusState(
+        uid: String,
+        state: PluginState
+    ): Result<User> {
+        val result = getUser(uid)
+        return if (result is Result.Success) {
+            val user = result.data.apply {
+                merriamWebsterThesaurusStarted = state.started
+                merriamWebsterThesaurusPurchaseToken = state.purchaseToken
+            }
+            setUser(user)
+        } else {
+            result
+        }
+    }
+
     // Allow users to add, edit and delete their own definitions, set to either public or private
     //TODO add meaning
 

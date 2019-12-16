@@ -56,4 +56,8 @@
     <string name="period_label_month">month</string>
     <string name="period_label_year">year</string>
     <string name="period_label_all_time">all time</string>
+    
+    <!--AddOns-->
+    <string name="plugin_action_try_for_free_title">Try for free</string>
+    <string name="plugin_action_add_title">Add</string>
 </resources>

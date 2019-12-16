@@ -6,12 +6,15 @@ import org.koin.dsl.module
 import space.narrate.waylan.settings.ui.developer.DeveloperSettingsViewModel
 import space.narrate.waylan.settings.ui.settings.SettingsViewModel
 import space.narrate.waylan.core.billing.BillingManager
+import space.narrate.waylan.settings.ui.addons.AddOnsViewModel
 import space.narrate.waylan.settings.ui.thirdparty.ThirdPartyLibrariesViewModel
 
 // Dependent on CoreModule
 val settingsModule = module {
 
     viewModel { SettingsViewModel(get()) }
+
+    viewModel { AddOnsViewModel(get()) }
 
     viewModel { DeveloperSettingsViewModel(get()) }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--A shape drawable used when a view needs a background color from a ColorStateList resource-->
+<!--Since android:background doesn't accept CSLs as backgrounds, a drawable that is able to be-->
+<!--tinted is needed.-->
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/white"/>
+</shape>

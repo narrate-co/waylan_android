@@ -151,6 +151,14 @@ class UserRepository(
         }
     }
 
+    fun setUserMerriamWebsterThesaurusState(state: PluginState) {
+        val uid = authenticationStore.uid.value ?: return
+
+        launch {
+            firestoreStore.setUserMerriamWebsterThesaurusState(uid, state)
+        }
+    }
+
     fun resetPreferences() {
         preferenceStore.resetAll()
         userPreferenceStore.resetAll()

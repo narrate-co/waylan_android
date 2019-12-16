@@ -106,6 +106,10 @@ class SettingsFragment : BaseFragment() {
 
             setUpBanner()
 
+            addOnsPreference.setOnClickListener {
+                findNavController().navigate(R.id.action_settingsFragment_to_addOnsFragment)
+            }
+
             setUpNightMode()
 
             setUpOrientation()

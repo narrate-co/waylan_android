@@ -29,9 +29,11 @@
 
     <!--Text Labels-->
     <style name="Widget.Waylan.TextLabel" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body2</item>
+        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body3</item>
         <item name="android:textColor">?attr/colorOnInformative</item>
         <item name="android:textSize">12sp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
         <item name="rippleColor">?attr/colorRipple</item>
         <item name="chipBackgroundColor">?attr/colorInformative</item>
         <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>

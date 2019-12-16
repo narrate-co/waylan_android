@@ -33,6 +33,8 @@ class DeveloperSettingsViewModel(
     val mwBillingResponse: LiveData<String>
     get() = _mwBillingResponse
 
+    // TODO: Add Merriam-Webster Thesaurus mocking
+
     private val _shouldShowSnackbar: MutableLiveData<Event<SnackbarModel>> = MutableLiveData()
     val shouldShowSnackbar: LiveData<Event<SnackbarModel>>
         get() = _shouldShowSnackbar

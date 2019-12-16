@@ -39,6 +39,13 @@
                     app:cardBackgroundColor="?attr/colorSurface" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/add_ons_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/add_ons_title"
+                    app:desc="@string/add_ons_desc"/>
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/night_mode_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

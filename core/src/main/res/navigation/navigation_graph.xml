@@ -49,7 +49,14 @@
         <action
             android:id="@+id/action_settingsFragment_to_developerSettingsFragment"
             app:destination="@id/developerSettingsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_addOnsFragment"
+            app:destination="@id/addOnsFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/addOnsFragment"
+        android:name="space.narrate.waylan.settings.ui.addons.AddOnsFragment"
+        android:label="AddOnsFragment"/>
     <fragment
         android:id="@+id/aboutFragment"
         android:name="space.narrate.waylan.settings.ui.about.AboutFragment"

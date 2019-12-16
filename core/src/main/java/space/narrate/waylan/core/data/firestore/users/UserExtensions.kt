@@ -19,6 +19,17 @@ val User.merriamWebsterState: PluginState
         }
     }
 
+val User.merriamWebsterThesaurusState: PluginState
+    get() {
+        return when {
+            merriamWebsterThesaurusPurchaseToken.isNotBlank() -> PluginState.Purchased(
+                merriamWebsterThesaurusStarted,
+                merriamWebsterThesaurusPurchaseToken
+            )
+            else -> PluginState.FreeTrial(isAnonymous, merriamWebsterThesaurusStarted)
+        }
+    }
+
 val User.oneDayPastExpiration: Date
     get() {
         val cal = Calendar.getInstance()

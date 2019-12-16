@@ -159,6 +159,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         navigator.currentDestination.observe(this) {
             when (it) {
                 Destination.SETTINGS,
+                Destination.ADD_ONS,
                 Destination.ABOUT,
                 Destination.THIRD_PARTY,
                 Destination.DEV_SETTINGS -> {

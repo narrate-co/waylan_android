@@ -20,7 +20,9 @@ data class User(
         var name: String = "",
         var email: String = "",
         var merriamWebsterStarted: Date = Date(),
-        var merriamWebsterPurchaseToken: String = ""
+        var merriamWebsterPurchaseToken: String = "",
+        var merriamWebsterThesaurusStarted: Date = Date(),
+        var merriamWebsterThesaurusPurchaseToken: String = ""
 )
 
 
