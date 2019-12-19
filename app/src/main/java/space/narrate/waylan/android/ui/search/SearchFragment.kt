@@ -143,11 +143,11 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
         ViewCompat.setBackground(collapsedContainer, materialShapeDrawable)
 
         sharedViewModel.shouldOpenAndFocusSearch.observe(this) { event ->
-            event.getUnhandledContent()?.let { focusAndOpenSearch() }
+            event.withUnhandledContent { focusAndOpenSearch() }
         }
 
         viewModel.shouldShowDetails.observe(this) { event ->
-            event.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 sharedViewModel.onChangeCurrentWord(it)
                 val navController = (requireActivity() as MainActivity).findNavController()
                 if (navController.currentDestination?.id != R.id.detailsFragment) {
@@ -296,7 +296,7 @@ class SearchFragment : BaseFragment(), SearchItemAdapter.SearchItemListener, Tex
     private fun setUpSmartShelf() {
 
         viewModel.shouldShowOrientationPrompt.observe(this) { event ->
-            event.getUnhandledContent()?.let { expandSmartShelf(it) }
+            event.withUnhandledContent { expandSmartShelf(it) }
         }
 
         // observe for orientation/rotation changes in the viewModel

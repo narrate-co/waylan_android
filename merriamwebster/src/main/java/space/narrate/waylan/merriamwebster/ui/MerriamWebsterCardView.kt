@@ -6,13 +6,17 @@ import android.view.View
 import android.widget.LinearLayout
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import space.narrate.waylan.core.data.firestore.users.AddOnState
+import space.narrate.waylan.core.data.firestore.users.AddOnState.*
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.remainingDays
+import space.narrate.waylan.core.data.firestore.users.state
+import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
+import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.merriamwebster.R
 import space.narrate.waylan.android.R as appR
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.core.data.firestore.users.PluginState
-import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
-import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
 
 /**
  * A composite view which is able to display all content retrieved from
@@ -49,48 +53,51 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
     }
 
-    fun setSource(entries: List<MwWordAndDefinitionGroups>, user: User?) {
-        setTextLabel(user)
-        mwAudioView.setSource(entries, user)
-        adapter.submit(entries, user)
+    fun setSource(entries: List<MwWordAndDefinitionGroups>, userAddOn: UserAddOn?) {
+        setTextLabel(userAddOn)
+        mwAudioView.setSource(entries, userAddOn)
+        adapter.submit(entries, userAddOn)
     }
 
     fun setListener(listener: MerriamWebsterCardListener) {
         this.listener = listener
     }
 
-    private fun setTextLabel(user: User?) {
-        val state = user?.merriamWebsterState
-        when (state) {
-            is PluginState.FreeTrial -> {
-                if (state.isValid) {
-                    textLabel.text = resources.getString(
-                        appR.string.mw_card_view_free_trial_days_remaining,
-                        state.remainingDays.toString()
-                    )
-                } else {
-                    textLabel.text = resources.getString(appR.string.mw_card_view_free_trial_expired)
-                }
-                textLabel.visibility = View.VISIBLE
-            }
-            is PluginState.Purchased -> {
-                if (!state.isValid) {
-                    // show labelRes
-                    textLabel.text = resources.getString(appR.string.mw_card_view_plugin_expired)
-                    textLabel.visibility = View.VISIBLE
-                } else if (state.remainingDays <= 7L) {
-                    // hide labelRes
-                    textLabel.text = resources.getString(
-                        appR.string.mw_card_view_renew_days_remaining,
-                        state.remainingDays.toString()
-                    )
-                    textLabel.visibility = View.VISIBLE
-                } else {
-                    textLabel.visibility = View.GONE
-                }
-            }
-            else -> textLabel.visibility = View.GONE
+    private fun setTextLabel(userAddOn: UserAddOn?) {
+        if (userAddOn == null) {
+            textLabel.gone()
+            return
         }
+
+        val text = when (userAddOn.state) {
+            FREE_TRIAL_VALID -> {
+                resources.getString(
+                    appR.string.mw_card_view_free_trial_days_remaining,
+                    userAddOn.remainingDays.toString()
+                )
+            }
+            FREE_TRIAL_EXPIRED -> {
+                resources.getString(appR.string.mw_card_view_free_trial_expired)
+            }
+            PURCHASED_VALID ->
+                resources.getString(appR.string.mw_card_view_plugin_expired)
+            PURCHASED_EXPIRED ->
+                resources.getString(
+                    appR.string.mw_card_view_renew_days_remaining,
+                    userAddOn.remainingDays.toString()
+                )
+            else -> ""
+        }
+
+        val visibility = when (userAddOn.state) {
+            FREE_TRIAL_VALID,
+            FREE_TRIAL_EXPIRED,
+            PURCHASED_EXPIRED -> View.VISIBLE
+            else -> View.GONE
+        }
+
+        textLabel.text = text
+        textLabel.visibility = visibility
     }
 
     override fun onRelatedWordClicked(word: String) {

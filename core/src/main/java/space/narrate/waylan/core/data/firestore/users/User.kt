@@ -8,21 +8,16 @@ import java.util.*
  * @property uid The uid of this user. This is also the document id and the uid of this user's
  *  corresponding [FirebaseUser.uid].
  * @property isAnonymous Whether the user has signed up or not.
- * @property merriamWebsterStarted The date which the user started either
- *  their [PluginState.FreeTrial] or [PluginState.Purchased].
- * @property merriamWebsterPurchaseToken The Google Play Billing purchase token for the
- *  Merriam-Webster plugin. If this is blank, the user's Merriam-Webster plugin state is
- *  either [PluginState.NONE] or [PluginState.PURCHASED].
  */
 data class User(
         var uid: String = "",
         var isAnonymous: Boolean = true,
         var name: String = "",
         var email: String = "",
-        var merriamWebsterStarted: Date = Date(),
-        var merriamWebsterPurchaseToken: String = "",
-        var merriamWebsterThesaurusStarted: Date = Date(),
-        var merriamWebsterThesaurusPurchaseToken: String = ""
+
+        // Deprecated fields. Use UserAddOn instead.
+        var merriamWebsterStarted: Date = Date(), // deprecated
+        var merriamWebsterPurchaseToken: String = ""
 )
 
 

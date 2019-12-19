@@ -12,12 +12,21 @@ object RootCollection {
     const val WORDS = "words"
 }
 
+object UserCollection {
+    const val WORDS = "words"
+    const val ADD_ONS = "add_ons"
+}
+
 val FirebaseFirestore.users : CollectionReference
     get() = collection(RootCollection.USERS)
 
 val FirebaseFirestore.words : CollectionReference
     get() = collection(RootCollection.WORDS)
 
-fun FirebaseFirestore.userWords(uid: String) : CollectionReference
-        = users.document(uid).collection("words")
+fun FirebaseFirestore.userWords(uid: String) : CollectionReference =
+    users.document(uid).collection(UserCollection.WORDS)
+
+fun FirebaseFirestore.userAddOns(uid: String): CollectionReference =
+    users.document(uid).collection(UserCollection.ADD_ONS)
+
 

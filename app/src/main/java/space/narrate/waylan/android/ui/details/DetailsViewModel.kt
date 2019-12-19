@@ -3,6 +3,9 @@ package space.narrate.waylan.android.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemModel
@@ -10,6 +13,7 @@ import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.mapOnTransform
+import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
 
 /**
@@ -31,8 +35,8 @@ class DetailsViewModel(
                 }
             }
         }
-        .mapOnTransform(userRepository.hasSeenMerriamWebsterPermissionPaneLive) { list, hasSeen ->
-            if (hasSeen) {
+        .mapOnTransform(userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER)) { list, addOn ->
+            if (!addOn.isValid && addOn.isAwareOfExpiration) {
                 list.toMutableList().apply {
                     removeAll { it.itemType == DetailItemType.MERRIAM_WEBSTER }
                 }
@@ -67,7 +71,9 @@ class DetailsViewModel(
     }
 
     fun onMerriamWebsterPermissionPaneDismissClicked() {
-        userRepository.hasSeenMerriamWebsterPermissionPane = true
+        userRepository.setUserAddOnWith(AddOn.MERRIAM_WEBSTER) {
+            isAwareOfExpiration = true
+        }
     }
 
     fun onPlayAudioClicked(url: String?) {

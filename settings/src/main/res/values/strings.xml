@@ -41,6 +41,7 @@
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
     <string name="developer_settings_toggle_merriam_webster_state_title">Toggle Merriam-Webster state</string>
+    <string name="developer_settings_toggle_merriam_webster_thesaurus_state_title">Toggle Merriam-Webster Thesaurus state</string>
     <string name="developer_settings_use_test_skus_title">Use test skus</string>
     <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
     <string name="developer_settings_title">Developer Settings</string>
@@ -70,5 +71,7 @@
     <string name="add_ons_merriam_webster_desc">Show definitions from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s high quality definitions, related words and audio pronunciation inside the Waylan app.</string>
     <string name="add_ons_merriam_webster_thesaurus_title">Merriam-Webster Thesaurus</string>
     <string name="add_ons_merriam_webster_thesaurus_desc">Inline thesaurus data from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s thesaurus data including synonyms, antonyms, near words and related words right in the Waylan definition screen.</string>
+    <string name="add_on_merriam_webster_successfully_purchased">"Merriam-Webster successfully added!"</string>
+    <string name="add_on_merriam_webster_thesaurus_successfully_purchased">Merriam-Webster Thesaurus successfully added!</string>
 
 </resources>

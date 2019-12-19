@@ -2,6 +2,7 @@ package space.narrate.waylan.android.ui.home
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.waylan.android.R
@@ -17,8 +18,8 @@ sealed class HomeItemViewHolder<T : HomeItemModel>(val view: View) : RecyclerVie
     ) : HomeItemViewHolder<HomeItemModel.ItemModel>(
         AdapterUtils.inflate(parent, R.layout.home_item_layout)
     ) {
-        private val titleTextView: AppCompatTextView = view.findViewById(R.id.title_text_view)
-        private val previewTextView: AppCompatTextView = view.findViewById(R.id.preview_text_view)
+        private val titleTextView: TextView = view.findViewById(R.id.title_text_view)
+        private val previewTextView: TextView = view.findViewById(R.id.preview_text_view)
 
         override fun bind(item: HomeItemModel.ItemModel) {
             titleTextView.text = view.context.getString(item.titleRes)

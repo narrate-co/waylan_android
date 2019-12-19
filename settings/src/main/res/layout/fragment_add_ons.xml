@@ -15,7 +15,6 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
             android:overScrollMode="never"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -23,7 +22,9 @@
             <LinearLayout
                 android:id="@+id/scroll_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:clipChildren="false"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -40,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/text_label_height"
                     android:layout_marginTop="@dimen/keyline_2"
-                    android:text="Free trial: 30d"
+                    android:visibility="gone"
                     android:layout_marginHorizontal="14dp" />
 
                 <TextView
@@ -51,8 +52,7 @@
                     android:paddingBottom="@dimen/keyline_3"
                     android:paddingHorizontal="@dimen/keyline_3"
                     android:paddingVertical="@dimen/keyline_2"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:text="@string/add_ons_merriam_webster_desc"/>
+                    android:textAppearance="?attr/textAppearanceBody1" />
 
                 <LinearLayout
                     android:id="@+id/actions_container"

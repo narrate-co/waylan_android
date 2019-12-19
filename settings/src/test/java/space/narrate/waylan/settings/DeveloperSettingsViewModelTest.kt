@@ -11,43 +11,42 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.repo.UserRepository
-import space.narrate.waylan.settings.ui.settings.SettingsViewModel
+import space.narrate.waylan.settings.ui.developer.DeveloperSettingsViewModel
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.valueBlocking
 import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
-class SettingsViewModelTest {
+class DeveloperSettingsViewModelTest {
 
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var developerSettingsViewModel: DeveloperSettingsViewModel
     private val userRepository = mock(UserRepository::class.java)
 
-    private val user = MutableLiveData<User>()
+    private val user: MutableLiveData<User> = MutableLiveData()
 
     @Before
     fun setUp() {
-        settingsViewModel = SettingsViewModel(userRepository)
+        developerSettingsViewModel = DeveloperSettingsViewModel(userRepository)
     }
 
     @Test
-    fun nonAnonymousUser_singOutClickedShouldLaunchLogin() {
-        val registeredUser = User("aaa", false, "Tester", "tester@test.com")
-        user.value = registeredUser
-        whenever(userRepository.user).thenReturn(user)
+    fun useTestSkusChanged_shouldUpdateUseTestSkus() {
+        val data: MutableLiveData<Boolean> = MutableLiveData()
+        whenever(userRepository.useTestSkusLive).thenReturn(data)
 
-        settingsViewModel.onSignOutClicked()
+        data.value = false
 
-        val event = settingsViewModel.shouldLaunchLogIn.valueBlocking
-        assertThat(event.handled).isEqualTo(false)
-        assertThat(event.peek()).isEqualTo(true)
+        assertThat(developerSettingsViewModel.useTestSkus.valueBlocking).isFalse()
+
+        data.value = true
+
+        assertThat(developerSettingsViewModel.useTestSkus.valueBlocking).isTrue()
     }
-
-    // TODO: Add additional tests
 
 }

@@ -44,6 +44,6 @@ class MerriamWebsterViewHolder(
 
     override fun bind(item: DetailItemModel) {
         if (item !is MerriamWebsterModel) return
-        merriamWebsterCard.setSource(item.entries, item.user)
+        merriamWebsterCard.setSource(item.entries, item.userAddOn)
     }
 }

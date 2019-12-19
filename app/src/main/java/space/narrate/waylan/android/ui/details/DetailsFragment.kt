@@ -29,6 +29,7 @@ import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.configInformative
+import space.narrate.waylan.core.util.make
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
@@ -112,13 +113,13 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         }
 
         viewModel.shouldShowDragDismissOverlay.observe(this) { event ->
-            event.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 EducationalOverlayView.pullDownEducator(binding.appBar).show()
             }
         }
 
         viewModel.audioClipAction.observe(this) { event ->
-            event.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 when (it) {
                     is AudioClipAction.Play -> audioClipHelper.play(it.url)
                     is AudioClipAction.Stop -> audioClipHelper.stop()
@@ -127,7 +128,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         }
 
         viewModel.shouldShowSnackbar.observe(this) { event ->
-            event.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 showSnackbar(it)
             }
         }
@@ -183,25 +184,7 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
     }
 
     private fun showSnackbar(model: SnackbarModel) {
-        val snackbar = Snackbar.make(
-            binding.coordinatorLayout,
-            model.textRes,
-            when (model.length) {
-                SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
-                SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
-                else -> Snackbar.LENGTH_SHORT
-            }
-        )
-
-        if (model.isError) {
-            snackbar.configError(requireContext())
-        } else {
-            snackbar.configInformative(requireContext())
-        }
-
-        // TODO : Add actions
-
-        snackbar.show()
+        model.make(binding.coordinatorLayout).show()
     }
 }
 

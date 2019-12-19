@@ -60,4 +60,9 @@
     <!--AddOns-->
     <string name="plugin_action_try_for_free_title">Try for free</string>
     <string name="plugin_action_add_title">Add</string>
+    <string name="plugin_action_renew_title">Renew</string>
+    <string name="plugin_status_free_trial_valid_days_remaining">Free trial: %1$dd remaining</string>
+    <string name="plugin_status_free_trial_expired">Free trial expired</string>
+    <string name="plugin_status_purchased_valid">Added</string>
+    <string name="plugin_status_purchased_expired">Expired</string>
 </resources>

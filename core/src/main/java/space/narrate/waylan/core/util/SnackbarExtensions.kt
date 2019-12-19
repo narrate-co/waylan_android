@@ -2,6 +2,7 @@ package space.narrate.waylan.core.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
@@ -11,6 +12,7 @@ import androidx.core.widget.TextViewCompat
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.ui.common.SnackbarModel
 
 /**
  * Possible ways in which a Words [Snackbar] can be styled
@@ -100,3 +102,23 @@ private fun Snackbar.config(
     return this
 }
 
+
+fun SnackbarModel.make(view: View): Snackbar {
+    val snackbar = Snackbar.make(
+        view,
+        textRes,
+        when (length) {
+            SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
+            SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
+            else -> Snackbar.LENGTH_SHORT
+        }
+    )
+
+    if (isError) {
+        snackbar.configError(view.context)
+    } else {
+        snackbar.configInformative(view.context)
+    }
+
+    return snackbar
+}

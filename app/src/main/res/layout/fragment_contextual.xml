@@ -41,7 +41,7 @@
 
         </HorizontalScrollView>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/close_image_view"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -67,7 +67,7 @@
         android:layout_gravity="top"
         android:paddingBottom="@dimen/keyline_3">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/subtitle_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

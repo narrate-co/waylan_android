@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.firestore.FirestoreStore
 import space.narrate.waylan.core.data.firestore.Period
-import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.PreferenceStore
@@ -90,13 +93,6 @@ class UserRepository(
         get() = userPreferenceStore.hasSeenDragDismissOverlay.getValue()
         set(value) = userPreferenceStore.hasSeenDragDismissOverlay.setValue(value)
 
-    var hasSeenMerriamWebsterPermissionPane: Boolean
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getValue()
-        set(value) = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(value)
-
-    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean>
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getLive()
-
     var recentsListFilter: List<Period>
         get() = userPreferenceStore.recentsListFilter.getValue()
         set(value) = userPreferenceStore.recentsListFilter.setValue(value)
@@ -133,30 +129,29 @@ class UserRepository(
         get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
         set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
 
-
-    suspend fun getUser(): Result<User> {
+    suspend fun getUserAddOn(addOn: AddOn): Result<UserAddOn> {
         val uid = authenticationStore.uid.value
             ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
-
-        return firestoreStore.getUser(uid)
+        return firestoreStore.getUserAddOn(uid, addOn)
     }
 
-    fun setUserMerriamWebsterState(state: PluginState) {
-        val uid = authenticationStore.uid.value ?: return
-
-        // Launch and forget
-        launch {
-            userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(false)
-            firestoreStore.setUserMerriamWebsterState(uid, state)
+    fun getUserAddOnLive(addOn: AddOn): LiveData<UserAddOn> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserAddOnLive(it, addOn)
         }
     }
 
-    fun setUserMerriamWebsterThesaurusState(state: PluginState) {
+    fun setUserAddOn(addOn: AddOn, useCase: UserAddOnActionUseCase) {
         val uid = authenticationStore.uid.value ?: return
-
         launch {
-            firestoreStore.setUserMerriamWebsterThesaurusState(uid, state)
+            firestoreStore.setUserAddOnAction(uid, addOn, useCase)
         }
+    }
+
+    fun setUserAddOnWith(addOn: AddOn, with: UserAddOn.() -> Unit) {
+        setUserAddOn(addOn, UserAddOnActionUseCase.Manual {
+            with()
+        })
     }
 
     fun resetPreferences() {

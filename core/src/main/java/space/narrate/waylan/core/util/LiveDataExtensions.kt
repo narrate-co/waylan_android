@@ -22,7 +22,7 @@ fun <X, Y> LiveData<X>.switchMapTransform(block: (X) -> LiveData<Y>): LiveData<Y
  * Helper extension to add a Transform.map to the end of a LiveData object which only gets
  * called when the [on] LiveData value changes.
  */
-fun <X, Y> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> X): LiveData<X> {
+fun <X, Y, Z> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> Z): LiveData<Z> {
     return Transformations.switchMap(on) { y ->
         Transformations.map(this) { x ->
             block(x, y)

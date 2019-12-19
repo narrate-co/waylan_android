@@ -1,10 +1,11 @@
 package space.narrate.waylan.merriamwebster.ui
 
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.merriamwebster.data.local.MwDefinition
 import space.narrate.waylan.merriamwebster.data.local.MwWord
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 
 /**
  * An object which handles generating a list of [MerriamWebsterItemModel] which should be displayed
@@ -14,12 +15,12 @@ object MerriamWebsterList {
 
     fun generate(
         entries: List<MwWordAndDefinitionGroups>,
-        user: User?
+        userAddOn: UserAddOn?
     ): List<MerriamWebsterItemModel> {
         val list = mutableListOf<MerriamWebsterItemModel>()
 
         // Exit early if user is not valid, showing the permission pane.
-        if (user?.merriamWebsterState?.isValid == false) {
+        if (userAddOn?.isValid == false) {
             list.add(MerriamWebsterItemModel.PermissionPaneModel())
             return list
         }

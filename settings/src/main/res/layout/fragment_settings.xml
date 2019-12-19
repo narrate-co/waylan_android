@@ -27,16 +27,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <space.narrate.waylan.core.ui.widget.BannerCardView
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/keyline_2"
-                    android:layout_marginTop="@dimen/keyline_2"
-                    android:layout_marginBottom="@dimen/keyline_4"
-                    app:cardElevation="@dimen/plane_01"
-                    app:cardCornerRadius="@dimen/keyline_2"
-                    app:cardBackgroundColor="?attr/colorSurface" />
+<!--                <space.narrate.waylan.core.ui.widget.BannerCardView-->
+<!--                    android:id="@+id/banner"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="@dimen/keyline_2"-->
+<!--                    android:layout_marginTop="@dimen/keyline_2"-->
+<!--                    android:layout_marginBottom="@dimen/keyline_4"-->
+<!--                    app:cardElevation="@dimen/plane_01"-->
+<!--                    app:cardCornerRadius="@dimen/keyline_2"-->
+<!--                    app:cardBackgroundColor="?attr/colorSurface" />-->
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/add_ons_preference"

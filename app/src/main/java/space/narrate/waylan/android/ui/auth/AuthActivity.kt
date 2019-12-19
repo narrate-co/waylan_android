@@ -122,7 +122,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         }
 
         authViewModel.shouldShowError.observe(this) { event ->
-            event.getUnhandledContent()?.let { model ->
+            event.withUnhandledContent { model ->
                 when (model) {
                     is ShowErrorModel.Error -> {
                         val message = getStringOrNull(model.messageRes) ?: model.message
@@ -146,13 +146,13 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         }
 
         authViewModel.shouldShowCredentials.observe(this) { event ->
-            event?.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 showCredentialsUi(it.delayMillis)
             }
         }
 
         authViewModel.shouldLaunchMain.observe(this) { event ->
-            event?.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 navigator.toHome(this@AuthActivity, true, filterIntent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 finish()

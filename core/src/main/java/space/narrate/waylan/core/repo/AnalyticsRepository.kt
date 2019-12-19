@@ -3,6 +3,7 @@ package space.narrate.waylan.core.repo
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_NAVIGATE_BACK
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_SEARCH_WORD
 
@@ -29,6 +30,7 @@ class AnalyticsRepository(
         private const val EVENT_NAVIGATE_BACK = "navigate_back"
         private const val EVENT_SIGN_UP = "sign_up"
         private const val EVENT_MW_PURCHASE = "mw_purchase"
+        private const val EVENT_MW_THESAURUS_PURCHASE = "mw_thesaurus_purchase"
     }
 
     init {
@@ -58,8 +60,14 @@ class AnalyticsRepository(
         firebaseAnalytics.logEvent(EVENT_SIGN_UP, Bundle())
     }
 
-    fun logMerriamWebsterPurchaseEvent() {
-        firebaseAnalytics.logEvent(EVENT_MW_PURCHASE, Bundle())
+    fun logAddOnPurchase(addOn: AddOn) {
+        firebaseAnalytics.logEvent(
+            when (addOn) {
+                AddOn.MERRIAM_WEBSTER -> EVENT_MW_PURCHASE
+                AddOn.MERRIAM_WEBSTER_THESAURUS -> EVENT_MW_THESAURUS_PURCHASE
+            },
+            Bundle()
+        )
     }
 
     private fun logNavigateBackEvent(from: String, type: String) {

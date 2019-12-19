@@ -1,19 +1,24 @@
 package space.narrate.waylan.core.data.firestore
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import space.narrate.waylan.core.data.Result
-import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.firestore.util.getFirestoreNotFoundException
 import space.narrate.waylan.core.data.firestore.util.liveData
+import space.narrate.waylan.core.data.firestore.util.userAddOns
 import space.narrate.waylan.core.data.firestore.util.userWords
 import space.narrate.waylan.core.data.firestore.util.users
 import space.narrate.waylan.core.data.firestore.util.words
@@ -51,6 +56,80 @@ class FirestoreStore(
         return firestore.userWords(uid)
             .document(id)
             .liveData(UserWord::class.java)
+    }
+
+    fun getUserAddOnLive(uid: String, addOn: AddOn): LiveData<UserAddOn> {
+        return firestore.userAddOns(uid)
+            .document(addOn.id)
+            .liveData(UserAddOn::class.java)
+            .doOnError {
+                when (it.code) {
+                    FirebaseFirestoreException.Code.UNAVAILABLE,
+                    FirebaseFirestoreException.Code.NOT_FOUND -> launch {
+                        newUserAddOn(uid, addOn)
+                    }
+                }
+            }
+    }
+
+    suspend fun getUserAddOn(
+        uid: String,
+        addOn: AddOn
+    ): Result<UserAddOn> {
+        try {
+            val userAddOn = suspendCoroutine<UserAddOn> { cont ->
+                firestore.userAddOns(uid).document(addOn.id).get()
+                    .addOnFailureListener {
+                        cont.resumeWithException(it)
+                    }
+                    .addOnSuccessListener {
+                        if (it.exists()) {
+                            val obj = it.toObject(UserAddOn::class.java)!!
+                            cont.resume(obj)
+                        } else {
+                            cont.resumeWithException(getFirestoreNotFoundException(addOn.id))
+                        }
+                    }
+            }
+            return Result.Success(userAddOn)
+        } catch (e: Exception) {
+            return when ((e as FirebaseFirestoreException).code) {
+                FirebaseFirestoreException.Code.UNAVAILABLE,
+                FirebaseFirestoreException.Code.NOT_FOUND -> newUserAddOn(uid, addOn)
+                else -> Result.Error(e)
+            }
+        }
+    }
+
+    private suspend fun newUserAddOn(uid: String, addOn: AddOn): Result<UserAddOn> {
+        return when (val userResult = getUser(uid)) {
+            // Create a new UserAddOn in a valid, free trial state
+            is Result.Success -> {
+                val user = userResult.data
+                val userAddOn = UserAddOn(
+                    addOn.id,
+                    if (user.isAnonymous) 7L else 30L,
+                    false
+                )
+
+                // Transfer legacy User properties which kept track of Merriam-Webster purchases
+                // over to the new UserAddOn document.
+                if (addOn == AddOn.MERRIAM_WEBSTER && user.merriamWebsterPurchaseToken.isNotBlank()) {
+                    userAddOn.apply {
+                        started = user.merriamWebsterStarted
+                        purchaseToken = user.merriamWebsterPurchaseToken
+                        validDurationDays = 365L
+                        isAwareOfExpiration = false
+                    }
+                }
+                return suspendCancellableCoroutine { cont ->
+                    firestore.userAddOns(uid).document(userAddOn.id).set(userAddOn)
+                        .addOnSuccessListener { cont.resume(Result.Success(userAddOn)) }
+                        .addOnFailureListener { cont.resume(Result.Error(it)) }
+                }
+            }
+            is Result.Error -> Result.Error(userResult.exception)
+        }
     }
 
     private suspend fun getUserWord(
@@ -177,6 +256,7 @@ class FirestoreStore(
         }
     }
 
+
     fun getRecents(uid: String, limit: Long?): LiveData<List<UserWord>> {
         val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.RECENT.name}", true)
@@ -281,43 +361,33 @@ class FirestoreStore(
             }
     }
 
-    suspend fun setUserMerriamWebsterState(
+    private suspend fun setUserAddOn(
         uid: String,
-        state: PluginState
-    ): Result<User> {
-        val result = getUser(uid)
-        return if (result is Result.Success) {
-            val user = result.data.apply {
-                merriamWebsterStarted = state.started
-                merriamWebsterPurchaseToken = state.purchaseToken
+        addOn: AddOn,
+        with: UserAddOn.(user: User) -> Unit
+    ): Result<UserAddOn> {
+        val result = getUserAddOn(uid, addOn)
+        val userResult = getUser(uid)
+        return if (result is Result.Success && userResult is Result.Success) {
+            val userAddOn = result.data.apply { with(userResult.data) }
+            return suspendCancellableCoroutine { cont ->
+                firestore.userAddOns(uid).document(userAddOn.id).set(userAddOn)
+                    .addOnSuccessListener { cont.resume(Result.Success(userAddOn)) }
+                    .addOnFailureListener { cont.resume(Result.Error(it)) }
             }
-            setUser(user)
         } else {
             result
         }
+
     }
 
-    suspend fun setUserMerriamWebsterThesaurusState(
+    suspend fun setUserAddOnAction(
         uid: String,
-        state: PluginState
-    ): Result<User> {
-        val result = getUser(uid)
-        return if (result is Result.Success) {
-            val user = result.data.apply {
-                merriamWebsterThesaurusStarted = state.started
-                merriamWebsterThesaurusPurchaseToken = state.purchaseToken
-            }
-            setUser(user)
-        } else {
-            result
+        addOn: AddOn,
+        useCase: UserAddOnActionUseCase
+    ) : Result<UserAddOn> {
+        return setUserAddOn(uid, addOn) { user ->
+            useCase.perform(user, this)
         }
     }
-
-    // Allow users to add, edit and delete their own definitions, set to either public or private
-    //TODO add meaning
-
-    //TODO edit meaning (synonyms, examples, part of speech, labels)
-
-    //TODO delete meaning
-
 }

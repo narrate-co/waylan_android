@@ -4,7 +4,6 @@ import space.narrate.waylan.core.data.firestore.DataOwners
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
-import space.narrate.waylan.core.data.firestore.users.oneDayPastExpiration
 import space.narrate.waylan.core.data.firestore.words.GlobalWord
 import java.util.*
 
@@ -108,28 +107,4 @@ object FirestoreTestData {
         Date(),
         "teset_merriam_webster_purchase_token"
     )
-
-    val registeredFreeValidUser = User(
-        "abc",
-        false,
-        "Tester",
-        "tester@gmail.com"
-    )
-
-    val registeredFreeInvalidUser = registeredFreeValidUser.copy().apply {
-        merriamWebsterStarted = oneDayPastExpiration
-    }
-
-    val registeredPurchasedValidUser = User(
-        "abc",
-        false,
-        "Tester",
-        "tester@gmail.com",
-        Date(),
-        "394949fkfkdkeerek"
-    )
-
-    val registeredPurchasedInvalidUser = registeredPurchasedValidUser.copy().apply {
-        merriamWebsterStarted = oneDayPastExpiration
-    }
 }

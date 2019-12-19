@@ -3,8 +3,13 @@ package space.narrate.waylan.merriamwebster.ui
 import androidx.lifecycle.LiveData
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.android.util.MergedLiveData
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
+import space.narrate.waylan.core.util.LiveDataUtils
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.merriamwebster.data.MerriamWebsterRepository
 
 /**
@@ -20,7 +25,7 @@ class MerriamWebsterDetailDataProvider(
     override fun loadWord(word: String): LiveData<DetailItemModel> {
         return MergedLiveData(
             merriamWebsterRepository.getMerriamWebsterWord(word),
-            userRepository.user
-        ) { mw, user -> MerriamWebsterModel(mw, user) }
+            userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER)
+        ) { mw, userAddOn -> MerriamWebsterModel(mw, userAddOn) }
     }
 }

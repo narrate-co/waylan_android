@@ -6,11 +6,12 @@ import space.narrate.waylan.core.util.AdapterUtils
 import space.narrate.waylan.core.util.inflater
 import space.narrate.waylan.settings.databinding.AddOnPreviewItemBinding
 
+/**
+ * An adapter that shows a preview of what each add-ons looks like.
+ */
 class AddOnsPreviewAdapter : ListAdapter<AddOnItemModel, AddOnViewPreviewHolder>(
     AdapterUtils.diffableItemCallback()
 ) {
-
-    fun getItemAt(position: Int): AddOnItemModel = getItem(position)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,7 +23,7 @@ class AddOnsPreviewAdapter : ListAdapter<AddOnItemModel, AddOnViewPreviewHolder>
     }
 
     override fun onBindViewHolder(holder: AddOnViewPreviewHolder, position: Int) {
-        holder.onBind(getItemAt(position))
+        holder.onBind(getItem(position))
     }
 
 }

@@ -9,12 +9,13 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
 import space.narrate.waylan.android.ui.details.AudioClipHelper
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
 import space.narrate.waylan.merriamwebster.R
+import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 
 /**
  * A composite view which shows a play/stop button above a [ProgressUnderlineView].
@@ -93,8 +94,8 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
      * Set the [MwWordAndDefinitionGroups]s which this view should play pronunciation for when
      * the play button is clicked.
      */
-    fun setSource(entries: List<MwWordAndDefinitionGroups>, user: User?) {
-        if (user?.merriamWebsterState?.isValid == false) {
+    fun setSource(entries: List<MwWordAndDefinitionGroups>, userAddOn: UserAddOn?) {
+        if (userAddOn?.isValid == false) {
             isEnabled = false
             disabledMessageRes = R.string.mw_audio_view_requires_mw_plugin_error
             return

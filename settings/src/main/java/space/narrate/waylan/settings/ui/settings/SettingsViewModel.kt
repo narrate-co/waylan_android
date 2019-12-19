@@ -27,11 +27,6 @@ class SettingsViewModel(private val userRepository: UserRepository): ViewModel()
     val orientation: LiveData<Orientation>
         get() = userRepository.orientationLockLive
 
-    val bannerModel: LiveData<MwBannerModel>
-        get() = userRepository.user.mapTransform {
-            MwBannerModel.create(it)
-        }
-
     private val _shouldLaunchSignUp: MutableLiveData<Event<Boolean>> =
         MutableLiveData()
     val shouldLaunchSignUp: LiveData<Event<Boolean>>
@@ -42,11 +37,6 @@ class SettingsViewModel(private val userRepository: UserRepository): ViewModel()
     val shouldLaunchLogIn: LiveData<Event<Boolean>>
         get() = _shouldLaunchLogIn
 
-    private val _shouldLaunchMwPurchaseFlow: MutableLiveData<Event<PurchaseFlowModel>> =
-        MutableLiveData()
-    val shouldLaunchMwPurchaseFlow: LiveData<Event<PurchaseFlowModel>>
-        get() = _shouldLaunchMwPurchaseFlow
-
     private val _shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>>
         = MutableLiveData()
     val shouldShowNightModeDialog: LiveData<Event<List<NightModeRadioItemModel>>>
@@ -56,21 +46,6 @@ class SettingsViewModel(private val userRepository: UserRepository): ViewModel()
         = MutableLiveData()
     val shouldShowOrientationDialog: LiveData<Event<List<OrientationRadioItemModel>>>
         get() = _shouldShowOrientationDialog
-
-    fun onMwBannerActionClicked(action: MwBannerAction?) {
-        when (action) {
-            MwBannerAction.LOG_IN -> _shouldLaunchLogIn.value = Event(true)
-            MwBannerAction.SIGN_UP -> _shouldLaunchSignUp.value = Event(true)
-            MwBannerAction.LAUNCH_PURCHASE_FLOW -> {
-                val sku = if (userRepository.useTestSkus) {
-                    BillingConfig.TEST_SKU_MERRIAM_WEBSTER
-                } else {
-                    BillingConfig.SKU_MERRIAM_WEBSTER
-                }
-                _shouldLaunchMwPurchaseFlow.value = Event(PurchaseFlowModel(sku))
-            }
-        }
-    }
 
     fun onNightModePreferenceClicked() {
         val currentNightMode = userRepository.nightMode

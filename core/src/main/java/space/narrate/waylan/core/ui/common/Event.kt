@@ -9,14 +9,12 @@ open class Event<out T>(private val content: T) {
         private set // Allow external read but not write
 
     /**
-     * Returns the content and prevents its use again.
+     * Operates on and consumes content if it's available.
      */
-    fun getUnhandledContent(): T? {
-        return if (handled) {
-            null
-        } else {
+    fun withUnhandledContent(with: (T) -> Unit) {
+        if (!handled) {
             handled = true
-            content
+            with(content)
         }
     }
 

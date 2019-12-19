@@ -7,17 +7,18 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when` as whenever
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.FirestoreStore
-import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.Preference
 import space.narrate.waylan.core.data.prefs.PreferenceStore
 import space.narrate.waylan.core.data.prefs.UserPreferenceStore
 import space.narrate.waylan.test_common.CoroutinesTestRule
-import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 class UserRepositoryTest {
@@ -54,24 +55,5 @@ class UserRepositoryTest {
         )
     }
 
-    /**
-     * TODO: This test is flakey and should be fixed or removed.
-     * Note: This test passes if run individually, but not during a full run of this test class.
-     */
-    @Test
-    fun setUserMerriamWebsterState_shouldResetHasSeenPermissionPane_shouldCallFirestore() =
-        coroutinesTestRule.testDispatcher.runBlockingTest {
-            whenever(authenticationStore.uid).thenReturn(uid)
-
-            val preference = mock(Preference::class.java)
-            whenever(userPreferenceStore.hasSeenMerriamWebsterPermissionPane)
-                .thenReturn(preference as Preference<Boolean>)
-
-
-            val state = PluginState.None()
-            userRepository.setUserMerriamWebsterState(state)
-
-            verify(userPreferenceStore.hasSeenMerriamWebsterPermissionPane).setValue(false)
-            verify(firestoreStore).setUserMerriamWebsterState(uid.value!!, state)
-        }
+    // TODO: Add tests
 }

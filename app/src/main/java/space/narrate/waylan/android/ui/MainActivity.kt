@@ -92,11 +92,11 @@ class MainActivity : AppCompatActivity() {
         bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
         navigator.shouldNavigateBack.observe(this) { event ->
-            event.getUnhandledContent()?.let { onBackPressed() }
+            event.withUnhandledContent { onBackPressed() }
         }
 
         sharedViewModel.shouldShowDetails.observe(this) { event ->
-            event.getUnhandledContent()?.let {
+            event.withUnhandledContent {
                 findNavController().navigate(R.id.action_global_detailsFragment)
             }
         }
