@@ -256,7 +256,6 @@ class FirestoreStore(
         }
     }
 
-
     fun getRecents(uid: String, limit: Long?): LiveData<List<UserWord>> {
         val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.RECENT.name}", true)

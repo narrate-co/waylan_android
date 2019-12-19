@@ -25,13 +25,13 @@ fun UserAddOn.statusTextLabel(context: Context): String {
     return when(state)  {
         PURCHASED_VALID ->
             // TODO: Add remaining days to expiration?
-            context.getString(R.string.plugin_status_purchased_valid)
+            context.getString(R.string.add_on_status_purchased_valid)
         PURCHASED_EXPIRED ->
-            context.getString(R.string.plugin_status_purchased_expired)
+            context.getString(R.string.add_on_status_purchased_expired)
         FREE_TRIAL_VALID ->
-            context.getString(R.string.plugin_status_free_trial_valid_days_remaining, remainingDays)
+            context.getString(R.string.add_on_status_free_trial_valid_days_remaining, remainingDays)
         FREE_TRIAL_EXPIRED ->
-            context.getString(R.string.plugin_status_free_trial_expired)
+            context.getString(R.string.add_on_status_free_trial_expired)
         else -> ""
     }
 }

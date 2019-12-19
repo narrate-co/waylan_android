@@ -118,7 +118,6 @@ class UserPreferenceStore(
         hasSeenFavoritesBanner.clear()
         hasSeenTrendingBanner.clear()
         hasSeenDragDismissOverlay.clear()
-//        hasSeenMerriamWebsterPermissionPane.clear()
         recentsListFilter.clear()
         trendingListFilter.clear()
         favoritesListFilter.clear()

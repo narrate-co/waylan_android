@@ -35,9 +35,10 @@ class AddOnsViewModel(
 
     private val _currentPosition: MutableLiveData<Int> = MutableLiveData()
 
-    val currentAddOn: LiveData<AddOnItemModel> = addOns.mapOnTransform(_currentPosition) { addOns, position ->
-        addOns[position]
-    }
+    val currentAddOn: LiveData<AddOnItemModel> =
+        addOns.mapOnTransform(_currentPosition) { addOns, position ->
+            addOns[position]
+        }
 
     val shouldShowStatusTextLabel: LiveData<Boolean>
         get() = currentAddOn.mapTransform {
@@ -77,8 +78,10 @@ class AddOnsViewModel(
         when (event) {
             is BillingEvent.Purchased -> {
                 val message = when (event.addOn) {
-                    AddOn.MERRIAM_WEBSTER -> R.string.add_on_merriam_webster_successfully_purchased
-                    AddOn.MERRIAM_WEBSTER_THESAURUS -> R.string.add_on_merriam_webster_thesaurus_successfully_purchased
+                    AddOn.MERRIAM_WEBSTER ->
+                        R.string.add_on_merriam_webster_successfully_purchased
+                    AddOn.MERRIAM_WEBSTER_THESAURUS ->
+                        R.string.add_on_merriam_webster_thesaurus_successfully_purchased
                 }
                 _shouldShowSnackbar.value = Event(SnackbarModel(
                     message,

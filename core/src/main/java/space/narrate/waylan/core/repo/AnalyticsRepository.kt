@@ -60,6 +60,8 @@ class AnalyticsRepository(
         firebaseAnalytics.logEvent(EVENT_SIGN_UP, Bundle())
     }
 
+    // TODO: Add logging for free-trial'ing
+
     fun logAddOnPurchase(addOn: AddOn) {
         firebaseAnalytics.logEvent(
             when (addOn) {

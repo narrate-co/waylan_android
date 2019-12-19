@@ -8,7 +8,7 @@ import space.narrate.waylan.core.R
  * These actions translate into manipulations on a [UserAddOn] object.
  */
 enum class AddOnAction(val title: Int) {
-    TRY_FOR_FREE(R.string.plugin_action_try_for_free_title),
-    ADD(R.string.plugin_action_add_title),
-    RENEW(R.string.plugin_action_renew_title)
+    TRY_FOR_FREE(R.string.add_on_action_try_for_free_title),
+    ADD(R.string.add_on_action_add_title),
+    RENEW(R.string.add_on_action_renew_title)
 }
