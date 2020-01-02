@@ -14,7 +14,7 @@ val settingsModule = module {
 
     viewModel { SettingsViewModel(get()) }
 
-    viewModel { AddOnsViewModel(get()) }
+    viewModel { AddOnsViewModel(get(), get()) }
 
     viewModel { DeveloperSettingsViewModel(get()) }
 

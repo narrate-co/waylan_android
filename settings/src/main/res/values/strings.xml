@@ -68,9 +68,11 @@
     <string name="add_ons_title">Add-ons</string>
     <string name="add_ons_desc">Customize the dictionaries and data used to define words.</string>
     <string name="add_ons_merriam_webster_title">Merriam-Webster</string>
-    <string name="add_ons_merriam_webster_desc">Show definitions from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s high quality definitions, related words and audio pronunciation inside the Waylan app.</string>
+    <string name="add_ons_merriam_webster_des_title">Add-on: Merriam-Webster</string>
+    <string name="add_ons_merriam_webster_desc_body">Show definitions from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s high quality definitions, related words and audio pronunciation inside the Waylan app.</string>
     <string name="add_ons_merriam_webster_thesaurus_title">Merriam-Webster Thesaurus</string>
-    <string name="add_ons_merriam_webster_thesaurus_desc">Inline thesaurus data from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s thesaurus data including synonyms, antonyms, near words and related words right in the Waylan definition screen.</string>
+    <string name="add_ons_merriam_webster_thesaurus_des_title">Add-on: Merriam-Webster Thesaurus</string>
+    <string name="add_ons_merriam_webster_thesaurus_desc_body">Inline thesaurus data from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s thesaurus data including synonyms, antonyms, near words and related words right in the Waylan definition screen.</string>
     <string name="add_on_merriam_webster_successfully_purchased">"Merriam-Webster successfully added!"</string>
     <string name="add_on_merriam_webster_thesaurus_successfully_purchased">Merriam-Webster Thesaurus successfully added!</string>
 

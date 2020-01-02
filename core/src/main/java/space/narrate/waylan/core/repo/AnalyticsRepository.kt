@@ -2,8 +2,11 @@ package space.narrate.waylan.core.repo
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.AddOnAction
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_NAVIGATE_BACK
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_SEARCH_WORD
 
@@ -29,8 +32,11 @@ class AnalyticsRepository(
         private const val EVENT_SEARCH_WORD = "search_word"
         private const val EVENT_NAVIGATE_BACK = "navigate_back"
         private const val EVENT_SIGN_UP = "sign_up"
-        private const val EVENT_MW_PURCHASE = "mw_purchase"
-        private const val EVENT_MW_THESAURUS_PURCHASE = "mw_thesaurus_purchase"
+
+        private const val ADD_ON_EVENT_FREE_TRIAL = "free_trial"
+        private const val ADD_ON_EVENT_ADD = "add"
+        private const val ADD_ON_EVENT_RENEW = "renew"
+        private const val ADD_ON_EVENT_INTERRUPTED_CANCELED = "interrupted-cancelled"
     }
 
     init {
@@ -60,16 +66,33 @@ class AnalyticsRepository(
         firebaseAnalytics.logEvent(EVENT_SIGN_UP, Bundle())
     }
 
-    // TODO: Add logging for free-trial'ing
-
-    fun logAddOnPurchase(addOn: AddOn) {
-        firebaseAnalytics.logEvent(
-            when (addOn) {
-                AddOn.MERRIAM_WEBSTER -> EVENT_MW_PURCHASE
-                AddOn.MERRIAM_WEBSTER_THESAURUS -> EVENT_MW_THESAURUS_PURCHASE
-            },
-            Bundle()
+    fun logAddOnBillingEvent(event: BillingEvent) {
+        logCommercePurchase(
+            event.addOn.name,
+            when (event) {
+                is BillingEvent.Purchased -> ADD_ON_EVENT_ADD
+                is BillingEvent.Canceled -> ADD_ON_EVENT_INTERRUPTED_CANCELED
+            }
         )
+    }
+
+    fun logAddOnEvent(addOn: AddOn, action: AddOnAction) {
+        logCommercePurchase(
+            addOn.name,
+            when (action) {
+                AddOnAction.TRY_FOR_FREE -> ADD_ON_EVENT_FREE_TRIAL
+                AddOnAction.ADD -> ADD_ON_EVENT_ADD
+                AddOnAction.RENEW -> ADD_ON_EVENT_RENEW
+            }
+        )
+    }
+
+    private fun logCommercePurchase(type: String, option: String) {
+        val params = Bundle().apply {
+            putString(FirebaseAnalytics.Param.CONTENT_TYPE, type)
+            putString(FirebaseAnalytics.Param.CHECKOUT_OPTION, option)
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, params)
     }
 
     private fun logNavigateBackEvent(from: String, type: String) {

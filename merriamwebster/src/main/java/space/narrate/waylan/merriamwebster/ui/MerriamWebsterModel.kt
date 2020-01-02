@@ -10,7 +10,6 @@ import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 /**
  * Merriam-Webster's [DetailItemModel] which is used to construct a DetailItemViewHolder that
  * is able to be displayed by the details screen.
- * TODO: Add UserAddOn instead of user object
  */
 class MerriamWebsterModel(
     val entries: List<MwWordAndDefinitionGroups>,

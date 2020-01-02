@@ -11,6 +11,7 @@ import space.narrate.waylan.core.data.firestore.users.AddOnAction.*
 import space.narrate.waylan.core.data.firestore.users.AddOnState
 import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.firestore.users.state
+import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
@@ -24,7 +25,8 @@ import space.narrate.waylan.settings.R
  * ViewModel for [AddOnsFragment].
  */
 class AddOnsViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val analyticsRepository: AnalyticsRepository
 ) : ViewModel() {
 
     val addOns: LiveData<List<AddOnItemModel>> = AddOnItemListMediatorLiveData().apply {
@@ -63,10 +65,13 @@ class AddOnsViewModel(
 
     fun onActionClicked(addOnItemModel: AddOnItemModel, action: AddOnAction) {
         when (action) {
-            TRY_FOR_FREE -> userRepository.setUserAddOn(
-                addOnItemModel.addOn,
-                UserAddOnActionUseCase.TryForFree
-            )
+            TRY_FOR_FREE -> {
+                userRepository.setUserAddOn(
+                    addOnItemModel.addOn,
+                    UserAddOnActionUseCase.TryForFree
+                )
+                analyticsRepository.logAddOnEvent(addOnItemModel.addOn, action)
+            }
             ADD,
             RENEW -> _shouldLaunchPurchaseFlow.value = Event(
                 PurchaseFlowModel(addOnItemModel.addOn, action)
@@ -75,6 +80,7 @@ class AddOnsViewModel(
     }
 
     fun onBillingEvent(event: BillingEvent) {
+        analyticsRepository.logAddOnBillingEvent(event)
         when (event) {
             is BillingEvent.Purchased -> {
                 val message = when (event.addOn) {
@@ -87,6 +93,7 @@ class AddOnsViewModel(
                     message,
                     SnackbarModel.LENGTH_SHORT
                 ))
+                analyticsRepository.logAddOnEvent(event.addOn, ADD)
             }
         }
     }

@@ -8,6 +8,8 @@ import space.narrate.waylan.core.util.fromHtml
 import space.narrate.waylan.merriamwebster.R
 import space.narrate.waylan.merriamwebster.util.toRelatedChip
 import space.narrate.waylan.android.R as appR
+import space.narrate.waylan.core.R as coreR
+
 
 /**
  * A sealed class which holds object that know how to bind a [MerriamWebsterList] to the view
@@ -68,17 +70,17 @@ sealed class MerriamWebsterItemBinder<T : MerriamWebsterItemModel> {
     object PermissionPaneBinder :
         MerriamWebsterItemBinder<MerriamWebsterItemModel.PermissionPaneModel>() {
 
-        override val layout: Int = R.layout.merriam_webster_permission_pane_layout
+        override val layout: Int = coreR.layout.add_on_permission_pane_layout
 
         override fun bind(
             view: View,
             item: MerriamWebsterItemModel.PermissionPaneModel,
             listener: MerriamWebsterItemAdapter.Listener
         ) {
-            view.findViewById<MaterialButton>(R.id.details_button).setOnClickListener {
+            view.findViewById<MaterialButton>(appR.id.details_button).setOnClickListener {
                 listener.onDetailsButtonClicked()
             }
-            view.findViewById<MaterialButton>(R.id.dismiss_button).setOnClickListener {
+            view.findViewById<MaterialButton>(appR.id.dismiss_button).setOnClickListener {
                 listener.onDismissButtonClicked()
             }
         }

@@ -164,26 +164,40 @@ class BillingManager(
     }
 
     override fun onPurchasesUpdated(resultCode: Int, purchases: MutableList<Purchase>?) {
-        if (resultCode == BillingClient.BillingResponse.OK && purchases != null) {
-            purchases.forEach {
+        if (resultCode == BillingClient.BillingResponse.OK) {
+            purchases?.forEach {
                 handlePurchase(it)
             }
         } else if (resultCode == BillingClient.BillingResponse.USER_CANCELED) {
             // the user canceled the purchase flow
+            purchases?.forEach {
+                handleCanceled(it)
+            }
         } else {
             // a different response was returned
         }
     }
 
+    private fun handleCanceled(purchase: Purchase) {
+        when (purchase.sku) {
+            BillingConfig.SKU_MERRIAM_WEBSTER -> {
+                _billingEvent.value = Event(BillingEvent.Canceled(AddOn.MERRIAM_WEBSTER))
+            }
+            BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
+                _billingEvent.value = Event(BillingEvent.Canceled(AddOn.MERRIAM_WEBSTER_THESAURUS))
+            }
+        }
+    }
+
     private fun handlePurchase(purchase: Purchase) {
-        //TODO Make sure we're verifying purchase tokens in a Cloud Function
+        // TODO Make sure we're verifying purchase tokens in a Cloud Function
+        // TODO Find a way to pass through the Add-on Action taking place.
         when (purchase.sku) {
             BillingConfig.SKU_MERRIAM_WEBSTER -> {
                 userRepository.setUserAddOn(
                     AddOn.MERRIAM_WEBSTER,
                     UserAddOnActionUseCase.Add(purchase.purchaseToken)
                 )
-                analyticsRepository.logAddOnPurchase(AddOn.MERRIAM_WEBSTER)
                 _billingEvent.value = Event(BillingEvent.Purchased(AddOn.MERRIAM_WEBSTER))
             }
             BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
@@ -191,7 +205,6 @@ class BillingManager(
                     AddOn.MERRIAM_WEBSTER_THESAURUS,
                     UserAddOnActionUseCase.Add(purchase.purchaseToken)
                 )
-                analyticsRepository.logAddOnPurchase(AddOn.MERRIAM_WEBSTER_THESAURUS)
                 _billingEvent.value = Event(BillingEvent.Purchased(AddOn.MERRIAM_WEBSTER_THESAURUS))
             }
             // We're using a test sku

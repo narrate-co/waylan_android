@@ -3,6 +3,7 @@ package space.narrate.waylan.merriamwebster_thesaurus.ui
 import androidx.lifecycle.LiveData
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.android.util.MergedLiveData
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusRepository
@@ -18,7 +19,7 @@ class MerriamWebsterThesaurusDetailDataProvider(
     override fun loadWord(word: String): LiveData<DetailItemModel> {
         return MergedLiveData(
             repository.getMerriamWebsterThesaurusWord(word),
-            userRepository.user
-        ) { mwt, user -> MerriamWebsterThesaurusModel(mwt, user) }
+            userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER_THESAURUS)
+        ) { mwt, userAddOn -> MerriamWebsterThesaurusModel(mwt, userAddOn) }
     }
 }

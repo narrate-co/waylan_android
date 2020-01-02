@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -21,14 +18,13 @@ import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
-import space.narrate.waylan.core.util.configError
-import space.narrate.waylan.core.util.configInformative
 import space.narrate.waylan.core.util.make
 
 /**
@@ -94,7 +90,6 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
-
         }
 
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has
@@ -102,8 +97,6 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         // react
         sharedViewModel.currentWord.observe(this) {
             binding.appBar.title = it
-            // TODO this doesn't work if a list item is loaded after other items.
-            binding.recyclerView.scrollToPosition(0)
             viewModel.onCurrentWordChanged(it)
         }
 
@@ -171,12 +164,12 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
         viewModel.onAudioClipError(messageRes)
     }
 
-    override fun onMwPermissionPaneDetailsClicked() {
+    override fun onAddOnDetailsClicked(addOn: AddOn) {
         findNavController().navigate(R.id.action_detailsFragment_to_settingsFragment)
     }
 
-    override fun onMwPermissionPaneDismissClicked() {
-        viewModel.onMerriamWebsterPermissionPaneDismissClicked()
+    override fun onAddOnDismissClicked(addOn: AddOn) {
+        viewModel.onAddOnDismissClicked(addOn)
     }
 
     override fun onMwThesaurusChipClicked(word: String) {

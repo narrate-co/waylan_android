@@ -5,17 +5,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
-import space.narrate.waylan.core.data.firestore.users.AddOnState
-import space.narrate.waylan.core.data.firestore.users.AddOnState.*
-import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.UserAddOn
-import space.narrate.waylan.core.data.firestore.users.remainingDays
-import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
-import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.ui.widget.TextLabelChip
+import space.narrate.waylan.core.ui.widget.configureWithUserAddOn
 import space.narrate.waylan.merriamwebster.R
-import space.narrate.waylan.android.R as appR
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 
 /**
@@ -35,7 +30,7 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     private var adapter: MerriamWebsterItemAdapter
 
     private val listContainer: LinearLayout
-    private val textLabel: Chip
+    private val textLabel: TextLabelChip
     private val mwAudioView: MerriamWebsterAudioView
 
     init {
@@ -48,13 +43,13 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         adapter = MerriamWebsterItemAdapter(listContainer, this)
 
         textLabel.setOnClickListener {
-            listener?.onMwPermissionPaneDetailsClicked()
+            listener?.onAddOnDetailsClicked(AddOn.MERRIAM_WEBSTER)
         }
 
     }
 
     fun setSource(entries: List<MwWordAndDefinitionGroups>, userAddOn: UserAddOn?) {
-        setTextLabel(userAddOn)
+        textLabel.configureWithUserAddOn(userAddOn)
         mwAudioView.setSource(entries, userAddOn)
         adapter.submit(entries, userAddOn)
     }
@@ -63,53 +58,16 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         this.listener = listener
     }
 
-    private fun setTextLabel(userAddOn: UserAddOn?) {
-        if (userAddOn == null) {
-            textLabel.gone()
-            return
-        }
-
-        val text = when (userAddOn.state) {
-            FREE_TRIAL_VALID -> {
-                resources.getString(
-                    appR.string.mw_card_view_free_trial_days_remaining,
-                    userAddOn.remainingDays.toString()
-                )
-            }
-            FREE_TRIAL_EXPIRED -> {
-                resources.getString(appR.string.mw_card_view_free_trial_expired)
-            }
-            PURCHASED_VALID ->
-                resources.getString(appR.string.mw_card_view_plugin_expired)
-            PURCHASED_EXPIRED ->
-                resources.getString(
-                    appR.string.mw_card_view_renew_days_remaining,
-                    userAddOn.remainingDays.toString()
-                )
-            else -> ""
-        }
-
-        val visibility = when (userAddOn.state) {
-            FREE_TRIAL_VALID,
-            FREE_TRIAL_EXPIRED,
-            PURCHASED_EXPIRED -> View.VISIBLE
-            else -> View.GONE
-        }
-
-        textLabel.text = text
-        textLabel.visibility = visibility
-    }
-
     override fun onRelatedWordClicked(word: String) {
         listener?.onMwRelatedWordClicked(word)
     }
 
     override fun onDetailsButtonClicked() {
-        listener?.onMwPermissionPaneDetailsClicked()
+        listener?.onAddOnDetailsClicked(AddOn.MERRIAM_WEBSTER)
     }
 
     override fun onDismissButtonClicked() {
-        listener?.onMwPermissionPaneDismissClicked()
+        listener?.onAddOnDismissClicked(AddOn.MERRIAM_WEBSTER)
     }
 
     override fun onAudioPlayClicked(url: String) {

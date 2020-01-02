@@ -9,12 +9,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingManager
@@ -22,9 +16,6 @@ import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.data.firestore.users.statusTextLabel
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
-import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.core.util.configError
-import space.narrate.waylan.core.util.configInformative
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.make
 import space.narrate.waylan.core.util.visible
@@ -134,7 +125,8 @@ class AddOnsFragment : BaseFragment() {
         binding.run {
             val status = addOn.userAddOn.statusTextLabel(requireContext())
             textLabel.text = status
-            descriptionTextView.text = getString(addOn.desc)
+            descriptionTitle.text = getString(addOn.descTitle)
+            descriptionBody.text = getString(addOn.descBody)
 
             actionsContainer.removeAllViews()
             addOn.userAddOn.state.actions.forEach { action ->

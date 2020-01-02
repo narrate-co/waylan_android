@@ -70,8 +70,8 @@ class DetailsViewModel(
         }
     }
 
-    fun onMerriamWebsterPermissionPaneDismissClicked() {
-        userRepository.setUserAddOnWith(AddOn.MERRIAM_WEBSTER) {
+    fun onAddOnDismissClicked(addOn: AddOn) {
+        userRepository.setUserAddOnWith(addOn) {
             isAwareOfExpiration = true
         }
     }

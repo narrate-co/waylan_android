@@ -41,6 +41,6 @@ class MerriamWebsterThesaurusViewHolder(
 
     override fun bind(item: DetailItemModel) {
         if (item !is MerriamWebsterThesaurusModel) return
-        binding.detailsComponentMerriamWebsterThesaurusCard.setSource(item.entries, item.user)
+        binding.detailsComponentMerriamWebsterThesaurusCard.setSource(item.entries, item.userAddOn)
     }
 }
