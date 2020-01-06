@@ -9,6 +9,7 @@ import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
 import space.narrate.waylan.core.data.firestore.users.AddOnAction.*
 import space.narrate.waylan.core.data.firestore.users.AddOnState
+import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.repo.AnalyticsRepository
@@ -16,6 +17,7 @@ import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.LiveDataUtils
+import space.narrate.waylan.core.util.MergedLiveData
 import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
@@ -28,6 +30,8 @@ class AddOnsViewModel(
     private val userRepository: UserRepository,
     private val analyticsRepository: AnalyticsRepository
 ) : ViewModel() {
+
+    var user: User? = null
 
     val addOns: LiveData<List<AddOnItemModel>> = AddOnItemListMediatorLiveData().apply {
         AddOn.values().forEach {
@@ -50,6 +54,21 @@ class AddOnsViewModel(
             }
         }
 
+    private val _shouldShowAccountRequiredDialog: MutableLiveData<Event<Boolean>> =
+        MutableLiveData()
+    val shouldShowAccountRequiredDialog: LiveData<Event<Boolean>>
+        get() = _shouldShowAccountRequiredDialog
+
+    private val _shouldLaunchSignUp: MutableLiveData<Event<Boolean>> =
+        MutableLiveData()
+    val shouldLaunchSignUp: LiveData<Event<Boolean>>
+        get() = _shouldLaunchSignUp
+
+    private val _shouldLaunchLogIn: MutableLiveData<Event<Boolean>> =
+        MutableLiveData()
+    val shouldLaunchLogIn: LiveData<Event<Boolean>>
+        get() = _shouldLaunchLogIn
+
     private val _shouldLaunchPurchaseFlow: MutableLiveData<Event<PurchaseFlowModel>> =
         MutableLiveData()
     val shouldLaunchPurchaseFlow: LiveData<Event<PurchaseFlowModel>>
@@ -59,11 +78,26 @@ class AddOnsViewModel(
     val shouldShowSnackbar: LiveData<Event<SnackbarModel>>
         get() = _shouldShowSnackbar
 
+    init {
+        // Keep a local reference of the current User ready and available to be used when
+        // performing actions on add-ons.
+        userRepository.user.observeForever {
+            this.user = it
+        }
+    }
+
     fun onCurrentAddOnPageChanged(position: Int) {
         _currentPosition.value = position
     }
 
     fun onActionClicked(addOnItemModel: AddOnItemModel, action: AddOnAction) {
+        // Block any actions taken on add-ons if a user is anonymous, prompting them to
+        // log in or create an account before continuing.
+        if (user == null || user?.isAnonymous == true) {
+            _shouldShowAccountRequiredDialog.value = Event(true)
+            return
+        }
+
         when (action) {
             TRY_FOR_FREE -> {
                 userRepository.setUserAddOn(
@@ -96,5 +130,13 @@ class AddOnsViewModel(
                 analyticsRepository.logAddOnEvent(event.addOn, ADD)
             }
         }
+    }
+
+    fun onAccountRequiredLogInClicked() {
+        _shouldLaunchLogIn.value = Event(true)
+    }
+
+    fun onAccountRequiredSignUpClicked() {
+        _shouldLaunchSignUp.value = Event(true)
     }
 }

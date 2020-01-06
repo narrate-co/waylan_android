@@ -33,6 +33,14 @@
                     app:desc="@string/developer_settings_clear_user_preferences_desc" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/is_anonymous_user_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_anonymous_user_preference_title"
+                    app:desc="@string/developer_settings_anonymous_user_preference_desc"
+                    app:checkable="true"/>
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_state_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

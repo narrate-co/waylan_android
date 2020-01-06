@@ -3,6 +3,7 @@ package space.narrate.waylan.settings.ui.addons
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.settings.ui.addons.AddOnItemModel.MerriamWebster
 import space.narrate.waylan.settings.ui.addons.AddOnItemModel.MerriamWebsterThesaurus

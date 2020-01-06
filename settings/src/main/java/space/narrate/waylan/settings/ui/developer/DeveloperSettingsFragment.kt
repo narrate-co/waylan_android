@@ -81,6 +81,11 @@ class DeveloperSettingsFragment : BaseFragment() {
 
             clearUserPreference.setOnClickListener { viewModel.onClearPreferencesPreferenceClicked() }
 
+            viewModel.isAnonymousUser.observe(this@DeveloperSettingsFragment) {
+                isAnonymousUserPreference.setChecked(it)
+            }
+            isAnonymousUserPreference.setOnClickListener { viewModel.onIsAnonymousUserPreferenceClicked() }
+
             merriamWebsterStatePreference.setOnClickListener {
                 viewModel.onMwStatePreferenceClicked()
             }

@@ -23,6 +23,9 @@ class DeveloperSettingsViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
+    val isAnonymousUser: LiveData<Boolean>
+        get() = userRepository.user.mapTransform { it.isAnonymous }
+
     val mwState: LiveData<String>
         get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER).mapTransform {
             getLabelForAddOnState(it.state)
@@ -70,6 +73,12 @@ class DeveloperSettingsViewModel(
             SnackbarModel.LENGTH_SHORT,
             false
         ))
+    }
+
+    fun onIsAnonymousUserPreferenceClicked() {
+        userRepository.setUserWith {
+            isAnonymous = !isAnonymous
+        }
     }
 
     fun onMwStatePreferenceClicked() {

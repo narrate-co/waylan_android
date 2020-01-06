@@ -72,6 +72,11 @@ class FirestoreStore(
             }
     }
 
+    /**
+     * Get the specified [UserAddOn] on of [addOn] from the user with with [uid].
+     *
+     * This method will always create the [UserAddOn] if it does not exist.
+     */
     suspend fun getUserAddOn(
         uid: String,
         addOn: AddOn

@@ -40,6 +40,8 @@
     <!--Developer Settings-->
     <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
     <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
+    <string name="developer_settings_anonymous_user_preference_title">User is anonymous</string>
+    <string name="developer_settings_anonymous_user_preference_desc">Toggle whether the current user is anonymous</string>
     <string name="developer_settings_toggle_merriam_webster_state_title">Toggle Merriam-Webster state</string>
     <string name="developer_settings_toggle_merriam_webster_thesaurus_state_title">Toggle Merriam-Webster Thesaurus state</string>
     <string name="developer_settings_use_test_skus_title">Use test skus</string>
@@ -66,14 +68,19 @@
 
     <!--Add-ons-->
     <string name="add_ons_title">Add-ons</string>
-    <string name="add_ons_desc">Customize the dictionaries and data used to define words.</string>
+    <string name="add_ons_desc">Customize the information shown when looking up words.</string>
     <string name="add_ons_merriam_webster_title">Merriam-Webster</string>
     <string name="add_ons_merriam_webster_des_title">Add-on: Merriam-Webster</string>
-    <string name="add_ons_merriam_webster_desc_body">Show definitions from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s high quality definitions, related words and audio pronunciation inside the Waylan app.</string>
+    <string name="add_ons_merriam_webster_desc_body">Show definitions from Merriam-Webster for the words you look up. When you look up a word, you get Merriam-Webster\'s high quality definitions, related words and audio pronunciation right in the Waylan definition screen</string>
     <string name="add_ons_merriam_webster_thesaurus_title">Merriam-Webster Thesaurus</string>
     <string name="add_ons_merriam_webster_thesaurus_des_title">Add-on: Merriam-Webster Thesaurus</string>
-    <string name="add_ons_merriam_webster_thesaurus_desc_body">Inline thesaurus data from Merriam-Webster for the words you define. When you look up a word, you get Merriam-Webster’s thesaurus data including synonyms, antonyms, near words and related words right in the Waylan definition screen.</string>
+    <string name="add_ons_merriam_webster_thesaurus_desc_body">Show thesaurus entries from Merriam-Webster for the words you look up. When you look up a word, you get Merriam-Webster\'s high quality thesaurus data including synonyms, antonyms, near words and related words right in the Waylan definition screen.</string>
     <string name="add_on_merriam_webster_successfully_purchased">"Merriam-Webster successfully added!"</string>
     <string name="add_on_merriam_webster_thesaurus_successfully_purchased">Merriam-Webster Thesaurus successfully added!</string>
+    <string name="add_on_account_required_body">This feature requires an account. Log in or sign up to continue. \n\nAn account lets you log in across devices or app installs while remembering your add-ons, favorite and recently searched words, settings and more.</string>
+    <string name="add_on_account_required_log_in_button">Log in</string>
+    <string name="add_on_account_required_sign_up_button">Sign up</string>
+    <string name="add_on_about_body">Waylan is modular!\n\nWhen you look up a word in Waylan, you can customize the information displayed.\n\nBy default, Waylan displays basic definitions from Wordset, an open-source dictionary. With Add-ons, you can choose from additional sources - such as Merriam-Webster - to have multiple definitions from multiple sources for each word you look up.\n\nSome of these add-ons are not free. This is due to the fact that some sources charge a fee for access to their data. Purchasing an add-on gives you unlimited access to that source for 1 year and helps us keep Waylan available and ad-free.\n\nBrowse the available add-ons, try each for free, and make Waylan a dictionary that works for you. If you have additional questions, suggestions or comments regarding Add-ons or Waylan, please reach out to us!</string>
+
 
 </resources>

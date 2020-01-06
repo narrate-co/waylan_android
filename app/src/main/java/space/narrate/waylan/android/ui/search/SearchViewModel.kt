@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.MergedLiveData
+import space.narrate.waylan.core.util.MergedLiveData
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.data.prefs.RotationUtils

@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingManager
@@ -21,6 +22,7 @@ import space.narrate.waylan.core.util.make
 import space.narrate.waylan.core.util.visible
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentAddOnsBinding
+import space.narrate.waylan.settings.ui.dialog.MessageAlertDialog
 
 /**
  * A Fragment that shows a horizontal list of [AddOn]s, the stat of each add on for the current
@@ -116,6 +118,27 @@ class AddOnsFragment : BaseFragment() {
                     it.addOnAction
                 )
             }
+        }
+
+        viewModel.shouldShowAccountRequiredDialog.observe(this) { event ->
+            event.withUnhandledContent {
+                MessageAlertDialog(
+                    requireContext(),
+                    R.string.add_on_account_required_body,
+                    positiveButton = R.string.add_on_account_required_log_in_button,
+                    positiveAction = { viewModel.onAccountRequiredLogInClicked() },
+                    negativeButton = R.string.add_on_account_required_sign_up_button,
+                    negativeAction = { viewModel.onAccountRequiredSignUpClicked() }
+                ).show()
+            }
+        }
+
+        viewModel.shouldLaunchLogIn.observe(this) { event ->
+            event.withUnhandledContent { navigator.toLogIn(requireContext()) }
+        }
+
+        viewModel.shouldLaunchSignUp.observe(this) { event ->
+            event.withUnhandledContent { navigator.toSignUp(requireContext()) }
         }
 
         startPostponedEnterTransition()

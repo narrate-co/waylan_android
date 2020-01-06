@@ -37,20 +37,17 @@ class UserRepository(
         get() = Dispatchers.IO
 
     /** Firestore User */
-
     val user: LiveData<User>
         get() = authenticationStore.uid.switchMapTransform {
             firestoreStore.getUserLive(it)
         }
 
     /** Shared Preferences */
-
     val allNightModes = preferenceStore.allNightModes
 
     val allOrientations = preferenceStore.allOrientations
 
     /** Gloabl scoped Shared Preferences */
-
     var orientationLock: Orientation
         get() = preferenceStore.orientationLock.getValue()
         set(value) = preferenceStore.orientationLock.setValue(value)
@@ -67,7 +64,6 @@ class UserRepository(
 
 
     /** User scoped Shared Preferences */
-
     var hasSeenRecentsBanner: Boolean
         get() = userPreferenceStore.hasSeenRecentsBanner.getValue()
         set(value) = userPreferenceStore.hasSeenRecentsBanner.setValue(value)
@@ -128,6 +124,13 @@ class UserRepository(
     var landscapeToPortraitOrientationChangeCount: Long
         get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
         set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
+
+    fun setUserWith(with: User.() -> Unit) {
+        val uid = authenticationStore.uid.value ?: return
+        launch {
+            firestoreStore.updateUser(uid, with)
+        }
+    }
 
     suspend fun getUserAddOn(addOn: AddOn): Result<UserAddOn> {
         val uid = authenticationStore.uid.value
