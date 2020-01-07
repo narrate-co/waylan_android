@@ -144,6 +144,12 @@ class UserRepository(
         }
     }
 
+    fun getUserAddOnsLive(): LiveData<List<UserAddOn>> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserAddOnsLive(it)
+        }
+    }
+
     fun setUserAddOn(addOn: AddOn, useCase: UserAddOnActionUseCase) {
         val uid = authenticationStore.uid.value ?: return
         launch {

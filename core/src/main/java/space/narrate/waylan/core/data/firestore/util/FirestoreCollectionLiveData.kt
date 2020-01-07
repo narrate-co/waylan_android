@@ -2,6 +2,7 @@ package space.narrate.waylan.core.data.firestore.util
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query
@@ -27,14 +28,11 @@ class FirestoreCollectionLiveData<T>(
 
     private val eventListener =
         EventListener<QuerySnapshot> { querySnapshot, firebaseFirestoreException ->
-
             if (firebaseFirestoreException != null) {
                 firebaseFirestoreException.printStackTrace()
             } else {
                 // move parsing off the main thread
-                launch {
-                    value = querySnapshot?.documents?.map { it.toObject(clazz)!! }
-                }
+                launch { value = querySnapshot?.documents?.map { it.toObject(clazz)!! } }
             }
         }
 

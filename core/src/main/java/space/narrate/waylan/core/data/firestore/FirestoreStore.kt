@@ -1,7 +1,6 @@
 package space.narrate.waylan.core.data.firestore
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
@@ -70,6 +69,11 @@ class FirestoreStore(
                     }
                 }
             }
+    }
+
+    fun getUserAddOnsLive(uid: String): LiveData<List<UserAddOn>> {
+        return firestore.userAddOns(uid)
+            .liveData(UserAddOn::class.java)
     }
 
     /**

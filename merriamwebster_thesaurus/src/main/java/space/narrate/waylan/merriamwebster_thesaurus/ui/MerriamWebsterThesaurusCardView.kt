@@ -51,6 +51,9 @@ class MerriamWebsterThesaurusCardView @JvmOverloads constructor(
 
         // Configure views
         expandCollapseButton.setOnClickListener { expandCollapseGroups() }
+        textLabel.setOnClickListener {
+            listener?.onAddOnDetailsClicked(AddOn.MERRIAM_WEBSTER_THESAURUS)
+        }
     }
 
     fun setSource(entries: List<ThesaurusEntry>, userAddOn: UserAddOn?) {
