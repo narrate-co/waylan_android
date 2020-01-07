@@ -99,6 +99,7 @@ class AddOnsFragment : BaseFragment() {
                 }
             )
             recyclerView.addOnScrollListener(snapScrollEventAdapter)
+            recyclerView.addItemDecoration(DotIndicatorDecoration(requireContext()))
             recyclerView.adapter = adapter
 
             viewModel.currentAddOn.observe(this@AddOnsFragment) {
