@@ -1,15 +1,19 @@
 package space.narrate.waylan.settings.ui.addons
 
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingManager
@@ -17,12 +21,15 @@ import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.data.firestore.users.statusTextLabel
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
+import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.launchEmail
 import space.narrate.waylan.core.util.make
 import space.narrate.waylan.core.util.visible
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentAddOnsBinding
 import space.narrate.waylan.settings.ui.dialog.MessageAlertDialog
+import space.narrate.waylan.settings.ui.settings.SettingsFragment
 
 /**
  * A Fragment that shows a horizontal list of [AddOn]s, the stat of each add on for the current
@@ -64,6 +71,15 @@ class AddOnsFragment : BaseFragment() {
             appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
+            appBar.setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.add_on_menu_info -> {
+                        showAboutDialog()
+                        true
+                    }
+                    else -> false
+                }
+            })
             appBar.setReachableContinuityNavigator(this@AddOnsFragment, navigator)
 
             val adapter = AddOnsPreviewAdapter()
@@ -163,6 +179,30 @@ class AddOnsFragment : BaseFragment() {
                 actionsContainer.addView(button)
             }
         }
+    }
+
+    private fun showAboutDialog() {
+        MessageAlertDialog(
+            requireContext(),
+            R.string.add_on_about_body,
+            R.string.add_on_about_contact_button_title,
+            {
+                try {
+                    requireContext().launchEmail(
+                        SettingsFragment.SUPPORT_EMAIL_ADDRESS,
+                        getString(R.string.add_on_email_contact_subject)
+                    )
+                } catch (e: ActivityNotFoundException) {
+                    Snackbar.make(
+                        binding.coordinatorLayout,
+                        R.string.settings_email_compose_no_client_error,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .configError(requireContext())
+                        .show()
+                }
+            }
+        ).show()
     }
 
     override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {

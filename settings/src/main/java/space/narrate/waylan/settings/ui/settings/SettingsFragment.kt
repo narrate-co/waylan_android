@@ -116,7 +116,7 @@ class SettingsFragment : BaseFragment() {
                 } catch (e: ActivityNotFoundException) {
                     Snackbar.make(
                         coordinatorLayout,
-                        getString(R.string.settings_email_compose_no_client_error),
+                        R.string.settings_email_compose_no_client_error,
                         Snackbar.LENGTH_SHORT
                     )
                         .configError(requireContext())

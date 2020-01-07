@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.MenuRes
 import androidx.annotation.StyleRes
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
@@ -194,6 +196,10 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
                 R.styleable.ReachabilityAppBarLayout_expandedTitleVerticalBias,
                 expandedTitleVerticalOffset
             )
+            val menu = it.getResourceId(R.styleable.ReachabilityAppBarLayout_menu, 0)
+            if (menu != 0) {
+                setMenu(menu)
+            }
         }
     }
 
@@ -239,6 +245,14 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
 
     fun setOnNavigationIconClicked(onClick: () -> Unit) {
         toolbar.setNavigationOnClickListener { onClick() }
+    }
+
+    fun setMenu(@MenuRes menuRes: Int) {
+        toolbar.inflateMenu(menuRes)
+    }
+
+    fun setOnMenuItemClickListener(listener: Toolbar.OnMenuItemClickListener) {
+        toolbar.setOnMenuItemClickListener(listener)
     }
 
     companion object {

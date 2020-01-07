@@ -79,7 +79,8 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/add_ons_title"/>
+            app:title="@string/add_ons_title"
+            app:menu="@menu/add_ons_toolbar_menu"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
