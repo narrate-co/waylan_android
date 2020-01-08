@@ -3,7 +3,6 @@ package space.narrate.waylan.settings.ui.addons
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -11,8 +10,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -82,13 +81,25 @@ class AddOnsFragment : BaseFragment() {
             })
             appBar.setReachableContinuityNavigator(this@AddOnsFragment, navigator)
 
+            viewModel.setShowOnOpenAddOn(navArgs<AddOnsFragmentArgs>().value.addOn)
+
+            viewModel.shouldScrollToPosition.observe(this@AddOnsFragment) { event ->
+                event.withUnhandledContent {
+                    when (val manager = recyclerView.layoutManager) {
+                        is LinearLayoutManager -> {
+                            manager.scrollToPositionWithOffset(it, 0)
+                            viewModel.onCurrentAddOnPageChanged(it)
+                        }
+                    }
+                }
+            }
+
             val adapter = AddOnsPreviewAdapter()
             recyclerView.layoutManager = LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-            recyclerView.isNestedScrollingEnabled = false
             recyclerView.setHasFixedSize(true)
             val snapScrollEventAdapter = SnapScrollEventAdapter(recyclerView)
             snapScrollEventAdapter.setOnPageChangedCallback(
@@ -101,6 +112,7 @@ class AddOnsFragment : BaseFragment() {
             recyclerView.addOnScrollListener(snapScrollEventAdapter)
             recyclerView.addItemDecoration(DotIndicatorDecoration(requireContext()))
             recyclerView.adapter = adapter
+
 
             viewModel.currentAddOn.observe(this@AddOnsFragment) {
                 updateDescriptionArea(it)

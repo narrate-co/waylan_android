@@ -165,7 +165,8 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
     }
 
     override fun onAddOnDetailsClicked(addOn: AddOn) {
-        findNavController().navigate(R.id.action_detailsFragment_to_settingsFragment)
+        findNavController()
+            .navigate(DetailsFragmentDirections.actionDetailsFragmentToAddOnsFragment(addOn))
     }
 
     override fun onAddOnDismissClicked(addOn: AddOn) {

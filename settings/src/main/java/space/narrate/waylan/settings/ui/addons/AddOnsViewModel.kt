@@ -1,9 +1,11 @@
 package space.narrate.waylan.settings.ui.addons
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
@@ -16,11 +18,9 @@ import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.core.util.LiveDataUtils
-import space.narrate.waylan.core.util.MergedLiveData
+import space.narrate.waylan.core.util.doOnEmission
 import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
-import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.settings.R
 
 /**
@@ -33,9 +33,24 @@ class AddOnsViewModel(
 
     var user: User? = null
 
+    private var showOnOpenAddOn: AddOn = AddOn.MERRIAM_WEBSTER
+    private var hasShownOnOpenAddOn = false
+
     val addOns: LiveData<List<AddOnItemModel>> = AddOnItemListMediatorLiveData().apply {
         AddOn.values().forEach {
             addSource(userRepository.getUserAddOnLive(it))
+        }
+    }.doOnEmission { list ->
+        // This first time addOn's emits a list of AddOnItemModels, scroll to the position of
+        // the showOnOpenAddOn if we have navigated to this Fragment with the intent of showing
+        // a specific AddOn in the list.
+        val position = list.indexOfFirst { it.addOn == showOnOpenAddOn }
+        if (position != -1 && !hasShownOnOpenAddOn) {
+            hasShownOnOpenAddOn = true
+            viewModelScope.launch {
+                delay(250L) // Wait for the adapter to lay out the items.
+                _shouldScrollToPosition.value = Event(position)
+            }
         }
     }
 
@@ -45,6 +60,10 @@ class AddOnsViewModel(
         addOns.mapOnTransform(_currentPosition) { addOns, position ->
             addOns[position]
         }
+
+    private val _shouldScrollToPosition: MutableLiveData<Event<Int>> = MutableLiveData()
+    val shouldScrollToPosition: LiveData<Event<Int>>
+        get() = _shouldScrollToPosition
 
     val shouldShowStatusTextLabel: LiveData<Boolean>
         get() = currentAddOn.mapTransform {
@@ -84,6 +103,13 @@ class AddOnsViewModel(
         userRepository.user.observeForever {
             this.user = it
         }
+    }
+
+    /**
+     * Set the AddOn to be shown when the list of add-ons is finished loading for the first time.
+     */
+    fun setShowOnOpenAddOn(addOn: AddOn) {
+        showOnOpenAddOn = addOn
     }
 
     fun onCurrentAddOnPageChanged(position: Int) {

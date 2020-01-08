@@ -30,6 +30,13 @@ fun <X, Y, Z> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> Z): L
     }
 }
 
+fun <X> LiveData<X>.doOnEmission(block: (X) -> Unit): LiveData<X> {
+    return mapTransform {
+        block(it)
+        it
+    }
+}
+
 /**
  * Helper extension to force a LiveData object to only emit non-null values.
  */

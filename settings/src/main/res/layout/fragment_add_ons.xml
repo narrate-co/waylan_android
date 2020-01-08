@@ -33,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
                     android:layout_marginBottom="@dimen/keyline_4"
+                    android:nestedScrollingEnabled="false"
                     android:background="@drawable/tintable"
                     android:backgroundTint="@color/scrim" />
 

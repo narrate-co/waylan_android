@@ -3,13 +3,10 @@ package space.narrate.waylan.settings.ui.addons
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.RectF
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.suspendAtomicCancellableCoroutine
-import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.settings.R
 
 /**
