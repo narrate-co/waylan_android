@@ -64,7 +64,8 @@ class AboutFragment: BaseFragment() {
             appBar.setReachableContinuityNavigator(this@AboutFragment, navigator)
 
             // Version preference
-            versionPreference.setDesc("v${BuildConfig.VERSION_NAME} • ${BuildConfig.BUILD_TYPE}")
+            versionPreference.setDesc("${BuildConfig.VERSION_NAME} • " +
+                "${BuildConfig.VERSION_CODE} • ${BuildConfig.BUILD_TYPE}")
 
             // Third Party Libs preference
             thirdPartyLibsPreference.setOnClickListener {
