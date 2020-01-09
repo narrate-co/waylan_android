@@ -116,6 +116,10 @@ class MerriamWebsterThesaurusCardView @JvmOverloads constructor(
                 .flatten()
                 .take(if (collapsed) COLLAPSED_MAX_ANTONYMS else Integer.MAX_VALUE)
         )
+
+        // Hide the expand/collapse button if there is not content from MW Thesaurus.
+        expandCollapseButton.visibility =
+            if (listContainer.childCount == 0) View.GONE else View.VISIBLE
     }
 
     /**
