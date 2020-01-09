@@ -6,12 +6,25 @@
  */
 object Versions {
     // Build constants
-    const val compileSdk = 29
     const val minSdk = 23
+    const val compileSdk = 29
     const val targetSdk = 29
 
-    const val versionCode = 7
-    const val versionName = "0.0.07.debug"
+    object VersionClassifier {
+        const val NONE = ""
+        const val SNAPSHOT = "-SNAPSHOT"
+    }
+
+    private const val versionMajor = 0
+    private const val versionMinor = 0
+    private const val versionPatch = 7
+    private const val versionClassifier = VersionClassifier.SNAPSHOT
+
+    const val versionCode: Int
+         = minSdk * 10000000 + versionMajor * 10000 + versionMajor * 100 + versionPatch
+
+    const val versionName: String
+         = "$versionMajor.$versionMinor.$versionPatch$versionClassifier"
 
     // Library versions
     const val androidX = "1.2.0-alpha04"
