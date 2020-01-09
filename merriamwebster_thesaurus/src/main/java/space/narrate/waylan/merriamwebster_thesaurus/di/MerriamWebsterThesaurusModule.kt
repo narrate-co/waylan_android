@@ -1,8 +1,10 @@
 package space.narrate.waylan.merriamwebster_thesaurus.di
 
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusRepository
-import space.narrate.waylan.merriamwebster_thesaurus.data.remote.MerriamWebsterThesaurusStore
+import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusDatabase
+import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusStore
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RetrofitService
 import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusDetailDataProvider
 import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusDetailItemProvider
@@ -12,8 +14,13 @@ import space.narrate.waylan.merriamwebster_thesaurus.ui.MerriamWebsterThesaurusD
  */
 val merriamWebsterThesaurusModule = module {
 
+    single { ThesaurusDatabase.getInstance(androidContext()) }
+
     single {
-        MerriamWebsterThesaurusStore(RetrofitService.getInstance())
+        MerriamWebsterThesaurusStore(
+            RetrofitService.getInstance(),
+            get<ThesaurusDatabase>().thesaurusDao()
+        )
     }
 
     single {

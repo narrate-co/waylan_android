@@ -1,4 +1,4 @@
-package space.narrate.waylan.merriamwebster.data.remote
+package space.narrate.waylan.merriamwebster.data
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -12,8 +12,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import space.narrate.waylan.merriamwebster.BuildConfig
 import space.narrate.waylan.core.util.contentEquals
+import space.narrate.waylan.core.util.hasElapsedMoreThan
 import space.narrate.waylan.merriamwebster.data.local.MwDao
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
+import space.narrate.waylan.merriamwebster.data.remote.EntryList
+import space.narrate.waylan.merriamwebster.data.remote.EntryUtils
+import space.narrate.waylan.merriamwebster.data.remote.MerriamWebsterService
+import space.narrate.waylan.merriamwebster.data.remote.synthesizedRelatedWords
+import space.narrate.waylan.merriamwebster.data.remote.synthesizedSuggestions
+import space.narrate.waylan.merriamwebster.data.remote.toDbMwDefinitions
+import space.narrate.waylan.merriamwebster.data.remote.toDbMwWord
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -47,11 +55,7 @@ class MerriamWebsterStore(
         // enough ago to be considered expired and qualifies for a refresh
         launch {
             val definitions = mwDao.getDefinitions(word)
-            if (definitions.isNullOrEmpty()
-                    || definitions.any {
-                        ChronoUnit.DAYS.between(it.lastFetch, OffsetDateTime.now()) > 7L
-                    }
-            ) {
+            if (definitions.isNullOrEmpty() || definitions.any { it.lastFetch.isNotFresh() }) {
                 merriamWebsterService
                         .getWord(word, DEV_KEY)
                         .enqueue(getMerriamWebsterApiWordCallback(word))
@@ -68,6 +72,7 @@ class MerriamWebsterStore(
         return mwDao.getWordAndDefinitions(word)
     }
 
+    private fun OffsetDateTime.isNotFresh() = hasElapsedMoreThan(ChronoUnit.DAYS, 7L)
 
     /**
      * On successful API retrievals, insert (or update by deleting all and then inserting) the
@@ -87,8 +92,6 @@ class MerriamWebsterStore(
             //Save to db
             response.body()?.let { entryList ->
                 launch {
-
-
                     // Delete all existing definition data to keep data fresh
                     entryList.entries.forEach {
                         mwDao.deleteDefinitions(it.word)

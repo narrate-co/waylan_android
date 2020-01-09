@@ -23,8 +23,7 @@ import org.threeten.bp.OffsetDateTime
  */
 @Entity(tableName = "mw_words")
 data class MwWord(
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey val id: String,
     val word: String,
     val subj: String,
     val phonetic: String,

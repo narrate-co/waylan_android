@@ -16,9 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
         <View
+            android:id="@+id/fade_view"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/surface_fade_gradient" />
+            android:layout_height="92dp"
+            android:layout_gravity="bottom"/>
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

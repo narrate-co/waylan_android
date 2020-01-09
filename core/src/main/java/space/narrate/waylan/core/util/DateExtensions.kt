@@ -1,6 +1,7 @@
 package space.narrate.waylan.core.util
 
 import org.threeten.bp.DateTimeUtils
+import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import java.util.*
 
@@ -22,4 +23,11 @@ fun Date.minusDays(days: Long): Date {
         time = this@minusDays
         add(Calendar.DAY_OF_YEAR, -(days).toInt())
     }.time
+}
+
+fun OffsetDateTime.hasElapsedMoreThan(
+    unit: ChronoUnit,
+    duration: Long
+): Boolean {
+    return unit.between(this, OffsetDateTime.now()) > duration
 }

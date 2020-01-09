@@ -10,7 +10,7 @@ import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Def
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Entry
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Hwi
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.MerriamWebsterThesaurusService
-import space.narrate.waylan.merriamwebster_thesaurus.data.remote.MerriamWebsterThesaurusStore
+import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusStore
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Meta
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RemoteThesaurusEntry
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Wd
