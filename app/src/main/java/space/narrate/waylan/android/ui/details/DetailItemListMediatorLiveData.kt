@@ -106,6 +106,6 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
     }
 
     companion object {
-        private const val INITIAL_POST_DELAY_MILLIS = 250L
+        private const val INITIAL_POST_DELAY_MILLIS = 400L // Originally 250L
     }
 }
