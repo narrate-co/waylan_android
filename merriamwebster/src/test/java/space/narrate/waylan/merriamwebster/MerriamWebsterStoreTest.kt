@@ -13,7 +13,7 @@ import retrofit2.Call
 import space.narrate.waylan.merriamwebster.data.local.MwDao
 import space.narrate.waylan.merriamwebster.data.remote.EntryList
 import space.narrate.waylan.merriamwebster.data.remote.MerriamWebsterService
-import space.narrate.waylan.merriamwebster.data.remote.MerriamWebsterStore
+import space.narrate.waylan.merriamwebster.data.MerriamWebsterStore
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import org.mockito.Mockito.`when` as whenever
 

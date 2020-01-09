@@ -8,7 +8,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import space.narrate.waylan.merriamwebster.data.MerriamWebsterRepository
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
-import space.narrate.waylan.merriamwebster.data.remote.MerriamWebsterStore
+import space.narrate.waylan.merriamwebster.data.MerriamWebsterStore
 import org.mockito.Mockito.`when` as whenever
 
 class MerriamWebsterRepositoryTest {

@@ -3,6 +3,8 @@ package space.narrate.waylan.merriamwebster_thesaurus.data.remote
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.threeten.bp.OffsetDateTime
+import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusEntry
 
 /**
  * The remote representation of a response from the Merriam-Webster thesaurus API.
@@ -17,6 +19,22 @@ data class RemoteThesaurusEntry(
     val def: Def,
     val shortdef: List<String>
 )
+
+val RemoteThesaurusEntry.toLocalThesaurusEntry: ThesaurusEntry
+    get() = ThesaurusEntry(
+        meta.id,
+        hwi.hw,
+        meta.src,
+        meta.stems,
+        meta.offensive,
+        fl,
+        shortdef,
+        def.entries.map { it.syn_list }.flatten().flatten().map { it.wd },
+        def.entries.map { it.rel_list }.flatten().flatten().map { it.wd },
+        def.entries.map { it.near_list }.flatten().flatten().map { it.wd },
+        def.entries.map { it.ant_list }.flatten().flatten().map { it.wd },
+        OffsetDateTime.now()
+    )
 
 /**
  * Metadata about an entry.

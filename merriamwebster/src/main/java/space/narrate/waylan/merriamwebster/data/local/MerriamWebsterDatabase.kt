@@ -18,9 +18,10 @@ import space.narrate.waylan.core.util.RoomTypeConverters
         MwWord::class,
         MwDefinitionGroup::class
     ],
-    version = 1)
+    version = 1
+)
 @TypeConverters(RoomTypeConverters::class, MerriamWebsterTypeConverters::class)
-abstract class MerriamWebsterDatabase: RoomDatabase() {
+abstract class MerriamWebsterDatabase : RoomDatabase() {
 
     abstract fun mwDao(): MwDao
 
