@@ -9,3 +9,4 @@ import space.narrate.waylan.core.ui.common.Diffable
 abstract class DetailItemModel : Diffable<DetailItemModel> {
     abstract val itemType: DetailItemType
 }
+

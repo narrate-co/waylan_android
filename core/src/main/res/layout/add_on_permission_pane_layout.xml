@@ -23,7 +23,6 @@
         android:layout_marginBottom="@dimen/keyline_2"
         android:background="@drawable/permission_pane_area"/>
 
-
     <Button
         style="?attr/styleTextButton"
         android:id="@+id/details_button"
@@ -34,7 +33,7 @@
         android:paddingRight="@dimen/keyline_3"
         android:paddingLeft="@dimen/keyline_3"
         android:layout_marginTop="@dimen/keyline_1"
-        android:text="@string/mw_card_details_button_text"
+        android:text="@string/add_on_permission_pane_details_button_text"
         android:layout_gravity="right" />
 
 
@@ -47,7 +46,7 @@
         android:paddingBottom="12dp"
         android:paddingRight="@dimen/keyline_3"
         android:paddingLeft="@dimen/keyline_3"
-        android:text="@string/mw_card_dismiss_button_text"
+        android:text="@string/add_on_permission_pane_dismiss_button_text"
         android:layout_gravity="right"
         />
 

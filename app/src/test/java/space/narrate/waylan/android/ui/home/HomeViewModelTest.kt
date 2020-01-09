@@ -7,7 +7,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
-import space.narrate.waylan.core.repo.FirestoreTestData
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.ListType
@@ -51,34 +50,6 @@ class HomeViewModelTest {
             )
         )
     }
-
-    @Test
-    fun shouldGenerateListWithPreviews() {
-        whenever(wordRepository.getGlobalWordTrending(4L, emptyList())).thenReturn(
-            LiveDataTestUtils.of(FirestoreTestData.globalWords)
-        )
-        whenever(wordRepository.getUserWordRecents(any())).thenReturn(
-            LiveDataTestUtils.of(FirestoreTestData.user1Words)
-        )
-        whenever(wordRepository.getUserWordFavorites(any())).thenReturn(
-            LiveDataTestUtils.of(FirestoreTestData.user1Words)
-        )
-
-        val globalWordsPreview = "wharf, mercurial"
-        val userWordsPreview = "ostensibly, impetuous"
-
-        // Wait for all 3 sources to call this live data observer's onChanged callback.
-        assertThat(homeViewModel.list.valueBlocking(3)).orderedContentsAreSameAs(
-            listOf(
-                HomeItemModel.SettingsModel,
-                HomeItemModel.DividerModel,
-                HomeItemModel.ItemModel(ListType.FAVORITE, R.string.title_favorite, userWordsPreview),
-                HomeItemModel.ItemModel(ListType.RECENT, R.string.title_recent, userWordsPreview),
-                HomeItemModel.ItemModel(ListType.TRENDING, R.string.title_trending, globalWordsPreview)
-            )
-        )
-    }
-
 
     private fun assertThat(list: List<HomeItemModel>?): HomeItemModelListSubject {
         return assertAbout(homeItemModelList()).that(list)

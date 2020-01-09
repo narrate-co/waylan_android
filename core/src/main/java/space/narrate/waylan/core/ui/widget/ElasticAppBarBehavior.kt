@@ -388,7 +388,6 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
 
     }
 
-
     override fun onNestedPreScroll(
         coordinatorLayout: CoordinatorLayout,
         child: AppBarLayout,

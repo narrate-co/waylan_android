@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_addOnsFragment"
+            app:destination="@id/addOnsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -49,6 +52,18 @@
         <action
             android:id="@+id/action_settingsFragment_to_developerSettingsFragment"
             app:destination="@id/developerSettingsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_addOnsFragment"
+            app:destination="@id/addOnsFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addOnsFragment"
+        android:name="space.narrate.waylan.settings.ui.addons.AddOnsFragment"
+        android:label="AddOnsFragment">
+        <argument
+            android:name="addOn"
+            app:argType="space.narrate.waylan.core.data.firestore.users.AddOn"
+            android:defaultValue="MERRIAM_WEBSTER"/>
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"

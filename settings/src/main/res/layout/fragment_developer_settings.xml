@@ -33,10 +33,24 @@
                     app:desc="@string/developer_settings_clear_user_preferences_desc" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/is_anonymous_user_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_anonymous_user_preference_title"
+                    app:desc="@string/developer_settings_anonymous_user_preference_desc"
+                    app:checkable="true"/>
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/merriam_webster_state_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="@string/developer_settings_toggle_merriam_webster_state_title" />
+
+                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                    android:id="@+id/merriam_webster_state_thesaurus_preference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/developer_settings_toggle_merriam_webster_thesaurus_state_title" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/use_test_skus_preference"
@@ -47,10 +61,10 @@
                     app:checkable="true" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
-                    android:id="@+id/merriam_webster_billing_response_preference"
+                    android:id="@+id/billing_response_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="Toggle Merriam-Webster Billing response" />
+                    app:title="Billing test response" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
                     android:id="@+id/informative_snackbar_preference"

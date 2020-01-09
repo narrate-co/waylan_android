@@ -3,10 +3,12 @@ package space.narrate.waylan.android.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
+import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.mapOnTransform
@@ -31,14 +33,23 @@ class DetailsViewModel(
                 }
             }
         }
-        .mapOnTransform(userRepository.hasSeenMerriamWebsterPermissionPaneLive) { list, hasSeen ->
-            if (hasSeen) {
-                list.toMutableList().apply {
-                    removeAll { it.itemType == DetailItemType.MERRIAM_WEBSTER }
+        .mapOnTransform(userRepository.getUserAddOnsLive()) { list, addOns ->
+            val filteredList = list.toMutableList()
+            addOns.forEach { addOn ->
+                if (!addOn.isValid && addOn.isAwareOfExpiration) {
+                    filteredList.removeAll {
+                        // Map UserAddOn to a DetailItemType
+                        val type = when (AddOn.fromId(addOn.id)) {
+                            AddOn.MERRIAM_WEBSTER ->
+                                DetailItemType.MERRIAM_WEBSTER
+                            AddOn.MERRIAM_WEBSTER_THESAURUS ->
+                                DetailItemType.MERRIAM_WEBSTER_THESAURUS
+                        }
+                        it.itemType == type
+                    }
                 }
-            } else {
-                list
             }
+            filteredList
         }
 
     private val _shouldShowDragDismissOverlay: MutableLiveData<Event<Boolean>> = MutableLiveData()
@@ -66,8 +77,10 @@ class DetailsViewModel(
         }
     }
 
-    fun onMerriamWebsterPermissionPaneDismissClicked() {
-        userRepository.hasSeenMerriamWebsterPermissionPane = true
+    fun onAddOnDismissClicked(addOn: AddOn) {
+        userRepository.updateUserAddOnWith(addOn) {
+            isAwareOfExpiration = true
+        }
     }
 
     fun onPlayAudioClicked(url: String?) {

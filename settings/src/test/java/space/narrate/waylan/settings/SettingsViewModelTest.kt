@@ -10,13 +10,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.repo.FirestoreTestData
 import space.narrate.waylan.core.repo.UserRepository
-import space.narrate.waylan.settings.ui.settings.MwBannerAction
 import space.narrate.waylan.settings.ui.settings.SettingsViewModel
 import space.narrate.waylan.test_common.CoroutinesTestRule
 import space.narrate.waylan.test_common.valueBlocking
-import java.util.*
 import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
@@ -39,25 +36,18 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun nonAnonymousUserOnPluginStateChanged_shouldUpdateBanner() {
-        val registeredFreeUser = FirestoreTestData.registeredFreeValidUser
-        user.value = registeredFreeUser
+    fun nonAnonymousUser_singOutClickedShouldLaunchLogin() {
+        val registeredUser = User("aaa", false, "Tester", "tester@test.com")
+        user.value = registeredUser
         whenever(userRepository.user).thenReturn(user)
 
-        val bannerObserver = settingsViewModel.bannerModel
+        settingsViewModel.onSignOutClicked()
 
-        assertThat(bannerObserver.valueBlocking.topButtonAction).isEqualTo(
-            MwBannerAction.LAUNCH_PURCHASE_FLOW
-        )
-
-        user.value = registeredFreeUser.copy(
-            merriamWebsterStarted = Date(),
-            merriamWebsterPurchaseToken = "aslkfjwoeir23nasd"
-        )
-
-        val banner = bannerObserver.valueBlocking
-        assertThat(banner.topButtonAction).isNull()
-        assertThat(banner.labelRes).isEqualTo(R.string.settings_header_added_label)
-        assertThat(banner.textRes).isEqualTo(R.string.settings_header_registered_subscribed_body)
+        val event = settingsViewModel.shouldLaunchLogIn.valueBlocking
+        assertThat(event.handled).isEqualTo(false)
+        assertThat(event.peek()).isEqualTo(true)
     }
+
+    // TODO: Add additional tests
+
 }

@@ -104,7 +104,7 @@ class ContextualFragment : BaseFragment() {
         }
 
         sharedViewModel.shouldOpenContextualSheet.observe(this) { event ->
-            event.getUnhandledContent()?.let { expand() }
+            event.withUnhandledContent { expand() }
         }
     }
 

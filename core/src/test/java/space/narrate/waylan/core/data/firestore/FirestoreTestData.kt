@@ -1,28 +1,14 @@
-package space.narrate.waylan.core.repo
+package space.narrate.waylan.core.data.firestore
 
-import space.narrate.waylan.core.data.firestore.DataOwners
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
-import space.narrate.waylan.core.data.firestore.users.oneDayPastExpiration
 import space.narrate.waylan.core.data.firestore.words.GlobalWord
+import space.narrate.waylan.core.util.minusDays
 import java.util.*
-
-val testDatabase = FirestoreTestDatabase(
-    FirestoreTestData.globalWords,
-    listOf(
-        FirestoreTestUserDocument(
-            FirestoreTestData.user1.uid,
-            FirestoreTestData.user1Words,
-            FirestoreTestData.user1
-        ),
-        FirestoreTestUserDocument(
-            FirestoreTestData.user2.uid,
-            FirestoreTestData.user2Words,
-            FirestoreTestData.user2
-        )
-    )
-)
 
 data class FirestoreTestDatabase(
     val globalWords: List<GlobalWord>,
@@ -31,12 +17,13 @@ data class FirestoreTestDatabase(
 
 data class FirestoreTestUserDocument(
     val uid: String,
+    val user: User,
     val userWords: List<UserWord>,
-    val user: User
+    val addOns: List<UserAddOn>
 )
 
 object FirestoreTestData {
-    val globalWords = listOf(
+    private val globalWords = listOf(
         GlobalWord(
             "123",
             "wharf",
@@ -53,7 +40,22 @@ object FirestoreTestData {
         )
     )
 
-    val user1Words = listOf(
+    private val user1 = User(
+        "123",
+        true,
+        "User 1"
+    )
+
+    private val user2 = User(
+        "345",
+        false,
+        "User 2",
+        "user2@gmail.com",
+        Date(),
+        "teset_merriam_webster_purchase_token"
+    )
+
+    private val user1Words = listOf(
         UserWord(
             "345",
             "ostensibly",
@@ -73,8 +75,15 @@ object FirestoreTestData {
         )
     )
 
+    private val user1AddOns = listOf(
+        // AddOnState.FREE_TRIAL_VALID
+        UserAddOnActionUseCase.TryForFree.perform(user1, UserAddOn(AddOn.MERRIAM_WEBSTER.id)),
+        // AddOnState.NONE
+        UserAddOn(AddOn.MERRIAM_WEBSTER_THESAURUS.id)
+    )
 
-    val user2Words = listOf(
+
+    private val user2Words = listOf(
         UserWord(
             "345",
             "ostensibly",
@@ -94,42 +103,30 @@ object FirestoreTestData {
         )
     )
 
-    val user1 = User(
-        "123",
-        true,
-        "User 1"
+    private val user2AddOns = listOf(
+        // AddOnState.PURCHASED_VALID
+        UserAddOnActionUseCase.Add("test_purchase_tocken").perform(user2, UserAddOn(AddOn.MERRIAM_WEBSTER.id)),
+        // AddOnState.FREE_TRIAL_EXPIRED
+        UserAddOnActionUseCase.TryForFree.perform(user2, UserAddOn(AddOn.MERRIAM_WEBSTER_THESAURUS.id)).apply {
+            started = started.minusDays(validDurationDays + 1L)
+        }
     )
 
-    val user2 = User(
-        "345",
-        false,
-        "User 2",
-        "user2@gmail.com",
-        Date(),
-        "teset_merriam_webster_purchase_token"
+    val testDatabase = FirestoreTestDatabase(
+        globalWords,
+        listOf(
+            FirestoreTestUserDocument(
+                user1.uid,
+                user1,
+                user1Words,
+                user1AddOns
+            ),
+            FirestoreTestUserDocument(
+                user2.uid,
+                user2,
+                user2Words,
+                user2AddOns
+            )
+        )
     )
-
-    val registeredFreeValidUser = User(
-        "abc",
-        false,
-        "Tester",
-        "tester@gmail.com"
-    )
-
-    val registeredFreeInvalidUser = registeredFreeValidUser.copy().apply {
-        merriamWebsterStarted = oneDayPastExpiration
-    }
-
-    val registeredPurchasedValidUser = User(
-        "abc",
-        false,
-        "Tester",
-        "tester@gmail.com",
-        Date(),
-        "394949fkfkdkeerek"
-    )
-
-    val registeredPurchasedInvalidUser = registeredPurchasedValidUser.copy().apply {
-        merriamWebsterStarted = oneDayPastExpiration
-    }
 }

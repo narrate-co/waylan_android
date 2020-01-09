@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import java.lang.IllegalArgumentException
 
 /**
@@ -39,8 +40,8 @@ class MerriamWebsterItemAdapter(
      * This method will diff the current and newly generated list and update the container's views
      * as needed.
      */
-    fun submit(entries: List<MwWordAndDefinitionGroups>, user: User?) {
-        differ.submitList(MerriamWebsterList.generate(entries, user))
+    fun submit(entries: List<MwWordAndDefinitionGroups>, userAddOn: UserAddOn?) {
+        differ.submitList(MerriamWebsterList.generate(entries, userAddOn))
     }
 
     private fun getItem(position: Int): MerriamWebsterItemModel {

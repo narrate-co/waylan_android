@@ -9,8 +9,10 @@ import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.firestore.FirestoreStore
 import space.narrate.waylan.core.data.firestore.Period
-import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.PreferenceStore
@@ -34,20 +36,17 @@ class UserRepository(
         get() = Dispatchers.IO
 
     /** Firestore User */
-
     val user: LiveData<User>
         get() = authenticationStore.uid.switchMapTransform {
             firestoreStore.getUserLive(it)
         }
 
     /** Shared Preferences */
-
     val allNightModes = preferenceStore.allNightModes
 
     val allOrientations = preferenceStore.allOrientations
 
     /** Gloabl scoped Shared Preferences */
-
     var orientationLock: Orientation
         get() = preferenceStore.orientationLock.getValue()
         set(value) = preferenceStore.orientationLock.setValue(value)
@@ -64,7 +63,6 @@ class UserRepository(
 
 
     /** User scoped Shared Preferences */
-
     var hasSeenRecentsBanner: Boolean
         get() = userPreferenceStore.hasSeenRecentsBanner.getValue()
         set(value) = userPreferenceStore.hasSeenRecentsBanner.setValue(value)
@@ -89,13 +87,6 @@ class UserRepository(
     var hasSeenDragDismissOverlay: Boolean
         get() = userPreferenceStore.hasSeenDragDismissOverlay.getValue()
         set(value) = userPreferenceStore.hasSeenDragDismissOverlay.setValue(value)
-
-    var hasSeenMerriamWebsterPermissionPane: Boolean
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getValue()
-        set(value) = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(value)
-
-    val hasSeenMerriamWebsterPermissionPaneLive: LiveData<Boolean>
-        get() = userPreferenceStore.hasSeenMerriamWebsterPermissionPane.getLive()
 
     var recentsListFilter: List<Period>
         get() = userPreferenceStore.recentsListFilter.getValue()
@@ -133,22 +124,42 @@ class UserRepository(
         get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
         set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
 
-
-    suspend fun getUser(): Result<User> {
-        val uid = authenticationStore.uid.value
-            ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
-
-        return firestoreStore.getUser(uid)
+    fun updateUserWith(with: User.() -> Unit) {
+        val uid = authenticationStore.uid.value ?: return
+        launch {
+            firestoreStore.updateUser(uid, with)
+        }
     }
 
-    fun setUserMerriamWebsterState(state: PluginState) {
-        val uid = authenticationStore.uid.value ?: return
+    suspend fun getUserAddOn(addOn: AddOn): Result<UserAddOn> {
+        val uid = authenticationStore.uid.value
+            ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
+        return firestoreStore.getUserAddOn(uid, addOn)
+    }
 
-        // Launch and forget
-        launch {
-            userPreferenceStore.hasSeenMerriamWebsterPermissionPane.setValue(false)
-            firestoreStore.setUserMerriamWebsterState(uid, state)
+    fun getUserAddOnLive(addOn: AddOn): LiveData<UserAddOn> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserAddOnLive(it, addOn)
         }
+    }
+
+    fun getUserAddOnsLive(): LiveData<List<UserAddOn>> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserAddOnsLive(it)
+        }
+    }
+
+    fun updateUserAddOn(addOn: AddOn, useCase: UserAddOnActionUseCase) {
+        val uid = authenticationStore.uid.value ?: return
+        launch {
+            firestoreStore.updateUserAddOnAction(uid, addOn, useCase)
+        }
+    }
+
+    fun updateUserAddOnWith(addOn: AddOn, with: UserAddOn.() -> Unit) {
+        updateUserAddOn(addOn, UserAddOnActionUseCase.Manual {
+            with()
+        })
     }
 
     fun resetPreferences() {

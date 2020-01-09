@@ -111,6 +111,7 @@ class AppNavigator(
                 }
                 R.id.detailsFragment -> Destination.DETAILS
                 R.id.settingsFragment -> Destination.SETTINGS
+                R.id.addOnsFragment -> Destination.ADD_ONS
                 R.id.aboutFragment -> Destination.ABOUT
                 R.id.thirdPartyLibrariesFragment -> Destination.THIRD_PARTY
                 R.id.developerSettingsFragment -> Destination.DEV_SETTINGS

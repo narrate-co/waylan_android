@@ -56,4 +56,22 @@
     <string name="period_label_month">month</string>
     <string name="period_label_year">year</string>
     <string name="period_label_all_time">all time</string>
+    
+    <!--AddOns-->
+    <string name="add_on_action_try_for_free_title">Try for free</string>
+    <string name="add_on_action_add_title">Add</string>
+    <string name="add_on_action_renew_title">Renew</string>
+    <string name="add_on_status_free_trial_valid_days_remaining">Free trial: %1$dd remaining</string>
+    <string name="add_on_status_free_trial_expired">Free trial expired</string>
+    <string name="add_on_status_purchased_valid">Added</string>
+    <string name="add_on_status_purchased_expired">Expired</string>
+
+    <string name="add_on_text_label_free_trial_days_remaining">Free trial: %1$sd</string>
+    <string name="add_on_text_label_free_trial_expired">Free trial expired</string>
+    <string name="add_on_text_label_plugin_expired">Plugin expired</string>
+    <string name="add_on_text_label_renew_days_remaining">Renew: %1$sd remaining</string>
+
+    <string name="add_on_permission_pane_details_button_text">Details</string>
+    <string name="add_on_permission_pane_dismiss_button_text">Dismiss</string>
+
 </resources>

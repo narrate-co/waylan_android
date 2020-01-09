@@ -15,8 +15,10 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
 
 fun View.gone() {
@@ -74,5 +76,3 @@ fun String.toChip(
     }
     return chip
 }
-
-

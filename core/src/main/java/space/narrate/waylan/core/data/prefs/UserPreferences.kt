@@ -9,7 +9,6 @@ object UserPreferences {
     const val HAS_SEEN_TRENDING_BANNER = "has_seen_trending_banner"
     const val HAS_SEEN_FAVORITES_BANNER = "has_seen_favorites_banner"
     const val HAS_SEEN_DRAG_DISMISS_OVERLAY = "has_seen_drag_dismiss_overlay"
-    const val HAS_SEEN_MERRIAM_WEBSTER_PERMISSION_PANE = "has_seen_merriam_webster_permission_pane"
 
     // Filter prefs
     const val RECENTS_LIST_FILTER = "recents_list_filter"

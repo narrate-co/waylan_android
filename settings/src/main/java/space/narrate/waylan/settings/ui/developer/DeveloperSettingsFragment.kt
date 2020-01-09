@@ -7,18 +7,14 @@ import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
-import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingConfig
-import space.narrate.waylan.core.data.firestore.users.PluginState
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
-import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
-import space.narrate.waylan.core.util.configError
-import space.narrate.waylan.core.util.configInformative
+import space.narrate.waylan.core.util.make
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentDeveloperSettingsBinding
 
@@ -80,23 +76,30 @@ class DeveloperSettingsFragment : BaseFragment() {
             appBar.setReachableContinuityNavigator(this@DeveloperSettingsFragment, navigator)
 
             viewModel.shouldShowSnackbar.observe(this@DeveloperSettingsFragment) { event ->
-                event.getUnhandledContent()?.let { showSnackbar(it) }
+                event.withUnhandledContent { it.make(binding.coordinatorLayout).show() }
             }
 
             clearUserPreference.setOnClickListener { viewModel.onClearPreferencesPreferenceClicked() }
+
+            viewModel.isAnonymousUser.observe(this@DeveloperSettingsFragment) {
+                isAnonymousUserPreference.setChecked(it)
+            }
+            isAnonymousUserPreference.setOnClickListener { viewModel.onIsAnonymousUserPreferenceClicked() }
 
             merriamWebsterStatePreference.setOnClickListener {
                 viewModel.onMwStatePreferenceClicked()
             }
 
+            merriamWebsterStateThesaurusPreference.setOnClickListener {
+                viewModel.onMwThesaurusPreferenceClicked()
+            }
+
             viewModel.mwState.observe(this@DeveloperSettingsFragment) { state ->
-                merriamWebsterStatePreference.setDesc(when (state) {
-                    is PluginState.None -> "None"
-                    is PluginState.FreeTrial ->
-                        "Free trial (${if (state.isValid) "valid" else "expired"})"
-                    is PluginState.Purchased ->
-                        "Purchased (${if (state.isValid) "valid" else "expired"})"
-                })
+                merriamWebsterStatePreference.setDesc(state)
+            }
+
+            viewModel.mwThesaurusState.observe(this@DeveloperSettingsFragment) { state ->
+                merriamWebsterStateThesaurusPreference.setDesc(state)
             }
 
             viewModel.useTestSkus.observe(this@DeveloperSettingsFragment) {
@@ -104,11 +107,11 @@ class DeveloperSettingsFragment : BaseFragment() {
             }
             useTestSkusPreference.setOnClickListener { viewModel.onUseTestSkusPreferenceClicked() }
 
-            merriamWebsterBillingResponsePreference.setOnClickListener {
-                viewModel.onMwBillingResponsePreferenceClicked()
+            billingResponsePreference.setOnClickListener {
+                viewModel.onBillingResponsePreferenceClicked()
             }
-            viewModel.mwBillingResponse.observe(this@DeveloperSettingsFragment) {
-                merriamWebsterBillingResponsePreference.setDesc(it)
+            viewModel.billingResponse.observe(this@DeveloperSettingsFragment) {
+                billingResponsePreference.setDesc(it)
             }
 
             informativeSnackbarPreference.setOnClickListener {
@@ -133,24 +136,5 @@ class DeveloperSettingsFragment : BaseFragment() {
             scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
         }
         return super.handleApplyWindowInsets(insets)
-    }
-
-    private fun showSnackbar(model: SnackbarModel) {
-        val length = when (model.length) {
-            SnackbarModel.LENGTH_INDEFINITE -> Snackbar.LENGTH_INDEFINITE
-            SnackbarModel.LENGTH_LONG -> Snackbar.LENGTH_LONG
-            else -> Snackbar.LENGTH_SHORT
-        }
-        val snackbar = Snackbar.make(
-            binding.coordinatorLayout,
-            model.textRes,
-            length
-        )
-        if (model.isError) {
-            snackbar.configError(requireContext())
-        } else {
-            snackbar.configInformative(requireContext())
-        }
-        snackbar.show()
     }
 }

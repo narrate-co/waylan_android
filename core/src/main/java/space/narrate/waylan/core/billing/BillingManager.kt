@@ -2,6 +2,8 @@ package space.narrate.waylan.core.billing
 
 import android.app.Activity
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -10,10 +12,12 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.SkuDetailsResponseListener
-import space.narrate.waylan.core.data.firestore.users.PluginState
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.AddOnAction
 import space.narrate.waylan.core.data.firestore.users.User
-import space.narrate.waylan.core.repo.AnalyticsRepository
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.ui.common.Event
 import java.util.*
 
 /**
@@ -32,12 +36,14 @@ import java.util.*
  *
  * @param userRepository Used to update Firestore [User] objects with purchaseToken and
  *      start dates
+ *
+ * TODO: Possibly break BillingManager out into single use-case specific objects that are created
+ * and destroyed with each event.
  **
  */
 class BillingManager(
     private val context: Context,
-    private val userRepository: UserRepository,
-    private val analyticsRepository: AnalyticsRepository
+    private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
     companion object {
@@ -56,6 +62,10 @@ class BillingManager(
 
     private val workQueue = PriorityQueue<BillingTask>()
 
+    private val _billingEvent: MutableLiveData<Event<BillingEvent>> = MutableLiveData()
+    val billingEvent: LiveData<Event<BillingEvent>>
+        get() = _billingEvent
+
     init {
         doWithServiceConnection {
             queryPurchasesAndSubscription(it, true)
@@ -64,18 +74,17 @@ class BillingManager(
 
     fun initiatePurchaseFlow(
         activity: Activity,
-        skuId: String,
+        addOn: AddOn,
+        addOnAction: AddOnAction,
         @BillingClient.SkuType billingType: String = BillingClient.SkuType.INAPP
     ) {
-//        val sku = if (userRepository.useTestSkus) {
-//            when (skuId) {
-//                BillingConfig.SKU_MERRIAM_WEBSTER -> BillingConfig.TEST_SKU_MERRIAM_WEBSTER
-//                else -> BillingConfig.TEST_SKU_PURCHASED
-//            }
-//        } else {
-//            skuId
-//        }
-        initiatePurchaseFlow(activity, skuId, null, billingType)
+        val sku = if (userRepository.useTestSkus) {
+            BillingConfig.TEST_SKU
+        } else {
+            addOn.sku
+        }
+
+        initiatePurchaseFlow(activity, sku, null, billingType)
     }
 
     private fun initiatePurchaseFlow(
@@ -153,34 +162,63 @@ class BillingManager(
     }
 
     override fun onPurchasesUpdated(resultCode: Int, purchases: MutableList<Purchase>?) {
-        if (resultCode == BillingClient.BillingResponse.OK && purchases != null) {
-            purchases.forEach {
+        if (resultCode == BillingClient.BillingResponse.OK) {
+            purchases?.forEach {
                 handlePurchase(it)
             }
         } else if (resultCode == BillingClient.BillingResponse.USER_CANCELED) {
             // the user canceled the purchase flow
+            purchases?.forEach {
+                handleCanceled(it)
+            }
         } else {
             // a different response was returned
         }
     }
 
-    private fun handlePurchase(purchase: Purchase) {
-        //TODO Make sure we're verifying purchase tokens in a Cloud Function
-
-        val startedDate = Date(purchase.purchaseTime)
-
+    private fun handleCanceled(purchase: Purchase) {
         when (purchase.sku) {
             BillingConfig.SKU_MERRIAM_WEBSTER -> {
-                val pluginState = PluginState.Purchased(startedDate, purchase.purchaseToken)
-                userRepository.setUserMerriamWebsterState(pluginState)
+                _billingEvent.value = Event(BillingEvent.Canceled(AddOn.MERRIAM_WEBSTER))
             }
-            BillingConfig.TEST_SKU_MERRIAM_WEBSTER,
+            BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
+                _billingEvent.value = Event(BillingEvent.Canceled(AddOn.MERRIAM_WEBSTER_THESAURUS))
+            }
+        }
+    }
+
+    private fun handlePurchase(purchase: Purchase) {
+        // TODO Make sure we're verifying purchase tokens in a Cloud Function
+        // TODO Find a way to pass through the Add-on Action taking place.
+        when (purchase.sku) {
+            BillingConfig.SKU_MERRIAM_WEBSTER -> {
+                userRepository.updateUserAddOn(
+                    AddOn.MERRIAM_WEBSTER,
+                    UserAddOnActionUseCase.Add(purchase.purchaseToken)
+                )
+                _billingEvent.value = Event(BillingEvent.Purchased(AddOn.MERRIAM_WEBSTER))
+            }
+            BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
+                userRepository.updateUserAddOn(
+                    AddOn.MERRIAM_WEBSTER_THESAURUS,
+                    UserAddOnActionUseCase.Add(purchase.purchaseToken)
+                )
+                _billingEvent.value = Event(BillingEvent.Purchased(AddOn.MERRIAM_WEBSTER_THESAURUS))
+            }
+            // We're using a test sku
+            BillingConfig.TEST_SKU,
             BillingConfig.TEST_SKU_PURCHASED,
             BillingConfig.TEST_SKU_CANCELED,
             BillingConfig.TEST_SKU_ITEM_UNAVAILABLE -> {
-                val pluginState = PluginState.Purchased(Date(), purchase.purchaseToken)
-                userRepository.setUserMerriamWebsterState(pluginState)
-                analyticsRepository.logMerriamWebsterPurchaseEvent()
+                // Since there is no way to tell which AddOn belongs to a test sku, update all
+                // add ons with the purchase.
+                AddOn.values().forEach {
+                    userRepository.updateUserAddOn(
+                        it,
+                        UserAddOnActionUseCase.Add(purchase.purchaseToken)
+                    )
+                    _billingEvent.value = Event(BillingEvent.Purchased(it))
+                }
             }
         }
 

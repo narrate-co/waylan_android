@@ -32,8 +32,6 @@ import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
  * important user prompts) and the most common settings like orientation lock, night mode,
  * sign out as well as subsequent settings views like about, contact and developer options
  *
- * [R.id.banner] Should show either a prompt to sign up/log in or publish the availability
- *  and status of the user's Merriam-Webster plugin
  * [R.id.night_mode_preference] Allows the user to switch between a light theme, a night theme or
  *  optionally allowing the user to have these set by time of day or the OS's settings
  * [R.id.orientation_preference] Allows the user to explicitly lock the app's orientation
@@ -45,8 +43,6 @@ import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
  *  builds
  */
 class SettingsFragment : BaseFragment() {
-
-    private val billingManager: BillingManager by inject()
 
     private lateinit var binding: FragmentSettingsBinding
 
@@ -73,20 +69,11 @@ class SettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.shouldLaunchLogIn.observe(this) { event ->
-            event.getUnhandledContent()?.let { navigator.toLogIn(requireContext()) }
+            event.withUnhandledContent { navigator.toLogIn(requireContext()) }
         }
 
         viewModel.shouldLaunchSignUp.observe(this) { event ->
-            event.getUnhandledContent()?.let { navigator.toSignUp(requireContext()) }
-        }
-
-        viewModel.shouldLaunchMwPurchaseFlow.observe(this) { event ->
-            event.getUnhandledContent()?.let {
-                billingManager.initiatePurchaseFlow(
-                    requireActivity(),
-                    it.skuId
-                )
-            }
+            event.withUnhandledContent { navigator.toSignUp(requireContext()) }
         }
 
         binding.run {
@@ -104,7 +91,9 @@ class SettingsFragment : BaseFragment() {
 
             appBar.setReachableContinuityNavigator(this@SettingsFragment, navigator)
 
-            setUpBanner()
+            addOnsPreference.setOnClickListener {
+                findNavController().navigate(R.id.action_settingsFragment_to_addOnsFragment)
+            }
 
             setUpNightMode()
 
@@ -127,7 +116,7 @@ class SettingsFragment : BaseFragment() {
                 } catch (e: ActivityNotFoundException) {
                     Snackbar.make(
                         coordinatorLayout,
-                        getString(R.string.settings_email_compose_no_client_error),
+                        R.string.settings_email_compose_no_client_error,
                         Snackbar.LENGTH_SHORT
                     )
                         .configError(requireContext())
@@ -160,35 +149,6 @@ class SettingsFragment : BaseFragment() {
         return super.handleApplyWindowInsets(insets)
     }
 
-    private fun setUpBanner() {
-        viewModel.bannerModel.observe(this) { model ->
-            binding.run {
-                banner
-                    .setText(model.textRes)
-                    .setLabel(MwBannerModel.getConcatenatedLabel(
-                        requireContext(),
-                        model.labelRes,
-                        model.daysRemaining
-                    ))
-                    .setTopButton(model.topButtonRes)
-                    .setOnTopButtonClicked {
-                        viewModel.onMwBannerActionClicked(model.topButtonAction)
-                    }
-                    .setBottomButton(model.bottomButtonRes)
-                    .setOnBottomButtonClicked {
-                        viewModel.onMwBannerActionClicked(model.bottomButtonAction)
-                    }
-
-                if (model.email == null) {
-                    signOutPreference.gone()
-                } else {
-                    signOutPreference.setDesc(model.email)
-                    signOutPreference.visible()
-                }
-            }
-        }
-    }
-
     private fun setUpNightMode() {
         binding.nightModePreference.setOnClickListener { viewModel.onNightModePreferenceClicked() }
 
@@ -197,7 +157,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         viewModel.shouldShowNightModeDialog.observe(this) { event ->
-            event.getUnhandledContent()?.let { showNightModeDialog(it) }
+            event.withUnhandledContent { showNightModeDialog(it) }
         }
     }
 
@@ -209,7 +169,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         viewModel.shouldShowOrientationDialog.observe(this) { event ->
-            event.getUnhandledContent()?.let { showOrientationDialog(it) }
+            event.withUnhandledContent { showOrientationDialog(it) }
         }
     }
 

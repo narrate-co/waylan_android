@@ -9,12 +9,10 @@
         android:paddingTop="@dimen/keyline_3"
         android:paddingBottom="@dimen/keyline_3">
 
-        <com.google.android.material.chip.Chip
-            style="?attr/styleTextLabel"
+        <space.narrate.waylan.core.ui.widget.TextLabelChip
             android:id="@+id/text_label"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/text_label_height"
-            android:text="Free trial: 30d"
+            android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
             android:visibility="gone"

@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.Result
-import space.narrate.waylan.core.data.firestore.users.PluginState
-import space.narrate.waylan.core.data.firestore.users.merriamWebsterState
-import space.narrate.waylan.core.data.firestore.users.oneDayPastExpiration
+import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.AddOnState
+import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
+import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.minusDays
 import space.narrate.waylan.settings.R
 import java.util.*
 
@@ -21,24 +23,47 @@ class DeveloperSettingsViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    val mwState: LiveData<PluginState>
-        get() = userRepository.user.mapTransform {
-            it.merriamWebsterState
+    val isAnonymousUser: LiveData<Boolean>
+        get() = userRepository.user.mapTransform { it.isAnonymous }
+
+    val mwState: LiveData<String>
+        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER).mapTransform {
+            getLabelForAddOnState(it.state)
+        }
+
+    val mwThesaurusState: LiveData<String>
+        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER_THESAURUS).mapTransform {
+            getLabelForAddOnState(it.state)
         }
 
     val useTestSkus: LiveData<Boolean>
         get() = userRepository.useTestSkusLive
 
-    private val _mwBillingResponse: MutableLiveData<String> = MutableLiveData()
-    val mwBillingResponse: LiveData<String>
-    get() = _mwBillingResponse
+    private val _billingResponse: MutableLiveData<String> = MutableLiveData()
+    val billingResponse: LiveData<String>
+    get() = _billingResponse
+
 
     private val _shouldShowSnackbar: MutableLiveData<Event<SnackbarModel>> = MutableLiveData()
     val shouldShowSnackbar: LiveData<Event<SnackbarModel>>
         get() = _shouldShowSnackbar
 
     init {
-        _mwBillingResponse.value = BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+        _billingResponse.value = BillingConfig.TEST_SKU
+    }
+
+    private fun getLabelForAddOnState(state: AddOnState): String {
+        return when (state) {
+            AddOnState.NONE -> "None"
+            AddOnState.FREE_TRIAL_VALID ->
+                "Free trial (valid)"
+            AddOnState.FREE_TRIAL_EXPIRED ->
+                "Free trial (expired)"
+            AddOnState.PURCHASED_VALID ->
+                "Purchased (valid)"
+            AddOnState.PURCHASED_EXPIRED ->
+                "Purchased (expired)"
+        }
     }
 
     fun onClearPreferencesPreferenceClicked() {
@@ -50,66 +75,78 @@ class DeveloperSettingsViewModel(
         ))
     }
 
-    fun onMwStatePreferenceClicked() = viewModelScope.launch {
-        // cycle state
-        val result = userRepository.getUser()
-
-        when (result) {
-            is Result.Success -> {
-                val user = result.data
-                val state = user.merriamWebsterState
-                val newState = when {
-                    //None -> Free Trial (valid)
-                    state is PluginState.None -> {
-                        PluginState.FreeTrial(user.isAnonymous)
-                    }
-                    //FreeTrial (valid) -> FreeTrial (expired)
-                    state is PluginState.FreeTrial && state.isValid -> {
-                        PluginState.FreeTrial(user.isAnonymous, user.oneDayPastExpiration)
-                    }
-                    //FreeTrial (expired) -> Purchased (valid)
-                    state is PluginState.FreeTrial && !state.isValid -> {
-                        PluginState.Purchased(purchaseToken = UUID.randomUUID().toString())
-                    }
-                    //Purchased (valid) -> Purchased (expired)
-                    state is PluginState.Purchased && state.isValid -> {
-                        PluginState.Purchased(
-                            user.oneDayPastExpiration,
-                            user.merriamWebsterPurchaseToken
-                        )
-                    }
-                    //Purchased (expired) -> FreeTrial (valid)
-                    state is PluginState.Purchased && !state.isValid -> {
-                        PluginState.FreeTrial(user.isAnonymous)
-                    }
-                    //Default
-                    else -> PluginState.None()
-                }
-                userRepository.setUserMerriamWebsterState(newState)
-            }
-            is Result.Error -> {
-                _shouldShowSnackbar.value = Event(SnackbarModel(
-                    R.string.auth_error_message_no_current_user,
-                    isError = true
-                ))
-            }
+    fun onIsAnonymousUserPreferenceClicked() {
+        userRepository.updateUserWith {
+            isAnonymous = !isAnonymous
         }
+    }
 
+    fun onMwStatePreferenceClicked() {
+        toggleUserAddOn(AddOn.MERRIAM_WEBSTER)
+    }
+
+    fun onMwThesaurusPreferenceClicked() {
+        toggleUserAddOn(AddOn.MERRIAM_WEBSTER_THESAURUS)
+    }
+
+    private fun toggleUserAddOn(addOn: AddOn) = viewModelScope.launch {
+        // cycle state
+        val result = userRepository.getUserAddOn(addOn)
+        if (result is Result.Success) {
+            val useCase = UserAddOnActionUseCase.Manual {
+                when (result.data.state) {
+                    // PURCHASED_EXPIRED -> NONE
+                    AddOnState.PURCHASED_EXPIRED -> {
+                        hasStartedFreeTrial = false
+                        purchaseToken = ""
+                        isAwareOfExpiration = false
+                    }
+                    // NONE -> FREE_TRIAL_VALID
+                    AddOnState.NONE -> {
+                        hasStartedFreeTrial = true
+                        started = Date()
+                        validDurationDays = 30L
+                    }
+                    // FREE_TRIAL_VALID -> FREE_TRIAL_EXPIRED
+                    AddOnState.FREE_TRIAL_VALID -> {
+                        started = Date().minusDays(validDurationDays + 1)
+                    }
+                    // FREE_TRIAL_EXPIRED -> PURCHASED_VALID
+                    AddOnState.FREE_TRIAL_EXPIRED -> {
+                        purchaseToken = "abc"
+                        started = Date()
+                        validDurationDays = 365L
+                        isAwareOfExpiration = false
+                    }
+                    // PURCHASED_VALID -> PURCHASED_EXPIRED
+                    AddOnState.PURCHASED_VALID -> {
+                        started = Date().minusDays(validDurationDays + 1)
+                    }
+                }
+            }
+            userRepository.updateUserAddOn(addOn, useCase)
+        } else if (result is Result.Error){
+            _shouldShowSnackbar.value = Event(SnackbarModel(
+                // TODO: Change error message to use actual exception
+                R.string.auth_error_message_no_current_user,
+                isError = true
+            ))
+        }
     }
 
     fun onUseTestSkusPreferenceClicked() {
         userRepository.useTestSkus = !userRepository.useTestSkus
     }
 
-    fun onMwBillingResponsePreferenceClicked() {
-        val newResponse = when (_mwBillingResponse.value) {
+    fun onBillingResponsePreferenceClicked() {
+        val newResponse = when (_billingResponse.value) {
             BillingConfig.TEST_SKU_PURCHASED -> BillingConfig.TEST_SKU_CANCELED
             BillingConfig.TEST_SKU_CANCELED -> BillingConfig.TEST_SKU_ITEM_UNAVAILABLE
             BillingConfig.TEST_SKU_ITEM_UNAVAILABLE -> BillingConfig.TEST_SKU_PURCHASED
             else -> BillingConfig.TEST_SKU_PURCHASED
         }
-        BillingConfig.TEST_SKU_MERRIAM_WEBSTER = newResponse
-        _mwBillingResponse.value = BillingConfig.TEST_SKU_MERRIAM_WEBSTER
+        BillingConfig.TEST_SKU = newResponse
+        _billingResponse.value = BillingConfig.TEST_SKU
     }
 
     fun onInformativeSnackbarPreferenceClicked() {

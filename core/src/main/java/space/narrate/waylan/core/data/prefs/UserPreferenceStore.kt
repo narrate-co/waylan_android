@@ -62,12 +62,6 @@ class UserPreferenceStore(
         sharedPrefs
     )
 
-    val hasSeenMerriamWebsterPermissionPane = Preference(
-        UserPreferences.HAS_SEEN_MERRIAM_WEBSTER_PERMISSION_PANE,
-        false,
-        sharedPrefs
-    )
-
     val recentsListFilter = BoxedPreference(
         UserPreferences.RECENTS_LIST_FILTER,
         emptyList<Period>(),
@@ -124,7 +118,6 @@ class UserPreferenceStore(
         hasSeenFavoritesBanner.clear()
         hasSeenTrendingBanner.clear()
         hasSeenDragDismissOverlay.clear()
-        hasSeenMerriamWebsterPermissionPane.clear()
         recentsListFilter.clear()
         trendingListFilter.clear()
         favoritesListFilter.clear()

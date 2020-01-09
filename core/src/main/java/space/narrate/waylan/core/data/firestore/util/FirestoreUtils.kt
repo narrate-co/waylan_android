@@ -15,7 +15,7 @@ fun <T> Query.liveData(clazz: Class<T>): LiveData<List<T>> {
 /**
  * convert a Firestore [DocumentReference] into a [LiveData] object
  */
-fun <T> DocumentReference.liveData(clazz: Class<T>): LiveData<T> {
+fun <T> DocumentReference.liveData(clazz: Class<T>): FirestoreDocumentLiveData<T> {
     return FirestoreDocumentLiveData(this, clazz)
 }
 

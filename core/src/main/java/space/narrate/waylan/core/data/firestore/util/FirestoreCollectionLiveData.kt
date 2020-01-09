@@ -27,14 +27,11 @@ class FirestoreCollectionLiveData<T>(
 
     private val eventListener =
         EventListener<QuerySnapshot> { querySnapshot, firebaseFirestoreException ->
-
             if (firebaseFirestoreException != null) {
                 firebaseFirestoreException.printStackTrace()
             } else {
                 // move parsing off the main thread
-                launch {
-                    value = querySnapshot?.documents?.map { it.toObject(clazz)!! }
-                }
+                launch { value = querySnapshot?.documents?.map { it.toObject(clazz)!! } }
             }
         }
 
