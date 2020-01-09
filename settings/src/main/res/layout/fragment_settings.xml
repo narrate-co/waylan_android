@@ -59,7 +59,7 @@
                     app:desc="None" />
 
                 <space.narrate.waylan.core.ui.widget.CheckPreferenceView
-                    android:id="@+id/sign_out_preference"
+                    android:id="@+id/log_in_sign_out_preference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:title="@string/settings_sign_out_title"
