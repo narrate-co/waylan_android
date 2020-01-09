@@ -8,23 +8,18 @@ import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.observe
-import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.core.billing.BillingManager
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
-import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.launchEmail
-import space.narrate.waylan.core.util.visible
 import space.narrate.waylan.settings.BuildConfig
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentSettingsBinding
-import space.narrate.waylan.settings.ui.about.AboutFragmentDirections
 import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
 
 /**
@@ -35,7 +30,7 @@ import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
  * [R.id.night_mode_preference] Allows the user to switch between a light theme, a night theme or
  *  optionally allowing the user to have these set by time of day or the OS's settings
  * [R.id.orientation_preference] Allows the user to explicitly lock the app's orientation
- * [R.id.sign_out_preference] Should only show for registered users and allows the user to log out
+ * [R.id.log_in_sign_out_preference] Should only show for registered users and allows the user to log out
  *  and sign in with different credentials or create a new account
  * [R.id.about_preference] Leads to [AboutFragment]
  * [R.id.contact_preference] Calls [ContextExtensions.launchEmail]
@@ -100,7 +95,11 @@ class SettingsFragment : BaseFragment() {
             setUpOrientation()
 
             // Sign out preference
-            signOutPreference.setOnClickListener { viewModel.onSignOutClicked() }
+            logInSignOutPreference.setOnClickListener { viewModel.onSignOutClicked() }
+            viewModel.logInSignOut.observe(this@SettingsFragment) { model ->
+                logInSignOutPreference.setTitle(getString(model.titleRes))
+                logInSignOutPreference.setDesc(model.getDesc(requireContext()))
+            }
 
             // About preference
             aboutPreference.setOnClickListener {

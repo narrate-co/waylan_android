@@ -9,6 +9,7 @@ import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.settings.R
 
 /**
  * A ViewModel used by [SettingsFragment] and [DeveloperSettingsFragment]. Handles the manipulation
@@ -26,6 +27,24 @@ class SettingsViewModel(private val userRepository: UserRepository): ViewModel()
 
     val orientation: LiveData<Orientation>
         get() = userRepository.orientationLockLive
+
+    val logInSignOut: LiveData<LogInSignOutModel>
+        get() = userRepository.user.mapTransform {
+            when {
+                it.isAnonymous -> LogInSignOutModel(
+                    R.string.settings_log_in_sign_up_title,
+                    R.string.settings_log_in_sign_up_desc
+                )
+                it.email.isNotBlank() -> LogInSignOutModel(
+                    R.string.settings_sign_out_title,
+                    descString = it.email
+                )
+                else -> LogInSignOutModel(
+                    R.string.settings_sign_out_title,
+                    R.string.settings_sign_out_default_desc
+                )
+            }
+        }
 
     private val _shouldLaunchSignUp: MutableLiveData<Event<Boolean>> =
         MutableLiveData()
