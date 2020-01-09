@@ -21,5 +21,5 @@ val settingsModule = module {
     viewModel { ThirdPartyLibrariesViewModel() }
 
     // Billing
-    single { BillingManager(androidContext(), get(), get()) }
+    single { BillingManager(androidContext(), get()) }
 }

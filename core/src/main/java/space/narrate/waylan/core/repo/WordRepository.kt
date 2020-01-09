@@ -58,12 +58,12 @@ class WordRepository(
         limit: Long? = null,
         filter: List<Period> = emptyList()
     ): LiveData<List<GlobalWord>> {
-        return firestoreStore.getTrending(limit, filter)
+        return firestoreStore.getGlobalWordsTrendingLive(limit, filter)
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
         return authenticationStore.uid.switchMapTransform {
-            firestoreStore.getFavorites(it, limit)
+            firestoreStore.getUserWordsFavoriteLive(it, limit)
         }
     }
 
@@ -79,7 +79,7 @@ class WordRepository(
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
         return authenticationStore.uid.switchMapTransform {
-            firestoreStore.getRecents(it, limit)
+            firestoreStore.getUserWordsRecentLive(it, limit)
         }
     }
 

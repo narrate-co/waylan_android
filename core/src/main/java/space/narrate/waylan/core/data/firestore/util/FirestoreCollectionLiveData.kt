@@ -2,7 +2,6 @@ package space.narrate.waylan.core.data.firestore.util
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query

@@ -30,6 +30,10 @@ fun <X, Y, Z> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> Z): L
     }
 }
 
+/**
+ * Run any [block] of code when a value is posted to this LiveData object. This does not affect
+ * the downstream value of this LiveData object.
+ */
 fun <X> LiveData<X>.doOnEmission(block: (X) -> Unit): LiveData<X> {
     return mapTransform {
         block(it)

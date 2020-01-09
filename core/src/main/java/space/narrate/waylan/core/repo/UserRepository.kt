@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
@@ -125,7 +124,7 @@ class UserRepository(
         get() = userPreferenceStore.landscapeToPortraitOrientationChangeCount.getValue()
         set(value) = userPreferenceStore.landscapeToPortraitOrientationChangeCount.setValue(value)
 
-    fun setUserWith(with: User.() -> Unit) {
+    fun updateUserWith(with: User.() -> Unit) {
         val uid = authenticationStore.uid.value ?: return
         launch {
             firestoreStore.updateUser(uid, with)
@@ -150,15 +149,15 @@ class UserRepository(
         }
     }
 
-    fun setUserAddOn(addOn: AddOn, useCase: UserAddOnActionUseCase) {
+    fun updateUserAddOn(addOn: AddOn, useCase: UserAddOnActionUseCase) {
         val uid = authenticationStore.uid.value ?: return
         launch {
-            firestoreStore.setUserAddOnAction(uid, addOn, useCase)
+            firestoreStore.updateUserAddOnAction(uid, addOn, useCase)
         }
     }
 
-    fun setUserAddOnWith(addOn: AddOn, with: UserAddOn.() -> Unit) {
-        setUserAddOn(addOn, UserAddOnActionUseCase.Manual {
+    fun updateUserAddOnWith(addOn: AddOn, with: UserAddOn.() -> Unit) {
+        updateUserAddOn(addOn, UserAddOnActionUseCase.Manual {
             with()
         })
     }

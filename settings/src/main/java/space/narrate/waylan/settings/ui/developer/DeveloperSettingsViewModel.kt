@@ -76,7 +76,7 @@ class DeveloperSettingsViewModel(
     }
 
     fun onIsAnonymousUserPreferenceClicked() {
-        userRepository.setUserWith {
+        userRepository.updateUserWith {
             isAnonymous = !isAnonymous
         }
     }
@@ -124,7 +124,7 @@ class DeveloperSettingsViewModel(
                     }
                 }
             }
-            userRepository.setUserAddOn(addOn, useCase)
+            userRepository.updateUserAddOn(addOn, useCase)
         } else if (result is Result.Error){
             _shouldShowSnackbar.value = Event(SnackbarModel(
                 // TODO: Change error message to use actual exception

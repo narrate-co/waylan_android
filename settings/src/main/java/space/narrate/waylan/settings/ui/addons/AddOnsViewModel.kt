@@ -126,7 +126,7 @@ class AddOnsViewModel(
 
         when (action) {
             TRY_FOR_FREE -> {
-                userRepository.setUserAddOn(
+                userRepository.updateUserAddOn(
                     addOnItemModel.addOn,
                     UserAddOnActionUseCase.TryForFree
                 )

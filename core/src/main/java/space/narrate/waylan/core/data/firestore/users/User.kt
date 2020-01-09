@@ -10,14 +10,16 @@ import java.util.*
  * @property isAnonymous Whether the user has signed up or not.
  */
 data class User(
-        var uid: String = "",
-        var isAnonymous: Boolean = true,
-        var name: String = "",
-        var email: String = "",
+    var uid: String = "",
+    var isAnonymous: Boolean = true,
+    var name: String = "",
+    var email: String = "",
 
-        // Deprecated fields. Use UserAddOn instead.
-        var merriamWebsterStarted: Date = Date(), // deprecated
-        var merriamWebsterPurchaseToken: String = ""
+    // TODO: Remove once all users are migrated.
+    @Deprecated("User level add-on fields are deprecated. Use UserAddOns instead")
+    var merriamWebsterStarted: Date = Date(), // deprecated
+    @Deprecated("User level add-on fields are deprecated. Use UserAddOns instead")
+    var merriamWebsterPurchaseToken: String = ""
 )
 
 

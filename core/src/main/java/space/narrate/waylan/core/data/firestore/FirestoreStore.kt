@@ -43,38 +43,59 @@ class FirestoreStore(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
-        if (id.isBlank()) return LiveDataUtils.empty()
-        return firestore.words
-            .document(id)
-            .liveData(GlobalWord::class.java)
-    }
-
-    fun getUserWordLive(id: String, uid: String): LiveData<UserWord> {
-        if (id.isBlank()) return LiveDataUtils.empty()
-        return firestore.userWords(uid)
-            .document(id)
-            .liveData(UserWord::class.java)
-    }
-
-    fun getUserAddOnLive(uid: String, addOn: AddOn): LiveData<UserAddOn> {
-        return firestore.userAddOns(uid)
-            .document(addOn.id)
-            .liveData(UserAddOn::class.java)
-            .doOnError {
-                when (it.code) {
-                    FirebaseFirestoreException.Code.UNAVAILABLE,
-                    FirebaseFirestoreException.Code.NOT_FOUND -> launch {
-                        newUserAddOn(uid, addOn)
-                    }
+    suspend fun getUser(uid: String): Result<User> = suspendCancellableCoroutine { cont ->
+        firestore.users.document(uid).get()
+            .addOnFailureListener {
+                cont.resume(Result.Error(it))
+            }
+            .addOnSuccessListener {
+                if (it.exists()) {
+                    cont.resume(Result.Success(it.toObject(User::class.java)!!))
+                } else {
+                    cont.resume(Result.Error(getFirestoreNotFoundException(uid)))
                 }
             }
     }
 
-    fun getUserAddOnsLive(uid: String): LiveData<List<UserAddOn>> {
-        return firestore.userAddOns(uid)
-            .liveData(UserAddOn::class.java)
+    fun getUserLive(uid: String): LiveData<User> {
+        return firestore.users
+            .document(uid)
+            .liveData(User::class.java)
     }
+
+    suspend fun newUser(uid: String, with: User.() -> Unit): Result<User> {
+        return try {
+            val user = User(uid)
+            user.with()
+            setUser(user)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    /**
+     * Create or overwrite a user
+     */
+    private suspend fun setUser(user: User): Result<User> = suspendCancellableCoroutine { cont ->
+        firestore.users.document(user.uid).set(user)
+            .addOnSuccessListener { cont.resume(Result.Success(user)) }
+            .addOnFailureListener { cont.resume(Result.Error(it)) }
+    }
+
+    /**
+     * Update user as specified by [update].
+     */
+    suspend fun updateUser(uid: String, update: User.() -> Unit): Result<User> {
+        val result = getUser(uid)
+        return if (result is Result.Success) {
+            val user = result.data
+            user.update()
+            setUser(user)
+        } else {
+            result
+        }
+    }
+
 
     /**
      * Get the specified [UserAddOn] on of [addOn] from the user with with [uid].
@@ -110,6 +131,25 @@ class FirestoreStore(
         }
     }
 
+    fun getUserAddOnLive(uid: String, addOn: AddOn): LiveData<UserAddOn> {
+        return firestore.userAddOns(uid)
+            .document(addOn.id)
+            .liveData(UserAddOn::class.java)
+            .doOnError {
+                when (it.code) {
+                    FirebaseFirestoreException.Code.UNAVAILABLE,
+                    FirebaseFirestoreException.Code.NOT_FOUND -> launch {
+                        newUserAddOn(uid, addOn)
+                    }
+                }
+            }
+    }
+
+    fun getUserAddOnsLive(uid: String): LiveData<List<UserAddOn>> {
+        return firestore.userAddOns(uid)
+            .liveData(UserAddOn::class.java)
+    }
+
     private suspend fun newUserAddOn(uid: String, addOn: AddOn): Result<UserAddOn> {
         return when (val userResult = getUser(uid)) {
             // Create a new UserAddOn in a valid, free trial state
@@ -131,14 +171,61 @@ class FirestoreStore(
                         isAwareOfExpiration = false
                     }
                 }
-                return suspendCancellableCoroutine { cont ->
-                    firestore.userAddOns(uid).document(userAddOn.id).set(userAddOn)
-                        .addOnSuccessListener { cont.resume(Result.Success(userAddOn)) }
-                        .addOnFailureListener { cont.resume(Result.Error(it)) }
-                }
+                return setUserAddOn(uid, userAddOn)
             }
             is Result.Error -> Result.Error(userResult.exception)
         }
+    }
+
+    private suspend fun setUserAddOn(
+        uid: String,
+        userAddOn: UserAddOn
+    ): Result<UserAddOn> = suspendCancellableCoroutine { cont ->
+        firestore.userAddOns(uid).document(userAddOn.id).set(userAddOn)
+            .addOnSuccessListener { cont.resume(Result.Success(userAddOn)) }
+            .addOnFailureListener { cont.resume(Result.Error(it)) }
+    }
+
+    private suspend fun updateUserAddOn(
+        uid: String,
+        addOn: AddOn,
+        with: UserAddOn.(user: User) -> Unit
+    ): Result<UserAddOn> {
+        val result = getUserAddOn(uid, addOn)
+        val userResult = getUser(uid)
+        return if (result is Result.Success && userResult is Result.Success) {
+            val userAddOn = result.data.apply { with(userResult.data) }
+            return setUserAddOn(uid, userAddOn)
+        } else {
+            result
+        }
+
+    }
+
+    suspend fun updateUserAddOnAction(
+        uid: String,
+        addOn: AddOn,
+        useCase: UserAddOnActionUseCase
+    ) : Result<UserAddOn> {
+        return updateUserAddOn(uid, addOn) { user ->
+            useCase.perform(user, this)
+        }
+    }
+
+    fun getGlobalWordLive(id: String): LiveData<GlobalWord> {
+        if (id.isBlank()) return LiveDataUtils.empty()
+        return firestore.words
+            .document(id)
+            .liveData(GlobalWord::class.java)
+    }
+
+    fun getGlobalWordsTrendingLive(limit: Long?, filter: List<Period>): LiveData<List<GlobalWord>> {
+        val period = filter.firstOrNull()?.viewCountProp ?: Period.ALL_TIME.viewCountProp
+        val query = firestore.words
+            .orderBy(period, Query.Direction.DESCENDING)
+            .limit(limit ?: 25)
+
+        return query.liveData(GlobalWord::class.java)
     }
 
     private suspend fun getUserWord(
@@ -175,6 +262,13 @@ class FirestoreStore(
                 else -> Result.Error(e)
             }
         }
+    }
+
+    fun getUserWordLive(id: String, uid: String): LiveData<UserWord> {
+        if (id.isBlank()) return LiveDataUtils.empty()
+        return firestore.userWords(uid)
+            .document(id)
+            .liveData(UserWord::class.java)
     }
 
     private suspend fun newUserWord(id: String): Result<UserWord> {
@@ -230,17 +324,7 @@ class FirestoreStore(
         }
     }
 
-    fun getTrending(limit: Long?, filter: List<Period>): LiveData<List<GlobalWord>> {
-        val period = filter.firstOrNull()?.viewCountProp ?: Period.ALL_TIME.viewCountProp
-        val query = firestore.words
-            .orderBy(period, Query.Direction.DESCENDING)
-            .limit(limit ?: 25)
-
-        return query.liveData(GlobalWord::class.java)
-    }
-
-    //get all favorites for firestoreUser
-    fun getFavorites(uid: String, limit: Long?): LiveData<List<UserWord>> {
+    fun getUserWordsFavoriteLive(uid: String, limit: Long?): LiveData<List<UserWord>> {
         val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.FAVORITED.name}", true)
             .orderBy("modified", Query.Direction.DESCENDING)
@@ -249,7 +333,6 @@ class FirestoreStore(
         return query.liveData(UserWord::class.java)
     }
 
-    //favorite a word for firestoreUser
     suspend fun setFavorite(
         id: String,
         uid: String,
@@ -265,7 +348,7 @@ class FirestoreStore(
         }
     }
 
-    fun getRecents(uid: String, limit: Long?): LiveData<List<UserWord>> {
+    fun getUserWordsRecentLive(uid: String, limit: Long?): LiveData<List<UserWord>> {
         val query = firestore.userWords(uid)
             .whereEqualTo("types.${UserWordType.RECENT.name}", true)
             .orderBy("modified", Query.Direction.DESCENDING)
@@ -288,12 +371,8 @@ class FirestoreStore(
         uid: String
     ): Result<UserWord> = suspendCancellableCoroutine { cont ->
         firestore.userWords(uid).document(userWord.id).set(userWord)
-            .addOnSuccessListener {
-                cont.resume(Result.Success(userWord))
-            }
-            .addOnFailureListener {
-                cont.resume(Result.Error(it))
-            }
+            .addOnSuccessListener { cont.resume(Result.Success(userWord)) }
+            .addOnFailureListener { cont.resume(Result.Error(it)) }
     }
 
     private suspend fun updateUserWord(
@@ -310,92 +389,5 @@ class FirestoreStore(
         }
 
         return result
-    }
-
-    fun getUserLive(uid: String): LiveData<User> {
-        return firestore.users
-            .document(uid)
-            .liveData(User::class.java)
-    }
-
-    suspend fun getUser(uid: String): Result<User> = suspendCancellableCoroutine { cont ->
-        firestore.users.document(uid).get()
-            .addOnFailureListener {
-                cont.resume(Result.Error(it))
-            }
-            .addOnSuccessListener {
-                if (it.exists()) {
-                    cont.resume(Result.Success(it.toObject(User::class.java)!!))
-                } else {
-                    cont.resume(Result.Error(getFirestoreNotFoundException(uid)))
-                }
-            }
-    }
-
-    suspend fun newUser(uid: String, with: User.() -> Unit): Result<User> {
-        return try {
-            val user = User(uid)
-            user.with()
-            setUser(user)
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-
-    /**
-     * Update user as specified by [update].
-     */
-    suspend fun updateUser(uid: String, update: User.() -> Unit): Result<User> {
-        val result = getUser(uid)
-        return if (result is Result.Success) {
-            val user = result.data
-            user.update()
-            setUser(user)
-        } else {
-            result
-        }
-    }
-
-    /**
-     * Create or overwrite a user
-     */
-    private suspend fun setUser(user: User): Result<User> = suspendCancellableCoroutine { cont ->
-        firestore.users.document(user.uid).set(user)
-            .addOnSuccessListener {
-                cont.resume(Result.Success(user))
-            }
-            .addOnFailureListener {
-                cont.resume(Result.Error(it))
-            }
-    }
-
-    private suspend fun setUserAddOn(
-        uid: String,
-        addOn: AddOn,
-        with: UserAddOn.(user: User) -> Unit
-    ): Result<UserAddOn> {
-        val result = getUserAddOn(uid, addOn)
-        val userResult = getUser(uid)
-        return if (result is Result.Success && userResult is Result.Success) {
-            val userAddOn = result.data.apply { with(userResult.data) }
-            return suspendCancellableCoroutine { cont ->
-                firestore.userAddOns(uid).document(userAddOn.id).set(userAddOn)
-                    .addOnSuccessListener { cont.resume(Result.Success(userAddOn)) }
-                    .addOnFailureListener { cont.resume(Result.Error(it)) }
-            }
-        } else {
-            result
-        }
-
-    }
-
-    suspend fun setUserAddOnAction(
-        uid: String,
-        addOn: AddOn,
-        useCase: UserAddOnActionUseCase
-    ) : Result<UserAddOn> {
-        return setUserAddOn(uid, addOn) { user ->
-            useCase.perform(user, this)
-        }
     }
 }

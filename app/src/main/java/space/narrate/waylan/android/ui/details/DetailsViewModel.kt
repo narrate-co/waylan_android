@@ -78,7 +78,7 @@ class DetailsViewModel(
     }
 
     fun onAddOnDismissClicked(addOn: AddOn) {
-        userRepository.setUserAddOnWith(addOn) {
+        userRepository.updateUserAddOnWith(addOn) {
             isAwareOfExpiration = true
         }
     }

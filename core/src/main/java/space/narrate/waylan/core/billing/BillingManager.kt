@@ -16,7 +16,6 @@ import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
-import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import java.util.*
@@ -44,8 +43,7 @@ import java.util.*
  */
 class BillingManager(
     private val context: Context,
-    private val userRepository: UserRepository,
-    private val analyticsRepository: AnalyticsRepository
+    private val userRepository: UserRepository
 ): PurchasesUpdatedListener {
 
     companion object {
@@ -194,14 +192,14 @@ class BillingManager(
         // TODO Find a way to pass through the Add-on Action taking place.
         when (purchase.sku) {
             BillingConfig.SKU_MERRIAM_WEBSTER -> {
-                userRepository.setUserAddOn(
+                userRepository.updateUserAddOn(
                     AddOn.MERRIAM_WEBSTER,
                     UserAddOnActionUseCase.Add(purchase.purchaseToken)
                 )
                 _billingEvent.value = Event(BillingEvent.Purchased(AddOn.MERRIAM_WEBSTER))
             }
             BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS -> {
-                userRepository.setUserAddOn(
+                userRepository.updateUserAddOn(
                     AddOn.MERRIAM_WEBSTER_THESAURUS,
                     UserAddOnActionUseCase.Add(purchase.purchaseToken)
                 )
@@ -215,7 +213,7 @@ class BillingManager(
                 // Since there is no way to tell which AddOn belongs to a test sku, update all
                 // add ons with the purchase.
                 AddOn.values().forEach {
-                    userRepository.setUserAddOn(
+                    userRepository.updateUserAddOn(
                         it,
                         UserAddOnActionUseCase.Add(purchase.purchaseToken)
                     )

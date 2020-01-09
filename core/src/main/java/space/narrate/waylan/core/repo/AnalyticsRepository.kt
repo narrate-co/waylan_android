@@ -6,7 +6,6 @@ import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
-import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_NAVIGATE_BACK
 import space.narrate.waylan.core.repo.AnalyticsRepository.Companion.EVENT_SEARCH_WORD
 

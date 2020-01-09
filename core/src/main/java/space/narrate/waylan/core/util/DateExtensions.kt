@@ -14,8 +14,12 @@ val Date.isMoreThanOneMinuteAgo: Boolean
 val Date.daysElapsed: Long
     get() = ChronoUnit.DAYS.between(DateTimeUtils.toInstant(this), DateTimeUtils.toInstant(Date()))
 
+/**
+ * Subtract the specified number of [days] from this Date.
+ */
 fun Date.minusDays(days: Long): Date {
-    val cal = Calendar.getInstance()
-    cal.add(Calendar.DAY_OF_YEAR, -(days).toInt())
-    return cal.time
+    return Calendar.getInstance().apply {
+        time = this@minusDays
+        add(Calendar.DAY_OF_YEAR, -(days).toInt())
+    }.time
 }

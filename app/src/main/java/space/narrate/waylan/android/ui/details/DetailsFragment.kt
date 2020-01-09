@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.search.SearchFragment

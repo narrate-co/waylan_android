@@ -36,6 +36,6 @@ class AddOnsViewModelTest {
         )
 
         verify(userRepository)
-            .setUserAddOn(AddOn.MERRIAM_WEBSTER, UserAddOnActionUseCase.TryForFree)
+            .updateUserAddOn(AddOn.MERRIAM_WEBSTER, UserAddOnActionUseCase.TryForFree)
     }
 }
