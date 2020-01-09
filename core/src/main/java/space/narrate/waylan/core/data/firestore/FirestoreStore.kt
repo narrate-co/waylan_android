@@ -163,11 +163,16 @@ class FirestoreStore(
 
                 // Transfer legacy User properties which kept track of Merriam-Webster purchases
                 // over to the new UserAddOn document.
-                if (addOn == AddOn.MERRIAM_WEBSTER && user.merriamWebsterPurchaseToken.isNotBlank()) {
+                if (addOn == AddOn.MERRIAM_WEBSTER) {
                     userAddOn.apply {
                         started = user.merriamWebsterStarted
+                        hasStartedFreeTrial = true
                         purchaseToken = user.merriamWebsterPurchaseToken
-                        validDurationDays = 365L
+                        validDurationDays = when {
+                            user.merriamWebsterPurchaseToken.isNotBlank() -> 365L
+                            !user.isAnonymous -> 30L
+                            else -> 7L
+                        }
                         isAwareOfExpiration = false
                     }
                 }

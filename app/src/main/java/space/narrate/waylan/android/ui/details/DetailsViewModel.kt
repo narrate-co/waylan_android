@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.AddOnState
 import space.narrate.waylan.core.data.firestore.users.isValid
+import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
@@ -36,7 +38,8 @@ class DetailsViewModel(
         .mapOnTransform(userRepository.getUserAddOnsLive()) { list, addOns ->
             val filteredList = list.toMutableList()
             addOns.forEach { addOn ->
-                if (!addOn.isValid && addOn.isAwareOfExpiration) {
+                if (addOn.state == AddOnState.NONE ||
+                    (!addOn.isValid && addOn.isAwareOfExpiration)) {
                     filteredList.removeAll {
                         // Map UserAddOn to a DetailItemType
                         val type = when (AddOn.fromId(addOn.id)) {
