@@ -22,7 +22,8 @@
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="gone"
-        android:background="@color/scrim"/>
+        android:backgroundTint="@color/scrim"
+        android:background="@drawable/tintable"/>
 
     <fragment
         android:id="@+id/contextual_fragment"
@@ -32,8 +33,7 @@
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_skipCollapsed="true"
-        app:behavior_peekHeight="@dimen/contextual_min_peek_height"
-        />
+        app:behavior_peekHeight="@dimen/contextual_min_peek_height" />
 
     <fragment
         android:id="@+id/search_fragment"

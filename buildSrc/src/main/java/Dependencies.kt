@@ -17,8 +17,8 @@ object Versions {
 
     private const val versionMajor = 1
     private const val versionMinor = 0
-    private const val versionPatch = 0
-    private const val versionClassifier = VersionClassifier.SNAPSHOT
+    private const val versionPatch = 1
+    private const val versionClassifier = VersionClassifier.NONE
 
     const val versionCode: Int
          = minSdk * 10000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
