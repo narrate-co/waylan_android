@@ -22,10 +22,13 @@ android {
         }
 
         // Merriam Webster key - hidden from VCS
-        def keyProperties = new Properties()
-        keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
-        def mwApiKey = keyProperties.getProperty("merriamWebster.key", "")
-        buildConfigField "String", "MERRIAM_WEBSTER_KEY", mwApiKey
+        if (rootProject.file('keys.properties').exists()) {
+            def keyProperties = new Properties()
+            keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
+            def mwApiKey = keyProperties.getProperty("merriamWebster.key", "")
+            buildConfigField "String", "MERRIAM_WEBSTER_KEY", mwApiKey
+
+        }
     }
 
     // View/Data binding
@@ -41,14 +44,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    // Testing
-    // Include Android resources for robolectric unit testing.
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 }
 

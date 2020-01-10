@@ -64,21 +64,12 @@ android {
         checkReleaseBuilds false
     }
 
-    // Include Android resources for robolectric unit testing.
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
     // Documentation
     dokka {
         includes = ['app.md']
         outputFormat = 'html'
         outputDirectory = "$buildDir/javadoc"
     }
-
-
 }
 
 kapt {

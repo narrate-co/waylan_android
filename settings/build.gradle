@@ -28,6 +28,11 @@ android {
         }
     }
 
+    // Tests in :settings depend on :core's testLib sources for mock data.
+    sourceSets {
+        test.java.srcDirs += ["${project(':core').projectDir}/src/testLib/java"]
+    }
+
     // View/Data binding
     viewBinding {
         enabled = true
@@ -42,19 +47,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    // Testing
-    // Include Android resources for robolectric unit testing.
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core')
+    testImplementation project(':core')
 
     // Google Play Billing
     implementation Libs.playBilling

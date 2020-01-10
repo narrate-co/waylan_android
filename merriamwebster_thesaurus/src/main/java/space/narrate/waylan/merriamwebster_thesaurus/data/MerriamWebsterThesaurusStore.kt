@@ -33,7 +33,6 @@ class MerriamWebsterThesaurusStore(
     fun getWord(word: String): LiveData<List<ThesaurusEntry>> {
 
         launch {
-            // TODO: Maybe use flow here to avoid multiple calls to the database?
             val entries = thesaurusDao.getWord(word)
             if (entries.isNullOrEmpty() || entries.any { it.lastFetch.isNotFresh() }) {
                 merriamWebsterThesaurusService

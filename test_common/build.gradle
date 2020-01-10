@@ -32,14 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    // Testing
-    // Include Android resources for robolectric unit testing.
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
 }
 
 dependencies {

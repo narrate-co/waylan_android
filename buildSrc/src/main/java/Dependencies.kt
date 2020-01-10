@@ -47,7 +47,7 @@ object Versions {
     const val hamcrest = "1.3"
     const val junit = "4.12"
     const val koin = "2.0.1"
-    const val kotlin = "1.3.50"
+    const val kotlin = "1.3.61"
     const val lifecycle = "2.1.0"
     const val material = "1.2.0-alpha02"
     const val mockito = "2.27.0"

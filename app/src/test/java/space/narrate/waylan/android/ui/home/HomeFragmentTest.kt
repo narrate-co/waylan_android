@@ -39,8 +39,7 @@ import org.mockito.Mockito.`when` as whenever
 @TextLayoutMode(TextLayoutMode.Mode.REALISTIC)
 class HomeFragmentTest: AutoCloseKoinTest() {
 
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val homeViewModel = mock(HomeViewModel::class.java)
