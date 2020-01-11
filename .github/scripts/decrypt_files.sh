@@ -8,5 +8,5 @@ gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
 --output app/google-services.json app/google-services.json.gpg
 
 #Decrypt keys.properties
-gpg --quiet --batch --yes --decrypt --passphrase-"$SECRET_PASSPHRASE" \
+gpg --quiet --batch --yes --decrypt --passphrase="$SECRET_PASSPHRASE" \
   --output keys.properties keys.properties.gpg
