@@ -1,5 +1,6 @@
 package space.narrate.waylan.merriamwebster.di
 
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import space.narrate.waylan.merriamwebster.data.MerriamWebsterRepository
@@ -16,7 +17,7 @@ val merriamWebsterModule = module {
     }
 
     single {
-        MerriamWebsterStore(RetrofitService.getInstance(), get<MerriamWebsterDatabase>().mwDao())
+        MerriamWebsterStore(RetrofitService.getInstance(), get<MerriamWebsterDatabase>().mwDao(), Dispatchers.IO)
     }
 
     single { MerriamWebsterRepository(get()) }

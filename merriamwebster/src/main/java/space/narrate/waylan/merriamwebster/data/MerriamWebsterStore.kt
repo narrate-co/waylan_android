@@ -2,6 +2,7 @@ package space.narrate.waylan.merriamwebster.data
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,11 +34,9 @@ import kotlin.coroutines.CoroutineContext
  */
 class MerriamWebsterStore(
     private val merriamWebsterService: MerriamWebsterService,
-    private val mwDao: MwDao
-) : CoroutineScope {
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
+    private val mwDao: MwDao,
+    private val ioDispatcher: CoroutineDispatcher
+) : CoroutineScope by CoroutineScope(ioDispatcher) {
 
     /**
      * Immediately returns a LiveData object observing the local Merriam-Webster Room db
