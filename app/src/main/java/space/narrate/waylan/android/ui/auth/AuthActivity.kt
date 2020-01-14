@@ -10,20 +10,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
 import androidx.transition.TransitionManager
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,8 +24,9 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.ActivityAuthBinding
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
+import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
@@ -45,18 +38,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private lateinit var containerLayout: LinearLayout
-    private lateinit var credentialsContainerLayout: LinearLayout
-    private lateinit var editTextContainerLayout: LinearLayout
-    private lateinit var emailEditText: AppCompatEditText
-    private lateinit var passwordEditText: AppCompatEditText
-    private lateinit var confirmPasswordEditText: AppCompatEditText
-    private lateinit var doneButton: MaterialButton
-    private lateinit var cancelButton: MaterialButton
-    private lateinit var altCredentialTypeButton: MaterialButton
-    private lateinit var errorTextView: AppCompatTextView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var progressBarTop: ProgressUnderlineView
+    private val binding: ActivityAuthBinding by contentView(R.layout.activity_auth)
 
     private val navigator: Navigator by inject()
 
@@ -82,40 +64,16 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
 
-        val decor = window.decorView
-        val flags = decor.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        decor.systemUiVisibility = flags
-
-        containerLayout = findViewById(R.id.container)
-        credentialsContainerLayout = findViewById(R.id.credentials_container)
-        editTextContainerLayout = findViewById(R.id.edit_text_container)
-        emailEditText = findViewById(R.id.email_edit_text)
-        passwordEditText = findViewById(R.id.password_edit_text)
-        confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text)
-        doneButton = findViewById(R.id.done_button)
-        cancelButton = findViewById(R.id.cancel_button)
-        altCredentialTypeButton = findViewById(R.id.alternate_credintial_type_button)
-        errorTextView = findViewById(R.id.error_text_view)
-        progressBar = findViewById(R.id.progress_bar)
-        progressBarTop = findViewById(R.id.progress_bar_top)
-        progressBarTop.startProgress()
-
-        ViewCompat.setOnApplyWindowInsetsListener(containerLayout) { _, insets ->
-            handleApplyWindowInsets(insets)
-        }
+        binding.progressBarTop.startProgress()
 
         handleIntent(intent)
 
-        emailEditText.addTextChangedListener(errorMessageTextWatcher)
-        passwordEditText.addTextChangedListener(errorMessageTextWatcher)
-        confirmPasswordEditText.addTextChangedListener(errorMessageTextWatcher)
+        binding.emailEditText.addTextChangedListener(errorMessageTextWatcher)
+        binding.passwordEditText.addTextChangedListener(errorMessageTextWatcher)
+        binding.confirmPasswordEditText.addTextChangedListener(errorMessageTextWatcher)
 
-        cancelButton.setOnClickListener { authViewModel.onCancelClicked() }
+        binding.cancelButton.setOnClickListener { authViewModel.onCancelClicked() }
 
         authViewModel.nightMode.observe(this) {
             delegate.localNightMode = it.value
@@ -182,56 +140,49 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        containerLayout.updatePadding(
-            insets.systemWindowInsetLeft,
-            insets.systemWindowInsetTop,
-            insets.systemWindowInsetRight,
-            insets.systemWindowInsetBottom
-        )
-
-        return insets
-    }
-
     // Alter the UI to allow login
     private fun setToLoginUi() {
-        TransitionManager.beginDelayedTransition(containerLayout)
-        confirmPasswordEditText.visibility = View.GONE
-        altCredentialTypeButton.text = getString(R.string.auth_sign_up_button)
-        doneButton.text = getString(R.string.auth_log_in_button)
-        doneButton.setOnClickListener {
-            authViewModel.onLoginClicked(
-                emailEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
-        }
-        altCredentialTypeButton.setOnClickListener {
-            authViewModel.onSignUpAlternateClicked()
+        binding.run {
+            TransitionManager.beginDelayedTransition(container)
+            confirmPasswordEditText.visibility = View.GONE
+            alternateCredintialTypeButton.text = getString(R.string.auth_sign_up_button)
+            doneButton.text = getString(R.string.auth_log_in_button)
+            doneButton.setOnClickListener {
+                authViewModel.onLoginClicked(
+                    binding.emailEditText.text.toString(),
+                    binding.passwordEditText.text.toString()
+                )
+            }
+            alternateCredintialTypeButton.setOnClickListener {
+                authViewModel.onSignUpAlternateClicked()
+            }
         }
     }
 
     // Alter the UI to allow sign up
     private fun setToSignUpUi() {
-        TransitionManager.beginDelayedTransition(containerLayout)
-        confirmPasswordEditText.visibility = View.VISIBLE
-        altCredentialTypeButton.text = getString(R.string.auth_log_in_button)
-        doneButton.text = getString(R.string.auth_sign_up_button)
-        doneButton.setOnClickListener {
-            authViewModel.onSignUpClicked(
-                emailEditText.text.toString(),
-                passwordEditText.text.toString(),
-                confirmPasswordEditText.text.toString()
-            )
-        }
-        altCredentialTypeButton.setOnClickListener {
-            authViewModel.onLoginAlternateClicked()
+        binding.run {
+            TransitionManager.beginDelayedTransition(container)
+            confirmPasswordEditText.visibility = View.VISIBLE
+            alternateCredintialTypeButton.text = getString(R.string.auth_log_in_button)
+            doneButton.text = getString(R.string.auth_sign_up_button)
+            doneButton.setOnClickListener {
+                authViewModel.onSignUpClicked(
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString(),
+                    confirmPasswordEditText.text.toString()
+                )
+            }
+            alternateCredintialTypeButton.setOnClickListener {
+                authViewModel.onLoginAlternateClicked()
+            }
         }
     }
 
     private fun setToAuthenticateUI() {
-        progressBarTop.startProgress()
+        binding.progressBarTop.startProgress()
         val anim = ObjectAnimator.ofFloat(
-            progressBarTop,
+            binding.progressBarTop,
             "alpha",
             1F
         )
@@ -240,7 +191,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
             override fun onAnimationEnd(animation: Animator?) { }
             override fun onAnimationCancel(animation: Animator?) { }
             override fun onAnimationStart(animation: Animator?) {
-                progressBarTop.visibility = View.VISIBLE
+                binding.progressBarTop.visibility = View.VISIBLE
             }
         })
         anim.interpolator = FastOutSlowInInterpolator()
@@ -256,18 +207,18 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         val set = AnimatorSet()
         set.playTogether(
             ObjectAnimator.ofFloat(
-                containerLayout,
+                binding.container,
                 "translationY",
                 resources.displayMetrics.density * -100
             ),
             ObjectAnimator.ofFloat(
-                credentialsContainerLayout,
+                binding.credentialsContainer,
                 "alpha",
                 0F,
                 1F
             ),
             ObjectAnimator.ofFloat(
-                progressBarTop,
+                binding.progressBarTop,
                 "alpha",
                 0F
             )
@@ -275,11 +226,11 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         set.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {}
             override fun onAnimationEnd(p0: Animator?) {
-                progressBarTop.visibility = View.INVISIBLE
+                binding.progressBarTop.visibility = View.INVISIBLE
             }
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationStart(p0: Animator?) {
-                credentialsContainerLayout.visibility = View.VISIBLE
+                binding.credentialsContainer.visibility = View.VISIBLE
             }
         })
         set.interpolator = FastOutSlowInInterpolator()
@@ -292,15 +243,15 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
             if (!lastErrorStateIsShown) {
                 lastErrorStateIsShown = true
 
-                errorTextView.text = message
-                errorTextView.animation?.cancel()
+                binding.errorTextView.text = message
+                binding.errorTextView.animation?.cancel()
                 AnimatorInflater.loadAnimator(this, R.animator.error_text_enter)
                         .apply {
                             interpolator = FastOutSlowInInterpolator()
-                            setTarget(errorTextView)
+                            setTarget(binding.errorTextView)
                             start()
                         }
-                val bgTransition = editTextContainerLayout.background as TransitionDrawable
+                val bgTransition = binding.editTextContainer.background as TransitionDrawable
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.startTransition(200)
 
@@ -312,14 +263,15 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                     this,
                     R.color.on_error_emphasis_disabled
                 )
-                TransitionManager.beginDelayedTransition(containerLayout)
-                emailEditText.setTextColor(errorTextColor)
-                emailEditText.setHintTextColor(errorHintColor)
-                passwordEditText.setTextColor(errorTextColor)
-                passwordEditText.setHintTextColor(errorHintColor)
-                confirmPasswordEditText.setTextColor(errorTextColor)
-                confirmPasswordEditText.setHintTextColor(errorHintColor)
-
+                binding.run {
+                    TransitionManager.beginDelayedTransition(container)
+                    emailEditText.setTextColor(errorTextColor)
+                    emailEditText.setHintTextColor(errorHintColor)
+                    passwordEditText.setTextColor(errorTextColor)
+                    passwordEditText.setHintTextColor(errorHintColor)
+                    confirmPasswordEditText.setTextColor(errorTextColor)
+                    confirmPasswordEditText.setHintTextColor(errorHintColor)
+                }
             }
         }
     }
@@ -328,40 +280,45 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
         if (lastErrorStateIsShown) {
             synchronized(lastErrorStateIsShown) {
                 lastErrorStateIsShown = false
-                errorTextView.animation?.cancel()
+                binding.errorTextView.animation?.cancel()
                 AnimatorInflater.loadAnimator(this, R.animator.error_text_exit)
                         .apply {
                             interpolator = FastOutLinearInInterpolator()
-                            setTarget(errorTextView)
+                            setTarget(binding.errorTextView)
                             start()
                         }
-                val bgTransition = editTextContainerLayout.background as TransitionDrawable
+                val bgTransition = binding.editTextContainer.background as TransitionDrawable
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
 
                 val textColor = getColorFromAttr(R.attr.colorOnBackground)
                 val hintColor = getColorFromAttr(R.attr.colorOnBackground)
-                TransitionManager.beginDelayedTransition(containerLayout)
-                emailEditText.setTextColor(textColor)
-                emailEditText.setHintTextColor(hintColor)
-                passwordEditText.setTextColor(textColor)
-                passwordEditText.setHintTextColor(hintColor)
-                confirmPasswordEditText.setTextColor(textColor)
-                confirmPasswordEditText.setHintTextColor(hintColor)
+
+                binding.run {
+                    TransitionManager.beginDelayedTransition(binding.container)
+                    emailEditText.setTextColor(textColor)
+                    emailEditText.setHintTextColor(hintColor)
+                    passwordEditText.setTextColor(textColor)
+                    passwordEditText.setHintTextColor(hintColor)
+                    confirmPasswordEditText.setTextColor(textColor)
+                    confirmPasswordEditText.setHintTextColor(hintColor)
+                }
             }
         }
     }
 
     private fun showLoading(show: Boolean) {
-        progressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
+        binding.run {
+            progressBar.visibility = if (show) View.VISIBLE else View.INVISIBLE
 
-        altCredentialTypeButton.isEnabled = !show
-        doneButton.isEnabled = !show
-        cancelButton.isEnabled = !show
+            alternateCredintialTypeButton.isEnabled = !show
+            doneButton.isEnabled = !show
+            cancelButton.isEnabled = !show
 
-        altCredentialTypeButton.isClickable = !show
-        doneButton.isClickable = !show
-        cancelButton.isClickable = !show
+            alternateCredintialTypeButton.isClickable = !show
+            doneButton.isClickable = !show
+            cancelButton.isClickable = !show
+        }
     }
 
     companion object {

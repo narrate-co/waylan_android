@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.make
 import space.narrate.waylan.settings.R
@@ -33,7 +31,7 @@ import space.narrate.waylan.settings.databinding.FragmentDeveloperSettingsBindin
  * [R.id.informative_snackbar_preference] Trigger an informative Snackbar to test UI/UX.
  * [R.id.error_snackbar_preference] Trigger an error Snackbar to test UI/UX.
  */
-class DeveloperSettingsFragment : BaseFragment() {
+class DeveloperSettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentDeveloperSettingsBinding
 
@@ -124,17 +122,5 @@ class DeveloperSettingsFragment : BaseFragment() {
         }
 
         startPostponedEnterTransition()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.run {
-            coordinatorLayout.updatePadding(
-                insets.systemWindowInsetLeft,
-                insets.systemWindowInsetTop,
-                insets.systemWindowInsetRight
-            )
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
-        return super.handleApplyWindowInsets(insets)
     }
 }

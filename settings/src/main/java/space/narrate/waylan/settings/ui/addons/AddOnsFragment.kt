@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,6 @@ import space.narrate.waylan.core.billing.BillingManager
 import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.data.firestore.users.statusTextLabel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.launchEmail
@@ -34,7 +32,7 @@ import space.narrate.waylan.settings.ui.settings.SettingsFragment
  * A Fragment that shows a horizontal list of [AddOn]s, the stat of each add on for the current
  * user, and any actions available to be taken on those add-ons.
  */
-class AddOnsFragment : BaseFragment() {
+class AddOnsFragment : Fragment() {
 
     private lateinit var binding: FragmentAddOnsBinding
 
@@ -216,17 +214,5 @@ class AddOnsFragment : BaseFragment() {
                 }
             }
         ).show()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.run {
-            coordinatorLayout.updatePadding(
-                insets.systemWindowInsetLeft,
-                insets.systemWindowInsetTop,
-                insets.systemWindowInsetRight
-            )
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
-        return super.handleApplyWindowInsets(insets)
     }
 }

@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.launchEmail
@@ -37,7 +35,7 @@ import space.narrate.waylan.settings.ui.dialog.RadioGroupAlertDialog
  * [R.id.developer_preference] Leads to [DeveloperSettingsFragment] and is only shown for debug
  *  builds
  */
-class SettingsFragment : BaseFragment() {
+class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
 
@@ -132,20 +130,6 @@ class SettingsFragment : BaseFragment() {
         }
 
         startPostponedEnterTransition()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.run {
-            coordinatorLayout.updatePadding(
-                insets.systemWindowInsetLeft,
-                insets.systemWindowInsetTop,
-                insets.systemWindowInsetRight
-            )
-            scrollView.updatePadding(
-                bottom = insets.systemWindowInsetBottom
-            )
-        }
-        return super.handleApplyWindowInsets(insets)
     }
 
     private fun setUpNightMode() {
