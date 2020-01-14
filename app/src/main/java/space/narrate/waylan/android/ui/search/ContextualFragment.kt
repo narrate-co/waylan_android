@@ -1,27 +1,21 @@
 package space.narrate.waylan.android.ui.search
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.FragmentContextualBinding
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.util.collapse
@@ -30,7 +24,6 @@ import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.getColorFromAttr
 
@@ -39,15 +32,9 @@ import space.narrate.waylan.core.util.getColorFromAttr
  * secondary content about what is in the main fragment container. This Fragment presents
  * things like a filter for filtering a list.
  */
-class ContextualFragment : BaseFragment() {
+class ContextualFragment : Fragment() {
 
-    private lateinit var contextualFrame: FrameLayout
-    private lateinit var closeImageView: AppCompatImageView
-    private lateinit var collapsedContainer: ConstraintLayout
-    private lateinit var expandedContainer: ConstraintLayout
-    private lateinit var titleTextView: AppCompatTextView
-    private lateinit var collapsedChipGroup: ChipGroup
-    private lateinit var expandedChipGroup: ChipGroup
+    private lateinit var binding: FragmentContextualBinding
 
     private val navigator: Navigator by inject()
 
@@ -65,18 +52,12 @@ class ContextualFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_contextual, container, false)
+        binding = FragmentContextualBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contextualFrame = view.findViewById(R.id.contextual_frame)
-        closeImageView = view.findViewById(R.id.close_image_view)
-        collapsedContainer = view.findViewById(R.id.collapsed_container)
-        expandedContainer = view.findViewById(R.id.expanded_container)
-        titleTextView = view.findViewById(R.id.title_text_view)
-        collapsedChipGroup = view.findViewById(R.id.collapsed_chip_group)
-        expandedChipGroup = view.findViewById(R.id.expanded_chip_group)
 
         val materialShapeDrawable = MaterialShapeDrawable(
             requireContext(),
@@ -85,7 +66,7 @@ class ContextualFragment : BaseFragment() {
             DEF_STYLE_RES
         ).apply {
             initializeElevationOverlay(requireContext())
-            elevation = contextualFrame.elevation
+            elevation = binding.contextualFrame.elevation
             fillColor = ColorStateList.valueOf(
                 requireContext().getColorFromAttr(R.attr.colorSurface)
             )
@@ -97,9 +78,9 @@ class ContextualFragment : BaseFragment() {
             )
             strokeWidth = 2F
         }
-        ViewCompat.setBackground(contextualFrame, materialShapeDrawable)
+        ViewCompat.setBackground(binding.contextualFrame, materialShapeDrawable)
 
-        closeImageView.setOnClickListener {
+        binding.closeImageView.setOnClickListener {
             sharedViewModel.onClearListFilter()
         }
 
@@ -125,20 +106,6 @@ class ContextualFragment : BaseFragment() {
         return false
     }
 
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        val searchPeekHeight = SearchFragment.getPeekHeight(requireContext(), insets)
-
-        contextualFrame.updatePadding(
-            left = insets.systemWindowInsetLeft,
-            right = insets.systemWindowInsetRight,
-            bottom = searchPeekHeight
-        )
-
-        bottomSheetBehavior.peekHeight = getPeekHeight(requireContext(), insets)
-
-        return super.handleApplyWindowInsets(insets)
-    }
-
     private fun setUpSheet() {
 
         bottomSheetBehavior.isFitToContents = true
@@ -161,8 +128,8 @@ class ContextualFragment : BaseFragment() {
                 0.0F,
                 1.0F
             )
-            collapsedContainer.alpha = collapsedContainerAlpha
-            expandedContainer.alpha = expandedContainerAlpha
+            binding.collapsedContainer.alpha = collapsedContainerAlpha
+            binding.expandedContainer.alpha = expandedContainerAlpha
         }
 
         (requireActivity() as MainActivity).contextualSheetCallback
@@ -193,33 +160,37 @@ class ContextualFragment : BaseFragment() {
 
 
     private fun setExpandedContainer(title: String) {
-        titleTextView.text = title
-        expandedChipGroup.removeAllViews()
-        Period.values().forEach { period ->
-            val chip = LayoutInflater.from(context).inflate(
+        binding.run {
+            titleTextView.text = title
+            expandedChipGroup.removeAllViews()
+            Period.values().forEach { period ->
+                val chip = LayoutInflater.from(context).inflate(
                     R.layout.contextual_chip_layout,
                     expandedChipGroup,
                     false
-            ) as Chip
-            val label = getString(period.label)
-            chip.text = label
-            chip.setOnClickListener {
-                sharedViewModel.onListFilterPeriodClicked(period)
+                ) as Chip
+                val label = getString(period.label)
+                chip.text = label
+                chip.setOnClickListener {
+                    sharedViewModel.onListFilterPeriodClicked(period)
+                }
+                expandedChipGroup.addView(chip)
             }
-            expandedChipGroup.addView(chip)
         }
     }
 
     private fun setCollapsedChips(list: List<Period>) {
-        collapsedChipGroup.removeAllViews()
-        list.forEach { period ->
-            val chip = LayoutInflater.from(context).inflate(
+        binding.run {
+            collapsedChipGroup.removeAllViews()
+            list.forEach { period ->
+                val chip = LayoutInflater.from(context).inflate(
                     R.layout.contextual_chip_layout,
                     collapsedChipGroup,
                     false
-            ) as Chip
-            chip.text = getString(period.label)
-            collapsedChipGroup.addView(chip)
+                ) as Chip
+                chip.text = getString(period.label)
+                collapsedChipGroup.addView(chip)
+            }
         }
     }
 
@@ -254,15 +225,7 @@ class ContextualFragment : BaseFragment() {
     }
 
     companion object {
-
         private const val DEF_STYLE_ATTR = R.attr.styleBottomSheetStandard
         private const val DEF_STYLE_RES = R.style.Widget_Waylan_BottomSheet_Standard
-
-        fun getPeekHeight(context: Context, insets: WindowInsetsCompat): Int {
-            return SearchFragment.getPeekHeight(context, insets) +
-                context.resources.getDimensionPixelSize(
-                    R.dimen.contextual_collapsed_container_height
-                )
-        }
     }
 }

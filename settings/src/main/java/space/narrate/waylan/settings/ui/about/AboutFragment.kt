@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.android.ext.android.inject
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.settings.BuildConfig
 import space.narrate.waylan.settings.R
@@ -23,7 +21,7 @@ import space.narrate.waylan.settings.databinding.FragmentAboutBinding
  * [R.id.version_preference] The build's version name and listType
  * [R.id.third_party_libs_preference] Leads to [ThirdPartyLibrariesFragment]
  */
-class AboutFragment: BaseFragment() {
+class AboutFragment: Fragment() {
 
     private lateinit var binding: FragmentAboutBinding
 
@@ -76,17 +74,5 @@ class AboutFragment: BaseFragment() {
         }
 
         startPostponedEnterTransition()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.run {
-            coordinatorLayout.updatePadding(
-                insets.systemWindowInsetLeft,
-                insets.systemWindowInsetTop,
-                insets.systemWindowInsetRight
-            )
-            scrollView.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
-        return super.handleApplyWindowInsets(insets)
     }
 }

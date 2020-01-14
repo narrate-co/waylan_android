@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
-import androidx.lifecycle.observe
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.launchWebsite
@@ -23,7 +20,7 @@ import space.narrate.waylan.settings.databinding.FragmentThirdPartyLibrariesBind
 /**
  * A simple fragment that displays a static list of [ThirdPartyLibrary]
  */
-class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Listener {
+class ThirdPartyLibrariesFragment : Fragment(), ThirdPartyLibraryAdapter.Listener {
 
     private lateinit var binding: FragmentThirdPartyLibrariesBinding
 
@@ -68,18 +65,6 @@ class ThirdPartyLibrariesFragment : BaseFragment(), ThirdPartyLibraryAdapter.Lis
 
         setUpList()
         startPostponedEnterTransition()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.run {
-            coordinatorLayout.updatePadding(
-                insets.systemWindowInsetLeft,
-                insets.systemWindowInsetTop,
-                insets.systemWindowInsetRight
-            )
-            recyclerView.updatePadding(bottom = insets.systemWindowInsetBottom)
-        }
-        return super.handleApplyWindowInsets(insets)
     }
 
     private fun setUpList() {

@@ -45,6 +45,7 @@ object Versions {
     const val googleTruth = "0.44"
     const val gson = "2.8.4"
     const val hamcrest = "1.3"
+    const val insetter = "0.2.0"
     const val junit = "4.12"
     const val koin = "2.0.1"
     const val kotlin = "1.3.50"
@@ -109,6 +110,10 @@ object Libs {
 
     // Hamcrest
     const val hamcrest = "org.hamcrest:hamcrest-all:${Versions.hamcrest}"
+
+    // Insetter
+    const val insetterKtx = "dev.chrisbanes:insetter-ktx:${Versions.insetter}"
+    const val insetterDbx = "dev.chrisbanes:insetter-dbx:${Versions.insetter}"
 
     // Unit tests
     const val junit = "junit:junit:${Versions.junit}"

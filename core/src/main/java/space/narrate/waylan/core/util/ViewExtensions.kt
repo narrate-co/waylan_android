@@ -7,11 +7,13 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -20,6 +22,9 @@ import space.narrate.waylan.core.R
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
+import java.util.*
+import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
 fun View.gone() {
     if (visibility != View.GONE) visibility = View.GONE
@@ -75,4 +80,24 @@ fun String.toChip(
         if (onClick != null) onClick(this)
     }
     return chip
+}
+
+/**
+ * A breadth first search of all descendants from [ViewGroup]. This returns the first View which
+ * matches the given [predicate]. If no matching view is found, this method will return null.
+ */
+fun ViewGroup.findFirstDescendantOrNull(predicate: (v: View) -> Boolean): View? {
+    val queue = PriorityQueue<ViewGroup>()
+    queue.add(this)
+    while (queue.isNotEmpty()) {
+        queue.poll()?.children?.forEach {
+            if (predicate(it)) {
+                return it
+            } else if (it is ViewGroup) {
+                queue.add(it)
+            }
+        }
+    }
+
+    return null
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +13,11 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.common.BaseFragment
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.make
@@ -29,7 +27,7 @@ import space.narrate.waylan.core.util.make
  * handles showing the aggregation of WordSet data, Merriam-Webster data and Firestore data
  * for a given word.
  */
-class DetailsFragment: BaseFragment(), DetailAdapterListener {
+class DetailsFragment: Fragment(), DetailAdapterListener {
 
     private lateinit var binding: FragmentDetailsBinding
 
@@ -125,16 +123,6 @@ class DetailsFragment: BaseFragment(), DetailAdapterListener {
 
         // Start enter transition now that things are set up.
         startPostponedEnterTransition()
-    }
-
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        binding.coordinatorLayout.setPadding(
-            insets.systemWindowInsetLeft,
-            insets.systemWindowInsetTop,
-            insets.systemWindowInsetRight,
-            SearchFragment.getPeekHeight(requireContext(), insets)
-        )
-        return super.handleApplyWindowInsets(insets)
     }
 
     override fun onMwRelatedWordClicked(word: String) {

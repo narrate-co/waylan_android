@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrim_frame"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
+    <space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+        android:id="@+id/scrim_frame"
         android:layout_height="match_parent"
-        android:id="@+id/coordinator_layout"
-        android:background="?android:colorBackground">
+        android:layout_width="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:id="@+id/coordinator_layout"
+            android:background="?android:colorBackground"
+            app:paddingLeftSystemWindowInsets="@{true}"
+            app:paddingTopSystemWindowInsets="@{true}"
+            app:paddingRightSystemWindowInsets="@{true}">
 
-            <LinearLayout
-                android:id="@+id/content_container"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:paddingBottomSystemWindowInsets="@{true}">
+
+                <LinearLayout
+                    android:id="@+id/content_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:id="@+id/aboutBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/keyline_3"
+                        android:text="@string/about_header_body" />
+
+                    <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                        android:id="@+id/version_preference"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="@string/about_version_title" />
+
+                    <space.narrate.waylan.core.ui.widget.CheckPreferenceView
+                        android:id="@+id/third_party_libs_preference"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="@string/about_third_party_lib_title"
+                        app:desc="@string/about_third_party_lib_desc"/>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+                android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:title="@string/settings_about_title"/>
 
-                <TextView
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:id="@+id/aboutBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/keyline_3"
-                    android:text="@string/about_header_body" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
-                    android:id="@+id/version_preference"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="@string/about_version_title" />
-
-                <space.narrate.waylan.core.ui.widget.CheckPreferenceView
-                    android:id="@+id/third_party_libs_preference"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="@string/about_third_party_lib_title"
-                    app:desc="@string/about_third_party_lib_desc"/>
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-        <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="@string/settings_about_title"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+    </space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+</layout>
