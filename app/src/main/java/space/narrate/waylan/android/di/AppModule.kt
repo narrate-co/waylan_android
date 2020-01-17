@@ -30,7 +30,7 @@ val appModule = module {
 
     viewModel { HomeViewModel(get()) }
 
-    viewModel { SearchViewModel(get(), get(), get()) }
+    viewModel { SearchViewModel(get(), get(), get(), get()) }
 
     viewModel { ListViewModel(get(), get()) }
 

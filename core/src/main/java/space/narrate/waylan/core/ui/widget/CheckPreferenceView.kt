@@ -10,9 +10,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.use
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.fadeThroughTransition
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.invisible
-import space.narrate.waylan.core.util.swapImageResource
 import space.narrate.waylan.core.util.visible
 
 /**
@@ -132,13 +132,15 @@ class CheckPreferenceView @JvmOverloads constructor(
     fun setChecked(checked: Boolean) {
         this.checked = checked
         checkbox.run {
-            swapImageResource(
-                if (checked) {
-                    R.drawable.ic_round_check_circle_24px
-                } else {
-                    R.drawable.ic_round_check_circle_outline_24px
-                }
-            )
+            fadeThroughTransition {
+                setImageResource(
+                    if (checked) {
+                        R.drawable.ic_round_check_circle_24px
+                    } else {
+                        R.drawable.ic_round_check_circle_outline_24px
+                    }
+                )
+            }
         }
     }
 

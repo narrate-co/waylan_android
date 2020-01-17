@@ -48,4 +48,10 @@
     <string name="audio_clip_no_network_available">No network available</string>
     <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
     <string name="title_merriamwebster_thesaurus">Merriam-Webster Thesaurus</string>
+    <string name="search_shelf_action_unfavorite_content_desc">Unfavorite word</string>
+    <string name="search_shelf_action_favorite_content_desc">Favorite word</string>
+    <string name="search_shelf_action_share_content_desc">Share</string>
+    <string name="search_shelf_action_filter_content_desc">Filter list</string>
+    <string name="search_shelf_action_keyboard_down_content_desc">Close keyboard</string>
+    <string name="search_shelf_action_sheet_close_content_desc">Close sheet</string>
 </resources>

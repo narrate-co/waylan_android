@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -84,4 +85,5 @@ object SheetDimens {
                 R.dimen.contextual_collapsed_container_height
             )
     }
+
 }

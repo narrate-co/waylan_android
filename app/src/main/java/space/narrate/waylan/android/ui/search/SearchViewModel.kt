@@ -3,15 +3,21 @@ package space.narrate.waylan.android.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.waylan.android.R
-import space.narrate.waylan.core.util.MergedLiveData
+import space.narrate.waylan.android.util.SoftInputModel
+import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.data.prefs.RotationUtils
 import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.Destination
+import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.util.MergedLiveData
+import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
 
@@ -21,7 +27,8 @@ import space.narrate.waylan.core.util.switchMapTransform
 class SearchViewModel(
     private val wordRepository: WordRepository,
     private val userRepository: UserRepository,
-    private val analyticsRepository: AnalyticsRepository
+    private val analyticsRepository: AnalyticsRepository,
+    private val navigator: Navigator
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
     private val searchInput: MutableLiveData<String> = MutableLiveData()
@@ -29,6 +36,64 @@ class SearchViewModel(
     val searchResults: LiveData<List<SearchItemModel>> = searchInput
         .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
+
+    val searchShelfModel: LiveData<SearchShelfActionsModel>
+        get() = SearchShelfActionsLiveData(
+            navigator.currentDestination,
+            currentUserWord,
+            userRepository.trendingListFilterLive,
+            _sheetOffset,
+            _sheetState,
+            _softInputModel
+        )
+
+//    val searchShelfModel: LiveData<SearchShelfActionsModel>
+//        get() = navigator.currentDestination
+//            .switchMapTransform { dest ->
+//                val model: LiveData<SearchShelfActionsModel> = when (dest) {
+//                    Destination.DETAILS ->
+//                        currentUserWord.mapTransform { SearchShelfActionsModel.DetailsShelfActions(it) }
+//                    Destination.TRENDING ->
+//                        userRepository.trendingListFilterLive.mapTransform {
+//                            SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
+//                        }
+//                    else -> {
+//                        val data = MutableLiveData<SearchShelfActionsModel>()
+//                        data.value = SearchShelfActionsModel.None
+//                        data
+//                    }
+//                }
+//                model
+//            }
+//            .mapOnTransform(sheetKeyboardState) { model, sheetKeyboardState ->
+//                val isSheetExpanded = sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_HIDDEN &&
+//                    sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_COLLAPSED
+//                val isKeyboardOpen = sheetKeyboardState.softInputModel.isOpen
+//                if (isSheetExpanded || isKeyboardOpen) {
+//                    SearchShelfActionsModel.SheetKeyboardControllerActions(isSheetExpanded, isKeyboardOpen)
+//                } else {
+//                    model
+//                }
+//            }
+
+    private val _currentWord: MutableLiveData<String> = MutableLiveData()
+
+    private val currentUserWord: LiveData<UserWord>
+        get() = _currentWord.switchMapTransform { wordRepository.getUserWord(it) }
+
+    private val _softInputModel: MutableLiveData<SoftInputModel> = MutableLiveData()
+
+    private val _sheetOffset: MutableLiveData<Float> = MutableLiveData()
+
+    private val _sheetState: MutableLiveData<Int> = MutableLiveData()
+
+    private val _shouldCloseSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldCloseSheet: LiveData<Event<Boolean>>
+        get() = _shouldCloseSheet
+
+    private val _shouldCloseKeyboard: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldCloseKeyboard: LiveData<Event<Boolean>>
+        get() = _shouldCloseKeyboard
 
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
@@ -77,8 +142,39 @@ class SearchViewModel(
         }
     }
 
+    fun onCurrentWordChanged(word: String) {
+        _currentWord.value = word
+    }
+
+    fun onSoftInputChanged(model: SoftInputModel) {
+        _softInputModel.value = model
+    }
+
+    fun onSheetOffsetChanged(offset: Float) {
+        _sheetOffset.value = offset
+    }
+
+    fun onSheetStateChanged(state: Int) {
+        _sheetState.value = state
+    }
+
     fun onSearchInputTextChanged(input: CharSequence?) {
         searchInput.value = input?.toString() ?: ""
+    }
+
+    fun onFavoriteUnfavoriteShelfActionClicked(model: SearchShelfActionsModel.DetailsShelfActions) {
+        val id = _currentWord.value ?: return
+        wordRepository.setUserWordFavorite(id, !model.isFavorited)
+    }
+
+    fun onSheetKeyboardControllerShelfActionClicked(
+        model: SearchShelfActionsModel.SheetKeyboardControllerActions
+    ) {
+        if (model.isKeyboardOpen) {
+            _shouldCloseKeyboard.value = Event(true)
+        } else if (model.isSheetExpanded) {
+            _shouldCloseSheet.value = Event(true)
+        }
     }
 
     fun onWordClicked(item: SearchItemModel) {

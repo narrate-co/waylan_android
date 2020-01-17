@@ -29,7 +29,14 @@ data class UserWord(
     var defPreview: MutableMap<String, String> = mutableMapOf(),
     var synonymPreview: MutableMap<String, String> = mutableMapOf(),
     var labelsPreview: MutableMap<String, String> = mutableMapOf()
-) : ViewCountDocument()
+) : ViewCountDocument() {
+
+    val isFavorited: Boolean
+        get() = types.containsKey(UserWordType.FAVORITED.name)
+
+    val isRecent: Boolean
+        get() = types.containsKey(UserWordType.RECENT.name)
+}
 
 
 

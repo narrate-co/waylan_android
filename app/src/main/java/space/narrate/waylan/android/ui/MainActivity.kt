@@ -70,14 +70,14 @@ class MainActivity : AppCompatActivity() {
             // empty init clause to trigger ContentViewBindingDelegate
         }
 
-        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
-            navigator.setCurrentDestination(destination, arguments)
-        }
-
         searchFragment =
             supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
         contextualFragment =
             supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
+
+        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
+            navigator.setCurrentDestination(destination, arguments)
+        }
 
         navigator.shouldNavigateBack.observe(this) { event ->
             event.withUnhandledContent { onBackPressed() }
