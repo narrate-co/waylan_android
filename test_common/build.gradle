@@ -52,4 +52,6 @@ dependencies {
     implementation Libs.espressoContrib
     implementation Libs.espressoIntents
     implementation Libs.retrofit
+    implementation Libs.koin
+    implementation Libs.koinAndroidViewModel
 }

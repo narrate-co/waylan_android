@@ -34,7 +34,7 @@ object Versions {
     const val crashlytics = "2.10.1"
     const val dagger = "2.16"
     const val dokka = "0.9.17"
-    const val espresso = "3.3.0-alpha02"
+    const val espresso = "3.3.0-alpha03"
     const val fabric = "1.28.0"
     const val firebaseAuth = "19.0.0"
     const val firebaseCore = "17.2.0"
@@ -57,12 +57,11 @@ object Versions {
     const val okhttp3 = "3.10.0"
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.4.0"
-    const val robolectric = "4.3"
+    const val robolectric = "4.3.1"
     const val room = "2.2.0-rc01"
-    const val testCore = "1.2.1-alpha02"
-    const val testCoreKtx = "1.2.0-beta01"
-    const val testExtKotlinRunner = "1.1.1-beta01"
-    const val testRules = "1.2.0-beta01"
+    const val testCoreKtx = "1.3.0-alpha03"
+    const val testExtKotlinRunner = "1.1.2-alpha03"
+    const val testRules = "1.3.0-alpha03"
     const val threetenbpGson = "1.0.2"
     const val threetenbp = "1.3.6"
 }
@@ -172,7 +171,7 @@ object Libs {
     const val threeTenBpGsonAdapter = "org.aaronhe:threetenbp-gson-adapter:${Versions.threetenbpGson}"
 
     // AndroidX Testing
-    const val testCore = "androidx.test:core:${Versions.testCore}"
+//    const val testCore = "androidx.test:core:${Versions.testCore}"
     const val testCoreKtx = "androidx.test:core-ktx:${Versions.testCoreKtx}"
     const val testRules = "androidx.test:rules:${Versions.testRules}"
 

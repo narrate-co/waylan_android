@@ -17,29 +17,24 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito.mock
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
 import org.robolectric.annotation.TextLayoutMode
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
-import space.narrate.waylan.core.di.coreModule
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.settings.di.settingsModule
-import space.narrate.waylan.settings.ui.settings.NightModeRadioItemModel
-import space.narrate.waylan.settings.ui.settings.OrientationRadioItemModel
-import space.narrate.waylan.settings.ui.settings.SettingsFragment
-import space.narrate.waylan.settings.ui.settings.SettingsViewModel
+import space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+import space.narrate.waylan.settings.ui.settings.*
+import space.narrate.waylan.test_common.TestApp
 import org.mockito.Mockito.`when` as whenever
 
-// TODO: Revise with custom TestApplication
 //@RunWith(AndroidJUnit4::class)
+//@Config(application = TestApp::class)
 //@MediumTest
 //@LooperMode(LooperMode.Mode.PAUSED)
 //@TextLayoutMode(TextLayoutMode.Mode.REALISTIC)
@@ -57,6 +52,8 @@ import org.mockito.Mockito.`when` as whenever
 //    private val shouldLaunchLogIn: MutableLiveData<Event<Boolean>> = MutableLiveData()
 //    private val shouldShowNightModeDialog: MutableLiveData<Event<List<NightModeRadioItemModel>>> = MutableLiveData()
 //    private val shouldShowOrientationDialog: MutableLiveData<Event<List<OrientationRadioItemModel>>> = MutableLiveData()
+//    private val logInSignOutModel = MutableLiveData<LogInSignOutModel>()
+//    private val navigatorReachabilityState = MutableLiveData<ReachabilityAppBarLayout.ReachableContinuityNavigator.State>()
 //
 //    @Before
 //    fun setUp() {
@@ -66,23 +63,23 @@ import org.mockito.Mockito.`when` as whenever
 //        whenever(settingsViewModel.shouldLaunchSignUp).thenReturn(shouldLaunchSignUp)
 //        whenever(settingsViewModel.shouldShowNightModeDialog).thenReturn(shouldShowNightModeDialog)
 //        whenever(settingsViewModel.shouldShowOrientationDialog).thenReturn(shouldShowOrientationDialog)
+//        whenever(settingsViewModel.logInSignOut).thenReturn(logInSignOutModel)
+//        whenever(navigator.reachabilityState).thenReturn(navigatorReachabilityState)
 //
-//        startKoin {
-//            androidContext(context)
-//            module(override = true) {
-//                single { navigator }
-//                single { settingsViewModel }
-//                viewModel { settingsViewModel }
-//            }
-//        }
+//        loadKoinModules(
+//                module(override = true) {
+//                    single { navigator }
+//                    single { settingsViewModel }
+//                }
+//        )
 //    }
 //
 //    @Test
-//    fun shouldShowAboutPreference() {
+//    fun shouldShowAddOnsPreferenceTitle() {
 //        launchFragment()
 //
-//        val aboutTitleText = context.getString(R.string.settings_about_title)
-//        onView(withText(aboutTitleText)).check(matches(isDisplayed()))
+//        val settingsTitle = context.getString(R.string.add_ons_title)
+//        onView(withText(settingsTitle)).check(matches(isDisplayed()))
 //    }
 //
 //    private fun launchFragment(navController: NavController? = null) {

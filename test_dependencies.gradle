@@ -38,14 +38,15 @@ dependencies {
     testImplementation Libs.okhttp3MockWebServer
 
     // AndroidX JVM tests
-    testImplementation Libs.testCore
+//    testImplementation Libs.testCore
     testImplementation Libs.testCoreKtx
     testImplementation Libs.junitKtx
     testImplementation Libs.testRules
     testImplementation Libs.fragment
     testImplementation Libs.fragmentTesting
 
-    debugImplementation Libs.testCore
+//    debugImplementation Libs.testCore
+    debugImplementation Libs.testCoreKtx
     debugImplementation Libs.fragmentTesting
 
     // Android Unit tests
