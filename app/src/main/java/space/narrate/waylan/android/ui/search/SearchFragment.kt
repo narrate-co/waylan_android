@@ -188,12 +188,22 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 requireView().translationY = -it.height.toFloat()
             }
 
-        (requireActivity() as MainActivity).searchSheetCallback.currentStateLive.observe(this) {
-            viewModel.onSheetStateChanged(it)
-        }
+        (requireActivity() as MainActivity).run {
+            searchSheetCallback.currentSlideLive.observe(this@SearchFragment) {
+                viewModel.onSearchSheetOffsetChanged(it)
+            }
 
-        (requireActivity() as MainActivity).searchSheetCallback.currentSlideLive.observe(this) {
-            viewModel.onSheetOffsetChanged(it)
+            searchSheetCallback.currentStateLive.observe(this@SearchFragment) {
+                viewModel.onSearchSheetStateChanged(it)
+            }
+
+            contextualSheetCallback.currentSlideLive.observe(this@SearchFragment) {
+                viewModel.onContextualSheetOffsetChanged(it)
+            }
+
+            contextualSheetCallback.currentStateLive.observe(this@SearchFragment) {
+                viewModel.onContextualSheetStateChanged(it)
+            }
         }
 
         viewModel.shouldCloseSheet.observe(this) {
@@ -339,16 +349,16 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
 
         // Hide filter action if contextual sheet is expanded
-        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = navigator.currentDestination.value
-                ?: Destination.HOME
-            if (currentDest == Destination.TRENDING) {
-                setSheetSlideOffsetForActions(
-                        (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
-                        offset
-                )
-            }
-        }
+//        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
+//            val currentDest = navigator.currentDestination.value
+//                ?: Destination.HOME
+//            if (currentDest == Destination.TRENDING) {
+//                setSheetSlideOffsetForActions(
+//                        (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
+//                        offset
+//                )
+//            }
+//        }
     }
 
     private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {

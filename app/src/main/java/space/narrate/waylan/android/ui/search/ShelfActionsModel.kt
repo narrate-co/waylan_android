@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.UserWordType
+import space.narrate.waylan.core.data.firestore.users.isFavorited
 import space.narrate.waylan.core.ui.common.Diffable
 
 sealed class SearchShelfActionsModel : Diffable<SearchShelfActionsModel> {
@@ -49,7 +50,7 @@ sealed class SearchShelfActionsModel : Diffable<SearchShelfActionsModel> {
         }
     }
 
-    class ListShelfActions(hasFilter: Boolean) : SearchShelfActionsModel() {
+    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionsModel() {
 
         override val numberOfActionsToShow: Int = if (hasFilter) 0 else 1
 
@@ -61,6 +62,7 @@ sealed class SearchShelfActionsModel : Diffable<SearchShelfActionsModel> {
         override fun isContentSameAs(newOther: SearchShelfActionsModel): Boolean {
             if (newOther !is ListShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
+                && hasFilter == newOther.hasFilter
                 && actionOne.isContentSameAs(newOther.actionOne)
         }
     }

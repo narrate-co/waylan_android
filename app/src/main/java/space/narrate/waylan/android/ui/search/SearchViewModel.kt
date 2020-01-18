@@ -3,7 +3,6 @@ package space.narrate.waylan.android.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.users.UserWord
@@ -13,11 +12,9 @@ import space.narrate.waylan.core.data.prefs.RotationUtils
 import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.repo.WordRepository
-import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.util.MergedLiveData
-import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
 
@@ -42,8 +39,10 @@ class SearchViewModel(
             navigator.currentDestination,
             currentUserWord,
             userRepository.trendingListFilterLive,
-            _sheetOffset,
-            _sheetState,
+            _searchSheetOffset,
+            _searchSheetState,
+            _contextualSheetOffset,
+            _contextualSheetState,
             _softInputModel
         )
 
@@ -82,10 +81,10 @@ class SearchViewModel(
         get() = _currentWord.switchMapTransform { wordRepository.getUserWord(it) }
 
     private val _softInputModel: MutableLiveData<SoftInputModel> = MutableLiveData()
-
-    private val _sheetOffset: MutableLiveData<Float> = MutableLiveData()
-
-    private val _sheetState: MutableLiveData<Int> = MutableLiveData()
+    private val _searchSheetOffset: MutableLiveData<Float> = MutableLiveData()
+    private val _searchSheetState: MutableLiveData<Int> = MutableLiveData()
+    private val _contextualSheetOffset: MutableLiveData<Float> = MutableLiveData()
+    private val _contextualSheetState: MutableLiveData<Int> = MutableLiveData()
 
     private val _shouldCloseSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldCloseSheet: LiveData<Event<Boolean>>
@@ -150,12 +149,20 @@ class SearchViewModel(
         _softInputModel.value = model
     }
 
-    fun onSheetOffsetChanged(offset: Float) {
-        _sheetOffset.value = offset
+    fun onSearchSheetOffsetChanged(offset: Float) {
+        _searchSheetOffset.value = offset
     }
 
-    fun onSheetStateChanged(state: Int) {
-        _sheetState.value = state
+    fun onSearchSheetStateChanged(state: Int) {
+        _searchSheetState.value = state
+    }
+
+    fun onContextualSheetOffsetChanged(offset: Float) {
+        _contextualSheetOffset.value = offset
+    }
+
+    fun onContextualSheetStateChanged(state: Int) {
+        _contextualSheetState.value = state
     }
 
     fun onSearchInputTextChanged(input: CharSequence?) {

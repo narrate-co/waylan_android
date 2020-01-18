@@ -8,7 +8,6 @@ import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.ui.Destination
-import space.narrate.waylan.core.util.MergedListLiveData
 import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
@@ -21,42 +20,67 @@ class SearchShelfActionsLiveData(
     private val currentDestination: LiveData<Destination>,
     private val currentUserWord: LiveData<UserWord>,
     private val trendingListFilter: LiveData<List<Period>>,
-    private val sheetOffset: LiveData<Float>,
-    private val sheetState: LiveData<Int>,
+    private val searchSheetOffset: LiveData<Float>,
+    private val searchSheetState: LiveData<Int>,
+    private val contextualSheetOffset: LiveData<Float>,
+    private val contextualSheetState: LiveData<Int>,
     private val softInputState: LiveData<SoftInputModel>
 ) : MediatorLiveData<SearchShelfActionsModel>() {
 
     data class SheetKeyboardState(
-        val sheetOffset: Float,
-        val sheetState: Int,
+        val searchSheetOffset: Float,
+        val searchSheetState: Int,
+        val contextualSheetOffset: Float,
+        val contextualSheetState: Int,
         val softInputState: SoftInputModel
     )
 
     class SheetKeyboardStateLiveData(
-        sheetOffset: LiveData<Float>,
-        sheetState: LiveData<Int>,
+        searchSheetOffset: LiveData<Float>,
+        searchSheetState: LiveData<Int>,
+        contextualSheetOffset: LiveData<Float>,
+        contextualSheetState: LiveData<Int>,
         softInputState: LiveData<SoftInputModel>
     ) : MediatorLiveData<SheetKeyboardState>() {
 
-        private var lastOffset: Float = 0F
-        private var lastSheetState: Int = BottomSheetBehavior.STATE_HIDDEN
+        private var lastSearchSheetOffset: Float = 0F
+        private var lastSearchSheetState: Int = BottomSheetBehavior.STATE_HIDDEN
+        private var lastContextualSheetOffset: Float = 0F
+        private var lastContextualSheetState: Int = BottomSheetBehavior.STATE_HIDDEN
+
+        // As the only nullable value, SoftInputModel is the only value this live data will wait
+        // for before posting any values.
         private var lastSoftInputState: SoftInputModel? = null
 
         init {
-            addSource(sheetOffset) { onSheetOffsetChanged(it) }
-            addSource(sheetState) { onSheetStateChanged(it) }
+            addSource(searchSheetOffset) { onSearchSheetOffsetChanged(it) }
+            addSource(searchSheetState) { onSearchSheetStateChanged(it) }
+            addSource(contextualSheetOffset) { onContextualSheetOffsetChanged(it) }
+            addSource(contextualSheetState) { onContextualSheetStateChanged(it) }
             addSource(softInputState) { onSoftInputStateChanged(it) }
         }
 
-        private fun onSheetOffsetChanged(newOffset: Float) {
-            lastOffset = newOffset
+        private fun onSearchSheetOffsetChanged(newOffset: Float) {
+            lastSearchSheetOffset = newOffset
             // never update this live data's value from an offset change since the offset
             // isn't something we care about downstream and it causes a lot of re-emissions
         }
 
-        private fun onSheetStateChanged(newState: Int) {
-            if (lastSheetState == null || lastSheetState != newState) {
-                lastSheetState = newState
+        private fun onSearchSheetStateChanged(newState: Int) {
+            if (lastSearchSheetState != newState) {
+                lastSearchSheetState = newState
+                maybePostValue()
+            }
+        }
+
+        private fun onContextualSheetOffsetChanged(newOffset: Float) {
+            lastContextualSheetOffset = newOffset
+            // do nothing
+        }
+
+        private fun onContextualSheetStateChanged(newState: Int) {
+            if (lastContextualSheetState != newState) {
+                lastContextualSheetState = newState
                 maybePostValue()
             }
         }
@@ -69,17 +93,33 @@ class SearchShelfActionsLiveData(
         }
 
         private fun maybePostValue() {
-            val offset = lastOffset
-            val sheetState = lastSheetState
+            val searchOffset = lastSearchSheetOffset
+            val searchSheetState = lastSearchSheetState
+            val contextualOffset = lastContextualSheetOffset
+            val contextualSheetState = lastContextualSheetState
             val softInputState = lastSoftInputState
-            if (offset != null && sheetState != null && softInputState != null) {
-                postValue(SheetKeyboardState(offset, sheetState, softInputState))
+            if (softInputState != null) {
+                postValue(
+                    SheetKeyboardState(
+                        searchOffset,
+                        searchSheetState,
+                        contextualOffset,
+                        contextualSheetState,
+                        softInputState
+                    )
+                )
             }
         }
     }
 
     private val _sheetKeyboardState: LiveData<SheetKeyboardState>
-        get() = SheetKeyboardStateLiveData(sheetOffset, sheetState, softInputState)
+        get() = SheetKeyboardStateLiveData(
+            searchSheetOffset,
+            searchSheetState,
+            contextualSheetOffset,
+            contextualSheetState,
+            softInputState
+        )
 
     private var lastSearchShelfModelValue: SearchShelfActionsModel? = null
 
@@ -104,11 +144,18 @@ class SearchShelfActionsLiveData(
                 model
             }
             .mapOnTransform(_sheetKeyboardState) { model, sheetKeyboardState ->
-                val isSheetExpanded = sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_HIDDEN &&
-                    sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_COLLAPSED
+                val isSearchSheetExpanded = sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_HIDDEN &&
+                    sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_COLLAPSED
+                val isContextualSheetExpanded = sheetKeyboardState.contextualSheetState != BottomSheetBehavior.STATE_HIDDEN &&
+                    sheetKeyboardState.contextualSheetState != BottomSheetBehavior.STATE_COLLAPSED
+                val hasAppliedFilter = (model as? SearchShelfActionsModel.ListShelfActions)?.hasFilter == true
                 val isKeyboardOpen = sheetKeyboardState.softInputState.isOpen
-                if (isSheetExpanded || isKeyboardOpen) {
-                    SearchShelfActionsModel.SheetKeyboardControllerActions(isSheetExpanded, isKeyboardOpen)
+
+                if (isSearchSheetExpanded || isKeyboardOpen) {
+                    SearchShelfActionsModel.SheetKeyboardControllerActions(isSearchSheetExpanded, isKeyboardOpen)
+                } else if (isContextualSheetExpanded) {
+                    model
+                    SearchShelfActionsModel.None()
                 } else {
                     model
                 }
