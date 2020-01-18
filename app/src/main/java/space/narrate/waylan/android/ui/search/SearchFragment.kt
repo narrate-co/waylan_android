@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -37,10 +36,10 @@ import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
+import space.narrate.waylan.core.util.fadeThroughTransition
 import space.narrate.waylan.core.util.getColorFromAttr
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.showSoftKeyboard
-import space.narrate.waylan.core.util.fadeThroughTransition
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -185,8 +184,11 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             .getKeyboardHeightData()
             .observe(this) {
                 viewModel.onSoftInputChanged(it)
-                requireView().translationY = -it.height.toFloat()
             }
+
+        viewModel.keyboardHeight.observe(this) {
+            requireView().translationY = -it
+        }
 
         (requireActivity() as MainActivity).run {
             searchSheetCallback.currentSlideLive.observe(this@SearchFragment) {
@@ -210,33 +212,29 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             bottomSheetBehavior.collapse(requireActivity())
         }
 
-        // Record the original top position of the search sheet so we can calculate a delta
-        // when it is slide to know how much it has been translated and apply the opposite of that
-        // translation to the search container to "pin" the search bar to the bottom of the screen.
-        var originalSheetPeekTop = 0
-        requireView().doOnPreDraw {
-            originalSheetPeekTop = it.top
-        }
-
         // Pin the search bar to the bottom of the screen by observing the sheets slide.
-        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { view, _ ->
-            if (originalSheetPeekTop != 0) {
-                val newSheetPeekTop = view.top
-                val delta = originalSheetPeekTop - newSheetPeekTop
-                binding.run {
-                    // Adjust the margins of the search container to allow the search results
-                    // recyclerview to recalculate its available space and increase its height.
-                    val params = searchContainer.layoutParams as ConstraintLayout.LayoutParams
-                    val originalTopMargin = searchContainer.resources.getDimensionPixelSize(R.dimen.search_input_area_margin_top)
-                    params.updateMargins(top = delta + originalTopMargin)
-                    searchContainer.layoutParams = params
-                }
+        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
+            val delta = (view.height - bottomSheetBehavior.peekHeight) * offset
+            binding.run {
+                // Adjust the margins of the search container to allow the search results
+                // recyclerview to recalculate its available space and increase its height.
+                val params = searchContainer.layoutParams as
+                    ConstraintLayout.LayoutParams
+                val originalTopMargin = searchContainer.resources.getDimensionPixelSize(R.dimen.search_input_area_margin_top)
+                params.updateMargins(top = delta.toInt() + originalTopMargin)
+                searchContainer.layoutParams = params
             }
         }
 
         binding.recyclerView.alpha = 0F
         (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
-            binding.recyclerView.alpha = MathUtils.normalize(offset, 0.2F, 1.0F, 0.0F, 1.0F)
+            binding.recyclerView.alpha = MathUtils.normalize(
+                offset,
+                0.2F,
+                1.0F,
+                0.0F,
+                1.0F
+            )
         }
 
         // Make sure we're hiding the recycler view, even when the state change event is
@@ -347,25 +345,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                     (requireActivity() as MainActivity).contextualSheetCallback.currentSlide
             )
         }
-
-        // Hide filter action if contextual sheet is expanded
-//        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-//            val currentDest = navigator.currentDestination.value
-//                ?: Destination.HOME
-//            if (currentDest == Destination.TRENDING) {
-//                setSheetSlideOffsetForActions(
-//                        (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
-//                        offset
-//                )
-//            }
-//        }
     }
 
     private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {
-        val collapsedMargin =  getSearchAreaMarginRightForNumberOfShowingActions(numberOfShelfActionsShowing)
+        val collapsedMargin =  getSearchAreaMarginRightForNumberOfShowingActions(
+            numberOfShelfActionsShowing
+        )
         val expandedMargin = getSearchAreaMarginRightForNumberOfShowingActions(1)
 
-        val params = binding.searchContainer.layoutParams  as ConstraintLayout.LayoutParams
+        val params = binding.searchContainer.layoutParams as ConstraintLayout.LayoutParams
 
         params.rightMargin = MathUtils.normalize(
             max(searchOffset, contextualOffset),
@@ -468,7 +456,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
     }
 
-    private fun setShelfActionForSheetKeyboardAction(model: SearchShelfActionsModel.SheetKeyboardControllerActions) {
+    private fun setShelfActionForSheetKeyboardAction(
+        model: SearchShelfActionsModel.SheetKeyboardControllerActions
+    ) {
         binding.run {
             actionOneImageView.setOnClickListener {
                 viewModel.onSheetKeyboardControllerShelfActionClicked(model)

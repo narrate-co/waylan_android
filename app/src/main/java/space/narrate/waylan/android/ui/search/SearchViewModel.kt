@@ -46,35 +46,6 @@ class SearchViewModel(
             _softInputModel
         )
 
-//    val searchShelfModel: LiveData<SearchShelfActionsModel>
-//        get() = navigator.currentDestination
-//            .switchMapTransform { dest ->
-//                val model: LiveData<SearchShelfActionsModel> = when (dest) {
-//                    Destination.DETAILS ->
-//                        currentUserWord.mapTransform { SearchShelfActionsModel.DetailsShelfActions(it) }
-//                    Destination.TRENDING ->
-//                        userRepository.trendingListFilterLive.mapTransform {
-//                            SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
-//                        }
-//                    else -> {
-//                        val data = MutableLiveData<SearchShelfActionsModel>()
-//                        data.value = SearchShelfActionsModel.None
-//                        data
-//                    }
-//                }
-//                model
-//            }
-//            .mapOnTransform(sheetKeyboardState) { model, sheetKeyboardState ->
-//                val isSheetExpanded = sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_HIDDEN &&
-//                    sheetKeyboardState.sheetState != BottomSheetBehavior.STATE_COLLAPSED
-//                val isKeyboardOpen = sheetKeyboardState.softInputModel.isOpen
-//                if (isSheetExpanded || isKeyboardOpen) {
-//                    SearchShelfActionsModel.SheetKeyboardControllerActions(isSheetExpanded, isKeyboardOpen)
-//                } else {
-//                    model
-//                }
-//            }
-
     private val _currentWord: MutableLiveData<String> = MutableLiveData()
 
     private val currentUserWord: LiveData<UserWord>
@@ -93,6 +64,10 @@ class SearchViewModel(
     private val _shouldCloseKeyboard: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldCloseKeyboard: LiveData<Event<Boolean>>
         get() = _shouldCloseKeyboard
+
+    private val _keyboardHeight: MutableLiveData<Float> = MutableLiveData()
+    val keyboardHeight: LiveData<Float>
+        get() = _keyboardHeight
 
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
@@ -147,6 +122,7 @@ class SearchViewModel(
 
     fun onSoftInputChanged(model: SoftInputModel) {
         _softInputModel.value = model
+        _keyboardHeight.value = model.height.toFloat()
     }
 
     fun onSearchSheetOffsetChanged(offset: Float) {
