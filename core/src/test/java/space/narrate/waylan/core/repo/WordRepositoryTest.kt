@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -25,6 +26,9 @@ import org.mockito.Mockito.`when` as whenever
 @ExperimentalCoroutinesApi
 class WordRepositoryTest {
 
+    // Mock Android's getMainLooper()
+    @get:Rule val instantExecutorRule = InstantTaskExecutorRule()
+
     // Mock AppDatabase
     private val db = mock(WordsetDatabase::class.java)
     // Mock AuthenticationStore
@@ -38,12 +42,9 @@ class WordRepositoryTest {
     private val user1Word: MutableLiveData<UserWord> = MutableLiveData()
     private val user2Word: MutableLiveData<UserWord> = MutableLiveData()
 
+    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+
     private lateinit var wordRepository: WordRepository
-
-    @get:Rule val coroutinesTestRule = CoroutinesTestRule()
-
-    // Mock Android's getMainLooper()
-    @get:Rule val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
@@ -63,7 +64,8 @@ class WordRepositoryTest {
             db,
             authenticationStore,
             firestoreStore,
-            symSpellStore
+            symSpellStore,
+            testCoroutineDispatcher
         )
     }
 
@@ -100,15 +102,9 @@ class WordRepositoryTest {
         assertThat(result.valueBlocking).isEqualTo(user2Word.value)
     }
 
-
-    /**
-     * TODO: This test is flakey and should be fixed or removed.
-     *
-     * Note: This test passes if run individually, but not during a full run of this test class.
-     */
     @Test
     fun setUserWordFavoritedWithUser_shouldCallFirestoreStore() =
-        coroutinesTestRule.testDispatcher.runBlockingTest {
+        testCoroutineDispatcher.runBlockingTest {
             whenever(authenticationStore.uid).thenReturn(uid)
 
             val id = "123"
@@ -121,7 +117,7 @@ class WordRepositoryTest {
 
     @Test
     fun setUserWordFavoritedWithoutUser_shouldNotCallFirestore() =
-        coroutinesTestRule.testDispatcher.runBlockingTest {
+        testCoroutineDispatcher.runBlockingTest {
             whenever(authenticationStore.uid).thenReturn(LiveDataUtils.empty())
 
             wordRepository.setUserWordFavorite("123", true)

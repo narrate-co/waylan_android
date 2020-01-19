@@ -1,6 +1,23 @@
 // Dependencies which are used across all modules and should be shared by using
 // apply: ../shared_dependencies.gradle in each module's build file.
 
+android {
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    // Show test results in CLI. Helpful for reading CI test outputs or when
+    // running tests from the command line.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+}
+
 dependencies {
     testImplementation project(':test_common')
 
@@ -20,18 +37,21 @@ dependencies {
     testImplementation Libs.koinTest
     testImplementation Libs.okhttp3MockWebServer
 
+    // AndroidX JVM tests
+    testImplementation Libs.testCoreKtx
+    testImplementation Libs.junitKtx
+    testImplementation Libs.testRules
+    testImplementation Libs.fragment
+    testImplementation Libs.fragmentTesting
+
+    debugImplementation Libs.testCoreKtx
+    debugImplementation Libs.fragmentTesting
+
     // Android Unit tests
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.mockito
     androidTestImplementation Libs.mockitoInline
 
-    // AndroidX JVM tests
-    debugImplementation Libs.testCore
-    testImplementation Libs.testCoreKtx
-    testImplementation Libs.junitKtx
-    testImplementation Libs.testRules
-    debugImplementation Libs.fragment
-    debugImplementation Libs.fragmentTesting
 
     // Instrumented tests
     androidTestImplementation Libs.testCoreKtx

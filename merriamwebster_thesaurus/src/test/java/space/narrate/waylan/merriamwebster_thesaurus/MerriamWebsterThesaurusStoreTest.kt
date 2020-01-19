@@ -11,9 +11,11 @@ import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Entry
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Hwi
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.MerriamWebsterThesaurusService
 import space.narrate.waylan.merriamwebster_thesaurus.data.MerriamWebsterThesaurusStore
+import space.narrate.waylan.merriamwebster_thesaurus.data.local.ThesaurusDao
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Meta
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RemoteThesaurusEntry
 import space.narrate.waylan.merriamwebster_thesaurus.data.remote.Wd
+import space.narrate.waylan.merriamwebster_thesaurus.data.remote.toLocalThesaurusEntry
 import space.narrate.waylan.test_common.toSuccessfulCall
 import space.narrate.waylan.test_common.valueBlocking
 import org.mockito.Mockito.`when` as whenever
@@ -23,6 +25,7 @@ private const val TEST_WORD = "quiescent"
 class MerriamWebsterThesaurusStoreTest {
 
     private val merriamWebsterThesaurusService = mock(MerriamWebsterThesaurusService::class.java)
+    private val thesaurusDao = mock(ThesaurusDao::class.java)
     private lateinit var merriamWebsterThesaurusStore: MerriamWebsterThesaurusStore
 
     // Mock Android's getMainLooper()
@@ -31,7 +34,8 @@ class MerriamWebsterThesaurusStoreTest {
     @Before
     fun setUp() {
         merriamWebsterThesaurusStore = MerriamWebsterThesaurusStore(
-            merriamWebsterThesaurusService
+            merriamWebsterThesaurusService,
+            thesaurusDao
         )
         val c =
         whenever(merriamWebsterThesaurusService.getWord(
@@ -41,10 +45,10 @@ class MerriamWebsterThesaurusStoreTest {
     }
 
     @Test
-    fun getWord_shouldReturnLocalEntryList() {
-        val response = merriamWebsterThesaurusStore.getWord(TEST_WORD).valueBlocking
+    fun remoteThesaurusEntry_isConvertedToLocalThesaurusEntry() {
+        val response = getTestWordCall()
 
-        val entry = response.first()
+        val entry = response.first().toLocalThesaurusEntry
         assertThat(entry.id).isEqualTo("123")
         assertThat(entry.word).isEqualTo("quiescent")
         assertThat(entry.src).isEqualTo("Merriam-Webster")

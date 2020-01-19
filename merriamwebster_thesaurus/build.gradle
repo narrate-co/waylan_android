@@ -16,10 +16,12 @@ android {
         targetSdkVersion Versions.targetSdk
 
         // Merriam Webster Thesaurus key - hidden from VCS
-        def keyProperties = new Properties()
-        keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
-        def mwThesApiKey = keyProperties.getProperty("merriamWebsterThesaurus.key", "")
-        buildConfigField "String", "MERRIAM_WEBSTER_THESAURUS_KEY", mwThesApiKey
+        if (rootProject.file('keys.properties').exists()) {
+            def keyProperties = new Properties()
+            keyProperties.load(rootProject.file("keys.properties").newDataInputStream())
+            def mwThesApiKey = keyProperties.getProperty("merriamWebsterThesaurus.key", "")
+            buildConfigField "String", "MERRIAM_WEBSTER_THESAURUS_KEY", mwThesApiKey
+        }
     }
 
     // View/Data binding
@@ -35,14 +37,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    // Testing
-    // Include Android resources for robolectric unit testing.
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 }
 

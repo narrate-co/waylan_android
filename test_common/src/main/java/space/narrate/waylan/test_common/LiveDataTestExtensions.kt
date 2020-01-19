@@ -1,6 +1,7 @@
 package space.narrate.waylan.test_common
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -33,3 +34,13 @@ fun <T> LiveData<T>.valueBlocking(afterChangedCount: Int = 1): T {
     @Suppress("UNCHECKED_CAST")
     return data[0] as T
 }
+
+/**
+ * Simple helper function to wrap any object in a LiveData.
+ */
+val <T> T.toLiveData: LiveData<T>
+    get() {
+        val liveData = MutableLiveData<T>()
+        liveData.value = this
+        return liveData
+    }

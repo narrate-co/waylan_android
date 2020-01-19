@@ -3,6 +3,7 @@ package space.narrate.waylan.core.di
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import space.narrate.waylan.core.BuildConfig
@@ -40,7 +41,7 @@ val coreModule = module {
         AnalyticsRepository(firebaseAnalytics, get())
     }
 
-    single { WordRepository(get(), get(), get(), get()) }
+    single { WordRepository(get(), get(), get(), get(), Dispatchers.IO) }
 
     single { UserRepository(get(), get(), get(), get()) }
 

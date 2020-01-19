@@ -1,6 +1,7 @@
 package space.narrate.waylan.core.repo
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,11 +27,9 @@ class WordRepository(
     private val db: WordsetDatabase,
     private val authenticationStore: AuthenticationStore,
     private val firestoreStore: FirestoreStore,
-    private val symSpellStore: SymSpellStore
-) : CoroutineScope {
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
+    private val symSpellStore: SymSpellStore,
+    private val ioDispatcher: CoroutineDispatcher
+) : CoroutineScope by CoroutineScope(ioDispatcher) {
 
     fun getWordsetWord(word: String): LiveData<Word?> {
         return db.wordDao().getLive(word)

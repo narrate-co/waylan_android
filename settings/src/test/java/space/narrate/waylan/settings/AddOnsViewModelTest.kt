@@ -1,9 +1,12 @@
 package space.narrate.waylan.settings
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.invocation.InvocationOnMock
 import space.narrate.waylan.core.data.firestore.FirestoreTestData
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
@@ -12,6 +15,9 @@ import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.settings.ui.addons.AddOnItemModel
 import space.narrate.waylan.settings.ui.addons.AddOnsViewModel
+import space.narrate.waylan.test_common.anyOrNull
+import space.narrate.waylan.test_common.toLiveData
+import org.mockito.Mockito.`when` as whenever
 
 class AddOnsViewModelTest {
 
@@ -22,8 +28,17 @@ class AddOnsViewModelTest {
 
     private val testUser = FirestoreTestData.testDatabase.users[1]
 
+    @get:Rule var instantExecutorRule = InstantTaskExecutorRule()
+
     @Before
     fun setUp() {
+        whenever(userRepository.getUserAddOnLive(anyOrNull()))
+            .thenAnswer { invocation: InvocationOnMock? ->
+                val addOn = invocation?.getArgument<AddOn>(0)
+                val data = testUser.addOns.first { it.id == addOn?.id }
+                data.toLiveData
+            }
+        whenever(userRepository.user).thenReturn(testUser.user.toLiveData)
         addOnsViewModel = AddOnsViewModel(userRepository, analyticsRepository)
     }
 

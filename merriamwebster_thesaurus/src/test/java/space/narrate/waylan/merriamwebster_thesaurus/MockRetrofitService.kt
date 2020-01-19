@@ -14,9 +14,6 @@ import space.narrate.waylan.merriamwebster_thesaurus.data.remote.RetrofitService
 object MockRetrofitService {
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        )
         .build()
 
 
