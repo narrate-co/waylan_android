@@ -275,7 +275,8 @@ class BillingManager(
         val items = PriorityQueue(this)
         clear()
         do {
-            action(items.poll())
+            val item = items.poll()
+            if (item != null) action(item)
         } while (items.isNotEmpty())
     }
 }
