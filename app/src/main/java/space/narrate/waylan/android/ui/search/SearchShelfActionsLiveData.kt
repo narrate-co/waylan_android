@@ -2,7 +2,6 @@ package space.narrate.waylan.android.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.Period
@@ -11,6 +10,7 @@ import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.util.mapOnTransform
 import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.switchMapTransform
+import space.narrate.waylan.core.util.toLiveData
 
 /**
  * A LiveData object that handles the logic of watching the values relevant for
@@ -25,7 +25,7 @@ class SearchShelfActionsLiveData(
     private val contextualSheetOffset: LiveData<Float>,
     private val contextualSheetState: LiveData<Int>,
     private val softInputState: LiveData<SoftInputModel>
-) : MediatorLiveData<SearchShelfActionsModel>() {
+) : MediatorLiveData<SearchShelfActionsRowModel>() {
 
     data class SheetKeyboardState(
         val searchSheetOffset: Float,
@@ -121,48 +121,47 @@ class SearchShelfActionsLiveData(
             softInputState
         )
 
-    private var lastSearchShelfModelValue: SearchShelfActionsModel? = null
+    private var lastSearchShelfModelValue: SearchShelfActionsRowModel? = null
 
-    private val searchShelfModel: LiveData<SearchShelfActionsModel>
+    private val searchShelfRowModel: LiveData<SearchShelfActionsRowModel>
         get() = currentDestination
             .switchMapTransform { dest ->
-                val model: LiveData<SearchShelfActionsModel> = when (dest) {
+                val model: LiveData<SearchShelfActionsRowModel> = when (dest) {
                     Destination.DETAILS ->
                         currentUserWord.mapTransform {
-                            SearchShelfActionsModel.DetailsShelfActions(it)
+                            SearchShelfActionsRowModel.DetailsShelfActions(it)
                         }
                     Destination.TRENDING ->
                         trendingListFilter.mapTransform {
-                            SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
+                            SearchShelfActionsRowModel.ListShelfActions(it.isNotEmpty())
                         }
-                    else -> {
-                        val data = MutableLiveData<SearchShelfActionsModel>()
-                        data.value = SearchShelfActionsModel.None()
-                        data
-                    }
+                    else -> SearchShelfActionsRowModel.None().toLiveData
                 }
                 model
             }
             .mapOnTransform(_sheetKeyboardState) { model, sheetKeyboardState ->
-                val isSearchSheetExpanded = sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_HIDDEN &&
+                val isSearchSheetExpanded =
+                    sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_HIDDEN &&
                     sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_COLLAPSED
-                val isContextualSheetExpanded = sheetKeyboardState.contextualSheetState != BottomSheetBehavior.STATE_HIDDEN &&
+                val isContextualSheetExpanded =
+                    sheetKeyboardState.contextualSheetState != BottomSheetBehavior.STATE_HIDDEN &&
                     sheetKeyboardState.contextualSheetState != BottomSheetBehavior.STATE_COLLAPSED
-                val hasAppliedFilter = (model as? SearchShelfActionsModel.ListShelfActions)?.hasFilter == true
                 val isKeyboardOpen = sheetKeyboardState.softInputState.isOpen
 
                 if (isSearchSheetExpanded || isKeyboardOpen) {
-                    SearchShelfActionsModel.SheetKeyboardControllerActions(isSearchSheetExpanded, isKeyboardOpen)
+                    SearchShelfActionsRowModel.SheetKeyboardControllerActions(
+                        isSearchSheetExpanded,
+                        isKeyboardOpen
+                    )
                 } else if (isContextualSheetExpanded) {
-                    model
-                    SearchShelfActionsModel.None()
+                    SearchShelfActionsRowModel.None()
                 } else {
                     model
                 }
             }
 
     init {
-        searchShelfModel.observeForever {
+        searchShelfRowModel.observeForever {
             if (lastSearchShelfModelValue == null
                 || lastSearchShelfModelValue?.isContentSameAs(it) == false)  {
                 println("SearchShelfActions - $it")

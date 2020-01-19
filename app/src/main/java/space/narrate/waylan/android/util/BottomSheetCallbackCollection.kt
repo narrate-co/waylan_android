@@ -1,12 +1,12 @@
-package space.narrate.waylan.android.ui.search
+package space.narrate.waylan.android.util
 
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-typealias OnSlideAction = (View, Float) -> Unit
-typealias OnStateChangedAction = (View, Int) -> Unit
+//typealias OnSlideAction = (View, Float) -> Unit
+//typealias OnStateChangedAction = (View, Int) -> Unit
 
 /**
  * A class which holds [OnSlideAction]s and [OnStateChangedAction]s and calls
@@ -46,19 +46,12 @@ class BottomSheetCallbackCollection: BottomSheetBehavior.BottomSheetCallback() {
     val currentStateLive: LiveData<Int>
         get() = _currentStateLive
 
-    /**
-     * Add an [OnStateChangedAction] to be run when this [BottomSheetBehavior.BottomSheetCallback]'s
-     * [BottomSheetBehavior.BottomSheetCallback.onStateChanged] is called.
-     */
-    fun addOnStateChangedAction(action: OnStateChangedAction) {
-        onStateChangedActions.add(action)
-    }
-
-    /**
-     * Remove an added [OnStateChangedAction]
-     */
-    fun removeOnStateChangedAction(action: OnStateChangedAction) {
-        onStateChangedActions.remove(action)
+    fun addOnSlideAction(action: (sheet: View, slideOffset: Float) -> Unit) {
+        addOnSlideAction(object : OnSlideAction {
+            override fun onSlide(sheet: View, slideOffset: Float) {
+                action(sheet, slideOffset)
+            }
+        })
     }
 
     /**
@@ -69,21 +62,31 @@ class BottomSheetCallbackCollection: BottomSheetBehavior.BottomSheetCallback() {
         onSlideActions.add(action)
     }
 
-    /**
-     * Remove an added [OnSlideAction]
-     */
-    fun removeOnSlideAction(action: OnSlideAction) {
-        onSlideActions.remove(action)
+    fun addOnStateChangedAction(action: (sheet: View, neState: Int) -> Unit) {
+        addOnStateChangedAction(object : OnStateChangedAction {
+            override fun onStateChanged(sheet: View, newState: Int) {
+                action(sheet, newState)
+            }
+        })
     }
+
+    /**
+     * Add an [OnStateChangedAction] to be run when this [BottomSheetBehavior.BottomSheetCallback]'s
+     * [BottomSheetBehavior.BottomSheetCallback.onStateChanged] is called.
+     */
+    fun addOnStateChangedAction(action: OnStateChangedAction) {
+        onStateChangedActions.add(action)
+    }
+
 
     override fun onSlide(view: View, offset: Float) {
         currentSlide = offset
-        onSlideActions.forEach { it(view, offset) }
+        onSlideActions.forEach { it.onSlide(view, offset) }
     }
 
     override fun onStateChanged(view: View, newState: Int) {
         currentState = newState
-        onStateChangedActions.forEach { it(view, newState) }
+        onStateChangedActions.forEach { it.onStateChanged(view, newState) }
     }
 
 }

@@ -2,6 +2,7 @@ package space.narrate.waylan.core.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 
 /**
@@ -51,3 +52,13 @@ fun <X> LiveData<X?>.notNullTransform(): LiveData<X> {
     }
     return result
 }
+
+/**
+ * Simple helper function to wrap any object in a LiveData.
+ */
+val <T> T.toLiveData: LiveData<T>
+    get() {
+        val liveData = MutableLiveData<T>()
+        liveData.value = this
+        return liveData
+    }

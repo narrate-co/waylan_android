@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentContextualBinding
 import space.narrate.waylan.android.ui.MainActivity
@@ -41,6 +42,8 @@ class ContextualFragment : Fragment() {
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
     private val sharedViewModel: MainViewModel by sharedViewModel()
+
+    private val viewModel: ContextualViewModel by viewModel()
 
     // The BottomSheetBehavior of this view.
     private val bottomSheetBehavior by lazy {
@@ -148,7 +151,7 @@ class ContextualFragment : Fragment() {
         }
 
         // Configure bottom sheet state and UI based on current filter.
-        sharedViewModel.contextualFilterModel.observe(this) { model ->
+        viewModel.contextualFilterModel.observe(this) { model ->
             setCollapsedChips(model.filter)
             peekOrHide(
                 model.isFilterable && model.filter.isNotEmpty(),

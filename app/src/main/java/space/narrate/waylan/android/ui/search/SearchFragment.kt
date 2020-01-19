@@ -9,15 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
@@ -128,6 +127,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             }
         }
 
+        // TODO: Move logic into ViewModel
         navigator.currentDestination.observe(this) {
             when (it) {
                 Destination.SETTINGS,
@@ -146,6 +146,14 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
         viewModel.shouldCloseKeyboard.observe(this) {
             requireActivity().hideSoftKeyboard()
+        }
+
+        viewModel.shouldCloseSheet.observe(this) {
+            bottomSheetBehavior.collapse(requireActivity())
+        }
+
+        viewModel.shouldOpenContextualSheet.observe(this) {
+            sharedViewModel.onShouldOpenContextualFragment()
         }
 
         setUpSheet()
@@ -171,6 +179,11 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         return false
     }
 
+    override fun onWordClicked(searchItem: SearchItemModel) {
+        close()
+        viewModel.onWordClicked(searchItem)
+    }
+
     private fun setUpSheet() {
 
         // Set max expanded height to 60% of screen height, the max height it can be expected that
@@ -186,84 +199,57 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 viewModel.onSoftInputChanged(it)
             }
 
+        // Translate the search sheet so it's always above the IME
         viewModel.keyboardHeight.observe(this) {
             requireView().translationY = -it
         }
 
-        (requireActivity() as MainActivity).run {
-            searchSheetCallback.currentSlideLive.observe(this@SearchFragment) {
-                viewModel.onSearchSheetOffsetChanged(it)
-            }
+        val searchSheetCallback = (requireActivity() as MainActivity).searchSheetCallback
+        val contextualSheetCallback = (requireActivity() as MainActivity).contextualSheetCallback
 
-            searchSheetCallback.currentStateLive.observe(this@SearchFragment) {
-                viewModel.onSearchSheetStateChanged(it)
-            }
-
-            contextualSheetCallback.currentSlideLive.observe(this@SearchFragment) {
-                viewModel.onContextualSheetOffsetChanged(it)
-            }
-
-            contextualSheetCallback.currentStateLive.observe(this@SearchFragment) {
-                viewModel.onContextualSheetStateChanged(it)
-            }
+        searchSheetCallback.currentSlideLive.observe(this) {
+            viewModel.onSearchSheetOffsetChanged(it)
         }
 
-        viewModel.shouldCloseSheet.observe(this) {
-            bottomSheetBehavior.collapse(requireActivity())
+        searchSheetCallback.currentStateLive.observe(this) {
+            viewModel.onSearchSheetStateChanged(it)
+        }
+
+        contextualSheetCallback.currentSlideLive.observe(this) {
+            viewModel.onContextualSheetOffsetChanged(it)
+        }
+
+        contextualSheetCallback.currentStateLive.observe(this) {
+            viewModel.onContextualSheetStateChanged(it)
         }
 
         // Pin the search bar to the bottom of the screen by observing the sheets slide.
-        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { view, offset ->
-            val delta = (view.height - bottomSheetBehavior.peekHeight) * offset
-            binding.run {
-                // Adjust the margins of the search container to allow the search results
-                // recyclerview to recalculate its available space and increase its height.
-                val params = searchContainer.layoutParams as
-                    ConstraintLayout.LayoutParams
-                val originalTopMargin = searchContainer.resources.getDimensionPixelSize(R.dimen.search_input_area_margin_top)
-                params.updateMargins(top = delta.toInt() + originalTopMargin)
-                searchContainer.layoutParams = params
-            }
-        }
+        searchSheetCallback.addOnSlideAction(PinSearchAreaSlideAction(binding.searchContainer))
 
-        binding.recyclerView.alpha = 0F
-        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
-            binding.recyclerView.alpha = MathUtils.normalize(
-                offset,
-                0.2F,
-                1.0F,
-                0.0F,
-                1.0F
-            )
-        }
-
-        // Make sure we're hiding the recycler view, even when the state change event is
-        // coming from something other than a drag.
-        (requireActivity() as MainActivity).searchSheetCallback
-            .addOnStateChangedAction { _, newState ->
-                if (newState == BottomSheetBehavior.STATE_HIDDEN ||
-                    newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    binding.recyclerView.alpha = 0F
-                }
-            }
+        // Fade in the search results as the sheet slides up and out as the sheet slides down.
+        searchSheetCallback.addOnSlideAction(
+            FadeInOutSearchResultsSlideAction(binding.recyclerView)
+        )
     }
 
     // Set up textRes watchers and on focus changed listeners to help control the
     // hiding/showing of both the search sheet and the IME
     private fun setUpSearchBar() {
-        binding.searchEditText.addTextChangedListener(this)
+        binding.run {
+            searchEditText.addTextChangedListener(this@SearchFragment)
 
-        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bottomSheetBehavior.expand()
-            } else {
-                bottomSheetBehavior.collapse(activity)
+            searchEditText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bottomSheetBehavior.expand()
+                } else {
+                    bottomSheetBehavior.collapse(activity)
+                }
             }
-        }
 
-        binding.searchEditText.setOnClickListener {
-            if (binding.searchEditText.hasFocus()) {
-                bottomSheetBehavior.expand()
+            searchEditText.setOnClickListener {
+                if (searchEditText.hasFocus()) {
+                    bottomSheetBehavior.expand()
+                }
             }
         }
     }
@@ -271,15 +257,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     // Set up the recycler view which holds recently viewed words when the search input field
     // is empty and search results when not.
     private fun setUpRecyclerView() {
-        //set up recycler view
-        binding.recyclerView.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.VERTICAL,
-            true
-        )
         binding.recyclerView.adapter = adapter
 
-        // hide IME if user is scrolling search results
+        // Hide IME if user is scrolling search results
         // This avoids the need to expand the search sheet to the full height of the display
         // and moving results out of "thumb reach"
         binding.recyclerView.setOnTouchListener { _, _ ->
@@ -307,7 +287,8 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 this.javaClass.simpleName,
                 this,
                 RotationManager.PATTERNS_ALL,
-                viewModel)
+                viewModel
+        )
     }
 
     // Shelf actions are actions which live to the right of the search input field. They
@@ -316,25 +297,13 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     // current Fragment
     private fun setUpShelfActions() {
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        viewModel.searchShelfModel.observe(this) { model ->
+        viewModel.searchShelfRowModel.observe(this) { model ->
             // wait for the next layout step to grantee the actions.width is correctly captured
             if (binding.actionsContainer.isLaidOut) {
-                when (model) {
-                    is SearchShelfActionsModel.DetailsShelfActions -> {
-                        runShelfActionsAnimation(model.numberOfActionsToShow)
-                        setShelfActionsForDetails(model)
-                    }
-                    is SearchShelfActionsModel.ListShelfActions -> {
-                        runShelfActionsAnimation(model.numberOfActionsToShow)
-                        setShelfActionsForList(model)
-                    }
-                    is SearchShelfActionsModel.SheetKeyboardControllerActions -> {
-                        setShelfActionForSheetKeyboardAction(model)
-                    }
-                    is SearchShelfActionsModel.None -> {
-                        runShelfActionsAnimation(model.numberOfActionsToShow)
-                    }
+                if (model.shouldAnimateToNumberOfActions) {
+                    runShelfActionsAnimation(model.numberOfActionsToShow)
                 }
+                setShelfActionsRow(model)
             }
         }
 
@@ -353,16 +322,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         )
         val expandedMargin = getSearchAreaMarginRightForNumberOfShowingActions(1)
 
-        val params = binding.searchContainer.layoutParams as ConstraintLayout.LayoutParams
-
-        params.rightMargin = MathUtils.normalize(
+        val rightMargin = MathUtils.normalize(
             max(searchOffset, contextualOffset),
             0F,
             1F,
             collapsedMargin.toFloat(),
             expandedMargin.toFloat()
         ).toInt()
-        binding.searchContainer.layoutParams = params
+
+        updateSearchAreaMarginRight(rightMargin)
     }
 
     private fun getSearchAreaMarginRightForNumberOfShowingActions(number: Int): Int {
@@ -408,15 +376,14 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-                val params = binding.searchContainer.layoutParams as ConstraintLayout.LayoutParams
-                params.rightMargin = MathUtils.normalize(
+                val rightMargin = MathUtils.normalize(
                     interpolatedTime,
                     0F,
                     1F,
                     currentMargin.toFloat(),
                     newMargin.toFloat()
                 ).toInt()
-                binding.searchContainer.layoutParams = params
+                updateSearchAreaMarginRight(rightMargin)
             }
         }
         animation.duration = 200
@@ -424,56 +391,47 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         binding.searchContainer.startAnimation(animation)
     }
 
-    /**
-     * Set shelf actions according to [userWord]
-     */
-    private fun setShelfActionsForDetails(model: SearchShelfActionsModel.DetailsShelfActions) {
-
+    private fun updateSearchAreaMarginRight(rightMargin: Int) {
         binding.run {
-            actionOneImageView.setOnClickListener {
-                viewModel.onFavoriteUnfavoriteShelfActionClicked(model)
-            }
-            actionOneImageView.fadeThroughTransition {
-                setImageResource(model.actionOne.icon)
-                contentDescription = getString(model.actionOne.contentDescription)
-            }
-            actionOne.background = null
-
-            // TODO add share button setup
+            val params = searchContainer.layoutParams as ConstraintLayout.LayoutParams
+            params.rightMargin = rightMargin
+            searchContainer.layoutParams = params
         }
     }
 
-    private fun setShelfActionsForList(model: SearchShelfActionsModel.ListShelfActions) {
+    private fun setShelfActionsRow(model: SearchShelfActionsRowModel) {
         binding.run {
-            actionOneImageView.setOnClickListener {
-                sharedViewModel.onShouldOpenContextualFragment()
-            }
-            actionOneImageView.fadeThroughTransition {
-                setImageResource(model.actionOne.icon)
-                contentDescription = getString(model.actionOne.contentDescription)
-            }
-            actionOne.background = null
+            setShelfAction(
+                model.actionOne,
+                binding.actionOne,
+                binding.actionOneImageView
+            )
+
+            setShelfAction(
+                model.actionTwo,
+                binding.actionTwo,
+                binding.actionTwoImageView
+            )
         }
     }
 
-    private fun setShelfActionForSheetKeyboardAction(
-        model: SearchShelfActionsModel.SheetKeyboardControllerActions
+    private fun setShelfAction(
+        action: ShelfActionModel?,
+        actionView: View,
+        actionImageView: ImageView
     ) {
-        binding.run {
-            actionOneImageView.setOnClickListener {
-                viewModel.onSheetKeyboardControllerShelfActionClicked(model)
-            }
-            actionOneImageView.fadeThroughTransition {
-                setImageResource(model.actionOne.icon)
-                contentDescription = getString(model.actionOne.contentDescription)
-            }
-            actionOne.setBackgroundResource(R.drawable.search_input_area)
-        }
-    }
+        if (action == null) return
 
-    override fun onWordClicked(searchItem: SearchItemModel) {
-        close()
-        viewModel.onWordClicked(searchItem)
+        actionImageView.setOnClickListener { viewModel.onShelfActionClicked(action) }
+        actionImageView.fadeThroughTransition {
+            setImageResource(action.icon)
+            contentDescription = getString(action.contentDescription)
+        }
+        if (action.backgroundDrawable != null) {
+            actionView.setBackgroundResource(action.backgroundDrawable)
+        } else {
+            actionView.background = null
+        }
     }
 
     override fun afterTextChanged(s: Editable?) { }

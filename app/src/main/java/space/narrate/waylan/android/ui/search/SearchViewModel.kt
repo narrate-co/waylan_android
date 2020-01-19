@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.ui.search.ShelfActionModel.*
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.Orientation
@@ -34,7 +35,7 @@ class SearchViewModel(
         .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
-    val searchShelfModel: LiveData<SearchShelfActionsModel>
+    val searchShelfRowModel: LiveData<SearchShelfActionsRowModel>
         get() = SearchShelfActionsLiveData(
             navigator.currentDestination,
             currentUserWord,
@@ -64,6 +65,10 @@ class SearchViewModel(
     private val _shouldCloseKeyboard: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldCloseKeyboard: LiveData<Event<Boolean>>
         get() = _shouldCloseKeyboard
+
+    private val _shouldOpenContextualSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldOpenContextualSheet: LiveData<Event<Boolean>>
+        get() = _shouldOpenContextualSheet
 
     private val _keyboardHeight: MutableLiveData<Float> = MutableLiveData()
     val keyboardHeight: LiveData<Float>
@@ -145,19 +150,20 @@ class SearchViewModel(
         searchInput.value = input?.toString() ?: ""
     }
 
-    fun onFavoriteUnfavoriteShelfActionClicked(model: SearchShelfActionsModel.DetailsShelfActions) {
-        val id = _currentWord.value ?: return
-        wordRepository.setUserWordFavorite(id, !model.isFavorited)
+    fun onShelfActionClicked(action: ShelfActionModel) {
+        when (action) {
+            is ShareAction -> { /* Do nothing */ }
+            is FavoriteAction -> setUserWordFavorited(true)
+            is UnfavoriteAction -> setUserWordFavorited(false)
+            is FilterAction -> _shouldOpenContextualSheet.value = Event(true)
+            is CloseSheetAction -> _shouldCloseSheet.value = Event(true)
+            is CloseKeyboardAction -> _shouldCloseKeyboard.value = Event(true)
+        }
     }
 
-    fun onSheetKeyboardControllerShelfActionClicked(
-        model: SearchShelfActionsModel.SheetKeyboardControllerActions
-    ) {
-        if (model.isKeyboardOpen) {
-            _shouldCloseKeyboard.value = Event(true)
-        } else if (model.isSheetExpanded) {
-            _shouldCloseSheet.value = Event(true)
-        }
+    private fun setUserWordFavorited(newFavoriteValue: Boolean) {
+        val id = _currentWord.value ?: return
+        wordRepository.setUserWordFavorite(id, newFavoriteValue)
     }
 
     fun onWordClicked(item: SearchItemModel) {
@@ -236,7 +242,5 @@ class SearchViewModel(
     override fun onUnlockedOrientationPatternSeen(pattern: List<RotationManager.RotationEvent>) {
         //do nothing. maybe move to pattern matching over orientation change counts
     }
-
-
 }
 

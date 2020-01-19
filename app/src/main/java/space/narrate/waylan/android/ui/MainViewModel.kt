@@ -26,33 +26,6 @@ class MainViewModel(
     private val navigator: Navigator
 ) : ViewModel() {
 
-    // TODO: Move into ContextualViewModel
-    val contextualFilterModel: LiveData<ContextualFilterModel> = navigator.currentDestination
-        .switchMapTransform { dest ->
-            val result = MediatorLiveData<ContextualFilterModel>()
-
-            result.addSource(
-                when (dest) {
-                    Destination.TRENDING -> userRepository.trendingListFilterLive
-                    Destination.RECENT -> userRepository.recentsListFilterLive
-                    Destination.FAVORITE -> userRepository.favoritesListFilterLive
-                    else -> {
-                        // TODO : Clean up
-                        val data = MutableLiveData<List<Period>>()
-                        data.value = emptyList()
-                        data
-                    }
-                }
-            ) { filter ->
-                result.value = ContextualFilterModel(
-                    dest,
-                    filter,
-                    dest == Destination.TRENDING
-                )
-            }
-
-            result
-        }
 
     // A backing field for the word (as it appears in the dictionary) which should currently be
     // displayed by [DetailsFragment]. This is used instead of alternatives like passing the word

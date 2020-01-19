@@ -3,63 +3,56 @@ package space.narrate.waylan.android.ui.search
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.ui.search.ShelfActionModel.*
 import space.narrate.waylan.core.data.firestore.users.UserWord
-import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.firestore.users.isFavorited
 import space.narrate.waylan.core.ui.common.Diffable
 
-sealed class SearchShelfActionsModel : Diffable<SearchShelfActionsModel> {
+/**
+ * A model class that holds information about what actions should be displayed in the 'row'
+ * area to the right of the search area. This area can hold up to two actions. The actions displayed
+ * changed contextually depending on the current screen and the state of any bottom sheets.
+ */
+sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
     
     abstract val numberOfActionsToShow: Int
+    abstract val shouldAnimateToNumberOfActions: Boolean
 
-    override fun isSameAs(newOther: SearchShelfActionsModel): Boolean {
+    open val actionOne: ShelfActionModel? = null
+    open val actionTwo: ShelfActionModel? = null
+
+    override fun isSameAs(newOther: SearchShelfActionsRowModel): Boolean {
         return this === newOther
     }
 
     class DetailsShelfActions(
         userWord: UserWord
-    ) : SearchShelfActionsModel() {
+    ) : SearchShelfActionsRowModel() {
 
         override val numberOfActionsToShow: Int = 2
-
+        override val shouldAnimateToNumberOfActions: Boolean = true
 
         val isFavorited: Boolean = userWord.isFavorited
-        val actionOne = if (isFavorited) favoritedAction else unfavoritedAction
-        val actionTwo = ShelfAction(
-            R.drawable.ic_round_share_24px,
-            R.string.search_shelf_action_share_content_desc
-        )
+        override val actionOne = if (isFavorited) UnfavoriteAction else FavoriteAction
+        override val actionTwo = ShareAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
             if (newOther !is DetailsShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && isFavorited == newOther.isFavorited
                 && actionOne.isContentSameAs(newOther.actionOne)
                 && actionTwo.isContentSameAs(newOther.actionTwo)
         }
-
-        companion object {
-            private val favoritedAction = ShelfAction(
-                R.drawable.ic_round_favorite_24px,
-                R.string.search_shelf_action_unfavorite_content_desc
-            )
-            private val unfavoritedAction = ShelfAction(
-                R.drawable.ic_round_favorite_border_24px,
-                R.string.search_shelf_action_favorite_content_desc
-            )
-        }
     }
 
-    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionsModel() {
+    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionsRowModel() {
 
         override val numberOfActionsToShow: Int = if (hasFilter) 0 else 1
+        override val shouldAnimateToNumberOfActions: Boolean = true
 
-        val actionOne = ShelfAction(
-            R.drawable.ic_round_filter_list_24px,
-            R.string.search_shelf_action_filter_content_desc
-        )
+        override val actionOne = FilterAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
             if (newOther !is ListShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && hasFilter == newOther.hasFilter
@@ -70,49 +63,76 @@ sealed class SearchShelfActionsModel : Diffable<SearchShelfActionsModel> {
     class SheetKeyboardControllerActions(
         val isSheetExpanded: Boolean,
         val isKeyboardOpen: Boolean
-    ) : SearchShelfActionsModel() {
+    ) : SearchShelfActionsRowModel() {
 
         override val numberOfActionsToShow: Int = if (isSheetExpanded || isKeyboardOpen) 1 else 0
+        override val shouldAnimateToNumberOfActions: Boolean = false
 
-        val actionOne = if (isKeyboardOpen) closeKeyboardAction else closeSheetAction
+        override val actionOne = if (isKeyboardOpen) CloseKeyboardAction else CloseSheetAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
             if (newOther !is SheetKeyboardControllerActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && actionOne.isContentSameAs(newOther.actionOne)
         }
-
-        companion object {
-            private val closeSheetAction = ShelfAction(
-                R.drawable.ic_keyboard_arrow_down_24px,
-                R.string.search_shelf_action_sheet_close_content_desc
-            )
-            private val closeKeyboardAction = ShelfAction(
-                R.drawable.ic_keyboard_hide_black_24dp,
-                R.string.search_shelf_action_keyboard_down_content_desc
-            )
-        }
     }
 
-    class None : SearchShelfActionsModel() {
+    class None : SearchShelfActionsRowModel() {
         override val numberOfActionsToShow: Int = 0
+        override val shouldAnimateToNumberOfActions: Boolean = true
 
-        override fun isContentSameAs(newOther: SearchShelfActionsModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
             if (newOther !is None) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
         }
     }
 }
 
-data class ShelfAction(
+/**
+ * A class whcih models a single action to be displayed in the action row area.
+ */
+sealed class ShelfActionModel(
     @DrawableRes val icon: Int,
-    @StringRes val contentDescription: Int
-): Diffable<ShelfAction> {
-    override fun isSameAs(newOther: ShelfAction): Boolean {
+    @StringRes val contentDescription: Int,
+    @DrawableRes val backgroundDrawable: Int? = null
+): Diffable<ShelfActionModel> {
+    override fun isSameAs(newOther: ShelfActionModel): Boolean {
         return this === newOther
     }
-    override fun isContentSameAs(newOther: ShelfAction): Boolean {
+    override fun isContentSameAs(newOther: ShelfActionModel): Boolean {
         return icon == newOther.icon && contentDescription == newOther.contentDescription
     }
+
+    object ShareAction : ShelfActionModel(
+        R.drawable.ic_round_share_24px,
+        R.string.search_shelf_action_share_content_desc
+    )
+
+    object FavoriteAction : ShelfActionModel(
+        R.drawable.ic_round_favorite_border_24px,
+        R.string.search_shelf_action_favorite_content_desc
+    )
+
+    object UnfavoriteAction : ShelfActionModel(
+        R.drawable.ic_round_favorite_24px,
+        R.string.search_shelf_action_unfavorite_content_desc
+    )
+
+    object FilterAction : ShelfActionModel(
+        R.drawable.ic_round_filter_list_24px,
+        R.string.search_shelf_action_filter_content_desc
+    )
+
+    object CloseSheetAction : ShelfActionModel(
+        R.drawable.ic_keyboard_arrow_down_24px,
+        R.string.search_shelf_action_sheet_close_content_desc,
+        R.drawable.search_input_area
+    )
+
+    object CloseKeyboardAction : ShelfActionModel(
+        R.drawable.ic_keyboard_hide_black_24dp,
+        R.string.search_shelf_action_keyboard_down_content_desc,
+        R.drawable.search_input_area
+    )
 }
 

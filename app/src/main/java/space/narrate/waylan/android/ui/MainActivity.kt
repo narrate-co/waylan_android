@@ -13,7 +13,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
-import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
