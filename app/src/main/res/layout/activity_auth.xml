@@ -1,175 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.auth.AuthActivity">
-
-    <ImageView
-        android:id="@+id/logo_image_view"
-        android:layout_width="127dp"
-        android:layout_height="127dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/ic_words_logo" />
-
-    <space.narrate.waylan.core.ui.widget.ProgressUnderlineView
-        android:id="@+id/progress_bar_top"
-        android:layout_width="100dp"
-        android:layout_height="2dp"
-        android:layout_gravity="center_horizontal"
-        app:indicatorColor="?attr/colorPrimary"
-        app:trackColor="@color/divider"
-        android:visibility="invisible"
-        android:alpha="0"/>
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/credentials_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:id="@+id/container"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_marginLeft="@dimen/keyline_3"
-        android:layout_marginRight="@dimen/keyline_3"
-        app:layout_constraintTop_toBottomOf="@+id/logo_image_view">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_edgeToEdge="@{true}"
+        app:paddingLeftSystemWindowInsets="@{true}"
+        app:paddingTopSystemWindowInsets="@{true}"
+        app:paddingRightSystemWindowInsets="@{true}"
+        app:paddingBottomSystemWindowInsets="@{true}"
+        tools:context=".ui.auth.AuthActivity">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/text_area_card_view"
+        <ImageView
+            android:id="@+id/logo_image_view"
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_words_logo" />
+
+        <space.narrate.waylan.core.ui.widget.ProgressUnderlineView
+            android:id="@+id/progress_bar_top"
+            android:layout_width="100dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_horizontal"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackColor="@color/divider"
+            android:visibility="invisible"
+            android:alpha="0"/>
+
+        <LinearLayout
+            android:id="@+id/credentials_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="@dimen/plane_00"
-            app:cardBackgroundColor="@android:color/transparent">
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginLeft="@dimen/keyline_3"
+            android:layout_marginRight="@dimen/keyline_3"
+            app:layout_constraintTop_toBottomOf="@+id/logo_image_view">
 
-            <LinearLayout
-                android:id="@+id/edit_text_container"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/text_area_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/text_input_background_transitionable"
-                android:paddingTop="@dimen/keyline_3"
-                android:paddingBottom="@dimen/keyline_3"
-                android:orientation="vertical">
+                app:cardElevation="@dimen/plane_00"
+                app:cardBackgroundColor="@android:color/transparent">
 
-                <EditText
-                    style="?attr/styleEditTextArea"
-                    android:id="@+id/email_edit_text"
+                <LinearLayout
+                    android:id="@+id/edit_text_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:layout_marginTop="@dimen/keyline_2"
-                    android:layout_marginBottom="@dimen/keyline_2"
-                    android:paddingLeft="@dimen/keyline_3"
-                    android:paddingRight="@dimen/keyline_3"
-                    android:hint="@string/auth_email_hint"
-                    android:inputType="textEmailAddress" />
+                    android:background="@drawable/text_input_background_transitionable"
+                    android:paddingTop="@dimen/keyline_3"
+                    android:paddingBottom="@dimen/keyline_3"
+                    android:orientation="vertical">
 
-                <EditText
-                    style="?attr/styleEditTextArea"
-                    android:id="@+id/password_edit_text"
+                    <EditText
+                        style="?attr/styleEditTextArea"
+                        android:id="@+id/email_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="@dimen/keyline_2"
+                        android:layout_marginBottom="@dimen/keyline_2"
+                        android:paddingLeft="@dimen/keyline_3"
+                        android:paddingRight="@dimen/keyline_3"
+                        android:hint="@string/auth_email_hint"
+                        android:inputType="textEmailAddress" />
+
+                    <EditText
+                        style="?attr/styleEditTextArea"
+                        android:id="@+id/password_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="@dimen/keyline_2"
+                        android:layout_marginBottom="@dimen/keyline_2"
+                        android:paddingLeft="@dimen/keyline_3"
+                        android:paddingRight="@dimen/keyline_3"
+                        android:hint="@string/auth_password_hint"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        style="?attr/styleEditTextArea"
+                        android:id="@+id/confirm_password_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="@dimen/keyline_2"
+                        android:layout_marginBottom="@dimen/keyline_2"
+                        android:paddingLeft="@dimen/keyline_3"
+                        android:paddingRight="@dimen/keyline_3"
+                        android:hint="@string/auth_confirm_password_hint"
+                        android:inputType="textPassword" />
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:indeterminate="true"
+                    android:indeterminateOnly="false"
+                    android:indeterminateTint="?attr/colorPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:layout_marginTop="@dimen/keyline_2"
-                    android:layout_marginBottom="@dimen/keyline_2"
-                    android:paddingLeft="@dimen/keyline_3"
-                    android:paddingRight="@dimen/keyline_3"
-                    android:hint="@string/auth_password_hint"
-                    android:inputType="textPassword" />
+                    android:layout_height="10dp"
+                    android:layout_marginBottom="-4dp"
+                    android:padding="0dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="invisible" />
 
-                <EditText
-                    style="?attr/styleEditTextArea"
-                    android:id="@+id/confirm_password_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:layout_marginTop="@dimen/keyline_2"
-                    android:layout_marginBottom="@dimen/keyline_2"
-                    android:paddingLeft="@dimen/keyline_3"
-                    android:paddingRight="@dimen/keyline_3"
-                    android:hint="@string/auth_confirm_password_hint"
-                    android:inputType="textPassword" />
+            </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:indeterminate="true"
-                android:indeterminateOnly="false"
-                android:indeterminateTint="?attr/colorPrimary"
+            <TextView
+                android:id="@+id/error_text_view"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginBottom="-4dp"
-                android:padding="0dp"
-                android:layout_gravity="bottom"
-                android:visibility="invisible" />
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/keyline_3"
+                android:paddingRight="@dimen/keyline_3"
+                android:layout_marginTop="@dimen/keyline_2"
+                android:layout_marginBottom="@dimen/keyline_2"
+                android:alpha="0"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?attr/colorOnBackgroundError"
+                tools:text="Password must contain at least one number or symbol." />
 
-        </com.google.android.material.card.MaterialCardView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_2">
 
-        <TextView
-            android:id="@+id/error_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/keyline_3"
-            android:paddingRight="@dimen/keyline_3"
-            android:layout_marginTop="@dimen/keyline_2"
-            android:layout_marginBottom="@dimen/keyline_2"
-            android:alpha="0"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?attr/colorOnBackgroundError"
-            tools:text="Password must contain at least one number or symbol." />
+                <Button
+                    style="?attr/styleTextButton"
+                    android:id="@+id/alternate_credintial_type_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingRight="@dimen/keyline_3"
+                    android:paddingLeft="@dimen/keyline_3"
+                    android:text="@string/auth_log_in_button"
+                    android:textSize="14sp"
+                    android:textColor="@color/material_on_background_emphasis_medium"
+                    android:layout_gravity="left|center_vertical" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_2">
+                <Button
+                    style="?attr/styleTextButton"
+                    android:id="@+id/done_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingRight="@dimen/keyline_3"
+                    android:paddingLeft="@dimen/keyline_3"
+                    android:text="@string/auth_sign_up_button"
+                    android:layout_gravity="right|center_vertical" />
+
+            </FrameLayout>
 
             <Button
-                style="?attr/styleTextButton"
-                android:id="@+id/alternate_credintial_type_button"
+                style="?styleTextButton"
+                android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:paddingRight="@dimen/keyline_3"
                 android:paddingLeft="@dimen/keyline_3"
-                android:text="@string/auth_log_in_button"
-                android:textSize="14sp"
-                android:textColor="@color/material_on_background_emphasis_medium"
-                android:layout_gravity="left|center_vertical" />
+                android:text="@string/auth_cancel_button"
+                android:layout_gravity="right" />
 
-            <Button
-                style="?attr/styleTextButton"
-                android:id="@+id/done_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/keyline_3"
-                android:paddingLeft="@dimen/keyline_3"
-                android:text="@string/auth_sign_up_button"
-                android:layout_gravity="right|center_vertical" />
-
-        </FrameLayout>
-
-        <Button
-            style="?styleTextButton"
-            android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:paddingRight="@dimen/keyline_3"
-            android:paddingLeft="@dimen/keyline_3"
-            android:text="@string/auth_cancel_button"
-            android:layout_gravity="right" />
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

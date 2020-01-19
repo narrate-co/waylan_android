@@ -10,6 +10,7 @@ import androidx.core.content.res.use
 import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.findFirstDescendantOrNull
 import space.narrate.waylan.core.util.getColorStateList
 import space.narrate.waylan.core.util.invisible
 import space.narrate.waylan.core.util.visible
@@ -68,6 +69,10 @@ class ScrimWindowLayout @JvmOverloads constructor(
     }
 
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        // Record the height of the top window inset so we can create a fake status bar
+        // equal to it's height so when content in a child AppBarLayout is scrolling under the status
+        // bar, we can alpha in the status bar scrim and keep the content from showing behind
+        // the status bar area.
         statusBarScrim.layoutParams.height = insets.systemWindowInsetTop
         return super.onApplyWindowInsets(insets)
     }
@@ -75,20 +80,13 @@ class ScrimWindowLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        findAppBarLayout()?.addOnOffsetChangedListener(
-            AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-                if (verticalOffset == 0) statusBarScrim.invisible() else statusBarScrim.visible()
-        })
+        (findFirstDescendantOrNull { it is AppBarLayout } as AppBarLayout?)
+            ?.addOnOffsetChangedListener(
+                AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+                    if (verticalOffset == 0) statusBarScrim.invisible() else statusBarScrim.visible()
+                })
 
         addView(statusBarScrim, childCount)
-    }
-
-    private fun findAppBarLayout(): AppBarLayout? {
-        children.forEach {
-            if (it is AppBarLayout) return it
-        }
-
-        return null
     }
 
     companion object {

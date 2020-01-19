@@ -2,9 +2,7 @@ package space.narrate.waylan.android.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
@@ -20,6 +19,7 @@ import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
@@ -31,10 +31,9 @@ import kotlin.math.max
  */
 class MainActivity : AppCompatActivity() {
 
+    private val binding: ActivityMainBinding by contentView(R.layout.activity_main)
     private lateinit var searchFragment: SearchFragment
     private lateinit var contextualFragment: ContextualFragment
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var bottomSheetScrimView: View
 
     private val authenticationStore: AuthenticationStore by inject()
 
@@ -66,19 +65,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        // Tell the system that we'd like to be laid out behind the system bars and handle insets
-        // ourselves. This is used because MainActivity's child Fragments use
-        // [ElasticAppBarBehavior] and we'd like each fragment to extend to the top
-        // of the window. When dragging down the fragment pulls down off the top of the screen,
-        // and from under the status bar.
-        val decor = window.decorView
-        val flags = decor.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        decor.systemUiVisibility = flags
+        binding.run {
+            // empty init clause to trigger ContentViewBindingDelegate
+        }
 
         findNavController().addOnDestinationChangedListener { _, destination, arguments ->
             navigator.setCurrentDestination(destination, arguments)
@@ -88,8 +78,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
         contextualFragment =
             supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
-        coordinatorLayout = findViewById(R.id.coordinator_layout)
-        bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
         navigator.shouldNavigateBack.observe(this) { event ->
             event.withUnhandledContent { onBackPressed() }
@@ -208,7 +196,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        bottomSheetScrimView.setOnClickListener {
+        binding.bottomSheetScrim.setOnClickListener {
             searchFragment.close()
             contextualFragment.close()
         }
@@ -229,14 +217,14 @@ class MainActivity : AppCompatActivity() {
                 && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
                         || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
         ) {
-            bottomSheetScrimView.gone()
+            binding.bottomSheetScrim.gone()
         } else {
-            bottomSheetScrimView.visible()
+            binding.bottomSheetScrim.visible()
         }
     }
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
-        bottomSheetScrimView.alpha = max(searchSheetSlide, contextualSheetSlide)
+        binding.bottomSheetScrim.alpha = max(searchSheetSlide, contextualSheetSlide)
     }
 
     private fun setOrientation(orientation: Orientation) {

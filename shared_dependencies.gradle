@@ -18,6 +18,10 @@ dependencies {
     implementation Libs.navigationFragmentKtx
     implementation Libs.navigationUiKtx
 
+    // Insetter
+    implementation Libs.insetterKtx
+    implementation Libs.insetterDbx
+
     // Room
     implementation Libs.roomRuntime
     kapt Libs.roomCompiler

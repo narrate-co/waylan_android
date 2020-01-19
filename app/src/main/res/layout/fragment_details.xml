@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrim_frame"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/coordinator_layout"
-        android:layout_width="match_parent"
+    <space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+        android:id="@+id/scrim_frame"
         android:layout_height="match_parent"
-        android:backgroundTint="?android:windowBackground">
+        android:layout_width="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingBottom="200dp"
-            android:overScrollMode="never"
-            android:clipToPadding="false"/>
+            android:backgroundTint="?android:windowBackground"
+            app:paddingLeftSystemWindowInsets="@{true}"
+            app:paddingTopSystemWindowInsets="@{true}"
+            app:paddingRightSystemWindowInsets="@{true}">
 
-        <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expandedTitleTextAppearance="?attr/textAppearanceHeadline2"
-            app:expandedHeight="352dp"
-            app:title="details"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:paddingBottom="@dimen/keyline_3"
+                android:overScrollMode="never"
+                android:clipToPadding="false"
+                app:paddingBottomAboveSearchSheet="@{true}"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandedTitleTextAppearance="?attr/textAppearanceHeadline2"
+                app:expandedHeight="352dp"
+                app:title="details"/>
 
-</space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+
+</layout>
