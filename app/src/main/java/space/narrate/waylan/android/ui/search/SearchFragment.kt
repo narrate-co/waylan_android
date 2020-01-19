@@ -399,7 +399,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
     }
 
-    private fun setShelfActionsRow(model: SearchShelfActionsRowModel) {
+    private fun setShelfActionsRow(model: SearchShelfActionRowModel) {
         binding.run {
             setShelfAction(
                 model.actionOne,

@@ -4,7 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.search.ShelfActionModel.*
+import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseKeyboardAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseSheetAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.FavoriteAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.FilterAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.ShareAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.UnfavoriteAction
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.Orientation
@@ -35,8 +40,8 @@ class SearchViewModel(
         .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
-    val searchShelfRowModel: LiveData<SearchShelfActionsRowModel>
-        get() = SearchShelfActionsLiveData(
+    val searchShelfRowModel: LiveData<SearchShelfActionRowModel>
+        get() = SearchShelfActionRowLiveData(
             navigator.currentDestination,
             currentUserWord,
             userRepository.trendingListFilterLive,

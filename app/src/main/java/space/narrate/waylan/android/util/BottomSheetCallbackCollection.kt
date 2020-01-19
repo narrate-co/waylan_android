@@ -5,9 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-//typealias OnSlideAction = (View, Float) -> Unit
-//typealias OnStateChangedAction = (View, Int) -> Unit
-
 /**
  * A class which holds [OnSlideAction]s and [OnStateChangedAction]s and calls
  * each held function upon their respective BottomSheetCallback being called. This is a helper

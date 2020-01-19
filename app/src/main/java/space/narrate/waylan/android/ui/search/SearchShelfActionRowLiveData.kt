@@ -16,7 +16,7 @@ import space.narrate.waylan.core.util.toLiveData
  * A LiveData object that handles the logic of watching the values relevant for
  * showing search shelf actions and emits values when (and only when) the UI should be changed.
  */
-class SearchShelfActionsLiveData(
+class SearchShelfActionRowLiveData(
     private val currentDestination: LiveData<Destination>,
     private val currentUserWord: LiveData<UserWord>,
     private val trendingListFilter: LiveData<List<Period>>,
@@ -25,7 +25,7 @@ class SearchShelfActionsLiveData(
     private val contextualSheetOffset: LiveData<Float>,
     private val contextualSheetState: LiveData<Int>,
     private val softInputState: LiveData<SoftInputModel>
-) : MediatorLiveData<SearchShelfActionsRowModel>() {
+) : MediatorLiveData<SearchShelfActionRowModel>() {
 
     data class SheetKeyboardState(
         val searchSheetOffset: Float,
@@ -35,6 +35,10 @@ class SearchShelfActionsLiveData(
         val softInputState: SoftInputModel
     )
 
+    /**
+     * A mediator LiveData which groups all events related to all bottom sheet and keyboard
+     * events.
+     */
     class SheetKeyboardStateLiveData(
         searchSheetOffset: LiveData<Float>,
         searchSheetState: LiveData<Int>,
@@ -121,25 +125,28 @@ class SearchShelfActionsLiveData(
             softInputState
         )
 
-    private var lastSearchShelfModelValue: SearchShelfActionsRowModel? = null
+    private var lastSearchShelfModelValue: SearchShelfActionRowModel? = null
 
-    private val searchShelfRowModel: LiveData<SearchShelfActionsRowModel>
+    private val searchShelfRowModel: LiveData<SearchShelfActionRowModel>
         get() = currentDestination
             .switchMapTransform { dest ->
-                val model: LiveData<SearchShelfActionsRowModel> = when (dest) {
+                val model: LiveData<SearchShelfActionRowModel> = when (dest) {
                     Destination.DETAILS ->
                         currentUserWord.mapTransform {
-                            SearchShelfActionsRowModel.DetailsShelfActions(it)
+                            SearchShelfActionRowModel.DetailsShelfActions(it)
                         }
                     Destination.TRENDING ->
                         trendingListFilter.mapTransform {
-                            SearchShelfActionsRowModel.ListShelfActions(it.isNotEmpty())
+                            SearchShelfActionRowModel.ListShelfActions(it.isNotEmpty())
                         }
-                    else -> SearchShelfActionsRowModel.None().toLiveData
+                    else -> SearchShelfActionRowModel.None().toLiveData
                 }
                 model
             }
             .mapOnTransform(_sheetKeyboardState) { model, sheetKeyboardState ->
+                // Override the model being emitted based on destination if the search sheet is
+                // expanded or the keyboard is open. The close/hide keyboard actions always show
+                // when the sheet or keyboard is open.
                 val isSearchSheetExpanded =
                     sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_HIDDEN &&
                     sheetKeyboardState.searchSheetState != BottomSheetBehavior.STATE_COLLAPSED
@@ -149,12 +156,12 @@ class SearchShelfActionsLiveData(
                 val isKeyboardOpen = sheetKeyboardState.softInputState.isOpen
 
                 if (isSearchSheetExpanded || isKeyboardOpen) {
-                    SearchShelfActionsRowModel.SheetKeyboardControllerActions(
+                    SearchShelfActionRowModel.SheetKeyboardControllerActions(
                         isSearchSheetExpanded,
                         isKeyboardOpen
                     )
                 } else if (isContextualSheetExpanded) {
-                    SearchShelfActionsRowModel.None()
+                    SearchShelfActionRowModel.None()
                 } else {
                     model
                 }
@@ -162,9 +169,10 @@ class SearchShelfActionsLiveData(
 
     init {
         searchShelfRowModel.observeForever {
+            // Filter out values which are the same as the previously emitted value, avoiding
+            // unnecessary redraws/configs of UI elements.
             if (lastSearchShelfModelValue == null
                 || lastSearchShelfModelValue?.isContentSameAs(it) == false)  {
-                println("SearchShelfActions - $it")
                 lastSearchShelfModelValue = it
                 postValue(it)
             }

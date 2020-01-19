@@ -3,7 +3,12 @@ package space.narrate.waylan.android.ui.search
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.search.ShelfActionModel.*
+import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseKeyboardAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseSheetAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.FavoriteAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.FilterAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.ShareAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.UnfavoriteAction
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.isFavorited
 import space.narrate.waylan.core.ui.common.Diffable
@@ -13,7 +18,7 @@ import space.narrate.waylan.core.ui.common.Diffable
  * area to the right of the search area. This area can hold up to two actions. The actions displayed
  * changed contextually depending on the current screen and the state of any bottom sheets.
  */
-sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
+sealed class SearchShelfActionRowModel : Diffable<SearchShelfActionRowModel> {
     
     abstract val numberOfActionsToShow: Int
     abstract val shouldAnimateToNumberOfActions: Boolean
@@ -21,13 +26,13 @@ sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
     open val actionOne: ShelfActionModel? = null
     open val actionTwo: ShelfActionModel? = null
 
-    override fun isSameAs(newOther: SearchShelfActionsRowModel): Boolean {
+    override fun isSameAs(newOther: SearchShelfActionRowModel): Boolean {
         return this === newOther
     }
 
     class DetailsShelfActions(
         userWord: UserWord
-    ) : SearchShelfActionsRowModel() {
+    ) : SearchShelfActionRowModel() {
 
         override val numberOfActionsToShow: Int = 2
         override val shouldAnimateToNumberOfActions: Boolean = true
@@ -36,7 +41,7 @@ sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
         override val actionOne = if (isFavorited) UnfavoriteAction else FavoriteAction
         override val actionTwo = ShareAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
             if (newOther !is DetailsShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && isFavorited == newOther.isFavorited
@@ -45,14 +50,14 @@ sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
         }
     }
 
-    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionsRowModel() {
+    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionRowModel() {
 
         override val numberOfActionsToShow: Int = if (hasFilter) 0 else 1
         override val shouldAnimateToNumberOfActions: Boolean = true
 
         override val actionOne = FilterAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
             if (newOther !is ListShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && hasFilter == newOther.hasFilter
@@ -63,25 +68,25 @@ sealed class SearchShelfActionsRowModel : Diffable<SearchShelfActionsRowModel> {
     class SheetKeyboardControllerActions(
         val isSheetExpanded: Boolean,
         val isKeyboardOpen: Boolean
-    ) : SearchShelfActionsRowModel() {
+    ) : SearchShelfActionRowModel() {
 
         override val numberOfActionsToShow: Int = if (isSheetExpanded || isKeyboardOpen) 1 else 0
         override val shouldAnimateToNumberOfActions: Boolean = false
 
         override val actionOne = if (isKeyboardOpen) CloseKeyboardAction else CloseSheetAction
 
-        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
             if (newOther !is SheetKeyboardControllerActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
                 && actionOne.isContentSameAs(newOther.actionOne)
         }
     }
 
-    class None : SearchShelfActionsRowModel() {
+    class None : SearchShelfActionRowModel() {
         override val numberOfActionsToShow: Int = 0
         override val shouldAnimateToNumberOfActions: Boolean = true
 
-        override fun isContentSameAs(newOther: SearchShelfActionsRowModel): Boolean {
+        override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
             if (newOther !is None) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
         }

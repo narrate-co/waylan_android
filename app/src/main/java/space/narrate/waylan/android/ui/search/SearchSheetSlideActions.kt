@@ -9,6 +9,12 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.util.OnSlideAction
 import space.narrate.waylan.core.util.MathUtils
 
+/**
+ * Keep the search area pinned to the bottom of the screen.
+ *
+ * This translates the search area (by updating it top margin) as the search sheet is slid up
+ * and down to keep the search are at the bottom of the screen.
+ */
 class PinSearchAreaSlideAction(private val searchArea: View) : OnSlideAction {
 
     private var sheetBehavior: BottomSheetBehavior<out View>? = null
@@ -32,6 +38,10 @@ class PinSearchAreaSlideAction(private val searchArea: View) : OnSlideAction {
     }
 }
 
+/**
+ * Fade in the search results RecyclerView as the search sheet slides up and fade it out
+ * as it slides down.
+ */
 class FadeInOutSearchResultsSlideAction(private val recyclerView: RecyclerView) : OnSlideAction {
     override fun onSlide(sheet: View, slideOffset: Float) {
         recyclerView.alpha = MathUtils.normalize(
