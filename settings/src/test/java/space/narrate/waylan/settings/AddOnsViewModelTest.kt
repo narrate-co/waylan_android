@@ -13,10 +13,10 @@ import space.narrate.waylan.core.data.firestore.users.AddOnAction
 import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
 import space.narrate.waylan.core.repo.AnalyticsRepository
 import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.util.toLiveData
 import space.narrate.waylan.settings.ui.addons.AddOnItemModel
 import space.narrate.waylan.settings.ui.addons.AddOnsViewModel
 import space.narrate.waylan.test_common.anyOrNull
-import space.narrate.waylan.test_common.toLiveData
 import org.mockito.Mockito.`when` as whenever
 
 class AddOnsViewModelTest {
