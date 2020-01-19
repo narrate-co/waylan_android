@@ -57,7 +57,7 @@ object Versions {
     const val navigation = "2.1.0"
     const val okhttp3 = "3.10.0"
     const val okhttp3MockWebServer = "4.2.1"
-    const val retrofit = "2.4.0"
+    const val retrofit = "2.7.1"
     const val robolectric = "4.3.1"
     const val room = "2.2.0-rc01"
     const val testCoreKtx = "1.3.0-alpha03"
@@ -134,7 +134,6 @@ object Libs {
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
 
-
     // Material
     const val material = "com.google.android.material:material:${Versions.material}"
 
@@ -176,7 +175,6 @@ object Libs {
     const val threeTenBpGsonAdapter = "org.aaronhe:threetenbp-gson-adapter:${Versions.threetenbpGson}"
 
     // AndroidX Testing
-//    const val testCore = "androidx.test:core:${Versions.testCore}"
     const val testCoreKtx = "androidx.test:core-ktx:${Versions.testCoreKtx}"
     const val testRules = "androidx.test:rules:${Versions.testRules}"
 

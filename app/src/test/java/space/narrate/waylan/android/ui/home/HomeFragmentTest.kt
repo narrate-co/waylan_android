@@ -121,16 +121,6 @@ class HomeFragmentTest: AutoCloseKoinTest() {
         onViewWithTextClick_shouldNavigateToListType(favoriteTitle, ListType.FAVORITE)
     }
 
-    @Test
-    fun onSettingsClicked_shouldNavigateToSettings() {
-        val navController = mock(NavController::class.java)
-        launchFragment(navController)
-
-        onView(withText(settingsTitle)).perform(click())
-
-        verify(navController).navigate(R.id.action_homeFragment_to_settingsFragment)
-    }
-
     private fun onViewWithTextClick_shouldNavigateToListType(text: String, type: ListType) {
         val navController = mock(NavController::class.java)
         launchFragment(navController)

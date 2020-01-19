@@ -17,7 +17,11 @@ val merriamWebsterModule = module {
     }
 
     single {
-        MerriamWebsterStore(RetrofitService.getInstance(), get<MerriamWebsterDatabase>().mwDao(), Dispatchers.IO)
+        MerriamWebsterStore(
+            RetrofitService.getInstance(),
+            get<MerriamWebsterDatabase>().mwDao(),
+            Dispatchers.IO
+        )
     }
 
     single { MerriamWebsterRepository(get()) }
