@@ -2,10 +2,10 @@ package space.narrate.waylan.android.ui.list
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
-import kotlinx.android.synthetic.main.list_item_layout.view.*
 import org.threeten.bp.OffsetDateTime
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.util.toChip
@@ -50,6 +50,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
         private val partOfSpeechTextView: AppCompatTextView = view.findViewById(R.id.part_of_speech)
         private val definitionTextView: AppCompatTextView = view.findViewById(R.id.definition)
         private val chipGroup: ChipGroup = view.findViewById(R.id.expanded_chip_group)
+        private val itemContainer: LinearLayout = view.findViewById(R.id.item_container)
 
         override fun bind(item: ListItemModel.UserWordModel) {
             wordTextView.text = item.userWord.word
@@ -67,13 +68,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             item.userWord.synonymPreview.forEach {syn ->
                 val synonym = Synonym(syn.key, OffsetDateTime.now(), OffsetDateTime.now())
                 chipGroup.addView(
-                        synonym.toChip(view.context, view.expanded_chip_group) {
+                        synonym.toChip(view.context, chipGroup) {
                             listener.onWordClicked(it.synonym)
                         }
                 )
             }
 
-            view.item_container.setOnClickListener {
+            itemContainer.setOnClickListener {
                 listener.onWordClicked(item.userWord.word)
             }
         }
@@ -90,6 +91,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
         private val partOfSpeechTextView: AppCompatTextView = view.findViewById(R.id.part_of_speech)
         private val definitionTextView: AppCompatTextView = view.findViewById(R.id.definition)
         private val chipGroup: ChipGroup = view.findViewById(R.id.expanded_chip_group)
+        private val itemContainer: LinearLayout = view.findViewById(R.id.item_container)
 
         override fun bind(item: ListItemModel.GlobalWordModel) {
             wordTextView.text = item.globalWord.word
@@ -107,13 +109,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
             item.globalWord.synonymPreview.forEach {
                 val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
                 chipGroup.addView(
-                        synonym.toChip(view.context, view.expanded_chip_group) {
+                        synonym.toChip(view.context, chipGroup) {
                             listener.onWordClicked(it.synonym)
                         }
                 )
             }
 
-            view.item_container.setOnClickListener {
+            itemContainer.setOnClickListener {
                 listener.onWordClicked(item.globalWord.word)
             }
         }
