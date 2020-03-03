@@ -1,11 +1,8 @@
 package space.narrate.waylan.android.ui
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import space.narrate.waylan.android.ui.search.ContextualFilterModel
-import space.narrate.waylan.android.ui.search.SearchShelfActionsModel
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.NightMode
@@ -15,7 +12,6 @@ import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel owned by MainActivity, accessible by all its child Fragments, making data
@@ -27,50 +23,6 @@ class MainViewModel(
     private val navigator: Navigator
 ) : ViewModel() {
 
-    val searchShelfModel: LiveData<SearchShelfActionsModel> = navigator.currentDestination
-        .switchMapTransform { dest ->
-            val result = MediatorLiveData<SearchShelfActionsModel>()
-            when (dest) {
-                Destination.DETAILS -> result.addSource(currentUserWord) {
-                    result.value = SearchShelfActionsModel.DetailsShelfActions(it)
-                }
-                Destination.TRENDING -> result.addSource(
-                    userRepository.trendingListFilterLive
-                ) {
-                    result.value = SearchShelfActionsModel.ListShelfActions(it.isNotEmpty())
-                }
-                else -> result.value = SearchShelfActionsModel.None
-            }
-
-            result
-        }
-
-    val contextualFilterModel: LiveData<ContextualFilterModel> = navigator.currentDestination
-        .switchMapTransform { dest ->
-            val result = MediatorLiveData<ContextualFilterModel>()
-
-            result.addSource(
-                when (dest) {
-                    Destination.TRENDING -> userRepository.trendingListFilterLive
-                    Destination.RECENT -> userRepository.recentsListFilterLive
-                    Destination.FAVORITE -> userRepository.favoritesListFilterLive
-                    else -> {
-                        // TODO : Clean up
-                        val data = MutableLiveData<List<Period>>()
-                        data.value = emptyList()
-                        data
-                    }
-                }
-            ) { filter ->
-                result.value = ContextualFilterModel(
-                    dest,
-                    filter,
-                    dest == Destination.TRENDING
-                )
-            }
-
-            result
-        }
 
     // A backing field for the word (as it appears in the dictionary) which should currently be
     // displayed by [DetailsFragment]. This is used instead of alternatives like passing the word
@@ -78,9 +30,6 @@ class MainViewModel(
     private val _currentWord: MutableLiveData<String> = MutableLiveData()
     val currentWord: LiveData<String>
         get() = _currentWord
-
-    private val currentUserWord: LiveData<UserWord>
-        get() = currentWord.switchMapTransform { wordRepository.getUserWord(it) }
 
     val nightMode: LiveData<NightMode>
         get() = userRepository.nightModeLive

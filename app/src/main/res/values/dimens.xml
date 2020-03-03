@@ -8,6 +8,8 @@
 
     <!--Search & contextual sheet dimens-->
     <dimen name="search_min_peek_height">80dp</dimen>
+    <!--8dp + 4dp (handle height) + 8dp-->
+    <dimen name="search_input_area_margin_top">20dp</dimen>
     <dimen name="contextual_collapsed_container_height">52dp</dimen>
     <dimen name="contextual_min_peek_height">132dp</dimen>
 

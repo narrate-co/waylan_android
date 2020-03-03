@@ -9,13 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
@@ -29,19 +30,17 @@ import space.narrate.waylan.android.util.KeyboardManager
 import space.narrate.waylan.android.util.collapse
 import space.narrate.waylan.android.util.expand
 import space.narrate.waylan.android.util.hide
-import space.narrate.waylan.core.data.firestore.users.UserWord
-import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
+import space.narrate.waylan.core.util.fadeThroughTransition
 import space.narrate.waylan.core.util.getColorFromAttr
-import space.narrate.waylan.core.util.getDimensionPixelSizeFromAttr
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.showSoftKeyboard
-import space.narrate.waylan.core.util.swapImageResource
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,
@@ -110,6 +109,10 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
         ViewCompat.setBackground(binding.collapsedContainer, materialShapeDrawable)
 
+        sharedViewModel.currentWord.observe(this) {
+            viewModel.onCurrentWordChanged(it)
+        }
+
         sharedViewModel.shouldOpenAndFocusSearch.observe(this) { event ->
             event.withUnhandledContent { focusAndOpenSearch() }
         }
@@ -124,6 +127,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             }
         }
 
+        // TODO: Move logic into ViewModel
         navigator.currentDestination.observe(this) {
             when (it) {
                 Destination.SETTINGS,
@@ -138,6 +142,18 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                     bottomSheetBehavior.isHideable = false
                 }
             }
+        }
+
+        viewModel.shouldCloseKeyboard.observe(this) {
+            requireActivity().hideSoftKeyboard()
+        }
+
+        viewModel.shouldCloseSheet.observe(this) {
+            bottomSheetBehavior.collapse(requireActivity())
+        }
+
+        viewModel.shouldOpenContextualSheet.observe(this) {
+            sharedViewModel.onShouldOpenContextualFragment()
         }
 
         setUpSheet()
@@ -163,66 +179,77 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         return false
     }
 
+    override fun onWordClicked(searchItem: SearchItemModel) {
+        close()
+        viewModel.onWordClicked(searchItem)
+    }
+
     private fun setUpSheet() {
 
         // Set max expanded height to 60% of screen height, the max height it can be expected that
         // a person can reach with their thumb
-        val maxReachableExpandedHeight = Math.round(requireContext().displayHeightPx * .60F)
-        val searchItemHeight = requireContext().getDimensionPixelSizeFromAttr(
-            android.R.attr.listPreferredItemHeight
-        )
-        val minPeekHeight = resources.getDimensionPixelSize(R.dimen.search_min_peek_height)
-        val minVisibleHeightAboveKeyboard = minPeekHeight + (1.5 * searchItemHeight)
-
+        val maxReachableExpandedHeight = (requireContext().displayHeightPx * .60F).roundToInt()
         requireView().layoutParams?.height = maxReachableExpandedHeight
 
-        // Observe the height of the keyboard. If it is taller than the search bar + 1.5 search
-        // result list items (keep a few list items visible so the user knows there are immediate
-        // results), reset the height of the search sheet.
+        // Observe the keyboard height so we can move the entire bottom sheet up and keep it in
+        // view when the keyboard is on screen.
         KeyboardManager(requireActivity(), binding.collapsedContainer)
-                .getKeyboardHeightData()
-                .observe(this) {
-                    val minHeight = max(
-                            maxReachableExpandedHeight,
-                            (it.height + minVisibleHeightAboveKeyboard).toInt()
-                    )
-                    if (it.height != 0 && minHeight != requireView().layoutParams.height) {
-                        requireView().layoutParams.height = minHeight
-                    }
-                }
+            .getKeyboardHeightData()
+            .observe(this) {
+                viewModel.onSoftInputChanged(it)
+            }
 
-        binding.recyclerView.alpha = 0F
-        (requireActivity() as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
-            binding.recyclerView.alpha = MathUtils.normalize(offset, 0.2F, 1.0F, 0.0F, 1.0F)
+        // Translate the search sheet so it's always above the IME
+        viewModel.keyboardHeight.observe(this) {
+            requireView().translationY = -it
         }
 
-        // Make sure we're hiding the recycler view, even when the state change event is
-        // coming from something other than a drag.
-        (requireActivity() as MainActivity).searchSheetCallback
-            .addOnStateChangedAction { _, newState ->
-                if (newState == BottomSheetBehavior.STATE_HIDDEN ||
-                    newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    binding.recyclerView.alpha = 0F
-                }
-            }
+        val searchSheetCallback = (requireActivity() as MainActivity).searchSheetCallback
+        val contextualSheetCallback = (requireActivity() as MainActivity).contextualSheetCallback
+
+        searchSheetCallback.currentSlideLive.observe(this) {
+            viewModel.onSearchSheetOffsetChanged(it)
+        }
+
+        searchSheetCallback.currentStateLive.observe(this) {
+            viewModel.onSearchSheetStateChanged(it)
+        }
+
+        contextualSheetCallback.currentSlideLive.observe(this) {
+            viewModel.onContextualSheetOffsetChanged(it)
+        }
+
+        contextualSheetCallback.currentStateLive.observe(this) {
+            viewModel.onContextualSheetStateChanged(it)
+        }
+
+        // Pin the search bar to the bottom of the screen by observing the sheets slide.
+        searchSheetCallback.addOnSlideAction(PinSearchAreaSlideAction(binding.searchContainer))
+
+        // Fade in the search results as the sheet slides up and out as the sheet slides down.
+        searchSheetCallback.addOnSlideAction(
+            FadeInOutSearchResultsSlideAction(binding.recyclerView)
+        )
     }
 
     // Set up textRes watchers and on focus changed listeners to help control the
     // hiding/showing of both the search sheet and the IME
     private fun setUpSearchBar() {
-        binding.searchEditText.addTextChangedListener(this)
+        binding.run {
+            searchEditText.addTextChangedListener(this@SearchFragment)
 
-        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                bottomSheetBehavior.expand()
-            } else {
-                bottomSheetBehavior.collapse(activity)
+            searchEditText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bottomSheetBehavior.expand()
+                } else {
+                    bottomSheetBehavior.collapse(activity)
+                }
             }
-        }
 
-        binding.searchEditText.setOnClickListener {
-            if (binding.searchEditText.hasFocus()) {
-                bottomSheetBehavior.expand()
+            searchEditText.setOnClickListener {
+                if (searchEditText.hasFocus()) {
+                    bottomSheetBehavior.expand()
+                }
             }
         }
     }
@@ -230,11 +257,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     // Set up the recycler view which holds recently viewed words when the search input field
     // is empty and search results when not.
     private fun setUpRecyclerView() {
-        //set up recycler view
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
 
-        // hide IME if user is scrolling search results
+        // Hide IME if user is scrolling search results
         // This avoids the need to expand the search sheet to the full height of the display
         // and moving results out of "thumb reach"
         binding.recyclerView.setOnTouchListener { _, _ ->
@@ -262,7 +287,8 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 this.javaClass.simpleName,
                 this,
                 RotationManager.PATTERNS_ALL,
-                viewModel)
+                viewModel
+        )
     }
 
     // Shelf actions are actions which live to the right of the search input field. They
@@ -271,20 +297,13 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     // current Fragment
     private fun setUpShelfActions() {
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        sharedViewModel.searchShelfModel.observe(this) { model ->
+        viewModel.searchShelfRowModel.observe(this) { model ->
             // wait for the next layout step to grantee the actions.width is correctly captured
-            view?.post {
-                when (model) {
-                    is SearchShelfActionsModel.DetailsShelfActions -> {
-                        runShelfActionsAnimation(2)
-                        setShelfActionsForDetails(model.userWord)
-                    }
-                    is SearchShelfActionsModel.ListShelfActions -> {
-                        runShelfActionsAnimation(if (model.hasFilter) 0 else 1)
-                        setShelfActionsForList()
-                    }
-                    is SearchShelfActionsModel.None -> runShelfActionsAnimation(0)
+            if (binding.actionsContainer.isLaidOut) {
+                if (model.shouldAnimateToNumberOfActions) {
+                    runShelfActionsAnimation(model.numberOfActionsToShow)
                 }
+                setShelfActionsRow(model)
             }
         }
 
@@ -295,37 +314,38 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                     (requireActivity() as MainActivity).contextualSheetCallback.currentSlide
             )
         }
-
-        // Hide filter action if contextual sheet is expanded
-        (activity as MainActivity).contextualSheetCallback.addOnSlideAction { _, offset ->
-            val currentDest = navigator.currentDestination.value
-                ?: Destination.HOME
-            if (currentDest == Destination.TRENDING) {
-                setSheetSlideOffsetForActions(
-                        (requireActivity() as MainActivity).searchSheetCallback.currentSlide,
-                        offset
-                )
-            }
-        }
     }
 
     private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {
-        val zeroActions = numberOfShelfActionsShowing == 0
-        val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-        val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
-        val hiddenMargin = keyline2
-        val showingMargin = (((binding.actionOneImageView.width + keyline3) * numberOfShelfActionsShowing) +
-            (if (zeroActions) keyline2 else 0)) + keyline2
-        val params = binding.searchContainer.layoutParams  as ConstraintLayout.LayoutParams
+        val collapsedMargin =  getSearchAreaMarginRightForNumberOfShowingActions(
+            numberOfShelfActionsShowing
+        )
+        val expandedMargin = getSearchAreaMarginRightForNumberOfShowingActions(1)
 
-        params.rightMargin = MathUtils.normalize(
-            Math.max(searchOffset, contextualOffset),
+        val rightMargin = MathUtils.normalize(
+            max(searchOffset, contextualOffset),
             0F,
             1F,
-            showingMargin.toFloat(),
-            hiddenMargin.toFloat()
+            collapsedMargin.toFloat(),
+            expandedMargin.toFloat()
         ).toInt()
-        binding.searchContainer.layoutParams = params
+
+        updateSearchAreaMarginRight(rightMargin)
+    }
+
+    private fun getSearchAreaMarginRightForNumberOfShowingActions(number: Int): Int {
+        // Margin between the right edge of the search area and the right edge of the screen
+        // when no actions are showing.
+        val marginFromEdgeOfScreen = resources.getDimensionPixelSize(R.dimen.keyline_2)
+
+        // Total horizontal margins for each action item.
+        val params = binding.actionOne.layoutParams as LinearLayout.LayoutParams
+        val actionMarginStartEnd = params.leftMargin + params.rightMargin
+
+        // Width of an action including its margins. This assumes all actions are the same width.
+        val actionWidth = binding.actionOne.width + actionMarginStartEnd
+
+        return marginFromEdgeOfScreen + (actionWidth * number)
     }
 
     /**
@@ -344,32 +364,26 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
      * input field) by animating the right margin of the search input layout.
      */
     private fun runShelfActionsAnimation(numberOfActions: Int) {
-        if (!isAdded) return
+        if (!isAdded || numberOfShelfActionsShowing == numberOfActions) return
 
         numberOfShelfActionsShowing = numberOfActions
-        val zeroActions = numberOfActions == 0
-        val keyline2 = resources.getDimensionPixelSize(R.dimen.keyline_2)
-        val keyline3 = resources.getDimensionPixelSize(R.dimen.keyline_3)
-        val showMargin = (((binding.actionOneImageView.width + keyline3) * numberOfActions) +
-            (if (zeroActions) keyline2 else 0)) + keyline2
+        val newMargin = getSearchAreaMarginRightForNumberOfShowingActions(numberOfActions)
         val currentMargin =
             (binding.searchContainer.layoutParams as ConstraintLayout.LayoutParams).rightMargin
 
         // don't animate if already shown or hidden
-        if ((!zeroActions && currentMargin == showMargin)
-                || (zeroActions && currentMargin == keyline2)) return
+        if (currentMargin == newMargin) return
 
         val animation = object : Animation() {
             override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-                val params = binding.searchContainer.layoutParams as ConstraintLayout.LayoutParams
-                params.rightMargin = MathUtils.normalize(
+                val rightMargin = MathUtils.normalize(
                     interpolatedTime,
                     0F,
                     1F,
                     currentMargin.toFloat(),
-                    showMargin.toFloat()
+                    newMargin.toFloat()
                 ).toInt()
-                binding.searchContainer.layoutParams = params
+                updateSearchAreaMarginRight(rightMargin)
             }
         }
         animation.duration = 200
@@ -377,38 +391,47 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         binding.searchContainer.startAnimation(animation)
     }
 
-    /**
-     * Set shelf actions according to [userWord]
-     */
-    private fun setShelfActionsForDetails(userWord: UserWord?) {
-        if (userWord == null)  return
-
-        val isFavorited = userWord.types.containsKey(UserWordType.FAVORITED.name)
-
-        binding.actionOneImageView.setOnClickListener {
-            sharedViewModel.setCurrentWordFavorited(!isFavorited)
+    private fun updateSearchAreaMarginRight(rightMargin: Int) {
+        binding.run {
+            val params = searchContainer.layoutParams as ConstraintLayout.LayoutParams
+            params.rightMargin = rightMargin
+            searchContainer.layoutParams = params
         }
+    }
 
-        // TODO create an AVD
-        binding.actionOneImageView.swapImageResource(if (isFavorited) {
-            R.drawable.ic_round_favorite_24px
+    private fun setShelfActionsRow(model: SearchShelfActionRowModel) {
+        binding.run {
+            setShelfAction(
+                model.actionOne,
+                binding.actionOne,
+                binding.actionOneImageView
+            )
+
+            setShelfAction(
+                model.actionTwo,
+                binding.actionTwo,
+                binding.actionTwoImageView
+            )
+        }
+    }
+
+    private fun setShelfAction(
+        action: ShelfActionModel?,
+        actionView: View,
+        actionImageView: ImageView
+    ) {
+        if (action == null) return
+
+        actionImageView.setOnClickListener { viewModel.onShelfActionClicked(action) }
+        actionImageView.fadeThroughTransition {
+            setImageResource(action.icon)
+            contentDescription = getString(action.contentDescription)
+        }
+        if (action.backgroundDrawable != null) {
+            actionView.setBackgroundResource(action.backgroundDrawable)
         } else {
-            R.drawable.ic_round_favorite_border_24px
-        })
-
-        // TODO add share button setup
-    }
-
-    private fun setShelfActionsForList() {
-        binding.actionOneImageView.setOnClickListener {
-            sharedViewModel.onShouldOpenContextualFragment()
+            actionView.background = null
         }
-        binding.actionOneImageView.swapImageResource(R.drawable.ic_round_filter_list_24px)
-    }
-
-    override fun onWordClicked(searchItem: SearchItemModel) {
-        close()
-        viewModel.onWordClicked(searchItem)
     }
 
     override fun afterTextChanged(s: Editable?) { }

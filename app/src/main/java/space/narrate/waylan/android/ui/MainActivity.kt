@@ -13,7 +13,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
-import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
@@ -70,14 +70,14 @@ class MainActivity : AppCompatActivity() {
             // empty init clause to trigger ContentViewBindingDelegate
         }
 
-        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
-            navigator.setCurrentDestination(destination, arguments)
-        }
-
         searchFragment =
             supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
         contextualFragment =
             supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
+
+        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
+            navigator.setCurrentDestination(destination, arguments)
+        }
 
         navigator.shouldNavigateBack.observe(this) { event ->
             event.withUnhandledContent { onBackPressed() }

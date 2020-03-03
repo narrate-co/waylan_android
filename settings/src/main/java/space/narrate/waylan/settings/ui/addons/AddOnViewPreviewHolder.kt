@@ -15,16 +15,6 @@ class AddOnViewPreviewHolder(
     private val binding: AddOnPreviewItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    init {
-        val surfaceColor = ElevationOverlayProvider(binding.card.context)
-            .compositeOverlayWithThemeSurfaceColorIfNeeded(binding.card.elevation)
-        val fadeGradient = GradientDrawable(
-            GradientDrawable.Orientation.TOP_BOTTOM,
-            intArrayOf(Color.TRANSPARENT, surfaceColor)
-        )
-        binding.fadeView.background = fadeGradient
-    }
-
     fun onBind(addOn: AddOnItemModel) {
         val layout = when (addOn) {
             is AddOnItemModel.MerriamWebster -> R.layout.add_on_merriam_webster_preview_content

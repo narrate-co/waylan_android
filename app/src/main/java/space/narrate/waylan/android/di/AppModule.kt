@@ -13,6 +13,7 @@ import space.narrate.waylan.android.ui.details.WordsetDetailDataProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailItemProvider
 import space.narrate.waylan.android.ui.home.HomeViewModel
 import space.narrate.waylan.android.ui.list.ListViewModel
+import space.narrate.waylan.android.ui.search.ContextualViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
 import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
@@ -30,7 +31,9 @@ val appModule = module {
 
     viewModel { HomeViewModel(get()) }
 
-    viewModel { SearchViewModel(get(), get(), get()) }
+    viewModel { SearchViewModel(get(), get(), get(), get()) }
+
+    viewModel { ContextualViewModel(get(), get()) }
 
     viewModel { ListViewModel(get(), get()) }
 

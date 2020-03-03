@@ -13,6 +13,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.Chip
@@ -41,18 +42,14 @@ fun View.visible() {
 val View.inflater: LayoutInflater
     get() = LayoutInflater.from(context)
 
-fun ImageView.swapImageResource(imgRes: Int) {
+fun <T : View> T.fadeThroughTransition(with: T.() -> Unit) {
     // Check if the drawable being set is the same as what is already present
-    val currantDrawableState = drawable.constantState
-    val newDrawableState = ContextCompat.getDrawable(context, imgRes)?.constantState
-    if (currantDrawableState == newDrawableState) return
-
     val alphaOut = ObjectAnimator.ofFloat(this, "alpha", 0F)
     alphaOut.duration = 100
     alphaOut.interpolator = AccelerateInterpolator()
     alphaOut.addListener(object: AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
-            setImageResource(imgRes)
+            with()
         }
     })
 

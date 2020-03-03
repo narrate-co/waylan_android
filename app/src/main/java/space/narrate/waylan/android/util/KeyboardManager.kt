@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
+import kotlin.math.abs
 
 /**
  * A class that attempts to calculate the height of the on screen keyboard in order to
@@ -40,13 +41,15 @@ class KeyboardManager(
         fl
     }
 
-    private var keyboardHeightPortrait: Int = 0
+    // Keep track of any negative height when the keyboard is collapsed. This is added to the
+    // expanded height of the keyboard to give the accurate, full height to any observers.
+    private var additiveHeight = 0
 
+    private var keyboardHeightPortrait: Int = 0
     private var keyboardHeightLandscape: Int = 0
 
-    data class KeyboardHeightData(val height: Int, val orientation: Int)
 
-    private val keyboardHeightData = MutableLiveData<KeyboardHeightData>()
+    private val keyboardHeightData = MutableLiveData<SoftInputModel>()
 
     init {
 
@@ -67,7 +70,7 @@ class KeyboardManager(
         }
     }
 
-    fun getKeyboardHeightData(): LiveData<KeyboardHeightData> = keyboardHeightData
+    fun getKeyboardHeightData(): LiveData<SoftInputModel> = keyboardHeightData
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
@@ -107,9 +110,23 @@ class KeyboardManager(
     }
 
     private fun notifyKeyboardHeightChanged(height: Int, orientation: Int) {
-        keyboardHeightData.value = KeyboardHeightData(
-            height,
-            orientation
+        keyboardHeightData.value = SoftInputModel(
+            calculateCorrectedHeight(height),
+            orientation,
+            isOpen(height)
         )
     }
+
+    private fun calculateCorrectedHeight(height: Int): Int {
+        return if (!isOpen(height)) {
+            // Keyboard is considered collapsed
+            additiveHeight = height;
+            0
+        } else {
+            // Keyboard is considered expanded
+            height + abs(additiveHeight)
+        }
+    }
+
+    private fun isOpen(height: Int): Boolean = height > 0
 }
