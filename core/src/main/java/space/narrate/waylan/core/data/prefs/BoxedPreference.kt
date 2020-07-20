@@ -37,5 +37,4 @@ class BoxedPreference<R, T>(
     fun clear() {
         preference.clear()
     }
-
 }

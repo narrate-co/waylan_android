@@ -26,7 +26,7 @@ import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.MathUtils
-import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.themeColor
 
 /**
  * A second bottom sheet that lives behind the SearchFragment sheet. This is used to give
@@ -71,7 +71,7 @@ class ContextualFragment : Fragment() {
             initializeElevationOverlay(requireContext())
             elevation = binding.contextualFrame.elevation
             fillColor = ColorStateList.valueOf(
-                requireContext().getColorFromAttr(R.attr.colorSurface)
+                requireContext().themeColor(R.attr.colorSurface)
             )
             // Add a stroke to emphasize the shadow on the top of this bottom sheet.
             // The stroke is very light as the sheet moves towards the bottom of the screen

@@ -15,7 +15,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.google.android.material.appbar.AppBarLayout
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.ui.widget.ElasticAppBarBehavior
-import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.themeColor
 
 /**
  * A View that lays itself out full screen, attached to the root of the window (or close to it)
@@ -50,7 +50,7 @@ class EducationalOverlayView private constructor(
 
     // The paint used for the educational dot
     private var dotPaint = Paint(ANTI_ALIAS_FLAG).apply {
-        color = context.getColorFromAttr(R.attr.colorPrimary)
+        color = context.themeColor(R.attr.colorPrimary)
         style = Paint.Style.FILL
     }
 

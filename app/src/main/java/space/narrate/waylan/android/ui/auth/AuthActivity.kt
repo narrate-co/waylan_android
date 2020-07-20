@@ -27,7 +27,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityAuthBinding
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.contentView
-import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.themeColor
 import space.narrate.waylan.core.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
 
@@ -291,8 +291,8 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
 
-                val textColor = getColorFromAttr(R.attr.colorOnBackground)
-                val hintColor = getColorFromAttr(R.attr.colorOnBackground)
+                val textColor = themeColor(R.attr.colorOnBackground)
+                val hintColor = themeColor(R.attr.colorOnBackground)
 
                 binding.run {
                     TransitionManager.beginDelayedTransition(binding.container)

@@ -17,7 +17,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import space.narrate.waylan.core.R
-import space.narrate.waylan.core.util.getColorFromAttr
+import space.narrate.waylan.core.util.themeColor
 
 /**
  * A [CoordinatorLayout.Behavior] to add elastic dragging by animating an AppBar's parent
@@ -253,7 +253,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         // Set the CoordinatorLayout's background
         val backgroundTint = parent.backgroundTintList
             ?: ColorStateList.valueOf(
-                parent.context.getColorFromAttr(android.R.attr.colorBackground)
+                parent.context.themeColor(android.R.attr.colorBackground)
             )
         DrawableCompat.setTintList(materialShapeDrawable, backgroundTint)
         ViewCompat.setBackground(parent, materialShapeDrawable)

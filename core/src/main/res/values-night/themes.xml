@@ -4,15 +4,15 @@
 
     <style name="Theme.Waylan.Dark" parent="Theme.Waylan">
         <!--Color-->
-        <item name="colorPrimary">@color/colorPink100</item>
-        <item name="colorPrimaryVariant">@color/colorPink100</item>
-        <item name="colorSecondary">@color/colorPink100</item>
-        <item name="colorSecondaryVariant">@color/colorPink100</item>
+        <item name="colorPrimary">@color/colorIvory50</item>
+        <item name="colorPrimaryVariant">@color/colorIvory50</item>
+        <item name="colorSecondary">@color/colorIvory50</item>
+        <item name="colorSecondaryVariant">@color/colorIvory50</item>
 
         <item name="android:colorBackground">@color/colorGray800</item>
         <item name="colorSurface">@color/colorGray800</item>
         <item name="colorError">@color/colorMauve300</item>
-        <item name="colorInformative">@color/colorPink900</item>
+        <item name="colorInformative">@color/area</item>
         <item name="colorArea">@color/colorIvory50</item>
 
         <item name="colorOnPrimary">@color/colorGray800</item>
@@ -21,7 +21,7 @@
         <item name="colorOnBackgroundError">@color/colorMauve300</item>
         <item name="colorOnSurface">@color/colorIvory50</item>
         <item name="colorOnError">@color/colorGray800</item>
-        <item name="colorOnInformative">@color/colorPink50</item>
+        <item name="colorOnInformative">@color/colorIvory50</item>
 
         <item name="colorRipple">@color/colorGray600</item>
         <item name="colorScrim">@color/colorGray900</item>
@@ -29,6 +29,7 @@
         <item name="colorHairline">@color/colorIvory50</item>
 
         <item name="alphaEmphasisScrim">0.25</item>
+        <item name="alphaEmphasisArea">0.10</item>
 
         <item name="elevationOverlayEnabled">true</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
