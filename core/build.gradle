@@ -27,7 +27,6 @@ android {
         }
     }
 
-
     // testLib is a set of sources to be shared between both unit and instremented tests as well
     // as across modules with the target '["${project(':core').projectDir}/src/testLib/java"]'.
     sourceSets {
@@ -55,6 +54,12 @@ android {
     }
 }
 
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -67,6 +72,8 @@ dependencies {
     implementation Libs.firebaseAuth
     implementation Libs.firebaseFirestore
     implementation Libs.crashlytics
+
+    implementation Libs.dynamicAnimation
 
     // Google Play Billing
     implementation Libs.playBilling

@@ -18,6 +18,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.themeColor
+import kotlin.math.log10
 
 /**
  * A [CoordinatorLayout.Behavior] to add elastic dragging by animating an AppBar's parent
@@ -526,7 +527,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
         }
 
 
-        var dragFractionY: Float = Math.log10(
+        var dragFractionY: Float = log10(
             ((1 + (Math.abs(totalDragY) / dragDismissDistanceVertical)).toDouble())
         ).toFloat()
         var dragToY: Float = dragFractionY * dragDismissDistanceVertical * dragElasticity

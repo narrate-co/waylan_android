@@ -59,7 +59,7 @@ class BottomSheetCallbackCollection: BottomSheetBehavior.BottomSheetCallback() {
         onSlideActions.add(action)
     }
 
-    fun addOnStateChangedAction(action: (sheet: View, neState: Int) -> Unit) {
+    fun addOnStateChangedAction(action: (sheet: View, newState: Int) -> Unit) {
         addOnStateChangedAction(object : OnStateChangedAction {
             override fun onStateChanged(sheet: View, newState: Int) {
                 action(sheet, newState)

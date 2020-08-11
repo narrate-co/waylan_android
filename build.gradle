@@ -1,9 +1,6 @@
 // Waylan's top-level build file that holds configuration options and versioning for all modules.
 
 buildscript {
-    ext {
-        kotlin_version = Versions.kotlin
-    }
     repositories {
         google()
         jcenter()
@@ -11,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.android.tools.build:gradle:4.1.0-beta05'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 

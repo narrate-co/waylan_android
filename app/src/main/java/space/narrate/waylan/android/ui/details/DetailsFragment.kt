@@ -8,18 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.make
 
 /**
@@ -30,6 +35,12 @@ import space.narrate.waylan.core.util.make
 class DetailsFragment: Fragment(), DetailAdapterListener {
 
     private lateinit var binding: FragmentDetailsBinding
+
+    private lateinit var searchFragment: SearchFragment
+    // SearchFragment's BottomSheetBehavior
+    private val searchSheetBehavior by lazy {
+        BottomSheetBehavior.from(searchFragment.requireView())
+    }
 
     private val navigator: Navigator by inject()
 
@@ -66,6 +77,44 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
         // Postpone enter transition until we've set everything up.
         postponeEnterTransition()
+
+        searchFragment =
+          requireActivity().supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
+        val searchSheetCallback = BottomSheetCallbackCollection()
+        var lastState: Int? = null
+        var up = true
+        searchSheetCallback.addOnStateChangedAction { sheet, newState ->
+          if (newState == BottomSheetBehavior.STATE_SETTLING && lastState != BottomSheetBehavior.STATE_SETTLING) {
+              println("Calling animateSmear - lastState: $lastState")
+              binding.artView.animateSmear(up)
+              up = !up
+          }
+          if (newState != BottomSheetBehavior.STATE_DRAGGING) {
+              lastState = newState
+          }
+//            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+//                binding.artView.animateSmear(true)
+//            } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+//                binding.artView.animateSmear(false)
+//            }
+        }
+
+//        searchSheetCallback.addOnSlideAction { sheet, slideOffset ->
+////            binding.artView.smear(slideOffset, true)
+//            val sx = MathUtils.normalize(slideOffset, 0F, 1F, 1F, 1.03F)
+//            val sy = MathUtils.normalize(slideOffset, 0F, 1F, 1F, 1.03F)
+//            val y = MathUtils.normalize(slideOffset, 0F, 1F, 0F, binding.artView.height * .01F)
+//            binding.artView.apply {
+//                pivotX = width * .2F
+//                pivotY = height * .3F
+//                scaleX = sx
+//                scaleY = sy
+//                translationY = -y
+//            }
+//
+//        }
+
+        searchSheetBehavior.addBottomSheetCallback(searchSheetCallback)
 
         binding.run {
 

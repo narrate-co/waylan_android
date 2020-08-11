@@ -27,19 +27,21 @@ object Versions {
          = "$versionMajor.$versionMinor.$versionPatch$versionClassifier"
 
     // Library versions
-    const val androidX = "1.2.0-alpha04"
+    const val androidX = "1.3.1"
     const val appCompat = "1.1.0"
     const val constraintLayout = "1.1.3"
+    const val coreTesting = "2.1.0"
     const val coroutines = "1.2.1"
     const val crashlytics = "2.10.1"
     const val dagger = "2.16"
     const val dokka = "0.9.17"
+    const val dynamicAnimation = "1.0.0-alpha03"
     const val espresso = "3.3.0-alpha03"
     const val fabric = "1.28.0"
     const val firebaseAuth = "19.0.0"
     const val firebaseCore = "17.2.0"
     const val firestore = "21.1.1"
-    const val fragment = "1.1.0"
+    const val fragment = "1.2.5"
     const val googlePlayBilling = "1.2"
     const val googleServices = "4.2.0"
     const val googleTruth = "0.44"
@@ -48,18 +50,18 @@ object Versions {
     const val insetter = "0.2.0"
     const val junit = "4.12"
     const val koin = "2.0.1"
-    const val kotlin = "1.3.61"
-    const val lifecycle = "2.1.0"
+    const val kotlin = "1.3.72"
+    const val lifecycle = "2.2.0"
     const val material = "1.2.0-alpha02"
     const val mockito = "2.27.0"
     const val moshi = "1.9.1"
     const val moshiConverter = "2.6.2"
-    const val navigation = "2.1.0"
+    const val navigation = "2.3.0"
     const val okhttp3 = "3.10.0"
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.7.1"
     const val robolectric = "4.3.1"
-    const val room = "2.2.0-rc01"
+    const val room = "2.2.0"
     const val testCoreKtx = "1.3.0-alpha03"
     const val testExtKotlinRunner = "1.1.2-alpha03"
     const val testRules = "1.3.0-alpha03"
@@ -77,7 +79,7 @@ object Libs {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
 
     // Arch
-    const val archCoreTesting = "androidx.arch.core:core-testing:${Versions.lifecycle}"
+    const val archCoreTesting = "androidx.arch.core:core-testing:${Versions.coreTesting}"
 
     // Core
     const val coreKtx = "androidx.core:core-ktx:${Versions.androidX}"
@@ -130,6 +132,7 @@ object Libs {
     const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 
     // AndroidX
+    const val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation-ktx:${Versions.dynamicAnimation}"
     const val lifecycleLiveDataCore = "androidx.lifecycle:lifecycle-livedata-core-ktx:${Versions.lifecycle}"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
