@@ -69,16 +69,28 @@ class ArtView @JvmOverloads constructor(
   }
 
   private val lightWatercolorPaintings = listOf(
-    Watercolor(R.drawable.watercolor_light),
+//    Watercolor(R.drawable.watercolor_light),
+//    Watercolor(
+//      R.drawable.watercolor_light_2,
+//      leftAligned = false,
+//      scaleMin = 0.2F,
+//      scaleMax = 0.7F
+//    )
     Watercolor(
-      R.drawable.watercolor_light_2,
-      leftAligned = false,
+      R.drawable.watercolor_light_l1,
       scaleMin = 0.2F,
-      scaleMax = 0.7F
+      scaleMax = 0.3F
+    ),
+    Watercolor(
+      R.drawable.watercolor_light_l2,
+      scaleMin = 0.4F,
+      scaleMax = 0.8F
     )
-//    Watercolor(R.drawable.watercolor_light_l1),
-//    Watercolor(R.drawable.watercolor_light_l2),
-//    Watercolor(R.drawable.watercolor_light_l3),
+//    Watercolor(
+//      R.drawable.watercolor_light_l3,
+//      scaleMin = 0.1F,
+//      scaleMax = 0.6F
+//    )
   )
 
   private val darkWatercolorPaintings = listOf(
@@ -87,7 +99,7 @@ class ArtView @JvmOverloads constructor(
 
   private val isDarkUi = context.isDarkUi
 
-  private val watercolor = if (isDarkUi) darkWatercolorPaintings[0] else lightWatercolorPaintings[0]
+  private val watercolor: List<Watercolor> = if (isDarkUi) darkWatercolorPaintings else lightWatercolorPaintings
 
   private val watercolorPaint = Paint().apply {
     isAntiAlias = true
@@ -134,7 +146,9 @@ class ArtView @JvmOverloads constructor(
       field = value
       val totalScaleDelta = 0.2F
       val sd = totalScaleDelta * value
-      watercolor.scaleY = watercolor.originalScale + sd
+      for (w in watercolor) {
+        w.scaleY = w.originalScale + sd
+      }
       postInvalidateOnAnimation()
     }
 
@@ -164,11 +178,18 @@ class ArtView @JvmOverloads constructor(
     up: Boolean = true
   ) {
 
-    val scaleAdditive = MathUtils.normalize(progress, 0F, 1F, watercolor.currentScaleAdditive, watercolor.totalScaleAdditive)
-    watercolor.scaleY = watercolor.originalScale + scaleAdditive
+    val currentScale = watercolor.first().currentScaleAdditive
+    val totalScale = watercolor.first().totalScaleAdditive
+    val scaleAdditive = MathUtils.normalize(progress, 0F, 1F, currentScale, totalScale)
 
-    val yAdditive = MathUtils.normalize(progress, 0F, 1F, watercolor.currentYAdditive, watercolor.totalYAdditive)
-    watercolor.yOffset = watercolor.originalYOffset + yAdditive
+    val currentY = watercolor.first().currentYAdditive
+    val totalY = watercolor.first().totalYAdditive
+    val yAdditive = MathUtils.normalize(progress, 0F, 1F, currentY, totalY)
+    for (w in watercolor) {
+      w.scaleY = w.originalScale + scaleAdditive
+      w.yOffset = w.originalYOffset + yAdditive
+    }
+
 
     postInvalidateOnAnimation()
   }
@@ -187,16 +208,16 @@ class ArtView @JvmOverloads constructor(
 
   private fun drawWatercolor(canvas: Canvas) {
     // Draw watercolor bitmap
-    val scaledWidth = watercolor.bitmap(context).width * watercolor.scaleX
-
-    canvas.withTranslation(
-      if (watercolor.leftAligned) 0F else (width - scaledWidth),
-      (height.toFloat() - (watercolor.bitmap(context).height * watercolor.scaleX)) * watercolor.yOffset
-    ) {
-      canvas.withScale(watercolor.scaleX, watercolor.scaleY, pivotY = 0.5F, pivotX = 0.25F) {
-        canvas.drawBitmap(watercolor.bitmap(context), 0F, 0F, watercolorPaint)
+    for (w in watercolor) {
+      val scaledWidth = w.bitmap(context).width * w.scaleX
+      canvas.withTranslation(
+        if (w.leftAligned) 0F else (width - scaledWidth),
+        (height.toFloat() - (w.bitmap(context).height * w.scaleX)) * w.yOffset
+      ) {
+        canvas.withScale(w.scaleX, w.scaleY, pivotY = 0.5F, pivotX = 0.25F) {
+          canvas.drawBitmap(w.bitmap(context), 0F, 0F, watercolorPaint)
+        }
       }
     }
   }
-
 }
