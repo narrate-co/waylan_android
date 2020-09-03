@@ -70,15 +70,15 @@ private fun Snackbar.config(
     )!!
     val elevationOverlayProvider = ElevationOverlayProvider(context)
     val backgroundTint = elevationOverlayProvider.compositeOverlayIfNeeded(
-        context.getColorFromAttr(bgColorAttr),
-        context.resources.getDimension(R.dimen.plane_03)
+      context.themeColor(bgColorAttr),
+      context.resources.getDimension(R.dimen.plane_03)
     )
     DrawableCompat.setTint(background, backgroundTint)
     val textAppearance = R.style.TextAppearance_Waylan_Body1
     val buttonTextAppearance = R.style.TextAppearance_Waylan_Button
     val textColor = when (type) {
-        SnackbarType.ERROR -> context.getColorFromAttr(R.attr.colorOnError)
-        SnackbarType.INFORMATIVE -> context.getColorFromAttr(R.attr.colorOnSurface)
+        SnackbarType.ERROR -> context.themeColor(R.attr.colorOnError)
+        SnackbarType.INFORMATIVE -> context.themeColor(R.attr.colorOnSurface)
     }
 
     view.background = background

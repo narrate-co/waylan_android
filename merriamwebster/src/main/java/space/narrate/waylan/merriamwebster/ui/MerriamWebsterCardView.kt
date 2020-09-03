@@ -39,6 +39,8 @@ class MerriamWebsterCardView @JvmOverloads constructor(
         textLabel = view.findViewById(R.id.text_label)
         mwAudioView = view.findViewById(R.id.mw_audio_view)
         mwAudioView.listener = this
+        background.alpha = (0.8 * 255).toInt()
+        elevation = 0F
 
         adapter = MerriamWebsterItemAdapter(listContainer, this)
 

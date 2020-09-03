@@ -3,24 +3,30 @@ package space.narrate.waylan.core.util
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.util.TypedValue
+import androidx.annotation.AttrRes
 
-fun Context.getColorFromAttr(colorAttr: Int): Int {
+val Context.isDarkUi: Boolean
+    get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+      Configuration.UI_MODE_NIGHT_YES
+
+fun Context.themeColor(@AttrRes colorAttr: Int): Int {
     val typedValue = TypedValue()
     val theme = theme
     theme.resolveAttribute(colorAttr, typedValue, true)
     return typedValue.data
 }
 
-fun Context.getFloatFromAttr(attr: Int): Float {
+fun Context.themeFloat(@AttrRes attr: Int): Float {
     val a = theme.obtainStyledAttributes(intArrayOf(attr))
     val value = a.getFloat(0, 0F)
     a.recycle()
     return value
 }
 
-fun Context.getDimensionPixelSizeFromAttr(attr: Int): Int {
+fun Context.themeDimensionPixelSize(@AttrRes attr: Int): Int {
     val a = theme.obtainStyledAttributes(intArrayOf(attr))
     val dimen = a.getDimensionPixelSize(0, 0)
     a.recycle()

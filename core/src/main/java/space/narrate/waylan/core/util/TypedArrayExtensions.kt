@@ -15,5 +15,5 @@ fun TypedArray.getColorStateList(
     @StyleableRes index: Int,
     @AttrRes defColor: Int
 ): ColorStateList {
-    return getColorStateList(index) ?: ColorStateList.valueOf(context.getColorFromAttr(defColor))
+    return getColorStateList(index) ?: ColorStateList.valueOf(context.themeColor(defColor))
 }

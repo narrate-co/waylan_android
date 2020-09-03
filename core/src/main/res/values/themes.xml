@@ -4,25 +4,25 @@
 
     <style name="Theme.Waylan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--Color-->
-        <item name="colorPrimary">@color/colorPink900</item>
-        <item name="colorPrimaryVariant">@color/colorPink900</item>
-        <item name="colorSecondary">@color/colorPink900</item>
-        <item name="colorSecondaryVariant">@color/colorPink900</item>
+        <item name="colorPrimary">@color/colorGray900</item>
+        <item name="colorPrimaryVariant">@color/colorGray900</item>
+        <item name="colorSecondary">@color/colorGray900</item>
+        <item name="colorSecondaryVariant">@color/colorGray900</item>
 
         <item name="android:colorBackground">@color/colorIvory100</item>
         <item name="colorSurface">@color/colorIvory100</item>
         <item name="colorError">@color/colorMauve100</item>
-        <item name="colorInformative">@color/colorPink50</item>
+        <item name="colorInformative">@color/area</item>
         <item name="colorArea">@color/colorGray600</item>
 
-        <item name="colorOnPrimary">@color/colorGray600</item>
-        <item name="colorOnSecondary">@color/colorGray600</item>
+        <item name="colorOnPrimary">@color/colorIvory50</item>
+        <item name="colorOnSecondary">@color/colorIvory50</item>
 
         <item name="colorOnBackground">@color/colorGray600</item>
         <item name="colorOnBackgroundError">@color/colorMauve400</item>
         <item name="colorOnSurface">@color/colorGray600</item>
         <item name="colorOnError">@color/colorGray600</item>
-        <item name="colorOnInformative">@color/colorPink900</item>
+        <item name="colorOnInformative">@color/colorGray800</item>
 
         <item name="colorRipple">@color/colorIvory300</item>
         <item name="colorScrim">@color/colorGray600</item>

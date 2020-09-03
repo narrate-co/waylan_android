@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="?attr/styleChipOutlined"
     android:id="@+id/chip"
     android:layout_marginLeft="4dp"

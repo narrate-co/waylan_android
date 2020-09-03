@@ -8,12 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
@@ -63,10 +67,10 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Postpone enter transition until we've set everything up.
         postponeEnterTransition()
 
+        binding.artView.animateSmear(true)
         binding.run {
 
             appBar.doOnElasticDrag(
@@ -90,23 +94,23 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has
         // searched for a different word than is being displayed and this Fragment should
         // react
-        sharedViewModel.currentWord.observe(this) {
+        sharedViewModel.currentWord.observe(viewLifecycleOwner) {
             binding.appBar.title = it
             viewModel.onCurrentWordChanged(it)
         }
 
         // Observe all data sources which will be displayed in the [DetailItemAdapter]
-        viewModel.list.observe(this) {
+        viewModel.list.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
-        viewModel.shouldShowDragDismissOverlay.observe(this) { event ->
+        viewModel.shouldShowDragDismissOverlay.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 EducationalOverlayView.pullDownEducator(binding.appBar).show()
             }
         }
 
-        viewModel.audioClipAction.observe(this) { event ->
+        viewModel.audioClipAction.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 when (it) {
                     is AudioClipAction.Play -> audioClipHelper.play(it.url)
@@ -115,7 +119,7 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
             }
         }
 
-        viewModel.shouldShowSnackbar.observe(this) { event ->
+        viewModel.shouldShowSnackbar.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 showSnackbar(it)
             }

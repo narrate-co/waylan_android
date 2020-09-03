@@ -26,6 +26,11 @@ class HomeFragment: Fragment(), HomeItemAdapter.HomeItemListener {
 
     private val adapter by lazy { HomeItemAdapter(this) }
 
+    // Has entered is used to determine whether or not this Fragment is being returned to. Since
+    // this member variable will be retained between recreations of this fragments view, it should
+    // be "stateful" across navigation events.
+    private var hasEntered = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +42,8 @@ class HomeFragment: Fragment(), HomeItemAdapter.HomeItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.artView.animateSmear(!hasEntered)
+        hasEntered = true;
         binding.run {
             recyclerView.layoutManager = LinearLayoutManager(
                 requireContext(),
