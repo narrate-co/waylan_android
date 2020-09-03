@@ -24,7 +24,6 @@ import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
-import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.make
 
 /**
@@ -35,12 +34,6 @@ import space.narrate.waylan.core.util.make
 class DetailsFragment: Fragment(), DetailAdapterListener {
 
     private lateinit var binding: FragmentDetailsBinding
-
-    private lateinit var searchFragment: SearchFragment
-    // SearchFragment's BottomSheetBehavior
-    private val searchSheetBehavior by lazy {
-        BottomSheetBehavior.from(searchFragment.requireView())
-    }
 
     private val navigator: Navigator by inject()
 
@@ -74,48 +67,10 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Postpone enter transition until we've set everything up.
         postponeEnterTransition()
 
-        searchFragment =
-          requireActivity().supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
-        val searchSheetCallback = BottomSheetCallbackCollection()
-        var lastState: Int? = null
-        var up = true
-        searchSheetCallback.addOnStateChangedAction { sheet, newState ->
-          if (newState == BottomSheetBehavior.STATE_SETTLING && lastState != BottomSheetBehavior.STATE_SETTLING) {
-              println("Calling animateSmear - lastState: $lastState")
-              binding.artView.animateSmear(up)
-              up = !up
-          }
-          if (newState != BottomSheetBehavior.STATE_DRAGGING) {
-              lastState = newState
-          }
-//            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-//                binding.artView.animateSmear(true)
-//            } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-//                binding.artView.animateSmear(false)
-//            }
-        }
-
-//        searchSheetCallback.addOnSlideAction { sheet, slideOffset ->
-////            binding.artView.smear(slideOffset, true)
-//            val sx = MathUtils.normalize(slideOffset, 0F, 1F, 1F, 1.03F)
-//            val sy = MathUtils.normalize(slideOffset, 0F, 1F, 1F, 1.03F)
-//            val y = MathUtils.normalize(slideOffset, 0F, 1F, 0F, binding.artView.height * .01F)
-//            binding.artView.apply {
-//                pivotX = width * .2F
-//                pivotY = height * .3F
-//                scaleX = sx
-//                scaleY = sy
-//                translationY = -y
-//            }
-//
-//        }
-
-        searchSheetBehavior.addBottomSheetCallback(searchSheetCallback)
-
+        binding.artView.animateSmear(true)
         binding.run {
 
             appBar.doOnElasticDrag(
@@ -139,23 +94,23 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has
         // searched for a different word than is being displayed and this Fragment should
         // react
-        sharedViewModel.currentWord.observe(this) {
+        sharedViewModel.currentWord.observe(viewLifecycleOwner) {
             binding.appBar.title = it
             viewModel.onCurrentWordChanged(it)
         }
 
         // Observe all data sources which will be displayed in the [DetailItemAdapter]
-        viewModel.list.observe(this) {
+        viewModel.list.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
-        viewModel.shouldShowDragDismissOverlay.observe(this) { event ->
+        viewModel.shouldShowDragDismissOverlay.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 EducationalOverlayView.pullDownEducator(binding.appBar).show()
             }
         }
 
-        viewModel.audioClipAction.observe(this) { event ->
+        viewModel.audioClipAction.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 when (it) {
                     is AudioClipAction.Play -> audioClipHelper.play(it.url)
@@ -164,7 +119,7 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
             }
         }
 
-        viewModel.shouldShowSnackbar.observe(this) { event ->
+        viewModel.shouldShowSnackbar.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 showSnackbar(it)
             }

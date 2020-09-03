@@ -17,13 +17,6 @@
             app:paddingTopSystemWindowInsets="@{true}"
             app:paddingRightSystemWindowInsets="@{true}">
 
-
-<!--            <space.narrate.waylan.core.ui.widget.OrganicView-->
-<!--                android:id="@+id/organic_view"-->
-<!--                android:layout_width="300dp"-->
-<!--                android:layout_height="330dp"-->
-<!--                android:layout_margin="52dp"/>-->
-
             <space.narrate.waylan.core.ui.widget.ArtView
                 android:id="@+id/art_view"
                 android:layout_width="match_parent"

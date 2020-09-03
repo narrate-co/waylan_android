@@ -48,6 +48,8 @@ class MerriamWebsterThesaurusCardView @JvmOverloads constructor(
         textLabel = view.findViewById(R.id.text_label)
         listContainer = view.findViewById(R.id.list_container)
         expandCollapseButton = view.findViewById(R.id.expand_collapse_button)
+        background.alpha = (0.8 * 255).toInt()
+        elevation = 0F
 
         // Configure views
         expandCollapseButton.setOnClickListener { expandCollapseGroups() }

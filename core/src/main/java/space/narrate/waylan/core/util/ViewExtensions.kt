@@ -73,6 +73,7 @@ fun String.toChip(
         false
     ) as Chip
     chip.text = this
+    chip.background.alpha = (0.2 * 255).toInt()
     chip.setOnClickListener {
         if (onClick != null) onClick(this)
     }

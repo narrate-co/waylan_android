@@ -10,7 +10,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.PathInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
@@ -55,27 +55,18 @@ class ArtView @JvmOverloads constructor(
     }
 
     val originalScale: Float = scaleMin + Random.nextFloat() * (scaleMax - scaleMin)
-    val totalScaleAdditive = 0.5F
-    val currentScaleAdditive = 0F
+    val maxScaleAdditiveAbs = 0.2F
 
     var scaleX = originalScale
     var scaleY = originalScale
 
     val originalYOffset: Float = offsetMin + Random.nextFloat() * (offsetMax - offsetMin)
-    val totalYAdditive = -0.3F
-    val currentYAdditive = 0.0F
+    val maxYAdditiveAbs = 0.1F
 
     var yOffset: Float = originalYOffset
   }
 
   private val lightWatercolorPaintings = listOf(
-//    Watercolor(R.drawable.watercolor_light),
-//    Watercolor(
-//      R.drawable.watercolor_light_2,
-//      leftAligned = false,
-//      scaleMin = 0.2F,
-//      scaleMax = 0.7F
-//    )
     Watercolor(
       R.drawable.watercolor_light_l1,
       scaleMin = 0.2F,
@@ -99,7 +90,11 @@ class ArtView @JvmOverloads constructor(
 
   private val isDarkUi = context.isDarkUi
 
-  private val watercolor: List<Watercolor> = if (isDarkUi) darkWatercolorPaintings else lightWatercolorPaintings
+  private val watercolor: List<Watercolor> = if (isDarkUi) {
+    darkWatercolorPaintings
+  } else {
+    lightWatercolorPaintings
+  }
 
   private val watercolorPaint = Paint().apply {
     isAntiAlias = true
@@ -108,10 +103,6 @@ class ArtView @JvmOverloads constructor(
   }
 
   private val organicCircleDrawable = ContextCompat.getDrawable(context, R.drawable.ic_organic_circle)
-
-  init {
-    animateSmear()
-  }
 
   private fun updateFilter(
     @FloatRange(
@@ -142,56 +133,28 @@ class ArtView @JvmOverloads constructor(
 
   var smearProgress: Float = 0.0F
     set(value) {
-      println("smearProgress - $value")
-      field = value
-      val totalScaleDelta = 0.2F
-      val sd = totalScaleDelta * value
+      val up = value < 0F
+      val absValue = java.lang.Math.abs(value)
+      field = absValue
+
       for (w in watercolor) {
+        val sd = w.maxScaleAdditiveAbs * absValue
+        val od = w.maxYAdditiveAbs * value
         w.scaleY = w.originalScale + sd
+        w.yOffset = w.originalYOffset + od
       }
       postInvalidateOnAnimation()
     }
 
   fun animateSmear(up: Boolean = true) {
-    println("animateSmear::up: $up")
-    SpringAnimation(this, object : FloatPropertyCompat<ArtView>("artView") {
-      override fun getValue(artView: ArtView?): Float {
-        return artView?.smearProgress ?: 0F
+    ValueAnimator.ofFloat(0F, if (up) -1F else 1F).apply {
+      duration = 5000L
+      interpolator = DecelerateInterpolator()
+      addUpdateListener {
+        smearProgress = it.animatedValue as Float
       }
-
-      override fun setValue(artView: ArtView?, value: Float) {
-        println("animateSmear::setValue - ${value / 10000F}")
-        artView?.smearProgress = value / 10000F
-      }
-    }).apply {
-      val spring = SpringForce()
-      spring.stiffness = 5F
-      spring.dampingRatio = SpringForce.DAMPING_RATIO_NO_BOUNCY
-      setSpring(spring)
-      setStartValue((if (up) 1F else 0F) * 10000F)
-      animateToFinalPosition((if (up) 0.0F else 1F) * 10000F)
+      start()
     }
-  }
-
-  fun smear(
-    @FloatRange(from = 0.0, to = 1.0, fromInclusive = true, toInclusive = true) progress: Float,
-    up: Boolean = true
-  ) {
-
-    val currentScale = watercolor.first().currentScaleAdditive
-    val totalScale = watercolor.first().totalScaleAdditive
-    val scaleAdditive = MathUtils.normalize(progress, 0F, 1F, currentScale, totalScale)
-
-    val currentY = watercolor.first().currentYAdditive
-    val totalY = watercolor.first().totalYAdditive
-    val yAdditive = MathUtils.normalize(progress, 0F, 1F, currentY, totalY)
-    for (w in watercolor) {
-      w.scaleY = w.originalScale + scaleAdditive
-      w.yOffset = w.originalYOffset + yAdditive
-    }
-
-
-    postInvalidateOnAnimation()
   }
 
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -212,7 +175,7 @@ class ArtView @JvmOverloads constructor(
       val scaledWidth = w.bitmap(context).width * w.scaleX
       canvas.withTranslation(
         if (w.leftAligned) 0F else (width - scaledWidth),
-        (height.toFloat() - (w.bitmap(context).height * w.scaleX)) * w.yOffset
+        (height.toFloat() - (w.bitmap(context).height * w.scaleY)) * w.yOffset
       ) {
         canvas.withScale(w.scaleX, w.scaleY, pivotY = 0.5F, pivotX = 0.25F) {
           canvas.drawBitmap(w.bitmap(context), 0F, 0F, watercolorPaint)
