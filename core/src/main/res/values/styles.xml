@@ -11,7 +11,7 @@
     <!--Chips-->
     <style name="Widget.Waylan.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textAppearance">?attr/textAppearanceBody3</item>
-        <item name="chipBackgroundColor">@color/surface_translucent</item>
+        <item name="chipBackgroundColor">?attr/colorSurface</item>
         <item name="rippleColor">?attr/colorRipple</item>
         <!--This stroke color will be lessened when String.toChip sets an alpha on the -->
         <!--entire background of each chip.-->
