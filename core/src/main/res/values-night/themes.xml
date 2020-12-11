@@ -9,22 +9,22 @@
         <item name="colorSecondary">@color/colorIvory50</item>
         <item name="colorSecondaryVariant">@color/colorIvory50</item>
 
-        <item name="android:colorBackground">@color/colorGray800</item>
-        <item name="colorSurface">@color/colorGray800</item>
+        <item name="android:colorBackground">@color/colorNavy800</item>
+        <item name="colorSurface">@color/colorNavy800</item>
         <item name="colorError">@color/colorMauve300</item>
         <item name="colorInformative">@color/area</item>
         <item name="colorArea">@color/colorIvory50</item>
 
-        <item name="colorOnPrimary">@color/colorGray800</item>
-        <item name="colorOnSecondary">@color/colorGray800</item>
+        <item name="colorOnPrimary">@color/colorNavy800</item>
+        <item name="colorOnSecondary">@color/colorNavy800</item>
         <item name="colorOnBackground">@color/colorIvory50</item>
         <item name="colorOnBackgroundError">@color/colorMauve300</item>
         <item name="colorOnSurface">@color/colorIvory50</item>
-        <item name="colorOnError">@color/colorGray800</item>
+        <item name="colorOnError">@color/colorNavy800</item>
         <item name="colorOnInformative">@color/colorIvory50</item>
 
-        <item name="colorRipple">@color/colorGray600</item>
-        <item name="colorScrim">@color/colorGray900</item>
+        <item name="colorRipple">@color/colorNavy600</item>
+        <item name="colorScrim">@color/colorNavy800</item>
         <item name="colorDivider">@color/colorIvory50</item>
         <item name="colorHairline">@color/colorIvory50</item>
 
