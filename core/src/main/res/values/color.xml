@@ -20,6 +20,9 @@
     <color name="colorGray800">#131314</color>
     <color name="colorGray900">#000000</color>
 
+    <color name="colorNavy600">#262633</color>
+    <color name="colorNavy800">#181820</color>
+
     <!--A color used as a stroke to emphasize the shadow on the top of views near the bottom of -->
     <!--the screen. This is necessary due to how Android's light source works.-->
     <color name="shadow_emphasis_color">#0D000000</color> <!--5% alpha-->
