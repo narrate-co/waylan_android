@@ -13,7 +13,9 @@
         <attr name="expandedTitleVerticalBias" format="float" />
         <!--Whether or noth this app bar can be dragged to "dismiss" or go back-->
         <attr name="dragDismissable" format="boolean"/>
-        <!--Menu to use in toolbar that holds the navigation icon, title and action items-->
+        <!--A drawable to be used as the toolbars navigation icon.-->
+        <attr name="navigationIcon" format="reference"/>
+        <!--Menu to use in toolbar that holds action items-->
         <attr name="menu" format="reference"/>
     </declare-styleable>
 </resources>

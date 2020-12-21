@@ -196,6 +196,15 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
                 R.styleable.ReachabilityAppBarLayout_expandedTitleVerticalBias,
                 expandedTitleVerticalOffset
             )
+            val navigationIcon = it.getResourceId(
+                R.styleable.ReachabilityAppBarLayout_navigationIcon,
+                0
+            )
+            if (navigationIcon != 0) {
+                toolbar.setNavigationIcon(navigationIcon)
+            } else {
+                toolbar.setNavigationIcon(null)
+            }
             val menu = it.getResourceId(R.styleable.ReachabilityAppBarLayout_menu, 0)
             if (menu != 0) {
                 setMenu(menu)

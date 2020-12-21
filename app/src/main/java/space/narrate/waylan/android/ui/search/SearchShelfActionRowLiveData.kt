@@ -137,7 +137,11 @@ class SearchShelfActionRowLiveData(
                         }
                     Destination.TRENDING ->
                         trendingListFilter.mapTransform {
-                            SearchShelfActionRowModel.ListShelfActions(it.isNotEmpty())
+                            SearchShelfActionRowModel.FilterableListShelfActions(it.isNotEmpty())
+                        }
+                    Destination.RECENT, Destination.FAVORITE ->
+                        trendingListFilter.mapTransform {
+                            SearchShelfActionRowModel.ListShelfActions()
                         }
                     else -> SearchShelfActionRowModel.None().toLiveData
                 }

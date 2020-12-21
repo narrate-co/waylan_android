@@ -75,6 +75,7 @@
         <item name="expandedTitleVerticalBias">0.75</item>
         <item name="expandedHeight">400dp</item>
         <item name="dragDismissable">true</item>
+        <item name="navigationIcon">@drawable/ic_round_arrow_down_24px</item>
     </style>
 
 </resources>

@@ -102,7 +102,6 @@ class AppNavigator(
     companion object {
         fun fromDestinationId(destination: NavDestination, args: Bundle?): Destination {
             return when (destination.id) {
-                R.id.homeFragment -> Destination.HOME
                 R.id.listFragment -> when (ListFragmentArgs.fromBundle(args!!).listType) {
                     ListType.TRENDING -> Destination.TRENDING
                     ListType.RECENT -> Destination.RECENT
@@ -115,7 +114,7 @@ class AppNavigator(
                 R.id.aboutFragment -> Destination.ABOUT
                 R.id.thirdPartyLibrariesFragment -> Destination.THIRD_PARTY
                 R.id.developerSettingsFragment -> Destination.DEV_SETTINGS
-                else -> Destination.HOME
+                else -> Destination.TRENDING
             }
         }
     }

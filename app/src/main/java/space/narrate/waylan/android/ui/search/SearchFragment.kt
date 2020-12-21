@@ -127,20 +127,19 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             }
         }
 
-        // TODO: Move logic into ViewModel
-        navigator.currentDestination.observe(this) {
-            when (it) {
-                Destination.SETTINGS,
-                Destination.ADD_ONS,
-                Destination.ABOUT,
-                Destination.THIRD_PARTY,
-                Destination.DEV_SETTINGS -> {
-                    bottomSheetBehavior.isHideable = true
-                    bottomSheetBehavior.hide(requireActivity())
-                }
-                else -> {
-                    bottomSheetBehavior.isHideable = false
-                }
+        viewModel.shouldShowSettings.observe(this) { event ->
+            event.withUnhandledContent {
+                val navController = (requireActivity() as MainActivity).findNavController()
+                navController.navigate(R.id.action_global_settingsFragment)
+            }
+        }
+
+        sharedViewModel.shouldHideBottomSheets.observe(this) {
+            if (it) {
+                bottomSheetBehavior.isHideable = true
+                bottomSheetBehavior.hide(requireActivity())
+            } else {
+                bottomSheetBehavior.isHideable = false
             }
         }
 

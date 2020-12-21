@@ -22,6 +22,12 @@
 
     <color name="colorNavy600">#262633</color>
     <color name="colorNavy800">#181820</color>
+    
+    <color name="colorForest100">#E2E3D8</color>
+    <color name="colorForest600">#5C5F40</color>
+
+    <color name="colorOrange300">#8C6659</color>
+    <color name="colorOrange900">#332520</color>
 
     <!--A color used as a stroke to emphasize the shadow on the top of views near the bottom of -->
     <!--the screen. This is necessary due to how Android's light source works.-->

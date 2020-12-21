@@ -3,6 +3,7 @@ package space.narrate.waylan.android.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.NightMode
@@ -12,6 +13,7 @@ import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.util.maybeSet
 
 /**
  * A ViewModel owned by MainActivity, accessible by all its child Fragments, making data
@@ -48,6 +50,14 @@ class MainViewModel(
     private val _shouldOpenContextualSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val shouldOpenContextualSheet: LiveData<Event<Boolean>>
         get() = _shouldOpenContextualSheet
+
+    private val _shouldHideBottomSheets: MutableLiveData<Boolean> = MutableLiveData()
+    val shouldHideBottomSheets: LiveData<Boolean>
+        get() = _shouldHideBottomSheets
+
+    private val _shouldHideFloatingNavigationBar: MutableLiveData<Boolean> = MutableLiveData()
+    val shouldHideFloatingNavigationBar: LiveData<Boolean>
+        get() = _shouldHideFloatingNavigationBar
 
     fun onProcessText(textToProcess: String?) {
         if (!textToProcess.isNullOrBlank()) {
@@ -98,6 +108,27 @@ class MainViewModel(
         wordRepository.setUserWordFavorite(id, favorite)
     }
 
+    fun onCurrentDestinationChanged(destination: Destination) {
+        when (destination) {
+            Destination.SETTINGS,
+            Destination.ADD_ONS,
+            Destination.ABOUT,
+            Destination.THIRD_PARTY,
+            Destination.DEV_SETTINGS -> {
+                _shouldHideFloatingNavigationBar.maybeSet(true)
+                _shouldHideBottomSheets.maybeSet(true)
+            }
+            Destination.DETAILS -> {
+                _shouldHideFloatingNavigationBar.maybeSet(true)
+                _shouldHideBottomSheets.maybeSet(false)
+            }
+            else -> {
+                _shouldHideFloatingNavigationBar.maybeSet(false)
+                _shouldHideBottomSheets.maybeSet(false)
+            }
+        }
+    }
+
     /**
      * Add [currentWord]'s value (a word as it appears in the dictionary) to the current user's
      * list of recently viewed words.
@@ -111,7 +142,7 @@ class MainViewModel(
 
 
     private fun setListFilter(filter: List<Period>) {
-        val dest = navigator.currentDestination.value ?: Destination.HOME
+        val dest = navigator.currentDestination.value ?: Destination.TRENDING
 
         when (dest) {
             Destination.TRENDING -> userRepository.trendingListFilter = filter

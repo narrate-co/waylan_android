@@ -61,23 +61,7 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
 
         viewModel.setListType(navArgs<ListFragmentArgs>().value.listType)
 
-        binding.run {
-
-            appBar.doOnElasticDrag(
-                alphaViews = listOf(recyclerView, appBar)
-            )
-
-            appBar.doOnElasticDismiss {
-                navigator.toBack(Navigator.BackType.DRAG, this.javaClass.simpleName)
-            }
-
-            appBar.setOnNavigationIconClicked {
-                navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
-            }
-
-            setUpList()
-
-        }
+        setUpList()
 
         // Start enter transition now that things are set up.
         startPostponedEnterTransition()

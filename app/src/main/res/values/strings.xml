@@ -25,6 +25,7 @@
     <string name="search_shelf_action_favorite_content_desc">Favorite word</string>
     <string name="search_shelf_action_share_content_desc">Share</string>
     <string name="search_shelf_action_filter_content_desc">Filter list</string>
+    <string name="search_shelf_action_settings_content_desc">Settings</string>
     <string name="search_shelf_action_keyboard_down_content_desc">Close keyboard</string>
     <string name="search_shelf_action_sheet_close_content_desc">Close sheet</string>
 

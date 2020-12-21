@@ -10,6 +10,12 @@
     <!--times on itself, creating visually distinct areas.-->
     <attr name="colorArea" format="color"/>
 
+    <!--A color that is used as a surface on top of which colorSecondary can -->
+    <!--be used.-->
+    <attr name="colorSurfaceSecondary" format="color"/>
+    <!--A color for content that will be drawn on top of colorSurfaceSecondary-->
+    <attr name="colorOnSurfaceSecondary" format="color"/>
+
     <!--The color of content on colorBackground when the content is to denote an error state-->
     <attr name="colorOnBackgroundError" format="color"/>
 
@@ -40,6 +46,7 @@
     <attr name="fontFamilyPrimarySemiBold" format="reference"/>
     <attr name="fontFamilySecondary" format="reference"/>
     <attr name="fontFamilySecondaryMedium" format="reference"/>
+    <attr name="fontFamilySecondarySemiBold" format="reference"/>
 
     <attr name="textAppearanceBody3" format="reference" />
 

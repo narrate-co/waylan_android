@@ -62,3 +62,13 @@ val <T> T.toLiveData: LiveData<T>
         liveData.value = this
         return liveData
     }
+
+/**
+ * Helper function to only set a live data's value if the new value is different than the
+ * current value.
+ */
+fun <T> MutableLiveData<T>.maybeSet(t: T) {
+    if (value != t) {
+        value = t
+    }
+}
