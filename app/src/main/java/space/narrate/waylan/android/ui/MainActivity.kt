@@ -11,11 +11,12 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityMainBinding
-import space.narrate.waylan.android.ui.home.HomeFragment
 import space.narrate.waylan.android.ui.list.ListFragment
+import space.narrate.waylan.android.ui.list.ListFragmentDirections
 import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
+import space.narrate.waylan.android.ui.widget.FloatingNavigationBar
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.ui.Navigator
@@ -24,12 +25,13 @@ import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
 import kotlin.math.max
+import space.narrate.waylan.core.ui.ListType
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
  * main destination ([HomeFragment], [ListFragment] and [DetailsFragment]).
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallback {
 
     private val binding: ActivityMainBinding by contentView(R.layout.activity_main)
     private lateinit var searchFragment: SearchFragment
@@ -83,6 +85,18 @@ class MainActivity : AppCompatActivity() {
             event.withUnhandledContent { onBackPressed() }
         }
 
+        navigator.currentDestination.observe(this) {
+            sharedViewModel.onCurrentDestinationChanged(it)
+        }
+
+        sharedViewModel.shouldHideFloatingNavigationBar.observe(this) {
+            if (it) {
+                binding.floatingNavigationBar.hide()
+            } else {
+                binding.floatingNavigationBar.show()
+            }
+        }
+
         sharedViewModel.shouldShowDetails.observe(this) { event ->
             event.withUnhandledContent {
                 findNavController().navigate(R.id.action_global_detailsFragment)
@@ -96,6 +110,8 @@ class MainActivity : AppCompatActivity() {
         sharedViewModel.orientation.observe(this) {
             setOrientation(it)
         }
+
+        binding.floatingNavigationBar.setSelectionCallback(this)
 
         processText(intent)
 
@@ -169,18 +185,21 @@ class MainActivity : AppCompatActivity() {
         // alpha to match the bottom sheet's slide offset.
         searchSheetCallback.addOnSlideAction { _, searchSlide ->
             setBottomSheetScrimAlpha(searchSlide, contextualSheetCallback.currentSlide)
+            setFloatingNavigationBarVisibility(searchSlide, contextualSheetCallback.currentSlide)
         }
 
         // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
         // when either bottom sheet is not resting, hence the use of Math.max
         contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
             setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
+            setFloatingNavigationBarVisibility(searchSheetCallback.currentSlide, contextualSlide)
         }
 
         // Set the scrims visibility to gone if the search sheet is collapsed, otherwise make it
         // visible
         searchSheetCallback.addOnStateChangedAction { _, newState ->
             setBottomSheetScrimVisibility(newState, contextualSheetCallback.currentState)
+            println("search state = $newState")
         }
 
         contextualSheetCallback.addOnStateChangedAction { _, newState ->
@@ -227,7 +246,28 @@ class MainActivity : AppCompatActivity() {
         binding.bottomSheetScrim.alpha = max(searchSheetSlide, contextualSheetSlide)
     }
 
+    private fun setFloatingNavigationBarVisibility(searchSheetSlide: Float, contextualSheetSlide: Float) {
+        if (sharedViewModel.shouldHideFloatingNavigationBar.value == true) return
+        binding.floatingNavigationBar.apply {
+            val progress = 1F - max(searchSheetSlide, contextualSheetSlide)
+            println("search/context sheet slide = $progress")
+            showHideProgress = progress
+        }
+    }
+
     private fun setOrientation(orientation: Orientation) {
         requestedOrientation = orientation.value
+    }
+
+    override fun onSelectionChanged(itemId: Int, index: Int) {
+        val listType = when (itemId) {
+            R.id.menu_trending -> ListType.TRENDING
+            R.id.menu_recent -> ListType.RECENT
+            R.id.menu_favorite -> ListType.FAVORITE
+            else -> return
+        }
+        findNavController().navigate(
+            ListFragmentDirections.actionGlobalListFragment(listType)
+        )
     }
 }

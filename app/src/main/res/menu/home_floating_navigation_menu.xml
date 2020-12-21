@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/menu_trending"
+    android:title="@string/title_trending"/>
+
+  <item
+    android:id="@+id/menu_recent"
+    android:title="@string/title_recent"/>
+
+  <item
+    android:id="@+id/menu_favorite"
+    android:title="@string/title_favorite"/>
+
+</menu>

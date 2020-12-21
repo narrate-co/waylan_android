@@ -11,7 +11,6 @@ import space.narrate.waylan.android.ui.details.ExampleDetailDataProvider
 import space.narrate.waylan.android.ui.details.ExamplesDetailItemProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailDataProvider
 import space.narrate.waylan.android.ui.details.WordsetDetailItemProvider
-import space.narrate.waylan.android.ui.home.HomeViewModel
 import space.narrate.waylan.android.ui.list.ListViewModel
 import space.narrate.waylan.android.ui.search.ContextualViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
@@ -28,8 +27,6 @@ val appModule = module {
 
     // ViewModels
     viewModel { MainViewModel(get(), get(), get()) }
-
-    viewModel { HomeViewModel(get()) }
 
     viewModel { SearchViewModel(get(), get(), get(), get()) }
 

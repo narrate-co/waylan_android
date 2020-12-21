@@ -1,7 +1,6 @@
 package space.narrate.waylan.core.ui
 
 enum class Destination {
-    HOME,
     TRENDING,
     RECENT,
     FAVORITE,

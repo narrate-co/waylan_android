@@ -6,11 +6,12 @@
         <!--Color-->
         <item name="colorPrimary">@color/colorIvory50</item>
         <item name="colorPrimaryVariant">@color/colorIvory50</item>
-        <item name="colorSecondary">@color/colorIvory50</item>
-        <item name="colorSecondaryVariant">@color/colorIvory50</item>
+        <item name="colorSecondary">@color/colorOrange300</item>
+        <item name="colorSecondaryVariant">@color/colorOrange300</item>
 
         <item name="android:colorBackground">@color/colorNavy800</item>
         <item name="colorSurface">@color/colorNavy800</item>
+        <item name="colorSurfaceSecondary">@color/colorOrange900</item>
         <item name="colorError">@color/colorMauve300</item>
         <item name="colorInformative">@color/area</item>
         <item name="colorArea">@color/colorIvory50</item>

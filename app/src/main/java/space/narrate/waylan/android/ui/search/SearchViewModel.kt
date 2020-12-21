@@ -4,12 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseKeyboardAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseSheetAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.FavoriteAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.FilterAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.ShareAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.UnfavoriteAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.*
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.Orientation
@@ -82,6 +77,10 @@ class SearchViewModel(
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
         get() = _shouldShowDetails
+
+    private val _shouldShowSettings: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldShowSettings: LiveData<Event<Boolean>>
+        get() = _shouldShowSettings
 
     private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPromptModel>>
         = MutableLiveData()
@@ -163,6 +162,7 @@ class SearchViewModel(
             is FilterAction -> _shouldOpenContextualSheet.value = Event(true)
             is CloseSheetAction -> _shouldCloseSheet.value = Event(true)
             is CloseKeyboardAction -> _shouldCloseKeyboard.value = Event(true)
+            is SettingsAction -> _shouldShowSettings.value = Event(true)
         }
     }
 

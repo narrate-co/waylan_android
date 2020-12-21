@@ -3,12 +3,7 @@ package space.narrate.waylan.android.ui.search
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseKeyboardAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.CloseSheetAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.FavoriteAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.FilterAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.ShareAction
-import space.narrate.waylan.android.ui.search.ShelfActionModel.UnfavoriteAction
+import space.narrate.waylan.android.ui.search.ShelfActionModel.*
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.firestore.users.isFavorited
 import space.narrate.waylan.core.ui.common.Diffable
@@ -50,18 +45,35 @@ sealed class SearchShelfActionRowModel : Diffable<SearchShelfActionRowModel> {
         }
     }
 
-    class ListShelfActions(val hasFilter: Boolean) : SearchShelfActionRowModel() {
+    class FilterableListShelfActions(
+        private val hasFilter: Boolean
+    ) : SearchShelfActionRowModel() {
 
-        override val numberOfActionsToShow: Int = if (hasFilter) 0 else 1
+        override val numberOfActionsToShow: Int = if (hasFilter) 1 else 2
         override val shouldAnimateToNumberOfActions: Boolean = true
 
         override val actionOne = FilterAction
+        override val actionTwo = SettingsAction
+
+        override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
+            if (newOther !is FilterableListShelfActions) return false
+            return numberOfActionsToShow == newOther.numberOfActionsToShow
+                && hasFilter == newOther.hasFilter
+                && actionOne.isContentSameAs(newOther.actionOne)
+                && actionTwo.isContentSameAs(newOther.actionTwo)
+        }
+    }
+
+    class ListShelfActions : SearchShelfActionRowModel() {
+        override val numberOfActionsToShow: Int = 1
+        override val shouldAnimateToNumberOfActions: Boolean = true
+
+        override val actionOne: ShelfActionModel = SettingsAction
 
         override fun isContentSameAs(newOther: SearchShelfActionRowModel): Boolean {
             if (newOther !is ListShelfActions) return false
             return numberOfActionsToShow == newOther.numberOfActionsToShow
-                && hasFilter == newOther.hasFilter
-                && actionOne.isContentSameAs(newOther.actionOne)
+              && actionOne.isContentSameAs(newOther.actionOne)
         }
     }
 
@@ -126,6 +138,11 @@ sealed class ShelfActionModel(
     object FilterAction : ShelfActionModel(
         R.drawable.ic_round_filter_list_24px,
         R.string.search_shelf_action_filter_content_desc
+    )
+
+    object SettingsAction : ShelfActionModel(
+        R.drawable.ic_settings_24px,
+        R.string.search_shelf_action_settings_content_desc
     )
 
     object CloseSheetAction : ShelfActionModel(
