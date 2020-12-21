@@ -14,7 +14,7 @@
         <argument
             android:name="listType"
             app:argType="space.narrate.waylan.core.ui.ListType"
-            android:defaultValue="TRENDING"/>
+            android:defaultValue="RECENT"/>
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"

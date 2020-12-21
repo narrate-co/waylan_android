@@ -27,7 +27,9 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:dragDismissable="false" />
+            app:dragDismissable="false"
+            app:expandedHeight="200dp"
+            app:navigationIcon="@null" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -31,8 +31,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="72dp"
-        app:navigationIcon="@drawable/ic_round_arrow_down_24px">
+        android:minHeight="72dp">
 
         <TextView
             android:id="@+id/toolbar_title_collapsed"
