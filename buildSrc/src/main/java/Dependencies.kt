@@ -16,7 +16,7 @@ object Versions {
     }
 
     private const val versionMajor = 1
-    private const val versionMinor = 2
+    private const val versionMinor = 3
     private const val versionPatch = 2
     private const val versionClassifier = VersionClassifier.NONE
 
