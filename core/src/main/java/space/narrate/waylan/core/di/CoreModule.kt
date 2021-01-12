@@ -27,7 +27,7 @@ val coreModule = module {
 
     single { SymSpellStore(androidContext()) }
 
-    single { AuthenticationStore(FirebaseAuth.getInstance(), get()) }
+    single { AuthenticationStore(FirebaseAuth.getInstance(), get(), get()) }
 
     single { FirestoreStore(FirebaseFirestore.getInstance(), get()) }
 

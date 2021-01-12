@@ -24,6 +24,12 @@ class PreferenceStore(applicationContext: Context) {
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
     )
 
+    val uid = Preference(
+      Preferences.UID,
+      "",
+      defaultPrefs
+    )
+
     private val defaultNightMode = if (isAtLeastQ) {
         NightMode.SYSTEM_DEFAULT
     } else {

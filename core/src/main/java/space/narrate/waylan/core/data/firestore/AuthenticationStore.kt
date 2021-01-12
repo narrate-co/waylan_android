@@ -15,6 +15,7 @@ import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.Result.Error
 import space.narrate.waylan.core.data.Result.Success
 import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.prefs.PreferenceStore
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
@@ -29,7 +30,8 @@ import kotlin.coroutines.suspendCoroutine
  */
 class AuthenticationStore(
     private val firebaseAuth: FirebaseAuth,
-    private val firestoreStore: FirestoreStore
+    private val firestoreStore: FirestoreStore,
+    private val preferenceStore: PreferenceStore
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
@@ -46,11 +48,17 @@ class AuthenticationStore(
         get() = firebaseAuth.currentUser != null
 
     val hasUser: Boolean
-        get() = _uid.value != null
+        get() = _uid.value != null && _uid.value?.isNotEmpty() == true
 
     private val _uid: MutableLiveData<String> = MutableLiveData()
     val uid: LiveData<String>
         get() = _uid
+
+    init {
+        // If the user's uid is stored in preferences, retrieve it so auth can be skipped and done
+        // in the background, avoiding the spash screen when recreating the app.
+        _uid.value = preferenceStore.uid.getValue()
+    }
 
     suspend fun authenticate(): Result<User> {
         val firebaseUser = firebaseAuth.currentUser
@@ -61,6 +69,8 @@ class AuthenticationStore(
         if (result is Success) {
             // Launch and forget an update. This shouldn't block the authentication process
             _uid.value = result.data.uid
+            // Save the uid to preferences for faster startup times.
+            preferenceStore.uid.setValue(result.data.uid)
 
             GlobalScope.launch {
                 firestoreStore.updateUser(result.data.uid) {
