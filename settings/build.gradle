@@ -28,17 +28,10 @@ android {
         }
     }
 
-    // Tests in :settings depend on :core's testLib sources for mock data.
-    sourceSets {
-        test.java.srcDirs += ["${project(':core').projectDir}/src/testLib/java"]
-    }
-
     // View/Data binding
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 
     // Compile options
