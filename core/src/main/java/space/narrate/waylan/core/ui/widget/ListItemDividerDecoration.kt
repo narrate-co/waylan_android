@@ -22,7 +22,7 @@ class ListItemDividerDecoration(private val drawable: Drawable?): RecyclerView.I
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        val isHeader = view.findViewWithTag<View>("header") != null ?: false
+        val isHeader = view.findViewWithTag<View>("header") != null
         if (parent.getChildAdapterPosition(view) == 0 || drawable == null || isHeader) return
 
         outRect.set(0,drawable.intrinsicHeight,0,0)

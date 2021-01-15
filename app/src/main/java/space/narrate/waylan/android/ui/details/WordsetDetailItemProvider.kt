@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.databinding.DetailsWordsetItemLayoutBinding
 import space.narrate.waylan.android.util.toChip
+import space.narrate.waylan.android.databinding.DetailsWordsetItemLayoutBinding
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider

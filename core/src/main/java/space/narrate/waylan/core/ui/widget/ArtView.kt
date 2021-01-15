@@ -85,7 +85,7 @@ class ArtView @JvmOverloads constructor(
   )
 
   private val darkWatercolorPaintings = listOf(
-    Watercolor(R.drawable.watercolor_dark)
+    Watercolor(R.drawable.watercolor_dark_2)
   )
 
   private val isDarkUi = context.isDarkUi

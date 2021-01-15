@@ -32,8 +32,8 @@ android {
     }
 
     // View/Data binding
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     // Compile options

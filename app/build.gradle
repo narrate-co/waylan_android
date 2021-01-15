@@ -42,11 +42,9 @@ android {
     }
 
     // View/Data binding
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 
     // Dynamic feature modules

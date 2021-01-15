@@ -7,8 +7,8 @@
 object Versions {
     // Build constants
     const val minSdk = 23
-    const val compileSdk = 29
-    const val targetSdk = 29
+    const val compileSdk = 30
+    const val targetSdk = 30
 
     object VersionClassifier {
         const val NONE = ""
@@ -50,7 +50,7 @@ object Versions {
     const val insetter = "0.2.0"
     const val junit = "4.12"
     const val koin = "2.0.1"
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.21"
     const val lifecycle = "2.2.0"
     const val material = "1.2.0-alpha02"
     const val mockito = "2.27.0"
