@@ -8,17 +8,17 @@ import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.notNullTransform
 
 /**
- * A data provider which knows how to fetch a [WordsetModel] to be displayed by the
+ * A data provider which knows how to fetch a [WaylanDefinitionModel] to be displayed by the
  * details screen.
  */
-class WordsetDetailDataProvider(
+class WaylanDefinitionDetailDataProvider(
     private val wordRepository: WordRepository
 ) : DetailDataProvider {
     override fun loadWord(word: String): LiveData<DetailItemModel> {
         return wordRepository.getWordsetWordAndMeanings(word)
             .notNullTransform()
             .mapTransform {
-                WordsetModel(it)
+                WaylanDefinitionModel(it)
             }
     }
 }

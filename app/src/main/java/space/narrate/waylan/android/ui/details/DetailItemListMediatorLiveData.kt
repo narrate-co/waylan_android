@@ -27,7 +27,8 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
     private var mwModel: DetailItemModel? = null
     private var mwThesaurusModel: DetailItemModel? = null
     private var wordsetModel: DetailItemModel? = null
-    private var examplesModel: DetailItemModel? = null
+    private var waylanDefinitionModel: DetailItemModel? = null
+    private var waylanExampleModel: DetailItemModel? = null
 
     init {
         // Force clear any observers if they are displaying an old instance's list.
@@ -69,9 +70,15 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
                     maybeDispatchList()
                 }
             }
+            DetailItemType.DEFINITION -> {
+                if (shouldUpdateList(waylanDefinitionModel, item)) {
+                    waylanDefinitionModel = item
+                    maybeDispatchList()
+                }
+            }
             DetailItemType.EXAMPLE -> {
-                if (shouldUpdateList(examplesModel, item)) {
-                    examplesModel = item
+                if (shouldUpdateList(waylanExampleModel, item)) {
+                    waylanExampleModel = item
                     maybeDispatchList()
                 }
             }
@@ -98,7 +105,8 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
             mwModel,
             mwThesaurusModel,
             wordsetModel,
-            examplesModel
+            waylanDefinitionModel,
+            waylanExampleModel
         ).sortedBy { it.itemType.order }
 
         postValue(newList)

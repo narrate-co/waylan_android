@@ -14,26 +14,27 @@ import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.inflater
 import space.narrate.waylan.core.util.visible
+import space.narrate.waylan.core.R as coreR
 
 /**
  * An item provider which knows how to create a ViewHolder for the [DetailItemType.EXAMPLE]
  * item type
  */
-class ExamplesDetailItemProvider : DetailItemProvider {
+class WaylanExampleDetailItemProvider : DetailItemProvider {
     override val itemType: DetailItemType = DetailItemType.EXAMPLE
 
     override fun createViewHolder(
         parent: ViewGroup,
         listener: DetailAdapterListener
     ): DetailItemViewHolder {
-        return ExamplesViewHolder(
+        return WaylanExampleViewHolder(
             DetailsExamplesItemLayoutBinding.inflate(parent.inflater, parent, false),
             listener
         )
     }
 }
 
-class ExamplesViewHolder(
+class WaylanExampleViewHolder(
     private val binding: DetailsExamplesItemLayoutBinding,
     val listener: DetailAdapterListener
 ): DetailItemViewHolder(
@@ -41,7 +42,7 @@ class ExamplesViewHolder(
 ) {
 
     override fun bind(item: DetailItemModel) {
-        if (item !is ExamplesModel) return
+        if (item !is WaylanExampleModel) return
         binding.run {
 
             detailsComponentExamplesContainer.removeAllViews()
@@ -65,7 +66,7 @@ class ExamplesViewHolder(
         val textView: AppCompatTextView = LayoutInflater.from(
             binding.detailsComponentExamplesContainer.context
         ).inflate(
-            R.layout.details_example_layout,
+            coreR.layout.details_example_layout,
             binding.detailsComponentExamplesContainer,
             false
         ) as AppCompatTextView

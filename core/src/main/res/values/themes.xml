@@ -41,6 +41,7 @@
 
         <!--Typography-->
         <item name="fontFamilyPrimary">@font/ibm_plex_serif_regular</item>
+        <item name="fontFamilyPrimaryItalic">@font/ibm_plex_serif_italic</item>
         <item name="fontFamilyPrimaryMedium">@font/ibm_plex_serif_medium</item>
         <item name="fontFamilyPrimarySemiBold">@font/ibm_plex_serif_semibold</item>
 

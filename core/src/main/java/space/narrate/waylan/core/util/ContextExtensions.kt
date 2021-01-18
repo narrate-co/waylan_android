@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.util.TypedValue
 import androidx.annotation.AttrRes
+import androidx.annotation.DimenRes
 
 val Context.isDarkUi: Boolean
     get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
@@ -24,6 +25,12 @@ fun Context.themeFloat(@AttrRes attr: Int): Float {
     val value = a.getFloat(0, 0F)
     a.recycle()
     return value
+}
+
+fun Context.getFloat(@DimenRes resId: Int): Float {
+    val tv = TypedValue()
+    resources.getValue(resId, tv, true)
+    return tv.float
 }
 
 fun Context.themeDimensionPixelSize(@AttrRes attr: Int): Int {
