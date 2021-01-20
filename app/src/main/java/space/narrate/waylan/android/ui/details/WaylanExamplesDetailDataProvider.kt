@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.details.DetailDataProvider
 import space.narrate.waylan.core.details.DetailItemModel
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.core.util.toLiveData
 
 /**
@@ -14,7 +16,6 @@ class WaylanExamplesDetailDataProvider(
     private val wordRepository: WordRepository
 ) : DetailDataProvider {
     override fun loadWord(word: String): LiveData<DetailItemModel> {
-      // TODO: Return a list of a user's examples.
-      return WaylanExamplesModel(emptyList()).toLiveData
+      return wordRepository.getUserWordExamples(word).mapTransform { WaylanExamplesModel(it) }
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import space.narrate.waylan.android.databinding.DetailsWaylanExamplesItemLayoutBinding
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
@@ -60,7 +61,7 @@ class WaylanExampleViewHolder(
         }
     }
 
-    private fun createExampleView(example: Example): AppCompatTextView {
+    private fun createExampleView(example: UserWordExample): AppCompatTextView {
         val textView: AppCompatTextView = LayoutInflater.from(
             binding.examplesContainer.context
         ).inflate(

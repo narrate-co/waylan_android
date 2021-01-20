@@ -30,6 +30,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
+import space.narrate.waylan.core.data.firestore.util.userWordExamples
 
 /**
  * The top-most store for access to Firestore data. This class handles CRUD operations
@@ -362,6 +364,7 @@ class FirestoreStore(
         return query.liveData(UserWord::class.java)
     }
 
+
     suspend fun setRecent(id: String, uid: String): Result<UserWord> {
         return updateUserWord(id, uid, true) {
             if (!types.containsKey(UserWordType.RECENT.name) || modified.isMoreThanOneMinuteAgo) {
@@ -394,5 +397,17 @@ class FirestoreStore(
         }
 
         return result
+    }
+
+    fun getUserWordExamplesLive(
+        id: String,
+        uid: String,
+        limit: Long?
+    ): LiveData<List<UserWordExample>> {
+        val query = firestore.userWordExamples(uid, id)
+            .orderBy("modified", Query.Direction.DESCENDING)
+            .limit(limit ?: 25)
+
+        return query.liveData(UserWordExample::class.java)
     }
 }

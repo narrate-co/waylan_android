@@ -17,6 +17,7 @@ import space.narrate.waylan.core.data.wordset.WordAndMeanings
 import space.narrate.waylan.core.data.wordset.WordsetDatabase
 import space.narrate.waylan.core.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 
 /**
  * A repository for all data access to all underlying dictionaries, including from WordSet,
@@ -89,6 +90,12 @@ class WordRepository(
         // Launch and forget
         launch {
             firestoreStore.setRecent(id, uid)
+        }
+    }
+
+    fun getUserWordExamples(id: String, limit: Long? = null): LiveData<List<UserWordExample>> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserWordExamplesLive(id, it, limit)
         }
     }
 }

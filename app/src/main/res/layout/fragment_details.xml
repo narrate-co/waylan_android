@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:paddingBottom="@dimen/keyline_3"
+                android:paddingBottom="72dp"
                 android:overScrollMode="never"
                 android:clipToPadding="false"
                 app:paddingBottomAboveSearchSheet="@{true}"/>
