@@ -37,7 +37,7 @@ class WordsetViewHolder(
   override fun bind(item: DetailItemModel) {
     if (item !is WordsetModel) return
     binding.run {
-      wordsetCard.setDicitionaryName("Wordset")
+      wordsetCard.setDictionaryName("Wordset")
       wordsetCard.setStatusLabel(null)
 
       val partOfSpeechEntryMap = item.wordAndMeanings

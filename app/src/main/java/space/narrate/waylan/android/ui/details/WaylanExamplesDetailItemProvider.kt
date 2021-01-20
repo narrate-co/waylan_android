@@ -3,8 +3,7 @@ package space.narrate.waylan.android.ui.details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import space.narrate.waylan.android.R
-import space.narrate.waylan.android.databinding.DetailsExamplesItemLayoutBinding
+import space.narrate.waylan.android.databinding.DetailsWaylanExamplesItemLayoutBinding
 import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
@@ -28,35 +27,34 @@ class WaylanExampleDetailItemProvider : DetailItemProvider {
         listener: DetailAdapterListener
     ): DetailItemViewHolder {
         return WaylanExampleViewHolder(
-            DetailsExamplesItemLayoutBinding.inflate(parent.inflater, parent, false),
+            DetailsWaylanExamplesItemLayoutBinding.inflate(parent.inflater, parent, false),
             listener
         )
     }
 }
 
 class WaylanExampleViewHolder(
-    private val binding: DetailsExamplesItemLayoutBinding,
+    private val binding: DetailsWaylanExamplesItemLayoutBinding,
     val listener: DetailAdapterListener
 ): DetailItemViewHolder(
     binding.root
 ) {
 
     override fun bind(item: DetailItemModel) {
-        if (item !is WaylanExampleModel) return
+        if (item !is WaylanExamplesModel) return
         binding.run {
-
-            detailsComponentExamplesContainer.removeAllViews()
-
+            errorContainer.gone()
+            examplesContainer.removeAllViews()
             //add examples
             val examples = item.examples
             if (examples.isNotEmpty()) {
                 // Loop to create and add each example
                 examples.forEach {
-                    detailsComponentExamplesContainer.addView(createExampleView(it))
+                    examplesContainer.addView(createExampleView(it))
                 }
-                view.visible()
             } else {
-                view.gone()
+                errorContainer.visible()
+                errorTextView.text = "No examples. Use the + button to add a custom example to this entry."
             }
 
         }
@@ -64,14 +62,13 @@ class WaylanExampleViewHolder(
 
     private fun createExampleView(example: Example): AppCompatTextView {
         val textView: AppCompatTextView = LayoutInflater.from(
-            binding.detailsComponentExamplesContainer.context
+            binding.examplesContainer.context
         ).inflate(
             coreR.layout.details_example_layout,
-            binding.detailsComponentExamplesContainer,
+            binding.examplesContainer,
             false
         ) as AppCompatTextView
         textView.text = example.example
         return textView
     }
-
 }

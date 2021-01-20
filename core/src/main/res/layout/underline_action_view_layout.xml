@@ -9,8 +9,7 @@
         android:layout_gravity="right"
         android:paddingRight="@dimen/keyline_1"
         android:paddingLeft="@dimen/keyline_1"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_round_play_arrow_24px" />
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
     <space.narrate.waylan.core.ui.widget.ProgressUnderlineView
         android:id="@+id/underline"

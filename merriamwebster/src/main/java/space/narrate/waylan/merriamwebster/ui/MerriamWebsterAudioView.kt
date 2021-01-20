@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import space.narrate.waylan.android.ui.details.AudioClipHelper
-import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.ui.widget.ProgressUnderlineView
@@ -67,7 +66,7 @@ class MerriamWebsterAudioView @JvmOverloads constructor(
         orientation = LinearLayout.VERTICAL
 
         val view = View.inflate(context, R.layout.merriam_webster_audio_view_layout, this)
-        playPauseButton = view.findViewById(R.id.play_pause_image_button)
+        playPauseButton = view.findViewById(R.id.image_view)
         progressUnderlineView = view.findViewById(R.id.underline)
 
         playPauseButton.setOnClickListener { handlePlayStopButtonClicked(audioState) }

@@ -3,16 +3,15 @@ package space.narrate.waylan.android.ui.details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import space.narrate.waylan.android.R
-import space.narrate.waylan.core.R as coreR
+import space.narrate.waylan.android.databinding.DetailsWaylanDefinitionsItemLayoutBinding
 import space.narrate.waylan.android.util.toChip
-import space.narrate.waylan.android.databinding.DetailsWordsetItemLayoutBinding
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.util.inflater
+import space.narrate.waylan.core.R as coreR
 
 /**
  * An item provider which knows how to create a ViewHolder for the [DetailItemType.DEFINITION]
@@ -26,19 +25,19 @@ class WaylanDefinitionDetailItemProvider : DetailItemProvider {
         listener: DetailAdapterListener
     ): DetailItemViewHolder {
         return WaylanDefinitionViewHolder(
-            DetailsWordsetItemLayoutBinding.inflate(parent.inflater, parent, false),
+            DetailsWaylanDefinitionsItemLayoutBinding.inflate(parent.inflater, parent, false),
             listener
         )
     }
 }
 
 class WaylanDefinitionViewHolder(
-    private val binding: DetailsWordsetItemLayoutBinding,
+    private val binding: DetailsWaylanDefinitionsItemLayoutBinding,
     private val listener: DetailAdapterListener
 ): DetailItemViewHolder(binding.root) {
 
     override fun bind(item: DetailItemModel) {
-        if (item !is WaylanDefinitionModel) return
+        if (item !is WaylanDefinitionsModel) return
         //remove all views
         binding.run {
             detailsComponentWordsetDefinitionsContainer.removeAllViews()

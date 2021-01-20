@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.res.use
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.ChipGroup
 import space.narrate.waylan.core.R
@@ -39,6 +40,20 @@ class DictionaryEntryCardView @JvmOverloads constructor (
   init {
     background.alpha = (context.getFloat(R.dimen.translucence_01) * 255F).toInt()
     elevation = 0F
+
+    getContext().obtainStyledAttributes(
+      attrs,
+      R.styleable.DictionaryEntryCardView,
+      defStyleAttr,
+      0
+    ).use {
+      val actionIcon = it.getResourceId(R.styleable.DictionaryEntryCardView_actionIcon, 0)
+      setActionIconResource(actionIcon)
+    }
+  }
+
+  fun setActionIconResource(resId: Int) {
+    binding.actionView.setActionIconResource(resId)
   }
 
   fun setListener(listener: DictionaryEntryListener?) {
@@ -55,7 +70,7 @@ class DictionaryEntryCardView @JvmOverloads constructor (
     binding.textLabel.visible()
   }
 
-  fun setDicitionaryName(name: String) {
+  fun setDictionaryName(name: String) {
     binding.dictionaryTitle.text = name
   }
 
