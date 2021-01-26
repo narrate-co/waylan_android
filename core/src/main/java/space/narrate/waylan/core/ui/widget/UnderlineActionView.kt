@@ -62,4 +62,8 @@ class UnderlineActionView @JvmOverloads constructor(
             binding.underline.stopProgress()
         }
     }
+
+    override fun setOnClickListener(l: OnClickListener?) {
+      binding.imageView.setOnClickListener(l)
+    }
 }

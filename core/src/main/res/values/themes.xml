@@ -14,7 +14,7 @@
         <item name="colorSurfaceSecondary">@color/colorForest100</item>
         <item name="colorError">@color/colorMauve100</item>
         <item name="colorInformative">@color/area</item>
-        <item name="colorArea">@color/colorGray600</item>
+        <item name="colorArea">@color/colorIvory400</item>
 
         <item name="colorOnPrimary">@color/colorIvory50</item>
         <item name="colorOnSecondary">?attr/colorSurfaceSecondary</item>
@@ -34,7 +34,7 @@
         <item name="alphaEmphasisHighType">0.87</item>
         <item name="alphaEmphasisMedium">0.60</item>
         <item name="alphaEmphasisDisabled">0.38</item>
-        <item name="alphaEmphasisArea">0.05</item>
+        <item name="alphaEmphasisArea">0.60</item>
         <item name="alphaEmphasisScrim">0.05</item>
         <item name="alphaEmphasisDivider">0.05</item>
         <item name="alphaEmphasisHairline">0.25</item>

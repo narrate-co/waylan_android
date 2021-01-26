@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/keyline_1">
+
+    <TextView
+        android:id="@+id/example_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/keyline_3"
+        android:layout_marginEnd="@dimen/keyline_2"
+        android:textAppearance="?textAppearanceBody1"
+        app:fontFamily="?attr/fontFamilyPrimaryItalic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/example_trailing_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="The doctor said the tumor in my liver was quiescent, despite what other consultations had lead me to believe." />
+
+    <ImageView
+        android:id="@+id/example_trailing_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_create_24px"
+        tools:src="@drawable/ic_create_24pd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+        

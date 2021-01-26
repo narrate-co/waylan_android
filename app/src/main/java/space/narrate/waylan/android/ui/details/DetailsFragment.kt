@@ -19,6 +19,7 @@ import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
 import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.core.data.firestore.users.AddOn
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator

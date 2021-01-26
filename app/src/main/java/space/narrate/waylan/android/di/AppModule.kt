@@ -92,7 +92,7 @@ val appModule = module {
             merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),
             WaylanDefinitionDetailItemProvider(),
-            WaylanExampleDetailItemProvider()
+            WaylanExampleDetailItemProvider(get())
         )
 
         detailItemFactory

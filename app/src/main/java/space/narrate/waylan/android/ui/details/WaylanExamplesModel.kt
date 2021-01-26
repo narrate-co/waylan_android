@@ -1,11 +1,13 @@
 package space.narrate.waylan.android.ui.details
 
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
-import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
 
-class WaylanExamplesModel(val examples: List<UserWordExample>): DetailItemModel() {
+class WaylanExamplesModel(
+    val word: String,
+    val examples: List<UserWordExample>
+): DetailItemModel() {
 
     override val itemType: DetailItemType = DetailItemType.EXAMPLE
 

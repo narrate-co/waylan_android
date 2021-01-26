@@ -410,4 +410,34 @@ class FirestoreStore(
 
         return query.liveData(UserWordExample::class.java)
     }
+
+    suspend fun newUserWordExample(
+        uid: String,
+        wordId: String,
+        transferObj: UserWordExample
+    ): Result<UserWordExample> {
+        return try {
+            val docRef = firestore.userWords(uid).document()
+            val newExample = UserWordExample(docRef.id)
+            newExample.apply {
+                this.example = transferObj.example
+                this.created = transferObj.created
+                this.modified = transferObj.modified
+                this.visibility = transferObj.visibility
+            }
+            setUserWordExample(uid, wordId, newExample)
+        } catch (e: java.lang.Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun setUserWordExample(
+        uid: String,
+        wordId: String,
+        example: UserWordExample
+    ): Result<UserWordExample> = suspendCancellableCoroutine { cont ->
+        firestore.userWordExamples(uid, wordId).document(example.id).set(example)
+            .addOnSuccessListener { cont.resume(Result.Success(example)) }
+            .addOnFailureListener { cont.resume(Result.Error(it)) }
+    }
 }

@@ -16,6 +16,6 @@ class WaylanExamplesDetailDataProvider(
     private val wordRepository: WordRepository
 ) : DetailDataProvider {
     override fun loadWord(word: String): LiveData<DetailItemModel> {
-      return wordRepository.getUserWordExamples(word).mapTransform { WaylanExamplesModel(it) }
+      return wordRepository.getUserWordExamples(word).mapTransform { WaylanExamplesModel(word, it) }
     }
 }
