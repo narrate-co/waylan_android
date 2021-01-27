@@ -41,6 +41,17 @@
         <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
     </style>
 
+    <style name="Widget.Waylan.TextLabel.Area" parent="Widget.Waylan.TextLabel">
+        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body3</item>
+        <item name="android:textColor">?attr/colorOnInformative</item>
+        <item name="android:textSize">12sp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <item name="chipBackgroundColor">@color/area</item>
+        <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
+    </style>
+
     <!--Edit Texts-->
     <style name="Widget.Waylan.EditText.Area" parent="Theme.Waylan">
         <item name="android:fontFamily">?attr/fontFamilySecondary</item>

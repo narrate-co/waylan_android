@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.DetailsWaylanExamplesItemLayoutBinding
+import space.narrate.waylan.android.databinding.WaylanExampleItemLayoutBinding
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailAdapterListener
@@ -58,13 +61,11 @@ class WaylanExampleViewHolder(
 
         // Add and keep examples list updated
         viewModel.examples.observe(this) {
-            println("WaylanExamples set examples")
             setExamples(it)
         }
 
         // Watch for when and what the message box should display
         viewModel.shouldShowMessage.observe(this) {
-            println("WaylanExamples shouldShowMessage = $it")
             if (it.isNullOrEmpty()) {
                 binding.messageContainer.gone()
             } else {
@@ -75,6 +76,8 @@ class WaylanExampleViewHolder(
 
         // Watch for when the editor should be shown
         viewModel.shouldShowEditor.observe(this) {
+            val transition = ChangeBounds()
+            TransitionManager.beginDelayedTransition(binding.root, transition)
             if (it != null) {
                 binding.entryEditTextView.visible()
                 binding.entryEditTextView.setText(it.example)
@@ -85,14 +88,15 @@ class WaylanExampleViewHolder(
         }
 
         viewModel.shouldShowEditorError.observe(this) {
-          it.withUnhandledContent {
-            binding.run {
-                (entryEditTextView.background as TransitionDrawable).apply {
-                    isCrossFadeEnabled = true
-                    if (it.isEmpty()) reverseTransition(200) else startTransition(200)
-                }
-            }
-          }
+            binding.entryEditTextView.setError(it)
+        }
+
+        viewModel.shouldShowDestructiveButton.observe(this) {
+            binding.entryEditTextView.showDestructiveButton(it)
+        }
+
+        viewModel.showLoading.observe(this) {
+            binding.actionView.setLoading(it)
         }
 
         // Pass actions through to view model
@@ -125,13 +129,15 @@ class WaylanExampleViewHolder(
     }
 
     private fun createExampleView(example: UserWordExample): View {
-        val view = LayoutInflater.from(binding.examplesContainer.context).inflate(
-            R.layout.waylan_example_item_layout,
+        val exampleBinding = WaylanExampleItemLayoutBinding.inflate(
+            LayoutInflater.from(binding.examplesContainer.context),
             binding.examplesContainer,
             false
         )
-        val tv: TextView = view.findViewById(R.id.example_text_view)
-        tv.text = example.example
-        return view
+        exampleBinding.exampleTextView.text = example.example
+        exampleBinding.exampleTrailingIcon.setOnClickListener {
+            viewModel.onEditExampleClicked(example)
+        }
+        return exampleBinding.root
     }
 }

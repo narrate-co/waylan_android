@@ -440,4 +440,18 @@ class FirestoreStore(
             .addOnSuccessListener { cont.resume(Result.Success(example)) }
             .addOnFailureListener { cont.resume(Result.Error(it)) }
     }
+
+    suspend fun deleteUserWordExample(
+        uid: String,
+        wordId: String,
+        id: String
+    ): Result<Boolean> = suspendCancellableCoroutine { cont ->
+        if (wordId.isEmpty() || id.isEmpty()) {
+            cont.resume(Result.Error(Exception("Example does not exist")))
+        } else {
+            firestore.userWordExamples(uid, wordId).document(id).delete()
+                .addOnSuccessListener { cont.resume(Result.Success(true)) }
+                .addOnFailureListener { cont.resume(Result.Error(it)) }
+        }
+    }
 }

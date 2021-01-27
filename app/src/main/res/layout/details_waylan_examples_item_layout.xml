@@ -31,7 +31,6 @@
       android:id="@+id/entry_edit_text_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/keyline_2_5"
       android:layout_marginHorizontal="@dimen/keyline_2"
       android:layout_marginVertical="@dimen/keyline_3"
       android:visibility="gone"

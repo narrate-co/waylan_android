@@ -1,6 +1,7 @@
 package space.narrate.waylan.android.ui.widget
 
 import android.content.Context
+import android.graphics.drawable.TransitionDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.appcompat.content.res.AppCompatResources
@@ -8,6 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.EntryEditTextLayoutBinding
+import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.visible
 
 class EntryEditTextView @JvmOverloads constructor(
   context: Context,
@@ -19,10 +22,10 @@ class EntryEditTextView @JvmOverloads constructor(
     EntryEditTextLayoutBinding.inflate(LayoutInflater.from(context), this)
 
   init {
-    background = AppCompatResources.getDrawable(
-      context,
-      R.drawable.text_input_background_transitionable
-    )
+//    background = AppCompatResources.getDrawable(
+//      context,
+//      R.drawable.text_input_background_transitionable
+//    )
   }
 
   fun setOnPositiveButtonClickListener(onClick: OnClickListener) {
@@ -35,6 +38,10 @@ class EntryEditTextView @JvmOverloads constructor(
 
   fun setOnDestructiveButtonClickListener(onClick: OnClickListener) {
     binding.destructiveButton.setOnClickListener(onClick)
+  }
+
+  fun showDestructiveButton(show: Boolean) {
+    if (show) binding.destructiveButton.visible() else binding.destructiveButton.gone()
   }
 
   fun getText(): String = binding.editableTextView.text.toString()
@@ -50,6 +57,27 @@ class EntryEditTextView @JvmOverloads constructor(
     ) -> Unit
   ) {
     binding.editableTextView.doOnTextChanged(action)
+  }
+
+  fun setError(message: String?) {
+    val hasError = !message.isNullOrEmpty()
+    binding.run {
+      (boxContainer.background as TransitionDrawable).apply {
+        isCrossFadeEnabled = true
+        if (hasError) {
+          startTransition(200)
+        } else {
+          resetTransition()
+        }
+      }
+
+      if (hasError) {
+        errorTextView.text = message
+        errorTextView.visible()
+      } else {
+        errorTextView.gone()
+      }
+    }
   }
 
 }

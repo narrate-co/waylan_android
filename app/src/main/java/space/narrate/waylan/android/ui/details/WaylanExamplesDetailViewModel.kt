@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.util.Date
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.repo.WordRepository
@@ -27,8 +31,8 @@ class WaylanExamplesDetailViewModel(
   val shouldShowEditor: LiveData<UserWordExample?>
     get() = _shouldShowEditor
 
-  private val _shouldShowEditorError: MutableLiveData<Event<String>> = MutableLiveData()
-  val shouldShowEditorError: LiveData<Event<String>>
+  private val _shouldShowEditorError: MutableLiveData<String?> = MutableLiveData()
+  val shouldShowEditorError: LiveData<String?>
     get() = _shouldShowEditorError
 
   private val _shouldShowMessage: MutableLiveData<String> = MutableLiveData()
@@ -39,36 +43,52 @@ class WaylanExamplesDetailViewModel(
   val showLoading: LiveData<Boolean>
     get() = _showLoading
 
+  private val _shouldShowDestructiveButton: MutableLiveData<Boolean> = MutableLiveData()
+  val shouldShowDestructiveButton: LiveData<Boolean>
+    get() = _shouldShowDestructiveButton
+
   fun setData(data: WaylanExamplesModel) {
     if (this.data?.isSameAs(data) == true && this.data?.isContentSameAs(data) == true) return
 
-    this.data = data
-    _examples.postValue(data.examples)
-    if (this.data?.word != data.word) {
+    // Reset editor and other fields when a new word is supplied
+    if (data.word != this.data?.word) {
       exampleUnderEdit = null
-      _shouldShowEditor.postValue(null)
-      _shouldShowEditorError.postValue(Event(""))
+      _shouldShowEditor.value = null
+      _shouldShowEditorError.value = null
     }
+
+    this.data = data
+    _examples.value = data.examples
 
     // If there are no examples, prompt user to add a custom entry
     updateShouldShowMessage()
   }
 
   fun onEditExampleClicked(example: UserWordExample) {
-    // Remove example from examples list
+    val examples = _examples.value ?: return
+    // Remove example from examples list during editing
+    val filteredExamples = examples.filter { it.id != example.id }.toList()
+    _examples.value = filteredExamples
     // Set as the example under edit
+    openEditorFor(example)
   }
 
   fun onCreateExampleClicked() {
     // Create new user word example.
-    exampleUnderEdit = UserWordExample()
+    val newExample = UserWordExample()
+    openEditorFor(newExample)
+  }
+
+  private fun openEditorFor(example: UserWordExample) {
     // Set editor to visible
-    _shouldShowEditor.postValue(exampleUnderEdit)
+    exampleUnderEdit = example
+    _shouldShowEditor.value = exampleUnderEdit
+    _shouldShowDestructiveButton.value = example.id.isNotEmpty()
     updateShouldShowMessage()
   }
 
   fun onPositiveEditorButtonClicked() = viewModelScope.launch {
-    _showLoading.postValue(true)
+    _showLoading.value = true
     // Set the current word
     val example = exampleUnderEdit
     val data = data
@@ -76,31 +96,40 @@ class WaylanExamplesDetailViewModel(
       val result = wordRepository.updateUserWordExample(data.word, example)
       when (result) {
         is Result.Success -> {
-          _shouldShowEditor.postValue(null)
+          _shouldShowEditor.value = null
           exampleUnderEdit = null
         }
         is Result.Error -> {
-          _shouldShowEditorError.postValue (
-            Event(result.exception.message ?: "Something went wrong.")
-          )
+          _shouldShowEditorError.value = result.exception.message ?: "Something went wrong."
         }
       }
     }
 
-    _showLoading.postValue(false)
+    _showLoading.value = false
+    updateShouldShowMessage()
   }
 
   fun onNegativeEditorButtonClicked() {
-    _shouldShowEditor.postValue(null)
+    // Close editor
+    _shouldShowEditor.value = null
     exampleUnderEdit = null
+    // Restore all examples to the list if any were removed during editing.
+    _examples.value = this.data?.examples ?: emptyList()
+    // Update the message if the examples are empty, etc.
+    updateShouldShowMessage()
   }
 
-  fun onDestructiveEditorButtonClicked() {
-    // TODO: Delete example
-    if (_shouldShowEditorError.value?.peek().isNullOrEmpty()) {
-      _shouldShowEditorError.postValue(Event("This is a destructive message"))
-    } else {
-      _shouldShowEditorError.postValue(Event(""))
+  fun onDestructiveEditorButtonClicked() = GlobalScope.launch {
+    val data = data
+    val example = exampleUnderEdit
+    if (data != null && example != null) {
+      wordRepository.deleteUserWordExample(data.word, example.id)
+    }
+
+    withContext(Dispatchers.Main) {
+      _shouldShowEditor.value = null
+      exampleUnderEdit = null
+      updateShouldShowMessage()
     }
   }
 
@@ -118,10 +147,10 @@ class WaylanExamplesDetailViewModel(
   }
 
   private fun updateShouldShowMessage() {
-    if (_shouldShowEditorError.value == null && _examples.value?.isEmpty() == true) {
-      _shouldShowMessage.postValue("No examples. Use the + button to add a custom example to this entry")
+    if (_shouldShowEditor.value == null && _examples.value.isNullOrEmpty()) {
+      _shouldShowMessage.value = "No examples. Use the + button to add a custom example to this entry"
     } else {
-      _shouldShowMessage.postValue(null)
+      _shouldShowMessage.value = null
     }
   }
 }

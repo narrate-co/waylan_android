@@ -2,57 +2,82 @@
 
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-  <space.narrate.waylan.core.ui.widget.TextLabelChip
-      android:id="@+id/label"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:text="Private" />
-
-  <EditText
-      android:id="@+id/editable_text_view"
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/box_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:minHeight="92dp"
-      android:layout_marginVertical="@dimen/keyline_1"
-      android:hint="Your example here..."
-      android:gravity="top|start"
-      android:background="@android:color/transparent"
-      android:textAppearance="?attr/textAppearanceBody1"
-      android:fontFamily="?attr/fontFamilySecondary"
-      app:layout_constraintTop_toBottomOf="@id/label"
+      android:padding="@dimen/keyline_2_5"
+      android:background="@drawable/text_input_background_transitionable">
+
+    <space.narrate.waylan.core.ui.widget.TextLabelChip
+        style="@style/Widget.Waylan.TextLabel.Area"
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Private" />
+
+    <EditText
+        android:id="@+id/editable_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="92dp"
+        android:layout_marginVertical="@dimen/keyline_1"
+        android:hint="Your example here..."
+        android:gravity="top|start"
+        android:background="@android:color/transparent"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:fontFamily="?attr/fontFamilySecondary"
+        app:layout_constraintTop_toBottomOf="@id/label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/destructive_button"/>
+
+    <Button
+        style="?attr/styleTextButton"
+        android:id="@+id/destructive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        style="?attr/styleTextButton"
+        android:id="@+id/negative_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/positive_button"/>
+
+    <Button
+        style="?attr/styleTextButton"
+        android:id="@+id/positive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <TextView
+      android:id="@+id/error_text_view"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_marginStart="@dimen/keyline_2_5"
+      android:layout_marginEnd="@dimen/keyline_3"
+      android:layout_marginTop="@dimen/keyline_2"
+      android:textAppearance="?attr/textAppearanceCaption"
+      android:textColor="?attr/colorOnBackgroundError"
+      android:visibility="gone"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintBottom_toTopOf="@id/destructive_button"/>
-
-  <Button
-      style="?attr/styleTextButton"
-      android:id="@+id/destructive_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Delete"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"/>
-
-  <Button
-      style="?attr/styleTextButton"
-      android:id="@+id/negative_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Cancel"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/positive_button"/>
-
-  <Button
-      style="?attr/styleTextButton"
-      android:id="@+id/positive_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Done"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"/>
+      app:layout_constraintTop_toBottomOf="@id/box_container" />
 
 </merge>

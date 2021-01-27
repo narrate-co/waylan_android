@@ -1,6 +1,7 @@
 package space.narrate.waylan.core.repo
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.firestore.FirebaseFirestoreException
 import java.lang.Exception
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +20,7 @@ import space.narrate.waylan.core.data.wordset.WordsetDatabase
 import space.narrate.waylan.core.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
 
 /**
@@ -111,6 +113,15 @@ class WordRepository(
         } else { // This is an existing example that should be updated
             return firestoreStore.setUserWordExample(uid, id, example)
         }
+    }
+
+    suspend fun deleteUserWordExample(
+        id: String,
+        exampleId: String
+    ): Result<Boolean> {
+        val uid = authenticationStore.uid.value
+            ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
+        return firestoreStore.deleteUserWordExample(uid, id, exampleId)
     }
 }
 
