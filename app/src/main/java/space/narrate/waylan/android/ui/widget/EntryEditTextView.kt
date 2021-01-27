@@ -4,10 +4,8 @@ import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
-import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.EntryEditTextLayoutBinding
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.visible
@@ -20,13 +18,6 @@ class EntryEditTextView @JvmOverloads constructor(
 
   val binding: EntryEditTextLayoutBinding =
     EntryEditTextLayoutBinding.inflate(LayoutInflater.from(context), this)
-
-  init {
-//    background = AppCompatResources.getDrawable(
-//      context,
-//      R.drawable.text_input_background_transitionable
-//    )
-  }
 
   fun setOnPositiveButtonClickListener(onClick: OnClickListener) {
     binding.positiveButton.setOnClickListener(onClick)

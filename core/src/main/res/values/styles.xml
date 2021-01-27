@@ -39,6 +39,10 @@
         <item name="rippleColor">?attr/colorRipple</item>
         <item name="chipBackgroundColor">?attr/colorInformative</item>
         <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
+        <item name="chipIconSize">14dp</item>
+        <item name="iconStartPadding">6dp</item>
+        <item name="iconEndPadding">6dp</item>
+        <item name="chipIconTint">@color/material_on_background_emphasis_medium</item>
     </style>
 
     <style name="Widget.Waylan.TextLabel.Area" parent="Widget.Waylan.TextLabel">

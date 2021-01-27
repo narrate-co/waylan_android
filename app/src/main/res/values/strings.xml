@@ -4,7 +4,6 @@
     <string name="app_name">Waylan</string>
 
     <!--List-->
-
     <string name="title_settings">Settings</string>
     <string name="list_banner_trending_body">Trending is a list of the most popular entries on Waylan, searched by other users and you.</string>
     <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
@@ -43,7 +42,6 @@
     <string name="auth_log_in_button">Log in</string>
 
     <!--Contextual Fragment-->
-
     <string name="item_desc">This is a sample description and should be deleted</string>
     <string name="item_title">Sample title</string>
     <string name="title_about">About</string>
@@ -55,5 +53,12 @@
     <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
     <string name="audio_clip_no_network_available">No network available</string>
     <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
+
+    <!--Details-->
+    <string name="details_waylan_example_editable_done">Done</string>
+    <string name="details_waylan_example_editable_cancel">Cancel</string>
+    <string name="details_waylan_example_editable_delete">Delete</string>
+    <string name="details_waylan_example_editable_hint">Your example here…</string>
+    <string name="details_waylan_example_editable_visibility_label_private">Private</string>
 
 </resources>
