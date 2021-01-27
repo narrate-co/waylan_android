@@ -1,19 +1,13 @@
 package space.narrate.waylan.android.ui.details
 
-import android.graphics.drawable.TransitionDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.fragment.app.Fragment
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
-import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.DetailsWaylanExamplesItemLayoutBinding
 import space.narrate.waylan.android.databinding.WaylanExampleItemLayoutBinding
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
-import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider
@@ -22,9 +16,7 @@ import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.inflater
-import space.narrate.waylan.core.util.invisible
 import space.narrate.waylan.core.util.visible
-import space.narrate.waylan.core.R as coreR
 
 /**
  * An item provider which knows how to create a ViewHolder for the [DetailItemType.EXAMPLE]
@@ -47,6 +39,10 @@ class WaylanExampleDetailItemProvider(
     }
 }
 
+/**
+ * A view holder that handles showing an Example section where users are able to add their own
+ * custom examples per entry.
+ */
 class WaylanExampleViewHolder(
     private val binding: DetailsWaylanExamplesItemLayoutBinding,
     private val viewModel: WaylanExamplesDetailViewModel,
@@ -66,10 +62,10 @@ class WaylanExampleViewHolder(
 
         // Watch for when and what the message box should display
         viewModel.shouldShowMessage.observe(this) {
-            if (it.isNullOrEmpty()) {
+            if (it == null) {
                 binding.messageContainer.gone()
             } else {
-                binding.messageTextView.text = it
+                binding.messageTextView.setText(it)
                 binding.messageContainer.visible()
             }
         }

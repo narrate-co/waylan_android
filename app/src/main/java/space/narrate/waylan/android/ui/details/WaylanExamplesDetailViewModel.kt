@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.util.Date
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.repo.WordRepository
-import space.narrate.waylan.core.ui.common.Event
 
 class WaylanExamplesDetailViewModel(
   private val wordRepository: WordRepository
@@ -35,8 +34,8 @@ class WaylanExamplesDetailViewModel(
   val shouldShowEditorError: LiveData<String?>
     get() = _shouldShowEditorError
 
-  private val _shouldShowMessage: MutableLiveData<String> = MutableLiveData()
-  val shouldShowMessage: LiveData<String>
+  private val _shouldShowMessage: MutableLiveData<Int?> = MutableLiveData()
+  val shouldShowMessage: LiveData<Int?>
     get() = _shouldShowMessage
 
   private val _showLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -139,7 +138,10 @@ class WaylanExamplesDetailViewModel(
       before: Int,
       count: Int
   ) {
-    // TODO: Validate example text?
+    // TODO: Possibly validate example text.
+    // This is difficult because the example might include the root/prefixed/suffixed variations
+    // of the entry. Additionally, there is no reason to limit what users can add as their own
+    // helpers.
     exampleUnderEdit?.apply {
       example = text?.toString() ?: example
       modified = Date()
@@ -148,7 +150,7 @@ class WaylanExamplesDetailViewModel(
 
   private fun updateShouldShowMessage() {
     if (_shouldShowEditor.value == null && _examples.value.isNullOrEmpty()) {
-      _shouldShowMessage.value = "No examples. Use the + button to add a custom example to this entry"
+      _shouldShowMessage.value = R.string.details_waylan_example_no_examples_message
     } else {
       _shouldShowMessage.value = null
     }

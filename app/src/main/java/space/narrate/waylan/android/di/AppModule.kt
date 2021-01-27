@@ -7,10 +7,10 @@ import space.narrate.waylan.android.AppNavigator
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
-import space.narrate.waylan.android.ui.details.WaylanDefinitionsDetailDataProvider
 import space.narrate.waylan.android.ui.details.WaylanDefinitionDetailItemProvider
-import space.narrate.waylan.android.ui.details.WaylanExamplesDetailDataProvider
+import space.narrate.waylan.android.ui.details.WaylanDefinitionsDetailDataProvider
 import space.narrate.waylan.android.ui.details.WaylanExampleDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanExamplesDetailDataProvider
 import space.narrate.waylan.android.ui.list.ListViewModel
 import space.narrate.waylan.android.ui.search.ContextualViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel

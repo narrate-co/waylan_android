@@ -60,5 +60,6 @@
     <string name="details_waylan_example_editable_delete">Delete</string>
     <string name="details_waylan_example_editable_hint">Your example here…</string>
     <string name="details_waylan_example_editable_visibility_label_private">Private</string>
+    <string name="details_waylan_example_no_examples_message">No examples. Use the + button to add a custom example to this entry.</string>
 
 </resources>
