@@ -10,6 +10,8 @@ import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
 import space.narrate.waylan.core.ui.widget.TextLabelChip
 import space.narrate.waylan.core.ui.widget.configureWithUserAddOn
+import space.narrate.waylan.core.R as coreR
+import space.narrate.waylan.core.util.getFloat
 import space.narrate.waylan.merriamwebster.R
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
 
@@ -35,11 +37,11 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
     init {
         val view = View.inflate(context, R.layout.merriam_webster_card_layout, this)
-        listContainer = view.findViewById(R.id.list_container)
+        listContainer = view.findViewById(R.id.definitions_list_container)
         textLabel = view.findViewById(R.id.text_label)
         mwAudioView = view.findViewById(R.id.mw_audio_view)
         mwAudioView.listener = this
-        background.alpha = (0.8 * 255).toInt()
+        background.alpha = (context.getFloat(coreR.dimen.translucence_01) * 255F).toInt()
         elevation = 0F
 
         adapter = MerriamWebsterItemAdapter(listContainer, this)

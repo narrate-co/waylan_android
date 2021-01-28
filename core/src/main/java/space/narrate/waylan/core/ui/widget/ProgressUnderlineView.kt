@@ -199,6 +199,8 @@ class ProgressUnderlineView @JvmOverloads constructor(
         isAnimating = false
     }
 
+    fun isStarted(): Boolean = isAnimating
+
     companion object {
         private val DEF_STYLE_RES = R.style.Widget_Waylan_ProgressUnderlineView
         private const val ANIM_DURATION = 2000L

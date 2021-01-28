@@ -24,6 +24,7 @@ class TextLabelChip @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.styleTextLabel
 ) : Chip(context, attrs, defStyleAttr) {
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         layoutParams = layoutParams.apply {

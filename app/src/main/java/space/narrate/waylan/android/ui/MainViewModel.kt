@@ -3,6 +3,7 @@ package space.narrate.waylan.android.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
@@ -13,7 +14,9 @@ import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.maybeSet
+import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel owned by MainActivity, accessible by all its child Fragments, making data
@@ -59,6 +62,14 @@ class MainViewModel(
     val shouldHideFloatingNavigationBar: LiveData<Boolean>
         get() = _shouldHideFloatingNavigationBar
 
+    private val _softInputModel: MutableLiveData<SoftInputModel> = MutableLiveData()
+
+    val softInputModel: LiveData<SoftInputModel>
+        get() = _softInputModel
+
+    val keyboardHeight: LiveData<Float>
+        get() = _softInputModel.mapTransform { it.height.toFloat() }
+
     fun onProcessText(textToProcess: String?) {
         if (!textToProcess.isNullOrBlank()) {
             onChangeCurrentWord(textToProcess)
@@ -91,6 +102,10 @@ class MainViewModel(
 
     fun onClearListFilter() {
         setListFilter(emptyList())
+    }
+
+    fun onSoftInputChanged(model: SoftInputModel) {
+      _softInputModel.value = model
     }
 
     fun onContextualSheetHidden() {

@@ -19,6 +19,8 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
+import kotlin.math.max
+import kotlin.math.roundToInt
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -26,21 +28,17 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentSearchBinding
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.util.KeyboardManager
 import space.narrate.waylan.android.util.collapse
 import space.narrate.waylan.android.util.expand
 import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.prefs.RotationManager
-import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.fadeThroughTransition
-import space.narrate.waylan.core.util.themeColor
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.showSoftKeyboard
-import kotlin.math.max
-import kotlin.math.roundToInt
+import space.narrate.waylan.core.util.themeColor
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,
@@ -109,15 +107,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
         ViewCompat.setBackground(binding.collapsedContainer, materialShapeDrawable)
 
-        sharedViewModel.currentWord.observe(this) {
+        sharedViewModel.currentWord.observe(viewLifecycleOwner) {
             viewModel.onCurrentWordChanged(it)
         }
 
-        sharedViewModel.shouldOpenAndFocusSearch.observe(this) { event ->
+        sharedViewModel.shouldOpenAndFocusSearch.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { focusAndOpenSearch() }
         }
 
-        viewModel.shouldShowDetails.observe(this) { event ->
+        viewModel.shouldShowDetails.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 sharedViewModel.onChangeCurrentWord(it)
                 val navController = (requireActivity() as MainActivity).findNavController()
@@ -127,14 +125,14 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             }
         }
 
-        viewModel.shouldShowSettings.observe(this) { event ->
+        viewModel.shouldShowSettings.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 val navController = (requireActivity() as MainActivity).findNavController()
                 navController.navigate(R.id.action_global_settingsFragment)
             }
         }
 
-        sharedViewModel.shouldHideBottomSheets.observe(this) {
+        sharedViewModel.shouldHideBottomSheets.observe(viewLifecycleOwner) {
             if (it) {
                 bottomSheetBehavior.isHideable = true
                 bottomSheetBehavior.hide(requireActivity())
@@ -143,15 +141,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             }
         }
 
-        viewModel.shouldCloseKeyboard.observe(this) {
+        viewModel.shouldCloseKeyboard.observe(viewLifecycleOwner) {
             requireActivity().hideSoftKeyboard()
         }
 
-        viewModel.shouldCloseSheet.observe(this) {
+        viewModel.shouldCloseSheet.observe(viewLifecycleOwner) {
             bottomSheetBehavior.collapse(requireActivity())
         }
 
-        viewModel.shouldOpenContextualSheet.observe(this) {
+        viewModel.shouldOpenContextualSheet.observe(viewLifecycleOwner) {
             sharedViewModel.onShouldOpenContextualFragment()
         }
 
@@ -190,35 +188,27 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         val maxReachableExpandedHeight = (requireContext().displayHeightPx * .60F).roundToInt()
         requireView().layoutParams?.height = maxReachableExpandedHeight
 
-        // Observe the keyboard height so we can move the entire bottom sheet up and keep it in
-        // view when the keyboard is on screen.
-        KeyboardManager(requireActivity(), binding.collapsedContainer)
-            .getKeyboardHeightData()
-            .observe(this) {
-                viewModel.onSoftInputChanged(it)
-            }
-
         // Translate the search sheet so it's always above the IME
-        viewModel.keyboardHeight.observe(this) {
+        sharedViewModel.keyboardHeight.observe(viewLifecycleOwner) {
             requireView().translationY = -it
         }
 
         val searchSheetCallback = (requireActivity() as MainActivity).searchSheetCallback
         val contextualSheetCallback = (requireActivity() as MainActivity).contextualSheetCallback
 
-        searchSheetCallback.currentSlideLive.observe(this) {
+        searchSheetCallback.currentSlideLive.observe(viewLifecycleOwner) {
             viewModel.onSearchSheetOffsetChanged(it)
         }
 
-        searchSheetCallback.currentStateLive.observe(this) {
+        searchSheetCallback.currentStateLive.observe(viewLifecycleOwner) {
             viewModel.onSearchSheetStateChanged(it)
         }
 
-        contextualSheetCallback.currentSlideLive.observe(this) {
+        contextualSheetCallback.currentSlideLive.observe(viewLifecycleOwner) {
             viewModel.onContextualSheetOffsetChanged(it)
         }
 
-        contextualSheetCallback.currentStateLive.observe(this) {
+        contextualSheetCallback.currentStateLive.observe(viewLifecycleOwner) {
             viewModel.onContextualSheetStateChanged(it)
         }
 
@@ -266,7 +256,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
             false
         }
 
-        viewModel.searchResults.observe(this) {
+        viewModel.searchResults.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             binding.recyclerView.scrollToPosition(0)
         }
@@ -274,7 +264,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
     private fun setUpSmartShelf() {
 
-        viewModel.shouldShowOrientationPrompt.observe(this) { event ->
+        viewModel.shouldShowOrientationPrompt.observe(viewLifecycleOwner) { event ->
             // TODO: Show a UI prompt for smart actions
         }
 
@@ -291,13 +281,17 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     }
 
     // Shelf actions are actions which live to the right of the search input field. They
-    // animate in, compressing the search input field, when the DetailsFragment is the current
-    // Fragment and animate out when the search sheet is expanded or DetailsFragment is not the
-    // current Fragment
+    // animate in, compressing the search input field, offering affordances for actions that make
+    // sense for the user's current context.
     private fun setUpShelfActions() {
+        // Observe the soft input state so the shelf actions can react to changes in open/closed
+        // states.
+        sharedViewModel.softInputModel.observe(viewLifecycleOwner) { model ->
+            viewModel.onSoftInputChanged(model)
+        }
         // Hide actions when DetailsFragment is not the current Fragment, otherwise show
-        viewModel.searchShelfRowModel.observe(this) { model ->
-            // wait for the next layout step to grantee the actions.width is correctly captured
+        viewModel.searchShelfRowModel.observe(viewLifecycleOwner) { model ->
+            // wait for the next layout step to grantee the actions width is correctly captured
             if (binding.actionsContainer.isLaidOut) {
                 if (model.shouldAnimateToNumberOfActions) {
                     runShelfActionsAnimation(model.numberOfActionsToShow)

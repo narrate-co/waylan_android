@@ -17,6 +17,10 @@ object UserCollection {
     const val ADD_ONS = "add_ons"
 }
 
+object UserWordCollection {
+    const val EXAMPLES = "examples"
+}
+
 val FirebaseFirestore.users : CollectionReference
     get() = collection(RootCollection.USERS)
 
@@ -28,5 +32,8 @@ fun FirebaseFirestore.userWords(uid: String) : CollectionReference =
 
 fun FirebaseFirestore.userAddOns(uid: String): CollectionReference =
     users.document(uid).collection(UserCollection.ADD_ONS)
+
+fun FirebaseFirestore.userWordExamples(uid: String, wordId: String): CollectionReference =
+    userWords(uid).document(wordId).collection(UserWordCollection.EXAMPLES)
 
 

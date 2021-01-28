@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
-import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
@@ -89,6 +86,13 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
+        }
+
+        val originalRecyclerViewPadding = binding.recyclerView.paddingBottom
+        sharedViewModel.keyboardHeight.observe(viewLifecycleOwner) {
+            binding.recyclerView.updatePadding(
+                bottom = (originalRecyclerViewPadding + it).toInt()
+            )
         }
 
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has

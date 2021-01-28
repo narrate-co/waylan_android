@@ -22,15 +22,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
+            <!--TODO: Remove padding bottom in favor of keyboard height watcher-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:paddingBottom="@dimen/keyline_3"
+                android:paddingBottom="200dp"
                 android:overScrollMode="never"
                 android:clipToPadding="false"
                 app:paddingBottomAboveSearchSheet="@{true}"/>
+
 
             <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
                 android:id="@+id/app_bar"

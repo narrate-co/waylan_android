@@ -57,7 +57,7 @@ object Versions {
     const val moshi = "1.9.1"
     const val moshiConverter = "2.6.2"
     const val navigation = "2.3.0"
-    const val okhttp3 = "3.10.0"
+    const val okhttp3 = "4.9.0"
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.7.1"
     const val robolectric = "4.3.1"

@@ -7,10 +7,10 @@ import space.narrate.waylan.android.AppNavigator
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
-import space.narrate.waylan.android.ui.details.ExampleDetailDataProvider
-import space.narrate.waylan.android.ui.details.ExamplesDetailItemProvider
-import space.narrate.waylan.android.ui.details.WordsetDetailDataProvider
-import space.narrate.waylan.android.ui.details.WordsetDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanDefinitionDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanDefinitionsDetailDataProvider
+import space.narrate.waylan.android.ui.details.WaylanExampleDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanExamplesDetailDataProvider
 import space.narrate.waylan.android.ui.list.ListViewModel
 import space.narrate.waylan.android.ui.search.ContextualViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
@@ -18,6 +18,8 @@ import space.narrate.waylan.core.details.DetailDataProviderRegistry
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.details.DetailProviderFactory
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.wordset.WordsetDetailDataProvider
+import space.narrate.waylan.wordset.WordsetDetailItemProvider
 
 // Dependent on CoreModule
 val appModule = module {
@@ -46,6 +48,7 @@ val appModule = module {
         ).newInstance() as DetailProviderFactory
     }
 
+    // Use reflection to get an instance of :merriamwebster_thesaurus's DetailProviderFactory.
     single(named("merriamWebsterThesaurusDetailDataProviderFactory")) {
         Class.forName(
             "space.narrate.waylan.merriamwebster_thesaurus.di.MerriamWebsterThesaurusModuleProviderFactory"
@@ -66,7 +69,8 @@ val appModule = module {
             merriamWebsterDetailProviderFactory.getDetailDataProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailDataProvider(),
             WordsetDetailDataProvider(get()),
-            ExampleDetailDataProvider(get())
+            WaylanDefinitionsDetailDataProvider(get()),
+            WaylanExamplesDetailDataProvider(get())
         )
 
         detailDataProviderRegistry
@@ -87,7 +91,8 @@ val appModule = module {
             merriamWebsterDetailProviderFactory.getDetailItemProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),
-            ExamplesDetailItemProvider()
+            WaylanDefinitionDetailItemProvider(),
+            WaylanExampleDetailItemProvider(get())
         )
 
         detailItemFactory

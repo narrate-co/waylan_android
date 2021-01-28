@@ -3,41 +3,41 @@ package space.narrate.waylan.android.ui.details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.DetailsWaylanDefinitionsItemLayoutBinding
 import space.narrate.waylan.android.util.toChip
-import space.narrate.waylan.android.databinding.DetailsWordsetItemLayoutBinding
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.util.inflater
+import space.narrate.waylan.core.R as coreR
 
 /**
- * An item provider which knows how to create a ViewHolder for the [DetailItemType.WORDSET]
+ * An item provider which knows how to create a ViewHolder for the [DetailItemType.DEFINITION]
  * item type
  */
-class WordsetDetailItemProvider : DetailItemProvider {
-    override val itemType: DetailItemType = DetailItemType.WORDSET
+class WaylanDefinitionDetailItemProvider : DetailItemProvider {
+    override val itemType: DetailItemType = DetailItemType.DEFINITION
 
     override fun createViewHolder(
         parent: ViewGroup,
         listener: DetailAdapterListener
     ): DetailItemViewHolder {
-        return WordsetViewHolder(
-            DetailsWordsetItemLayoutBinding.inflate(parent.inflater, parent, false),
+        return WaylanDefinitionViewHolder(
+            DetailsWaylanDefinitionsItemLayoutBinding.inflate(parent.inflater, parent, false),
             listener
         )
     }
 }
 
-class WordsetViewHolder(
-    private val binding: DetailsWordsetItemLayoutBinding,
+class WaylanDefinitionViewHolder(
+    private val binding: DetailsWaylanDefinitionsItemLayoutBinding,
     private val listener: DetailAdapterListener
 ): DetailItemViewHolder(binding.root) {
 
     override fun bind(item: DetailItemModel) {
-        if (item !is WordsetModel) return
+        if (item !is WaylanDefinitionsModel) return
         //remove all views
         binding.run {
             detailsComponentWordsetDefinitionsContainer.removeAllViews()
@@ -73,7 +73,7 @@ class WordsetViewHolder(
         val textView: AppCompatTextView = LayoutInflater.from(
             binding.detailsComponentWordsetDefinitionsContainer.context
         ).inflate(
-            R.layout.details_part_of_speech_layout,
+            coreR.layout.details_part_of_speech_layout,
             binding.detailsComponentWordsetDefinitionsContainer,
             false
         ) as AppCompatTextView
@@ -85,7 +85,7 @@ class WordsetViewHolder(
         val textView: AppCompatTextView = LayoutInflater.from(
             binding.detailsComponentWordsetDefinitionsContainer.context
         ).inflate(
-            R.layout.details_definition_layout,
+            coreR.layout.details_definition_layout,
             binding.detailsComponentWordsetDefinitionsContainer,
             false
         ) as AppCompatTextView

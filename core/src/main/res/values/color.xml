@@ -10,6 +10,7 @@
     <color name="colorIvory50">#F5EBDC</color>
     <color name="colorIvory100">#F1E7D8</color>
     <color name="colorIvory300">#EADFCE</color>
+    <color name="colorIvory400">#E3D9CC</color>
 
     <color name="colorMauve100">#edd1d1</color>
     <color name="colorMauve300">#ce8e8f</color>
@@ -20,6 +21,7 @@
     <color name="colorGray800">#131314</color>
     <color name="colorGray900">#000000</color>
 
+    <color name="colorNavy500">#262633</color>
     <color name="colorNavy600">#262633</color>
     <color name="colorNavy800">#181820</color>
     

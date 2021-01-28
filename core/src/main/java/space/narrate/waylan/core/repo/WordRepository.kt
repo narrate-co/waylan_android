@@ -1,6 +1,8 @@
 package space.narrate.waylan.core.repo
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.firestore.FirebaseFirestoreException
+import java.lang.Exception
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,9 @@ import space.narrate.waylan.core.data.wordset.WordAndMeanings
 import space.narrate.waylan.core.data.wordset.WordsetDatabase
 import space.narrate.waylan.core.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
+import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 
 /**
  * A repository for all data access to all underlying dictionaries, including from WordSet,
@@ -90,6 +95,33 @@ class WordRepository(
         launch {
             firestoreStore.setRecent(id, uid)
         }
+    }
+
+    fun getUserWordExamples(id: String, limit: Long? = null): LiveData<List<UserWordExample>> {
+        return authenticationStore.uid.switchMapTransform {
+            firestoreStore.getUserWordExamplesLive(id, it, limit)
+        }
+    }
+
+    suspend fun updateUserWordExample(
+        id: String,
+        example: UserWordExample,
+    ): Result<UserWordExample> {
+        val uid = authenticationStore.uid.value ?: return Result.Error(Exception("No authorized user"))
+        if (example.id.isEmpty()) { // This is a transfer object to create a new example
+            return firestoreStore.newUserWordExample(uid, id, example)
+        } else { // This is an existing example that should be updated
+            return firestoreStore.setUserWordExample(uid, id, example)
+        }
+    }
+
+    suspend fun deleteUserWordExample(
+        id: String,
+        exampleId: String
+    ): Result<Boolean> {
+        val uid = authenticationStore.uid.value
+            ?: return Result.Error(FirebaseAuthWordsException.NoCurrentUserException)
+        return firestoreStore.deleteUserWordExample(uid, id, exampleId)
     }
 }
 

@@ -70,9 +70,8 @@ class SearchViewModel(
     val shouldOpenContextualSheet: LiveData<Event<Boolean>>
         get() = _shouldOpenContextualSheet
 
-    private val _keyboardHeight: MutableLiveData<Float> = MutableLiveData()
     val keyboardHeight: LiveData<Float>
-        get() = _keyboardHeight
+        get() = _softInputModel.mapTransform { it.height.toFloat() }
 
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
@@ -131,7 +130,6 @@ class SearchViewModel(
 
     fun onSoftInputChanged(model: SoftInputModel) {
         _softInputModel.value = model
-        _keyboardHeight.value = model.height.toFloat()
     }
 
     fun onSearchSheetOffsetChanged(offset: Float) {

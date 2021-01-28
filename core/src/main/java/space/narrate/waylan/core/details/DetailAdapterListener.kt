@@ -1,5 +1,6 @@
 package space.narrate.waylan.core.details
 
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
 import space.narrate.waylan.core.merriamwebster_thesaurus.MerriamWebsterThesaurusCardListener
 

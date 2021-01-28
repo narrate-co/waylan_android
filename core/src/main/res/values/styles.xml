@@ -39,6 +39,21 @@
         <item name="rippleColor">?attr/colorRipple</item>
         <item name="chipBackgroundColor">?attr/colorInformative</item>
         <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
+        <item name="chipIconSize">14dp</item>
+        <item name="iconStartPadding">6dp</item>
+        <item name="iconEndPadding">6dp</item>
+        <item name="chipIconTint">@color/material_on_background_emphasis_medium</item>
+    </style>
+
+    <style name="Widget.Waylan.TextLabel.Area" parent="Widget.Waylan.TextLabel">
+        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body3</item>
+        <item name="android:textColor">?attr/colorOnInformative</item>
+        <item name="android:textSize">12sp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <item name="chipBackgroundColor">@color/area</item>
+        <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
     </style>
 
     <!--Edit Texts-->

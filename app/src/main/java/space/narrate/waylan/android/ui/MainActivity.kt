@@ -1,6 +1,7 @@
 package space.narrate.waylan.android.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
@@ -25,6 +26,7 @@ import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
 import kotlin.math.max
+import space.narrate.waylan.android.util.KeyboardManager
 import space.narrate.waylan.core.ui.ListType
 
 /**
@@ -110,6 +112,12 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         sharedViewModel.orientation.observe(this) {
             setOrientation(it)
         }
+
+        KeyboardManager(this, binding.root)
+            .getKeyboardHeightData()
+            .observe(this) {
+                sharedViewModel.onSoftInputChanged(it)
+            }
 
         binding.floatingNavigationBar.setSelectionCallback(this)
 
@@ -199,7 +207,6 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         // visible
         searchSheetCallback.addOnStateChangedAction { _, newState ->
             setBottomSheetScrimVisibility(newState, contextualSheetCallback.currentState)
-            println("search state = $newState")
         }
 
         contextualSheetCallback.addOnStateChangedAction { _, newState ->
@@ -250,7 +257,6 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         if (sharedViewModel.shouldHideFloatingNavigationBar.value == true) return
         binding.floatingNavigationBar.apply {
             val progress = 1F - max(searchSheetSlide, contextualSheetSlide)
-            println("search/context sheet slide = $progress")
             showHideProgress = progress
         }
     }

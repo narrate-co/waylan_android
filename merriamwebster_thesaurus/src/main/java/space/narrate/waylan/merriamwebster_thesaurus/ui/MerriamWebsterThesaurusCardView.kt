@@ -13,6 +13,7 @@ import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.merriamwebster_thesaurus.MerriamWebsterThesaurusCardListener
 import space.narrate.waylan.core.ui.widget.TextLabelChip
 import space.narrate.waylan.core.ui.widget.configureWithUserAddOn
+import space.narrate.waylan.core.util.getFloat
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.toChip
 import space.narrate.waylan.core.util.visible
@@ -46,9 +47,9 @@ class MerriamWebsterThesaurusCardView @JvmOverloads constructor(
     init {
         val view = View.inflate(context, R.layout.mw_thesaurus_card_layout, this)
         textLabel = view.findViewById(R.id.text_label)
-        listContainer = view.findViewById(R.id.list_container)
+        listContainer = view.findViewById(R.id.definitions_list_container)
         expandCollapseButton = view.findViewById(R.id.expand_collapse_button)
-        background.alpha = (0.8 * 255).toInt()
+        background.alpha = (context.getFloat(coreR.dimen.translucence_01) * 255F).toInt()
         elevation = 0F
 
         // Configure views

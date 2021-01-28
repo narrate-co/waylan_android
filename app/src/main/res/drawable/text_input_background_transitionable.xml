@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--A background that provides states for resting and errored areas. This-->
+<!--"unprotected" version of the input background includes alpha in each-->
+<!--drawable's color values.-->
 <transition xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/text_input_background"/>
     <item android:drawable="@drawable/text_input_background_error"/>

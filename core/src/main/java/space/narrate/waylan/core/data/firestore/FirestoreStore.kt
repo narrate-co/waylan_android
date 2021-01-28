@@ -30,6 +30,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
+import space.narrate.waylan.core.data.firestore.util.userWordExamples
 
 /**
  * The top-most store for access to Firestore data. This class handles CRUD operations
@@ -362,6 +364,7 @@ class FirestoreStore(
         return query.liveData(UserWord::class.java)
     }
 
+
     suspend fun setRecent(id: String, uid: String): Result<UserWord> {
         return updateUserWord(id, uid, true) {
             if (!types.containsKey(UserWordType.RECENT.name) || modified.isMoreThanOneMinuteAgo) {
@@ -394,5 +397,61 @@ class FirestoreStore(
         }
 
         return result
+    }
+
+    fun getUserWordExamplesLive(
+        id: String,
+        uid: String,
+        limit: Long?
+    ): LiveData<List<UserWordExample>> {
+        val query = firestore.userWordExamples(uid, id)
+            .orderBy("modified", Query.Direction.DESCENDING)
+            .limit(limit ?: 25)
+
+        return query.liveData(UserWordExample::class.java)
+    }
+
+    suspend fun newUserWordExample(
+        uid: String,
+        wordId: String,
+        transferObj: UserWordExample
+    ): Result<UserWordExample> {
+        return try {
+            val docRef = firestore.userWords(uid).document()
+            val newExample = UserWordExample(docRef.id)
+            newExample.apply {
+                this.example = transferObj.example
+                this.created = transferObj.created
+                this.modified = transferObj.modified
+                this.visibility = transferObj.visibility
+            }
+            setUserWordExample(uid, wordId, newExample)
+        } catch (e: java.lang.Exception) {
+            Result.Error(e)
+        }
+    }
+
+    suspend fun setUserWordExample(
+        uid: String,
+        wordId: String,
+        example: UserWordExample
+    ): Result<UserWordExample> = suspendCancellableCoroutine { cont ->
+        firestore.userWordExamples(uid, wordId).document(example.id).set(example)
+            .addOnSuccessListener { cont.resume(Result.Success(example)) }
+            .addOnFailureListener { cont.resume(Result.Error(it)) }
+    }
+
+    suspend fun deleteUserWordExample(
+        uid: String,
+        wordId: String,
+        id: String
+    ): Result<Boolean> = suspendCancellableCoroutine { cont ->
+        if (wordId.isEmpty() || id.isEmpty()) {
+            cont.resume(Result.Error(Exception("Example does not exist")))
+        } else {
+            firestore.userWordExamples(uid, wordId).document(id).delete()
+                .addOnSuccessListener { cont.resume(Result.Success(true)) }
+                .addOnFailureListener { cont.resume(Result.Error(it)) }
+        }
     }
 }
