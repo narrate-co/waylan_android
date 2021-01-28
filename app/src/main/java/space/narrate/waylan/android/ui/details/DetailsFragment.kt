@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -85,6 +86,13 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
+        }
+
+        val originalRecyclerViewPadding = binding.recyclerView.paddingBottom
+        sharedViewModel.keyboardHeight.observe(viewLifecycleOwner) {
+            binding.recyclerView.updatePadding(
+                bottom = (originalRecyclerViewPadding + it).toInt()
+            )
         }
 
         // Observe the MainViewModel's currentWord. If this changes, it indicates that a user has

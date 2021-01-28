@@ -33,6 +33,7 @@
                 android:clipToPadding="false"
                 app:paddingBottomAboveSearchSheet="@{true}"/>
 
+
             <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
