@@ -2,8 +2,11 @@ package space.narrate.waylan.android.ui.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import space.narrate.waylan.android.databinding.ListBannerLayoutBinding
+import space.narrate.waylan.android.databinding.ListItemLayoutBinding
 import space.narrate.waylan.core.ui.widget.BannerCardView
 import space.narrate.waylan.core.util.AdapterUtils
+import space.narrate.waylan.core.util.inflater
 
 class ListItemAdapter(
         private val listener: ListItemListener
@@ -34,9 +37,18 @@ class ListItemAdapter(
     ): ListItemViewHolder<ListItemModel> {
         @Suppress("UNCHECKED_CAST")
         return when (viewType) {
-            VIEW_TYPE_HEADER -> ListItemViewHolder.HeaderViewHolder(parent, listener)
-            VIEW_TYPE_USER_WORD -> ListItemViewHolder.UserWordViewHolder(parent, listener)
-            VIEW_TYPE_GLOBAL_WORD -> ListItemViewHolder.GlobalWordViewHolder(parent, listener)
+            VIEW_TYPE_HEADER -> ListItemViewHolder.HeaderViewHolder(
+                ListBannerLayoutBinding.inflate(parent.inflater, parent, false),
+                listener
+            )
+            VIEW_TYPE_USER_WORD -> ListItemViewHolder.UserWordViewHolder(
+                ListItemLayoutBinding.inflate(parent.inflater, parent, false),
+                listener
+            )
+            VIEW_TYPE_GLOBAL_WORD -> ListItemViewHolder.GlobalWordViewHolder(
+                ListItemLayoutBinding.inflate(parent.inflater, parent, false),
+                listener
+            )
             else ->
                 throw IllegalArgumentException("Unsupported viewType being inflated - $viewType")
         } as ListItemViewHolder<ListItemModel>
