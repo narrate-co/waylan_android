@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -44,7 +45,8 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
-        enterTransition = ElasticTransition()
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
     }
 
     override fun onCreateView(

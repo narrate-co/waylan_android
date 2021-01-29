@@ -52,7 +52,7 @@ object Versions {
     const val koin = "2.0.1"
     const val kotlin = "1.4.21"
     const val lifecycle = "2.2.0"
-    const val material = "1.2.0-alpha02"
+    const val material = "1.3.0-rc01"
     const val mockito = "2.27.0"
     const val moshi = "1.9.1"
     const val moshiConverter = "2.6.2"
