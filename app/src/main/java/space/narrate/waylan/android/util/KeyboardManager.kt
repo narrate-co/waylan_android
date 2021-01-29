@@ -82,6 +82,15 @@ class KeyboardManager(
                     handleWindowInsetsAnimationProgress(insets)
                     return insets
                 }
+
+                override fun onEnd(animation: WindowInsetsAnimation) {
+                    super.onEnd(animation)
+                    // If the ime animation has been interrupted by an app exit or other event,
+                    // make sure to update the keyboard height to the end value and avoid getting
+                    // stuck midway through the animation.
+                    val insets = targetView.rootWindowInsets
+                    handleWindowInsetsAnimationProgress(insets)
+                }
             }
             targetView.setWindowInsetsAnimationCallback(cb)
         } else {
@@ -142,7 +151,7 @@ class KeyboardManager(
     @RequiresApi(Build.VERSION_CODES.R)
     private fun handleWindowInsetsAnimationProgress(insets: WindowInsets) {
         val nonImeInsetBottom = insets
-            .getInsets(WindowInsets.Type.systemGestures())
+            .getInsets(WindowInsets.Type.navigationBars())
             .bottom
         val imeInsetBottom = insets.getInsets(WindowInsets.Type.ime()).bottom
         // Subtract any insets that are protecting the navigation area
