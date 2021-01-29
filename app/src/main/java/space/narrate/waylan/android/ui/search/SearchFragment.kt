@@ -19,6 +19,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlin.math.max
 import kotlin.math.roundToInt
 import org.koin.android.ext.android.inject
@@ -127,7 +128,12 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
         viewModel.shouldShowSettings.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
-                val navController = (requireActivity() as MainActivity).findNavController()
+                val mainActivity = (requireActivity() as MainActivity)
+                mainActivity.currentNavigationFragment?.apply {
+                    exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+                    reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+                }
+                val navController = mainActivity.findNavController()
                 navController.navigate(R.id.action_global_settingsFragment)
             }
         }

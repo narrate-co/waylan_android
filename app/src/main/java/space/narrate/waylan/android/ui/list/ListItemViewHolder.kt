@@ -44,6 +44,7 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
 
     override fun bind(item: ListItemModel.UserWordModel) {
       binding.run {
+        itemContainer.transitionName = item.userWord.id
         word.text = item.userWord.word
 
         //Set part of speech
@@ -60,13 +61,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
           val synonym = Synonym(syn.key, OffsetDateTime.now(), OffsetDateTime.now())
           expandedChipGroup.addView(
             synonym.toChip(view.context, expandedChipGroup) {
-              listener.onWordClicked(it.synonym)
+              listener.onWordClicked(it.synonym, binding.root)
             }
           )
         }
 
         itemContainer.setOnClickListener {
-          listener.onWordClicked(item.userWord.word)
+          listener.onWordClicked(item.userWord.word, binding.root)
         }
       }
 
@@ -96,13 +97,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
           val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
           expandedChipGroup.addView(
             synonym.toChip(view.context, expandedChipGroup) {
-              listener.onWordClicked(it.synonym)
+              listener.onWordClicked(it.synonym, binding.root)
             }
           )
         }
 
         itemContainer.setOnClickListener {
-          listener.onWordClicked(item.globalWord.word)
+          listener.onWordClicked(item.globalWord.word, binding.root)
         }
       }
 

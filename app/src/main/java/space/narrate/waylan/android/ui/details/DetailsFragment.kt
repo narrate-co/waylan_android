@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.android.ui.widget.EducationalOverlayView
@@ -22,7 +25,9 @@ import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.util.FastOutUltraSlowIn
 import space.narrate.waylan.core.util.make
+import space.narrate.waylan.core.util.themeColor
 
 /**
  * A Fragment to show all details of a word (as it appears in the dictionary). This Fragment
@@ -51,8 +56,16 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
-        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        val sColor = AppCompatResources.getColorStateList(requireContext(), R.color.scrim).defaultColor
+        val interp = FastOutUltraSlowIn()
+        val drawViewId = R.id.nav_host_fragment
+        val containerColor = requireContext().themeColor(R.attr.colorSurface)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            scrimColor = sColor
+            interpolator = interp
+            drawingViewId = drawViewId
+            setAllContainerColors(containerColor)
+        }
     }
 
     override fun onCreateView(

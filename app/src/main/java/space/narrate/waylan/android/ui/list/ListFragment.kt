@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialSharedAxis
+import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -34,6 +38,8 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
 
     private val navigator: Navigator by inject()
 
+    private val args: ListFragmentArgs by lazy { navArgs<ListFragmentArgs>().value }
+
     // The MainViewModel used to share data between MainActivity and its child Fragments
     private val sharedViewModel: MainViewModel by sharedViewModel()
 
@@ -44,9 +50,9 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postponeEnterTransition()
-        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        val forward = args.transitionForward
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
     }
 
     override fun onCreateView(
@@ -54,6 +60,7 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
         binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -61,12 +68,11 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setListType(navArgs<ListFragmentArgs>().value.listType)
+        viewModel.setListType(args.listType)
 
         setUpList()
 
         // Start enter transition now that things are set up.
-        startPostponedEnterTransition()
     }
 
     private fun setUpList() {
@@ -78,24 +84,30 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
             )
             recyclerView.adapter = adapter
             val itemDivider = ListItemDividerDecoration(
-                ContextCompat.getDrawable(context!!, R.drawable.list_item_divider)
+                ContextCompat.getDrawable(requireContext(), R.drawable.list_item_divider)
             )
             recyclerView.addItemDecoration(itemDivider)
 
-            viewModel.listType.observe(this@ListFragment) { type ->
+            viewModel.listType.observe(this@ListFragment.viewLifecycleOwner) { type ->
                 appBar.title = getString(type.titleRes)
             }
+
+            // Wait for the recycler to draw it's children so they can be found by the shared
+            // element transition
+            recyclerView.doOnNextLayout { startPostponedEnterTransition() }
         }
 
-
-        viewModel.list.observe(this) {
+        viewModel.list.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
     }
 
-    override fun onWordClicked(word: String) {
+    override fun onWordClicked(word: String, view: View) {
+        exitTransition = Hold()
+        reenterTransition = null
         sharedViewModel.onChangeCurrentWord(word)
-        findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
+        val extras = FragmentNavigatorExtras(view to "details_container_transition_group")
+        findNavController().navigate(R.id.action_listFragment_to_detailsFragment, null, null, extras)
     }
 
     override fun onBannerClicked() {

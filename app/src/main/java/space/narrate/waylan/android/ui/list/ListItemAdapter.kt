@@ -1,5 +1,6 @@
 package space.narrate.waylan.android.ui.list
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import space.narrate.waylan.android.databinding.ListBannerLayoutBinding
@@ -20,7 +21,7 @@ class ListItemAdapter(
          * dictionary, or when an item's inner view is clicked that contains a word, such as a
          * synonym chip, again passing that inner view's [word] as it appears in the dictionary.
          */
-        fun onWordClicked(word: String)
+        fun onWordClicked(word: String, view: View)
     }
 
     override fun getItemViewType(position: Int): Int {

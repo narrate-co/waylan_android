@@ -15,6 +15,10 @@
             android:name="listType"
             app:argType="space.narrate.waylan.core.ui.ListType"
             android:defaultValue="RECENT"/>
+        <argument
+            android:name="transitionForward"
+            app:argType="boolean"
+            android:defaultValue="true"/>
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"

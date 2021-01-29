@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
@@ -65,6 +67,13 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     // MainActivity's ViewModel which is also used by its child Fragments to share data
     private val sharedViewModel: MainViewModel by viewModel()
+
+    // Get the current fragment hosted by the navigation component
+    val currentNavigationFragment: Fragment?
+        get() = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+            ?.childFragmentManager
+            ?.fragments
+            ?.firstOrNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
@@ -152,6 +161,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
     }
 
     fun findNavController(): NavController = findNavController(R.id.nav_host_fragment)
+
 
     /**
      * This method expects to receive all back events from all child Fragments and back
@@ -265,7 +275,12 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         requestedOrientation = orientation.value
     }
 
-    override fun onSelectionChanged(itemId: Int, index: Int) {
+    override fun onSelectionChanged(itemId: Int, oldIndex: Int, newIndex: Int) {
+        val forward = oldIndex <= newIndex
+        currentNavigationFragment?.apply {
+            enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
+            exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
+        }
         val listType = when (itemId) {
             R.id.menu_trending -> ListType.TRENDING
             R.id.menu_recent -> ListType.RECENT
@@ -273,7 +288,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
             else -> return
         }
         findNavController().navigate(
-            ListFragmentDirections.actionGlobalListFragment(listType)
+            ListFragmentDirections.actionGlobalListFragment(listType, forward)
         )
     }
 }

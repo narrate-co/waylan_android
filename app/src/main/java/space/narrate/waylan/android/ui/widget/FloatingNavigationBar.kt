@@ -37,7 +37,7 @@ class FloatingNavigationBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
   interface SelectionCallback {
-    fun onSelectionChanged(itemId: Int, index: Int)
+    fun onSelectionChanged(itemId: Int, oldIndex: Int, newIndex: Int)
   }
 
   private val backgroundShapeDrawable: MaterialShapeDrawable
@@ -51,9 +51,10 @@ class FloatingNavigationBar @JvmOverloads constructor(
     set(value) {
       // TODO: Maybe exit early when the field == value and this isn't the initial ping
       if (value !in 0 until childCount) return
+      val oldValue = field
 
       field = value
-      callback?.onSelectionChanged(menu?.get(value)?.itemId ?: -1, value)
+      callback?.onSelectionChanged(menu?.get(value)?.itemId ?: -1, oldValue, value)
       children.forEachIndexed { i, v ->
         if (v is TextView) {
           if (i == value) {
