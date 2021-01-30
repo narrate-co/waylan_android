@@ -14,6 +14,7 @@ interface Navigator : ReachabilityAppBarLayout.ReachableContinuityNavigator {
         ICON, DRAG
     }
 
+
     val currentDestination: LiveData<Destination>
     val shouldNavigateBack: LiveData<Event<Boolean>>
 

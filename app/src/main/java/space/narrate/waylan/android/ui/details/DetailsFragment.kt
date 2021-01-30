@@ -9,6 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
@@ -23,8 +24,8 @@ import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.FastOutUltraSlowIn
 import space.narrate.waylan.core.util.make
 import space.narrate.waylan.core.util.themeColor
@@ -39,6 +40,8 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
     private lateinit var binding: FragmentDetailsBinding
 
     private val navigator: Navigator by inject()
+
+    private val args: DetailsFragmentArgs by lazy { navArgs<DetailsFragmentArgs>().value }
 
     // The MainViewModel which is used to for data shared between MainActivity and
     // its child fragments (HomeFragment, ListFragment and DetailsFragment)
@@ -56,16 +59,7 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sColor = AppCompatResources.getColorStateList(requireContext(), R.color.scrim).defaultColor
-        val interp = FastOutUltraSlowIn()
-        val drawViewId = R.id.nav_host_fragment
-        val containerColor = requireContext().themeColor(R.attr.colorSurface)
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            scrimColor = sColor
-            interpolator = interp
-            drawingViewId = drawViewId
-            setAllContainerColors(containerColor)
-        }
+        setUpTransitions(args.transitionType)
     }
 
     override fun onCreateView(
@@ -146,6 +140,29 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
         // Start enter transition now that things are set up.
         startPostponedEnterTransition()
+    }
+
+    private fun setUpTransitions(type: TransitionType) {
+        when (type) {
+            TransitionType.CONTAINER_TRANSFORM -> {
+                sharedElementEnterTransition = MaterialContainerTransform().apply {
+                    scrimColor = AppCompatResources.getColorStateList(
+                        requireContext(),
+                        R.color.scrim
+                    ).defaultColor
+                    interpolator = FastOutUltraSlowIn()
+                    drawingViewId = R.id.nav_host_fragment
+                    setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+                }
+            }
+            TransitionType.SHARED_AXIS_Y -> {
+                enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+                returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+
+                exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+                reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+            }
+        }
     }
 
     override fun onMwRelatedWordClicked(word: String) {

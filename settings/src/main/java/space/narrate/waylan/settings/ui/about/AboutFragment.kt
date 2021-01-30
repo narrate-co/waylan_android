@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.settings.BuildConfig
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentAboutBinding

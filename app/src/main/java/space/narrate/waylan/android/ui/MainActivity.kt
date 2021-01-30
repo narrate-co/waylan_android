@@ -1,7 +1,6 @@
 package space.narrate.waylan.android.ui
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,26 +9,27 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlin.math.max
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.ui.list.ListFragmentDirections
-import space.narrate.waylan.android.util.BottomSheetCallbackCollection
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
 import space.narrate.waylan.android.ui.widget.FloatingNavigationBar
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
+import space.narrate.waylan.android.util.KeyboardManager
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideSoftKeyboard
 import space.narrate.waylan.core.util.visible
-import kotlin.math.max
-import space.narrate.waylan.android.util.KeyboardManager
-import space.narrate.waylan.core.ui.ListType
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -70,10 +70,13 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     // Get the current fragment hosted by the navigation component
     val currentNavigationFragment: Fragment?
-        get() = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-            ?.childFragmentManager
-            ?.fragments
-            ?.firstOrNull()
+        get() {
+            if (isFinishing) return null
+            return supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                ?.childFragmentManager
+                ?.fragments
+                ?.firstOrNull()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
@@ -263,7 +266,10 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         binding.bottomSheetScrim.alpha = max(searchSheetSlide, contextualSheetSlide)
     }
 
-    private fun setFloatingNavigationBarVisibility(searchSheetSlide: Float, contextualSheetSlide: Float) {
+    private fun setFloatingNavigationBarVisibility(
+        searchSheetSlide: Float,
+        contextualSheetSlide: Float
+    ) {
         if (sharedViewModel.shouldHideFloatingNavigationBar.value == true) return
         binding.floatingNavigationBar.apply {
             val progress = 1F - max(searchSheetSlide, contextualSheetSlide)
@@ -277,9 +283,9 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     override fun onSelectionChanged(itemId: Int, oldIndex: Int, newIndex: Int) {
         val forward = oldIndex <= newIndex
-        currentNavigationFragment?.apply {
-            enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
-            exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
+        val transitionType = if (oldIndex == 0 && newIndex == 0) TransitionType.NONE else TransitionType.SHARED_AXIS_X
+        (currentNavigationFragment as? ListFragment)?.apply {
+            setUpTransitions(transitionType, forward)
         }
         val listType = when (itemId) {
             R.id.menu_trending -> ListType.TRENDING
@@ -288,7 +294,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
             else -> return
         }
         findNavController().navigate(
-            ListFragmentDirections.actionGlobalListFragment(listType, forward)
+            ListFragmentDirections.actionGlobalListFragment(listType, transitionType, forward)
         )
     }
 }

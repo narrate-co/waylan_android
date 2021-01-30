@@ -23,7 +23,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentListBinding
 import space.narrate.waylan.android.ui.MainViewModel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ElasticTransition
+import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 
 /**
@@ -51,8 +51,8 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val forward = args.transitionForward
-        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
-        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, forward)
+        val transitionType = args.transitionType
+        setUpTransitions(transitionType, forward)
     }
 
     override fun onCreateView(
@@ -73,6 +73,23 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
         setUpList()
 
         // Start enter transition now that things are set up.
+    }
+
+    fun setUpTransitions(type: TransitionType, forward: Boolean) {
+        when (type) {
+            TransitionType.SHARED_AXIS_X, TransitionType.SHARED_AXIS_Y -> {
+                val axis = if (type == TransitionType.SHARED_AXIS_X) {
+                    MaterialSharedAxis.X
+                } else {
+                    MaterialSharedAxis.Y
+                }
+                enterTransition = MaterialSharedAxis(axis, forward)
+                returnTransition = MaterialSharedAxis(axis, !forward)
+
+                exitTransition = MaterialSharedAxis(axis, forward)
+                reenterTransition = MaterialSharedAxis(axis, !forward)
+            }
+        }
     }
 
     private fun setUpList() {

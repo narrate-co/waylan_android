@@ -11,10 +11,17 @@
             android:id="@+id/action_listFragment_to_detailsFragment"
             app:destination="@id/detailsFragment"
             app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_listFragment_to_settingsFragment"
+            app:destination="@+id/settingsFragment"/>
         <argument
             android:name="listType"
             app:argType="space.narrate.waylan.core.ui.ListType"
             android:defaultValue="RECENT"/>
+        <argument
+            android:name="transitionType"
+            app:argType="space.narrate.waylan.core.ui.TransitionType"
+            android:defaultValue="NONE"/>
         <argument
             android:name="transitionForward"
             app:argType="boolean"
@@ -30,6 +37,10 @@
         <action
             android:id="@+id/action_detailsFragment_to_addOnsFragment"
             app:destination="@id/addOnsFragment" />
+        <argument
+            android:name="transitionType"
+            app:argType="space.narrate.waylan.core.ui.TransitionType"
+            android:defaultValue="CONTAINER_TRANSFORM"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

@@ -29,11 +29,15 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentSearchBinding
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.ui.details.DetailsFragmentArgs
+import space.narrate.waylan.android.ui.details.DetailsFragmentDirections
+import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.util.collapse
 import space.narrate.waylan.android.util.expand
 import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.fadeThroughTransition
@@ -119,9 +123,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         viewModel.shouldShowDetails.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 sharedViewModel.onChangeCurrentWord(it)
-                val navController = (requireActivity() as MainActivity).findNavController()
+                val mainActivity = (requireActivity() as MainActivity)
+                val navController = mainActivity.findNavController()
                 if (navController.currentDestination?.id != R.id.detailsFragment) {
-                    navController.navigate(R.id.action_global_detailsFragment)
+                    (mainActivity.currentNavigationFragment as? ListFragment)?.apply {
+                        setUpTransitions(TransitionType.SHARED_AXIS_Y, true)
+                    }
+                    navController.navigate(DetailsFragmentDirections.actionGlobalDetailsFragment(
+                        TransitionType.SHARED_AXIS_Y
+                    ))
                 }
             }
         }
@@ -134,7 +144,8 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                     reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
                 }
                 val navController = mainActivity.findNavController()
-                navController.navigate(R.id.action_global_settingsFragment)
+                // Navigating to settings should only ever be available when on the list fragment.
+                navController.navigate(R.id.action_listFragment_to_settingsFragment)
             }
         }
 

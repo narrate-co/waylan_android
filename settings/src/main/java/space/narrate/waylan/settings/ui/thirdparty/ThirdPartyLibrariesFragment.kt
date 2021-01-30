@@ -11,7 +11,6 @@ import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 import space.narrate.waylan.core.util.launchWebsite
 import space.narrate.waylan.settings.R

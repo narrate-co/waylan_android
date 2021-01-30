@@ -12,7 +12,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.billing.BillingConfig
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.make
 import space.narrate.waylan.settings.R
 import space.narrate.waylan.settings.databinding.FragmentDeveloperSettingsBinding
