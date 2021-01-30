@@ -8,7 +8,6 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.transition.MaterialSharedAxis
 import kotlin.math.max
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,7 +27,7 @@ import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.gone
-import space.narrate.waylan.core.util.hideSoftKeyboard
+import space.narrate.waylan.core.util.hideIme
 import space.narrate.waylan.core.util.visible
 
 /**
@@ -231,7 +230,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
             if (newState == BottomSheetBehavior.STATE_COLLAPSED ||
                     newState == BottomSheetBehavior.STATE_HIDDEN) {
                 //make sure keyboard is down
-                hideSoftKeyboard()
+                hideIme()
             }
         }
 

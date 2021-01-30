@@ -25,13 +25,7 @@ infix fun <T> Collection<T>.contentEquals(collection: Collection<T>?): Boolean
 val <T> Stack<T>?.peekOrNull: T?
     get() = if (this == null || isEmpty()) null else peek()
 
-fun Activity.hideSoftKeyboard() {
-    val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+fun Activity.hideIme() {
     val view = currentFocus ?: View(this)
-    im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
-}
-
-fun Activity.showSoftKeyboard(view: View) {
-    val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    im.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    view.hideIme()
 }

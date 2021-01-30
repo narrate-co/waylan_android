@@ -15,7 +15,9 @@ import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.hideIme
 import space.narrate.waylan.core.util.inflater
+import space.narrate.waylan.core.util.showIme
 import space.narrate.waylan.core.util.visible
 
 /**
@@ -80,6 +82,20 @@ class WaylanExampleViewHolder(
                 // TODO: Seed example visibility label
             } else {
                 binding.entryEditTextView.gone()
+            }
+        }
+
+        viewModel.shouldFocusEditor.observe(this) { event ->
+            event.withUnhandledContent {
+                // request focus and show keyboard
+                if (it) binding.entryEditTextView.requestFocusForEditor()
+                binding.entryEditTextView.getEditableView().showIme()
+            }
+        }
+
+        viewModel.shouldCloseKeyboard.observe(this) { event ->
+            event.withUnhandledContent {
+                if (it) binding.entryEditTextView.getEditableView().hideIme()
             }
         }
 
