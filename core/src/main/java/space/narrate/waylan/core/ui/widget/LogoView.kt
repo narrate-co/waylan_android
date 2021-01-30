@@ -11,10 +11,12 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.scale
 import space.narrate.waylan.core.R
 import kotlin.math.min
+import space.narrate.waylan.core.util.themeColor
 
 class LogoView @JvmOverloads constructor(
   context: Context,
@@ -50,7 +52,10 @@ class LogoView @JvmOverloads constructor(
   }
 
   private val fgPaint = Paint().apply {
-    color = Color.BLACK
+    color = AppCompatResources.getColorStateList(
+      context,
+      R.color.material_on_surface_emphasis_high_type
+    ).defaultColor
     style = Paint.Style.FILL
     textAlign = Paint.Align.RIGHT
     typeface = semiboldTypeface

@@ -11,6 +11,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.Hold
@@ -109,6 +110,7 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
                 false
             )
             recyclerView.adapter = adapter
+            recyclerView.itemAnimator = DefaultItemAnimator()
             val itemDivider = ListItemDividerDecoration(
                 ContextCompat.getDrawable(requireContext(), R.drawable.list_item_divider)
             )
