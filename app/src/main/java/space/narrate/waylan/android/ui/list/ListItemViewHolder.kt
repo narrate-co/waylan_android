@@ -61,13 +61,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
           val synonym = Synonym(syn.key, OffsetDateTime.now(), OffsetDateTime.now())
           expandedChipGroup.addView(
             synonym.toChip(view.context, expandedChipGroup) {
-              listener.onWordClicked(it.synonym, binding.root)
+              listener.onWordClicked(it.synonym, binding.root, false)
             }
           )
         }
 
         itemContainer.setOnClickListener {
-          listener.onWordClicked(item.userWord.word, binding.root)
+          listener.onWordClicked(item.userWord.word, binding.root, true)
         }
       }
 
@@ -97,13 +97,13 @@ sealed class ListItemViewHolder<T : ListItemModel>(val view: View): RecyclerView
           val synonym = Synonym(it.key, OffsetDateTime.now(), OffsetDateTime.now())
           expandedChipGroup.addView(
             synonym.toChip(view.context, expandedChipGroup) {
-              listener.onWordClicked(it.synonym, binding.root)
+              listener.onWordClicked(it.synonym, binding.root, false)
             }
           )
         }
 
         itemContainer.setOnClickListener {
-          listener.onWordClicked(item.globalWord.word, binding.root)
+          listener.onWordClicked(item.globalWord.word, binding.root, true)
         }
       }
 

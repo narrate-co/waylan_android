@@ -283,7 +283,11 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     override fun onSelectionChanged(itemId: Int, oldIndex: Int, newIndex: Int) {
         val forward = oldIndex <= newIndex
-        val transitionType = if (oldIndex == 0 && newIndex == 0) TransitionType.NONE else TransitionType.SHARED_AXIS_X
+        val transitionType = if (oldIndex == 0 && newIndex == 0) {
+            TransitionType.NONE
+        } else {
+            TransitionType.SHARED_AXIS_X
+        }
         (currentNavigationFragment as? ListFragment)?.apply {
             setUpTransitions(transitionType, forward)
         }

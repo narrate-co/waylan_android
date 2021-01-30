@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
@@ -21,7 +22,9 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentListBinding
+import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.ui.details.DetailsFragmentDirections
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
@@ -89,6 +92,12 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
                 exitTransition = MaterialSharedAxis(axis, forward)
                 reenterTransition = MaterialSharedAxis(axis, !forward)
             }
+          TransitionType.FADE_THROUGH -> {
+              enterTransition = MaterialFadeThrough()
+              returnTransition = MaterialFadeThrough()
+              exitTransition = MaterialFadeThrough()
+              reenterTransition = MaterialFadeThrough()
+          }
         }
     }
 
@@ -119,12 +128,28 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
         }
     }
 
-    override fun onWordClicked(word: String, view: View) {
+    override fun onWordClicked(word: String, view: View, useSharedElement: Boolean) {
         exitTransition = Hold()
         reenterTransition = null
         sharedViewModel.onChangeCurrentWord(word)
-        val extras = FragmentNavigatorExtras(view to "details_container_transition_group")
-        findNavController().navigate(R.id.action_listFragment_to_detailsFragment, null, null, extras)
+        if (useSharedElement) {
+            val extras = FragmentNavigatorExtras(view to "details_container_transition_group")
+            findNavController().navigate(
+                R.id.action_listFragment_to_detailsFragment,
+                null,
+                null,
+                extras
+            )
+        } else {
+            val mainActivity = (requireActivity() as MainActivity)
+            (mainActivity.currentNavigationFragment as? ListFragment)?.apply {
+                setUpTransitions(TransitionType.SHARED_AXIS_Y, true)
+            }
+            findNavController().navigate(
+                DetailsFragmentDirections.actionGlobalDetailsFragment(TransitionType.SHARED_AXIS_Y)
+            )
+        }
+
     }
 
     override fun onBannerClicked() {

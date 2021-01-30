@@ -20,8 +20,15 @@ class ListItemAdapter(
          * Called when an item is clicked, passing that item's [word] as it appears in the
          * dictionary, or when an item's inner view is clicked that contains a word, such as a
          * synonym chip, again passing that inner view's [word] as it appears in the dictionary.
+         *
+         * @param word The string of the word that was clicked on
+         * @param view The container view of the list item that was clicked
+         * @param useSharedElement Whether or not there should be a shared element transition
+         *  between the [view] and the word's details page. This will be false if a synonym or other
+         *  minor element of the container was clicked and doesn't have enough content to warrant
+         *  a shared element transition.
          */
-        fun onWordClicked(word: String, view: View)
+        fun onWordClicked(word: String, view: View, useSharedElement: Boolean)
     }
 
     override fun getItemViewType(position: Int): Int {
