@@ -13,6 +13,7 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.common.Event
 
 class WaylanExamplesDetailViewModel(
   private val wordRepository: WordRepository
@@ -30,6 +31,10 @@ class WaylanExamplesDetailViewModel(
   val shouldShowEditor: LiveData<UserWordExample?>
     get() = _shouldShowEditor
 
+  private val _shouldFocusEditor: MutableLiveData<Event<Boolean>> = MutableLiveData()
+  val shouldFocusEditor: LiveData<Event<Boolean>>
+    get() = _shouldFocusEditor
+
   private val _shouldShowEditorError: MutableLiveData<String?> = MutableLiveData()
   val shouldShowEditorError: LiveData<String?>
     get() = _shouldShowEditorError
@@ -45,6 +50,10 @@ class WaylanExamplesDetailViewModel(
   private val _shouldShowDestructiveButton: MutableLiveData<Boolean> = MutableLiveData()
   val shouldShowDestructiveButton: LiveData<Boolean>
     get() = _shouldShowDestructiveButton
+
+  private val _shouldCloseKeyboard: MutableLiveData<Event<Boolean>> = MutableLiveData()
+  val shouldCloseKeyboard: LiveData<Event<Boolean>>
+    get() = _shouldCloseKeyboard
 
   fun setData(data: WaylanExamplesModel) {
     if (this.data?.isSameAs(data) == true && this.data?.isContentSameAs(data) == true) return
@@ -82,12 +91,14 @@ class WaylanExamplesDetailViewModel(
     // Set editor to visible
     exampleUnderEdit = example
     _shouldShowEditor.value = exampleUnderEdit
+    _shouldFocusEditor.value = Event(true)
     _shouldShowDestructiveButton.value = example.id.isNotEmpty()
     updateShouldShowMessage()
   }
 
   fun onPositiveEditorButtonClicked() = viewModelScope.launch {
     _showLoading.value = true
+    _shouldCloseKeyboard.value = Event(true)
     // Set the current word
     val example = exampleUnderEdit
     val data = data
@@ -111,6 +122,7 @@ class WaylanExamplesDetailViewModel(
   fun onNegativeEditorButtonClicked() {
     // Close editor
     _shouldShowEditor.value = null
+    _shouldCloseKeyboard.value = Event(true)
     exampleUnderEdit = null
     // Restore all examples to the list if any were removed during editing.
     _examples.value = this.data?.examples ?: emptyList()
@@ -119,6 +131,7 @@ class WaylanExamplesDetailViewModel(
   }
 
   fun onDestructiveEditorButtonClicked() = GlobalScope.launch {
+    _shouldCloseKeyboard.value = Event(true)
     val data = data
     val example = exampleUnderEdit
     if (data != null && example != null) {

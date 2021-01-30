@@ -12,6 +12,8 @@
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionGroup="true"
+            android:transitionName="details_container_transition_group"
             android:backgroundTint="?android:windowBackground"
             app:paddingLeftSystemWindowInsets="@{true}"
             app:paddingTopSystemWindowInsets="@{true}"

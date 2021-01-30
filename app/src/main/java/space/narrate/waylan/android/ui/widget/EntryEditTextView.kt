@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.TransitionDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import space.narrate.waylan.android.databinding.EntryEditTextLayoutBinding
@@ -16,7 +17,7 @@ class EntryEditTextView @JvmOverloads constructor(
   defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-  val binding: EntryEditTextLayoutBinding =
+  private val binding: EntryEditTextLayoutBinding =
     EntryEditTextLayoutBinding.inflate(LayoutInflater.from(context), this)
 
   fun setOnPositiveButtonClickListener(onClick: OnClickListener) {
@@ -71,4 +72,9 @@ class EntryEditTextView @JvmOverloads constructor(
     }
   }
 
+  fun requestFocusForEditor() {
+    binding.editableTextView.requestFocus()
+  }
+
+  fun getEditableView(): EditText = binding.editableTextView
 }

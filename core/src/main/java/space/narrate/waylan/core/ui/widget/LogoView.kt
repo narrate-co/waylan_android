@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Shader
@@ -13,8 +12,9 @@ import android.util.TypedValue
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.scale
-import space.narrate.waylan.core.R
 import kotlin.math.min
+import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.themeColor
 
 class LogoView @JvmOverloads constructor(
   context: Context,
@@ -50,7 +50,7 @@ class LogoView @JvmOverloads constructor(
   }
 
   private val fgPaint = Paint().apply {
-    color = Color.BLACK
+    color = context.themeColor(R.attr.colorSecondary)
     style = Paint.Style.FILL
     textAlign = Paint.Align.RIGHT
     typeface = semiboldTypeface

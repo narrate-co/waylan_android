@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.ui.widget.ElasticTransition
 import space.narrate.waylan.core.util.configError
 import space.narrate.waylan.core.util.launchEmail
 import space.narrate.waylan.settings.BuildConfig
@@ -46,7 +46,11 @@ class SettingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
-        enterTransition = ElasticTransition()
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
     }
 
     override fun onCreateView(
@@ -61,11 +65,11 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.shouldLaunchLogIn.observe(this) { event ->
+        viewModel.shouldLaunchLogIn.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { navigator.toLogIn(requireContext()) }
         }
 
-        viewModel.shouldLaunchSignUp.observe(this) { event ->
+        viewModel.shouldLaunchSignUp.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { navigator.toSignUp(requireContext()) }
         }
 
@@ -94,7 +98,7 @@ class SettingsFragment : Fragment() {
 
             // Sign out preference
             logInSignOutPreference.setOnClickListener { viewModel.onSignOutClicked() }
-            viewModel.logInSignOut.observe(this@SettingsFragment) { model ->
+            viewModel.logInSignOut.observe(this@SettingsFragment.viewLifecycleOwner) { model ->
                 logInSignOutPreference.setTitle(getString(model.titleRes))
                 logInSignOutPreference.setDesc(model.getDesc(requireContext()))
             }
@@ -135,11 +139,11 @@ class SettingsFragment : Fragment() {
     private fun setUpNightMode() {
         binding.nightModePreference.setOnClickListener { viewModel.onNightModePreferenceClicked() }
 
-        viewModel.nightMode.observe(this) { mode ->
+        viewModel.nightMode.observe(viewLifecycleOwner) { mode ->
             binding.nightModePreference.setDesc(getString(mode.titleRes))
         }
 
-        viewModel.shouldShowNightModeDialog.observe(this) { event ->
+        viewModel.shouldShowNightModeDialog.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { showNightModeDialog(it) }
         }
     }
@@ -147,11 +151,11 @@ class SettingsFragment : Fragment() {
     private fun setUpOrientation() {
         binding.orientationPreference.setOnClickListener { viewModel.onOrientationPreferenceClicked() }
 
-        viewModel.orientation.observe(this) {
+        viewModel.orientation.observe(viewLifecycleOwner) {
             binding.orientationPreference.setDesc(getString(it.title))
         }
 
-        viewModel.shouldShowOrientationDialog.observe(this) { event ->
+        viewModel.shouldShowOrientationDialog.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { showOrientationDialog(it) }
         }
     }

@@ -19,6 +19,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlin.math.max
 import kotlin.math.roundToInt
 import org.koin.android.ext.android.inject
@@ -28,16 +29,19 @@ import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentSearchBinding
 import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
+import space.narrate.waylan.android.ui.details.DetailsFragmentDirections
+import space.narrate.waylan.android.ui.list.ListFragment
 import space.narrate.waylan.android.util.collapse
 import space.narrate.waylan.android.util.expand
 import space.narrate.waylan.android.util.hide
 import space.narrate.waylan.core.data.prefs.RotationManager
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
 import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.fadeThroughTransition
-import space.narrate.waylan.core.util.hideSoftKeyboard
-import space.narrate.waylan.core.util.showSoftKeyboard
+import space.narrate.waylan.core.util.hideIme
+import space.narrate.waylan.core.util.showIme
 import space.narrate.waylan.core.util.themeColor
 
 /**
@@ -118,17 +122,29 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         viewModel.shouldShowDetails.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 sharedViewModel.onChangeCurrentWord(it)
-                val navController = (requireActivity() as MainActivity).findNavController()
+                val mainActivity = (requireActivity() as MainActivity)
+                val navController = mainActivity.findNavController()
                 if (navController.currentDestination?.id != R.id.detailsFragment) {
-                    navController.navigate(R.id.action_global_detailsFragment)
+                    (mainActivity.currentNavigationFragment as? ListFragment)?.apply {
+                        setUpTransitions(TransitionType.SHARED_AXIS_Y, true)
+                    }
+                    navController.navigate(DetailsFragmentDirections.actionGlobalDetailsFragment(
+                        TransitionType.SHARED_AXIS_Y
+                    ))
                 }
             }
         }
 
         viewModel.shouldShowSettings.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
-                val navController = (requireActivity() as MainActivity).findNavController()
-                navController.navigate(R.id.action_global_settingsFragment)
+                val mainActivity = (requireActivity() as MainActivity)
+                mainActivity.currentNavigationFragment?.apply {
+                    exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
+                    reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+                }
+                val navController = mainActivity.findNavController()
+                // Navigating to settings should only ever be available when on the list fragment.
+                navController.navigate(R.id.action_listFragment_to_settingsFragment)
             }
         }
 
@@ -142,7 +158,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
 
         viewModel.shouldCloseKeyboard.observe(viewLifecycleOwner) {
-            requireActivity().hideSoftKeyboard()
+            requireActivity().hideIme()
         }
 
         viewModel.shouldCloseSheet.observe(viewLifecycleOwner) {
@@ -252,7 +268,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         // This avoids the need to expand the search sheet to the full height of the display
         // and moving results out of "thumb reach"
         binding.recyclerView.setOnTouchListener { _, _ ->
-            requireActivity().hideSoftKeyboard()
+            requireActivity().hideIme()
             false
         }
 
@@ -349,7 +365,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     private fun focusAndOpenSearch() {
         bottomSheetBehavior.expand()
         binding.searchEditText.requestFocus()
-        requireActivity().showSoftKeyboard(binding.searchEditText)
+        binding.searchEditText.showIme()
     }
 
     /**

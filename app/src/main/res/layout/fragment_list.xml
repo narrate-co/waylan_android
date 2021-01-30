@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         android:id="@+id/coordinator_layout"
         android:backgroundTint="?android:windowBackground"
+        android:transitionGroup="true"
         app:paddingLeftSystemWindowInsets="@{true}"
         app:paddingTopSystemWindowInsets="@{true}"
         app:paddingRightSystemWindowInsets="@{true}">

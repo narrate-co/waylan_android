@@ -4,13 +4,18 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
@@ -98,4 +103,19 @@ fun ViewGroup.findFirstDescendantOrNull(predicate: (v: View) -> Boolean): View? 
     }
 
     return null
+}
+
+fun View.hideIme() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        windowInsetsController?.hide(WindowInsets.Type.ime())
+    } else {
+        val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = (context as? Activity)?.currentFocus ?: this
+        im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
+    }
+}
+
+fun View.showIme() {
+    val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    im.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
