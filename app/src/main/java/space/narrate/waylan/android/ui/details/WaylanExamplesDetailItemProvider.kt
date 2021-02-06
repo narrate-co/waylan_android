@@ -1,8 +1,11 @@
 package space.narrate.waylan.android.ui.details
 
+import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
+import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import space.narrate.waylan.android.databinding.DetailsWaylanExamplesItemLayoutBinding
@@ -14,6 +17,7 @@ import space.narrate.waylan.core.details.DetailItemProvider
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideIme
 import space.narrate.waylan.core.util.inflater
@@ -74,11 +78,40 @@ class WaylanExampleViewHolder(
 
         // Watch for when the editor should be shown
         viewModel.shouldShowEditor.observe(this) {
-            val transition = ChangeBounds()
-            TransitionManager.beginDelayedTransition(binding.root, transition)
             if (it != null) {
-                binding.entryEditTextView.visible()
-                binding.entryEditTextView.setText(it.example)
+              binding.entryEditTextView.setText(it.example)
+              binding.entryEditTextView.visible()
+              binding.entryEditTextView.doOnPreDraw { v ->
+                val height = v.height
+
+                ValueAnimator.ofFloat(0F, 1F).apply {
+                  addUpdateListener {
+                    val progress = animatedValue as Float
+                    binding.entryEditTextView.apply {
+                      val params = layoutParams
+                      val heightProgress = MathUtils.normalize(
+                        progress,
+                        0F,
+                        .6F,
+                        0F,
+                        1F
+                      )
+                      params.height = (heightProgress * height).toInt()
+                      layoutParams = params
+                      alpha = MathUtils.normalize(
+                        progress,
+                        0.6F,
+                        1F,
+                        0F,
+                        1F
+                      )
+                    }
+                  }
+                  duration = 200L
+                  start()
+                }
+              }
+
                 // TODO: Seed example visibility label
             } else {
                 binding.entryEditTextView.gone()
