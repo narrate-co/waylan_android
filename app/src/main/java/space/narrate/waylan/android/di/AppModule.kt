@@ -55,6 +55,13 @@ val appModule = module {
         ).newInstance() as DetailProviderFactory
     }
 
+    // Use reflection to get an instance of :americanheritage's DetailProviderFactory.
+    single(named("americanHeritageDetailProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.americanheritage.di.AmericanHeritageModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
     // DetailDataProviderRegistry
     single {
         val detailDataProviderRegistry = DetailDataProviderRegistry()
@@ -65,9 +72,13 @@ val appModule = module {
         val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
             get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
 
+        val americanHeritageDetailProviderFactory: DetailProviderFactory =
+            get(named("americanHeritageDetailProviderFactory"))
+
         detailDataProviderRegistry.addProviders(
             merriamWebsterDetailProviderFactory.getDetailDataProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailDataProvider(),
+            americanHeritageDetailProviderFactory.getDetailDataProvider(),
             WordsetDetailDataProvider(get()),
             WaylanDefinitionsDetailDataProvider(get()),
             WaylanExamplesDetailDataProvider(get())
@@ -86,10 +97,14 @@ val appModule = module {
         val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
             get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
 
+        val americanHeritageDetailProviderFactory: DetailProviderFactory =
+            get(named("americanHeritageDetailProviderFactory"))
+
         // Add the Merriam-Webster provider to the detailItemFactory
         detailItemFactory.addProviders(
             merriamWebsterDetailProviderFactory.getDetailItemProvider(),
             merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
+            americanHeritageDetailProviderFactory.getDetailItemProvider(),
             WordsetDetailItemProvider(),
             WaylanDefinitionDetailItemProvider(),
             WaylanExampleDetailItemProvider(get())

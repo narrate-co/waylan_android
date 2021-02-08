@@ -6,7 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
- * Merriam-Webster [RetrofitService]
+ * Merriam-Webster [RetrofitService].
  */
 interface MerriamWebsterService {
     @GET("{word}")

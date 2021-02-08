@@ -48,7 +48,7 @@ android {
     }
 
     // Dynamic feature modules
-    dynamicFeatures = [":merriamwebster", ":merriamwebster_thesaurus"]
+    dynamicFeatures = [":merriamwebster", ":merriamwebster_thesaurus", ':americanheritage']
 
     // Compile options
     compileOptions {
@@ -83,6 +83,7 @@ dependencies {
     implementation project(':core')
     implementation project(':settings')
     implementation project(':wordset')
+    implementation project(':wordnik')
 
     // Room
     implementation Libs.roomRuntime

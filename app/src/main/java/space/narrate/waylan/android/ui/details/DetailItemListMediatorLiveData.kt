@@ -26,6 +26,7 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
 
     private var mwModel: DetailItemModel? = null
     private var mwThesaurusModel: DetailItemModel? = null
+    private var americanHeritageModel: DetailItemModel? = null
     private var wordsetModel: DetailItemModel? = null
     private var waylanDefinitionModel: DetailItemModel? = null
     private var waylanExampleModel: DetailItemModel? = null
@@ -61,6 +62,12 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
             DetailItemType.MERRIAM_WEBSTER_THESAURUS -> {
                 if (shouldUpdateList(mwThesaurusModel, item)) {
                     mwThesaurusModel = item
+                    maybeDispatchList()
+                }
+            }
+            DetailItemType.AMERICAN_HERITAGE -> {
+                if (shouldUpdateList(americanHeritageModel, item)) {
+                    americanHeritageModel = item
                     maybeDispatchList()
                 }
             }
@@ -104,6 +111,7 @@ class DetailItemListMediatorLiveData : MediatorLiveData<List<DetailItemModel>>()
         val newList = listOfNotNull(
             mwModel,
             mwThesaurusModel,
+            americanHeritageModel,
             wordsetModel,
             waylanDefinitionModel,
             waylanExampleModel

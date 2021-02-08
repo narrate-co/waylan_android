@@ -12,6 +12,7 @@ dependencies {
     implementation Libs.appCompat
     implementation Libs.coreKtx
     implementation Libs.constraintLayout
+    implementation Libs.lifecycleLiveDataKtx
     implementation Libs.lifecycleLiveDataCore
     implementation Libs.lifecycleExtensions
     kapt Libs.lifecycleCompiler
@@ -23,6 +24,7 @@ dependencies {
     implementation Libs.insetterDbx
 
     // Room
+    implementation Libs.room
     implementation Libs.roomRuntime
     kapt Libs.roomCompiler
 

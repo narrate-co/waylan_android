@@ -6,6 +6,7 @@ import org.koin.core.context.startKoin
 import space.narrate.waylan.android.di.appModule
 import space.narrate.waylan.core.di.coreModule
 import space.narrate.waylan.settings.di.settingsModule
+import space.narrate.waylan.wordnik.data.di.wordnikModule
 
 class App: Application() {
 
@@ -13,7 +14,7 @@ class App: Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(listOf(coreModule, appModule, settingsModule))
+            modules(listOf(coreModule, appModule, settingsModule, wordnikModule))
         }
     }
 }

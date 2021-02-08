@@ -2,7 +2,7 @@
 <space.narrate.waylan.core.ui.widget.DictionaryEntryCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/wordset_card"
+    android:id="@+id/american_heritage_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/keyline_2"

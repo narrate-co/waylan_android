@@ -52,6 +52,7 @@ object Versions {
     const val koin = "2.0.1"
     const val kotlin = "1.4.21"
     const val lifecycle = "2.2.0"
+    const val lifecycle_ext_ktx = "2.3.0-rc01"
     const val material = "1.3.0-rc01"
     const val mockito = "2.27.0"
     const val moshi = "1.9.1"
@@ -61,7 +62,7 @@ object Versions {
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.7.1"
     const val robolectric = "4.3.1"
-    const val room = "2.2.0"
+    const val room = "2.2.6"
     const val testCoreKtx = "1.3.0-alpha03"
     const val testExtKotlinRunner = "1.1.2-alpha03"
     const val testRules = "1.3.0-alpha03"
@@ -133,6 +134,7 @@ object Libs {
 
     // AndroidX
     const val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation-ktx:${Versions.dynamicAnimation}"
+    const val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_ext_ktx}"
     const val lifecycleLiveDataCore = "androidx.lifecycle:lifecycle-livedata-core-ktx:${Versions.lifecycle}"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
@@ -169,6 +171,7 @@ object Libs {
     const val robolectricAnnotations = "org.robolectric:annotations:${Versions.robolectric}"
 
     // Room
+    const val room = "androidx.room:room-ktx:${Versions.room}"
     const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val roomTesting = "androidx.room:room-testing:${Versions.room}"
