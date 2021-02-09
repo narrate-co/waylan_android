@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -53,7 +52,7 @@ class DeveloperSettingsFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDeveloperSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -77,13 +76,13 @@ class DeveloperSettingsFragment : Fragment() {
 
             appBar.setReachableContinuityNavigator(this@DeveloperSettingsFragment, navigator)
 
-            viewModel.shouldShowSnackbar.observe(this@DeveloperSettingsFragment) { event ->
+            viewModel.shouldShowSnackbar.observe(viewLifecycleOwner) { event ->
                 event.withUnhandledContent { it.make(binding.coordinatorLayout).show() }
             }
 
             clearUserPreference.setOnClickListener { viewModel.onClearPreferencesPreferenceClicked() }
 
-            viewModel.isAnonymousUser.observe(this@DeveloperSettingsFragment) {
+            viewModel.isAnonymousUser.observe(viewLifecycleOwner) {
                 isAnonymousUserPreference.setChecked(it)
             }
             isAnonymousUserPreference.setOnClickListener { viewModel.onIsAnonymousUserPreferenceClicked() }
@@ -96,15 +95,23 @@ class DeveloperSettingsFragment : Fragment() {
                 viewModel.onMwThesaurusPreferenceClicked()
             }
 
-            viewModel.mwState.observe(this@DeveloperSettingsFragment) { state ->
+            americanHeritageStatePreference.setOnClickListener {
+                viewModel.onAdhPreferenceClicked()
+            }
+
+            viewModel.mwState.observe(viewLifecycleOwner) { state ->
                 merriamWebsterStatePreference.setDesc(state)
             }
 
-            viewModel.mwThesaurusState.observe(this@DeveloperSettingsFragment) { state ->
+            viewModel.mwThesaurusState.observe(viewLifecycleOwner) { state ->
                 merriamWebsterStateThesaurusPreference.setDesc(state)
             }
 
-            viewModel.useTestSkus.observe(this@DeveloperSettingsFragment) {
+            viewModel.ahdState.observe(viewLifecycleOwner) { state ->
+                americanHeritageStatePreference.setDesc(state)
+            }
+
+            viewModel.useTestSkus.observe(viewLifecycleOwner) {
                 useTestSkusPreference.setChecked(it)
             }
             useTestSkusPreference.setOnClickListener { viewModel.onUseTestSkusPreferenceClicked() }
@@ -112,7 +119,7 @@ class DeveloperSettingsFragment : Fragment() {
             billingResponsePreference.setOnClickListener {
                 viewModel.onBillingResponsePreferenceClicked()
             }
-            viewModel.billingResponse.observe(this@DeveloperSettingsFragment) {
+            viewModel.billingResponse.observe(viewLifecycleOwner) {
                 billingResponsePreference.setDesc(it)
             }
 

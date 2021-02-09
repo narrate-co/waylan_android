@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/keyline_3">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        android:id="@+id/subtitle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:layout_marginStart="@dimen/keyline_3"
+        android:layout_marginEnd="@dimen/keyline_3"
+        android:text="@string/add_ons_american_heritage_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/definitions_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/keyline_3"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceOverline"
+            android:text="adjective"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":quiet, still or inactive"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":characterized by an absence of of upheaval or discord"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":(astrology) having little or no sunspot activity"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":(medicine) asymptomatic"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

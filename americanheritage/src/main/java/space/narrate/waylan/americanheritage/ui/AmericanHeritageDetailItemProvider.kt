@@ -3,11 +3,13 @@ package space.narrate.waylan.americanheritage.ui
 import android.view.ViewGroup
 import java.util.Locale
 import space.narrate.waylan.americanheritage.databinding.AmericanHeritageItemLayoutBinding
+import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemProvider
 import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
+import space.narrate.waylan.core.ui.widget.DictionaryEntryCardView
 import space.narrate.waylan.core.util.inflater
 
 class AmericanHeritageDetailItemProvider : DetailItemProvider {
@@ -28,15 +30,19 @@ class AmericanHeritageDetailItemProvider : DetailItemProvider {
 class AmericanHeritageViewHolder(
   private val binding: AmericanHeritageItemLayoutBinding,
   private val listener: DetailAdapterListener
-) : DetailItemViewHolder(binding.root) {
+) : DetailItemViewHolder(binding.root), DictionaryEntryCardView.PermissionPaneListener {
+
+  init {
+    binding.americanHeritageCard.setPermissionPaneListener(this)
+  }
 
   override fun bind(item: DetailItemModel) {
     if (item !is AmericanHeritageModel) return
 
     binding.run {
       americanHeritageCard.setDictionaryName("American Heritage")
-      // TODO: Set add-on status label
-      americanHeritageCard.setStatusLabel(null)
+      americanHeritageCard.setStatusLabelForUserAddOn(item.userAddOn)
+      americanHeritageCard.setPermission(item.userAddOn)
 
       val partOfSpeechMap = item.definitions
         .groupBy { it.partOfSpeech }
@@ -44,5 +50,13 @@ class AmericanHeritageViewHolder(
         .toMap()
       americanHeritageCard.setDefinitions(partOfSpeechMap)
     }
+  }
+
+  override fun onPermissionDetailsButtonClicked() {
+    listener.onAddOnDetailsClicked(AddOn.AMERICAN_HERITAGE)
+  }
+
+  override fun onPermissionDismissButtonClicked() {
+    listener.onAddOnDismissClicked(AddOn.AMERICAN_HERITAGE)
   }
 }

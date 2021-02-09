@@ -11,6 +11,8 @@ import androidx.core.content.res.use
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.ChipGroup
 import space.narrate.waylan.core.R
+import space.narrate.waylan.core.data.firestore.users.UserAddOn
+import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.databinding.DictionaryEntryCardLayoutBinding
 import space.narrate.waylan.core.util.getFloat
@@ -33,9 +35,15 @@ class DictionaryEntryCardView @JvmOverloads constructor (
     fun onRelatedWordClicked(word: String)
   }
 
+  interface PermissionPaneListener {
+    fun onPermissionDetailsButtonClicked()
+    fun onPermissionDismissButtonClicked()
+  }
+
   private val binding: DictionaryEntryCardLayoutBinding =
     DictionaryEntryCardLayoutBinding.inflate(LayoutInflater.from(context), this)
   private var listener: DictionaryEntryListener? = null
+  private var permissionPaneListener: PermissionPaneListener? = null
 
   init {
     background.alpha = (context.getFloat(R.dimen.translucence_01) * 255F).toInt()
@@ -50,6 +58,11 @@ class DictionaryEntryCardView @JvmOverloads constructor (
       val actionIcon = it.getResourceId(R.styleable.DictionaryEntryCardView_actionIcon, 0)
       setActionIconResource(actionIcon)
     }
+
+    binding.run {
+      detailsButton.setOnClickListener { permissionPaneListener?.onPermissionDetailsButtonClicked() }
+      dismissButton.setOnClickListener { permissionPaneListener?.onPermissionDismissButtonClicked() }
+    }
   }
 
   fun setActionIconResource(resId: Int) {
@@ -60,6 +73,14 @@ class DictionaryEntryCardView @JvmOverloads constructor (
     this.listener = listener
   }
 
+  fun setPermissionPaneListener(listener: PermissionPaneListener?) {
+    this.permissionPaneListener = listener
+  }
+
+  fun setStatusLabelForUserAddOn(userAddOn: UserAddOn?) {
+    binding.textLabel.configureWithUserAddOn(userAddOn)
+  }
+
   fun setStatusLabel(label: String?) {
     if (label == null || label.isEmpty()) {
       binding.textLabel.gone()
@@ -68,6 +89,24 @@ class DictionaryEntryCardView @JvmOverloads constructor (
 
     binding.textLabel.text = label
     binding.textLabel.visible()
+  }
+
+  fun setPermission(userAddOn: UserAddOn?) {
+    binding.run {
+      if (userAddOn?.isValid == false) {
+        // Hide all content and show permission pane
+        permissionPane.visible()
+        definitionsListContainer.gone()
+        examplesListContainer.gone()
+        relatedWordsScrollView.gone()
+      } else {
+        // Hide permission pane and show all content
+        permissionPane.gone()
+        definitionsListContainer.visible()
+        examplesListContainer.visible()
+        relatedWordsScrollView.visible()
+      }
+    }
   }
 
   fun setDictionaryName(name: String) {

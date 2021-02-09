@@ -14,6 +14,10 @@ enum class AddOn(val id: String, val sku: String) {
     MERRIAM_WEBSTER_THESAURUS(
         "merriamwebster_thesaurus",
         BillingConfig.SKU_MERRIAM_WEBSTER_THESAURUS
+    ),
+    AMERICAN_HERITAGE(
+        "americanheritage",
+        BillingConfig.SKU_AMERICAN_HERITAGE
     );
 
     companion object {
@@ -21,6 +25,7 @@ enum class AddOn(val id: String, val sku: String) {
             return when (id) {
                 MERRIAM_WEBSTER.id -> MERRIAM_WEBSTER
                 MERRIAM_WEBSTER_THESAURUS.id -> MERRIAM_WEBSTER_THESAURUS
+                AMERICAN_HERITAGE.id -> AMERICAN_HERITAGE
                 else -> throw IllegalArgumentException("The id '$id' is not a valid AddOn id.")
             }
         }

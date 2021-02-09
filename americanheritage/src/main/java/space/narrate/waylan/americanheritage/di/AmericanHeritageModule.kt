@@ -9,7 +9,7 @@ val americanHeritageModule = module {
 
   single { AmericanHeritageRepository(get()) }
 
-  single { AmericanHeritageDetailDataProvider(get()) }
+  single { AmericanHeritageDetailDataProvider(get(), get()) }
 
   single { AmericanHeritageDetailItemProvider() }
 }
