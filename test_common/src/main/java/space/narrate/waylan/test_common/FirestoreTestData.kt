@@ -1,4 +1,4 @@
-package space.narrate.waylan.core.data.firestore
+package space.narrate.waylan.test_common
 
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
@@ -9,6 +9,7 @@ import space.narrate.waylan.core.data.firestore.users.UserWordType
 import space.narrate.waylan.core.data.firestore.words.GlobalWord
 import space.narrate.waylan.core.util.minusDays
 import java.util.*
+import space.narrate.waylan.core.data.firestore.DataOwners
 
 data class FirestoreTestDatabase(
     val globalWords: List<GlobalWord>,

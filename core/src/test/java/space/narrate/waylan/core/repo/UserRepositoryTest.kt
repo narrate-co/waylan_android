@@ -8,11 +8,11 @@ import org.junit.Rule
 import org.mockito.Mockito.mock
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.data.firestore.FirestoreStore
-import space.narrate.waylan.core.data.firestore.FirestoreTestData
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.data.prefs.PreferenceStore
 import space.narrate.waylan.core.data.prefs.UserPreferenceStore
 import space.narrate.waylan.test_common.CoroutinesTestRule
+import space.narrate.waylan.test_common.FirestoreTestData
 
 @ExperimentalCoroutinesApi
 class UserRepositoryTest {
