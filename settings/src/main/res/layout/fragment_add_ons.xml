@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+        android:id="@+id/scrim_frame"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/coordinator_layout"
+            android:background="?android:colorBackground"
+            app:paddingLeftSystemWindowInsets="@{true}"
+            app:paddingTopSystemWindowInsets="@{true}"
+            app:paddingRightSystemWindowInsets="@{true}">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:fillViewport="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:paddingBottomSystemWindowInsets="@{true}">
+
+                <LinearLayout
+                    android:id="@+id/scroll_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp"
+                        android:layout_marginBottom="@dimen/keyline_4"
+                        android:nestedScrollingEnabled="false"
+                        android:background="@drawable/tintable"
+                        android:backgroundTint="@color/scrim" />
+
+                    <com.google.android.material.chip.Chip
+                        style="?attr/styleTextLabel"
+                        android:id="@+id/text_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/text_label_height"
+                        android:layout_marginTop="@dimen/keyline_2"
+                        android:visibility="gone"
+                        android:layout_marginHorizontal="14dp" />
+
+                    <TextView
+                        android:id="@+id/description_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/keyline_2"
+                        android:paddingHorizontal="@dimen/keyline_3"
+                        android:textAppearance="?attr/textAppearanceSubtitle2"
+                        tools:text="Add-on: Merriam-Webster"/>
+
+                    <TextView
+                        android:id="@+id/description__body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/keyline_3"
+                        android:paddingHorizontal="@dimen/keyline_3"
+                        android:paddingVertical="@dimen/keyline_2"
+                        android:textAppearance="?attr/textAppearanceBody1" />
+
+                    <LinearLayout
+                        android:id="@+id/actions_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/keyline_3"
+                        android:gravity="end"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/add_ons_title"
+                app:menu="@menu/add_ons_toolbar_menu"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+</layout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+  <TextView
+      android:textAppearance="?textAppearanceSubtitle2"
+      android:id="@+id/title_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/keyline_3"
+      android:layout_marginTop="@dimen/keyline_5"
+      android:layout_marginBottom="@dimen/keyline_3"
+      android:text="Examples"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <space.narrate.waylan.core.ui.widget.UnderlineActionView
+      android:id="@+id/action_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingHorizontal="@dimen/keyline_3"
+      android:paddingTop="@dimen/keyline_5"
+      app:actionIcon="@drawable/ic_add_circle_24px"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
+
+  <space.narrate.waylan.android.ui.widget.EntryEditTextView
+      android:id="@+id/entry_edit_text_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/keyline_2"
+      android:layout_marginVertical="@dimen/keyline_3"
+      android:visibility="gone"
+      app:layout_constraintTop_toBottomOf="@id/action_view"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent" />
+
+  <LinearLayout
+      android:id="@+id/examples_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/keyline_3"
+      android:layout_marginEnd="@dimen/keyline_3"
+      android:orientation="vertical"
+      app:layout_constraintTop_toBottomOf="@id/entry_edit_text_view"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent" />
+
+  <com.google.android.material.card.MaterialCardView
+      android:id="@+id/message_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/keyline_3"
+      android:layout_marginTop="@dimen/keyline_3"
+      android:visibility="gone"
+      app:cardElevation="0dp"
+      app:strokeColor="@color/hairline"
+      app:strokeWidth="0.5dp"
+      app:cardBackgroundColor="@android:color/transparent"
+      app:layout_constraintTop_toBottomOf="@id/entry_edit_text_view"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent">
+
+    <TextView
+        android:id="@+id/message_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="@dimen/keyline_3"
+        android:layout_marginVertical="@dimen/keyline_3"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="@color/material_on_background_disabled" />
+
+  </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,51 @@
+// Dependencies which are used across all modules and should be shared by using
+// apply: ../shared_dependencies.gradle in each module's build file.
+
+dependencies {
+
+    // Kotlin
+    implementation Libs.kotlin
+    implementation Libs.kotlinCoroutines
+    implementation Libs.kotlinCoroutinesAndroid
+
+    // AndroidX
+    implementation Libs.appCompat
+    implementation Libs.coreKtx
+    implementation Libs.constraintLayout
+    implementation Libs.lifecycleLiveDataKtx
+    implementation Libs.lifecycleLiveDataCore
+    implementation Libs.lifecycleExtensions
+    kapt Libs.lifecycleCompiler
+    implementation Libs.navigationFragmentKtx
+    implementation Libs.navigationUiKtx
+
+    // Insetter
+    implementation Libs.insetterKtx
+    implementation Libs.insetterDbx
+
+    // Room
+    implementation Libs.room
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
+
+    // Material
+    implementation Libs.material
+
+    // Koin
+    implementation Libs.koin
+    implementation Libs.koinAndroidViewModel
+
+    // ThreeTen BP - Date & Time and GSON adapter
+    implementation Libs.threeTenBp
+    implementation Libs.threeTenBpGsonAdapter
+
+    // GSON
+    implementation Libs.gson
+
+    // Retrofit
+    implementation Libs.retrofit
+    implementation Libs.retrofitMoshiConverter
+    kapt Libs.moshiCodegen
+    implementation Libs.retrofitConverterSimpleXml
+    implementation Libs.retrofitLoggingInterceptor
+}

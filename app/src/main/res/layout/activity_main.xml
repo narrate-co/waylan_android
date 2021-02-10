@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_graph"/>
+        app:layout_edgeToEdge="@{true}"
+        tools:context=".ui.MainActivity">
 
-    <View
-        android:id="@+id/bottom_sheet_scrim"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:visibility="gone"
-        android:background="?colorScrim"/>
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/navigation_graph"/>
+        
+        <space.narrate.waylan.android.ui.widget.FloatingNavigationBar
+            android:id="@+id/floating_navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:padding="@dimen/keyline_2"
+            android:layout_marginBottom="96dp"
+            android:layout_marginHorizontal="@dimen/keyline_2"
+            android:elevation=".5dp"
+            app:menu="@menu/home_floating_navigation_menu"
+            app:layout_marginBottomSystemWindowInsets="@{true}"/>
 
-    <fragment
-        android:id="@+id/contextual_fragment"
-        android:name="space.narrate.waylan.android.ui.search.ContextualFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_hideable="true"
-        app:behavior_skipCollapsed="true"
-        app:behavior_peekHeight="@dimen/contextual_min_peek_height"
-        />
+        <View
+            android:id="@+id/bottom_sheet_scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:visibility="gone"
+            android:backgroundTint="@color/scrim"
+            android:background="@drawable/tintable"/>
 
-    <fragment
-        android:id="@+id/search_fragment"
-        android:name="space.narrate.waylan.android.ui.search.SearchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/search_min_peek_height"/>
+        <fragment
+            android:id="@+id/contextual_fragment"
+            android:name="space.narrate.waylan.android.ui.search.ContextualFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_hideable="true"
+            app:behavior_skipCollapsed="true"
+            app:behavior_peekHeight="@dimen/contextual_min_peek_height" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <fragment
+            android:id="@+id/search_fragment"
+            android:name="space.narrate.waylan.android.ui.search.SearchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_peekHeight="@dimen/search_min_peek_height"
+            app:behavior_hideable="false" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

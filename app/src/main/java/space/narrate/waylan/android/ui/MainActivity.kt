@@ -2,39 +2,47 @@ package space.narrate.waylan.android.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlin.math.max
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.Navigator
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.prefs.NightMode
-import space.narrate.waylan.android.data.prefs.Orientation
-import space.narrate.waylan.android.ui.home.HomeFragment
+import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.list.ListFragment
+import space.narrate.waylan.android.ui.list.ListFragmentDirections
 import space.narrate.waylan.android.ui.search.ContextualFragment
 import space.narrate.waylan.android.ui.search.SearchFragment
-import space.narrate.waylan.android.ui.search.BottomSheetCallbackCollection
-import space.narrate.waylan.android.util.*
+import space.narrate.waylan.android.ui.widget.FloatingNavigationBar
+import space.narrate.waylan.android.util.BottomSheetCallbackCollection
+import space.narrate.waylan.android.util.KeyboardManager
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.core.ui.ListType
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
+import space.narrate.waylan.core.util.contentView
+import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.hideIme
+import space.narrate.waylan.core.util.visible
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
  * main destination ([HomeFragment], [ListFragment] and [DetailsFragment]).
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallback {
 
+    private val binding: ActivityMainBinding by contentView(R.layout.activity_main)
     private lateinit var searchFragment: SearchFragment
     private lateinit var contextualFragment: ContextualFragment
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var bottomSheetScrimView: View
 
     private val authenticationStore: AuthenticationStore by inject()
+
+    private val navigator: Navigator by inject()
 
     /**
      * A single callback aggregator which attached added to [SearchFragment]'s BottomSheetBehavior.
@@ -46,12 +54,12 @@ class MainActivity : AppCompatActivity() {
 
     // SearchFragment's BottomSheetBehavior
     private val searchSheetBehavior by lazy {
-        BottomSheetBehavior.from(searchFragment.view)
+        BottomSheetBehavior.from(searchFragment.requireView())
     }
 
     // ContextualFragments's BottomSheetBehavior
     private val contextualSheetBehavior by lazy {
-        BottomSheetBehavior.from(contextualFragment.view)
+        BottomSheetBehavior.from(contextualFragment.requireView())
     }
 
     val contextualSheetCallback = BottomSheetCallbackCollection()
@@ -59,53 +67,70 @@ class MainActivity : AppCompatActivity() {
     // MainActivity's ViewModel which is also used by its child Fragments to share data
     private val sharedViewModel: MainViewModel by viewModel()
 
+    // Get the current fragment hosted by the navigation component
+    val currentNavigationFragment: Fragment?
+        get() {
+            if (isFinishing) return null
+            return supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                ?.childFragmentManager
+                ?.fragments
+                ?.firstOrNull()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        // Tell the system that we'd like to be laid out behind the system bars and handle insets
-        // ourselves. This is used because MainActivity's child Fragments use
-        // [ElasticAppBarBehavior] and we'd like each fragment to extend to the top
-        // of the window. When dragging down the fragment pulls down off the top of the screen,
-        // and from under the status bar.
-        val decor = window.decorView
-        val flags = decor.systemUiVisibility or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        decor.systemUiVisibility = flags
-
-        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
-            sharedViewModel.onDestinationChanged(
-                Navigator.Destination.fromDestinationId(destination, arguments)
-            )
+        binding.run {
+            // empty init clause to trigger ContentViewBindingDelegate
         }
 
         searchFragment =
             supportFragmentManager.findFragmentById(R.id.search_fragment) as SearchFragment
         contextualFragment =
             supportFragmentManager.findFragmentById(R.id.contextual_fragment) as ContextualFragment
-        coordinatorLayout = findViewById(R.id.coordinator_layout)
-        bottomSheetScrimView = findViewById(R.id.bottom_sheet_scrim)
 
-        sharedViewModel.shouldNavigateBack.observe(this, Observer { event ->
-            event.getUnhandledContent()?.let { onBackPressed() }
-        })
+        findNavController().addOnDestinationChangedListener { _, destination, arguments ->
+            navigator.setCurrentDestination(destination, arguments)
+        }
 
-        sharedViewModel.shouldShowDetails.observe(this, Observer { event ->
-            event.getUnhandledContent()?.let {
-                findNavController().navigate(R.id.action_homeFragment_to_detailsFragment)
+        navigator.shouldNavigateBack.observe(this) { event ->
+            event.withUnhandledContent { onBackPressed() }
+        }
+
+        navigator.currentDestination.observe(this) {
+            sharedViewModel.onCurrentDestinationChanged(it)
+        }
+
+        sharedViewModel.shouldHideFloatingNavigationBar.observe(this) {
+            if (it) {
+                binding.floatingNavigationBar.hide()
+            } else {
+                binding.floatingNavigationBar.show()
             }
-        })
+        }
 
-        sharedViewModel.nightMode.observe(this, Observer {
+        sharedViewModel.shouldShowDetails.observe(this) { event ->
+            event.withUnhandledContent {
+                findNavController().navigate(R.id.action_global_detailsFragment)
+            }
+        }
+
+        sharedViewModel.nightMode.observe(this) {
             delegate.localNightMode = it.value
-        })
+        }
 
-        sharedViewModel.orientation.observe(this, Observer {
+        sharedViewModel.orientation.observe(this) {
             setOrientation(it)
-        })
+        }
+
+        KeyboardManager(this, binding.root)
+            .getKeyboardHeightData()
+            .observe(this) {
+                sharedViewModel.onSoftInputChanged(it)
+            }
+
+        binding.floatingNavigationBar.setSelectionCallback(this)
 
         processText(intent)
 
@@ -131,13 +156,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun ensureAppHasUser() {
         if (!authenticationStore.hasUser) {
-            Navigator.launchAuth(this)
+            navigator.toAuth(this)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }
     }
 
     fun findNavController(): NavController = findNavController(R.id.nav_host_fragment)
+
 
     /**
      * This method expects to receive all back events from all child Fragments and back
@@ -179,12 +205,14 @@ class MainActivity : AppCompatActivity() {
         // alpha to match the bottom sheet's slide offset.
         searchSheetCallback.addOnSlideAction { _, searchSlide ->
             setBottomSheetScrimAlpha(searchSlide, contextualSheetCallback.currentSlide)
+            setFloatingNavigationBarVisibility(searchSlide, contextualSheetCallback.currentSlide)
         }
 
         // Show a scrim behind the contextual sheet when it is expanded. The scrim should show
         // when either bottom sheet is not resting, hence the use of Math.max
         contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
             setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
+            setFloatingNavigationBarVisibility(searchSheetCallback.currentSlide, contextualSlide)
         }
 
         // Set the scrims visibility to gone if the search sheet is collapsed, otherwise make it
@@ -202,18 +230,18 @@ class MainActivity : AppCompatActivity() {
             if (newState == BottomSheetBehavior.STATE_COLLAPSED ||
                     newState == BottomSheetBehavior.STATE_HIDDEN) {
                 //make sure keyboard is down
-                hideSoftKeyboard()
+                hideIme()
             }
         }
 
-        bottomSheetScrimView.setOnClickListener {
+        binding.bottomSheetScrim.setOnClickListener {
             searchFragment.close()
             contextualFragment.close()
         }
 
 
-        contextualSheetBehavior.setBottomSheetCallback(contextualSheetCallback)
-        searchSheetBehavior.setBottomSheetCallback(searchSheetCallback)
+        contextualSheetBehavior.addBottomSheetCallback(contextualSheetCallback)
+        searchSheetBehavior.addBottomSheetCallback(searchSheetCallback)
     }
 
     /**
@@ -227,17 +255,49 @@ class MainActivity : AppCompatActivity() {
                 && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
                         || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
         ) {
-            bottomSheetScrimView.gone()
+            binding.bottomSheetScrim.gone()
         } else {
-            bottomSheetScrimView.visible()
+            binding.bottomSheetScrim.visible()
         }
     }
 
     private fun setBottomSheetScrimAlpha(searchSheetSlide: Float, contextualSheetSlide: Float) {
-        bottomSheetScrimView.alpha = Math.max(searchSheetSlide, contextualSheetSlide)
+        binding.bottomSheetScrim.alpha = max(searchSheetSlide, contextualSheetSlide)
+    }
+
+    private fun setFloatingNavigationBarVisibility(
+        searchSheetSlide: Float,
+        contextualSheetSlide: Float
+    ) {
+        if (sharedViewModel.shouldHideFloatingNavigationBar.value == true) return
+        binding.floatingNavigationBar.apply {
+            val progress = 1F - max(searchSheetSlide, contextualSheetSlide)
+            showHideProgress = progress
+        }
     }
 
     private fun setOrientation(orientation: Orientation) {
         requestedOrientation = orientation.value
+    }
+
+    override fun onSelectionChanged(itemId: Int, oldIndex: Int, newIndex: Int) {
+        val forward = oldIndex <= newIndex
+        val transitionType = if (oldIndex == 0 && newIndex == 0) {
+            TransitionType.NONE
+        } else {
+            TransitionType.SHARED_AXIS_X
+        }
+        (currentNavigationFragment as? ListFragment)?.apply {
+            setUpTransitions(transitionType, forward)
+        }
+        val listType = when (itemId) {
+            R.id.menu_trending -> ListType.TRENDING
+            R.id.menu_recent -> ListType.RECENT
+            R.id.menu_favorite -> ListType.FAVORITE
+            else -> return
+        }
+        findNavController().navigate(
+            ListFragmentDirections.actionGlobalListFragment(listType, transitionType, forward)
+        )
     }
 }

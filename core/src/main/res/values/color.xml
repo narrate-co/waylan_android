@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Waylan Palette-->
+    <!--All colors used across both light and dark themes-->
+    <color name="colorPink50">#fce2eb</color>
+    <color name="colorPink100">#f7b5ce</color>
+    <color name="colorPink900">#891a51</color>
+
+    <color name="colorIvory50">#F5EBDC</color>
+    <color name="colorIvory100">#F1E7D8</color>
+    <color name="colorIvory300">#EADFCE</color>
+    <color name="colorIvory400">#E3D9CC</color>
+
+    <color name="colorMauve100">#edd1d1</color>
+    <color name="colorMauve300">#ce8e8f</color>
+    <color name="colorMauve400">#bb6366</color>
+
+    <color name="colorGray500">#2E2C2A</color>
+    <color name="colorGray600">#232120</color>
+    <color name="colorGray800">#131314</color>
+    <color name="colorGray900">#000000</color>
+
+    <color name="colorNavy500">#262633</color>
+    <color name="colorNavy600">#262633</color>
+    <color name="colorNavy800">#181820</color>
+    
+    <color name="colorForest100">#E2E3D8</color>
+    <color name="colorForest600">#5C5F40</color>
+
+    <color name="colorOrange300">#8C6659</color>
+    <color name="colorOrange900">#332520</color>
+
+    <!--A color used as a stroke to emphasize the shadow on the top of views near the bottom of -->
+    <!--the screen. This is necessary due to how Android's light source works.-->
+    <color name="shadow_emphasis_color">#0D000000</color> <!--5% alpha-->
+
+</resources>

@@ -1,23 +1,23 @@
 package space.narrate.waylan.android.ui.auth
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when` as whenever
-import com.google.common.truth.Truth.assertThat
-import kotlinx.coroutines.test.runBlockingTest
 import org.mockito.Mockito.verify
-import space.narrate.waylan.android.CoroutinesTestRule
-import space.narrate.waylan.android.data.Result
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.firestore.users.User
-import space.narrate.waylan.android.data.prefs.PreferenceStore
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.valueBlocking
+import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.users.User
+import space.narrate.waylan.core.data.prefs.PreferenceStore
+import space.narrate.waylan.core.repo.AnalyticsRepository
+import space.narrate.waylan.test_common.CoroutinesTestRule
+import space.narrate.waylan.test_common.valueBlocking
+import org.mockito.Mockito.`when` as whenever
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi

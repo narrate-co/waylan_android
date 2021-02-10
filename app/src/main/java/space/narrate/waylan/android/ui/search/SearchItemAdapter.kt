@@ -2,8 +2,8 @@ package space.narrate.waylan.android.ui.search
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import space.narrate.waylan.android.util.AdapterUtils
-import space.narrate.waylan.android.ui.widget.BannerCardView
+import space.narrate.waylan.core.ui.widget.BannerCardView
+import space.narrate.waylan.core.util.AdapterUtils
 
 class SearchItemAdapter(
         private val listener: SearchItemListener
@@ -32,6 +32,7 @@ class SearchItemAdapter(
         parent: ViewGroup,
         viewType: Int
     ): SearchItemViewHolder<SearchItemModel> {
+        @Suppress("UNCHECKED_CAST")
         return when (viewType) {
             VIEW_TYPE_HEADER -> SearchItemViewHolder.HeaderViewHolder(parent, listener)
             VIEW_TYPE_WORD -> SearchItemViewHolder.WordViewHolder(parent, listener)

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Waylan.DayNight" parent="Theme.Waylan.Dark"/>
+
+    <style name="Theme.Waylan.Dark" parent="Theme.Waylan">
+        <!--Color-->
+        <item name="colorPrimary">@color/colorIvory50</item>
+        <item name="colorPrimaryVariant">@color/colorIvory50</item>
+        <item name="colorSecondary">@color/colorOrange300</item>
+        <item name="colorSecondaryVariant">@color/colorOrange300</item>
+
+        <item name="android:colorBackground">@color/colorNavy800</item>
+        <item name="colorSurface">@color/colorNavy800</item>
+        <item name="colorSurfaceSecondary">@color/colorOrange900</item>
+        <item name="colorError">@color/colorMauve300</item>
+        <item name="colorInformative">@color/area</item>
+        <item name="colorArea">@color/colorIvory50</item>
+
+        <item name="colorOnPrimary">@color/colorNavy800</item>
+        <item name="colorOnSecondary">@color/colorNavy800</item>
+        <item name="colorOnBackground">@color/colorIvory50</item>
+        <item name="colorOnBackgroundError">@color/colorMauve300</item>
+        <item name="colorOnSurface">@color/colorIvory50</item>
+        <item name="colorOnError">@color/colorNavy800</item>
+        <item name="colorOnInformative">@color/colorIvory50</item>
+
+        <item name="colorRipple">@color/colorNavy600</item>
+        <item name="colorScrim">@color/colorNavy800</item>
+        <item name="colorDivider">@color/colorIvory50</item>
+        <item name="colorHairline">@color/colorIvory50</item>
+
+        <item name="alphaEmphasisScrim">0.25</item>
+        <item name="alphaEmphasisArea">0.10</item>
+
+        <item name="elevationOverlayEnabled">true</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+    </style>
+</resources>

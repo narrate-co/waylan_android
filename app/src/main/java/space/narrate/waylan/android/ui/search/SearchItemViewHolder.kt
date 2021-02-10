@@ -6,8 +6,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.util.AdapterUtils
-import space.narrate.waylan.android.ui.widget.BannerCardView
+import space.narrate.waylan.core.ui.widget.BannerCardView
+import space.narrate.waylan.core.util.AdapterUtils
 
 sealed class SearchItemViewHolder<T : SearchItemModel>(
         val view: View

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CheckPreferenceView">
+        <attr name="title" />
+        <attr name="desc" format="string"/>
+        <attr name="checkable" format="boolean"/>
+        <attr name="android:checked" format="boolean"/>
+        <attr name="showDivider" format="boolean"/>
+    </declare-styleable>
+</resources>

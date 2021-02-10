@@ -1,0 +1,58 @@
+// :test_common hold all test dependencies that are used across modules for both unit and
+// instrumentation tests.
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion Versions.compileSdk
+    defaultConfig {
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    // Build configurations
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Compile options
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':core')
+
+    implementation Libs.appCompat
+
+    implementation Libs.junit
+    implementation Libs.kotlinCoroutinesTest
+    implementation Libs.kotlinCoroutinesAndroid
+    implementation Libs.lifecycleExtensions
+    kapt Libs.lifecycleCompiler
+    implementation Libs.mockito
+    implementation Libs.mockitoInline
+    implementation Libs.okhttp3MockWebServer
+    implementation Libs.hamcrest
+    implementation Libs.espresso
+    implementation Libs.espressoContrib
+    implementation Libs.espressoIntents
+    implementation Libs.retrofit
+    implementation Libs.koin
+    implementation Libs.koinAndroidViewModel
+}

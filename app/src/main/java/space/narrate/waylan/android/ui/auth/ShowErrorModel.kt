@@ -1,6 +1,6 @@
 package space.narrate.waylan.android.ui.auth
 
-import space.narrate.waylan.android.data.auth.FirebaseAuthWordsException
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 
 sealed class ShowErrorModel {
 

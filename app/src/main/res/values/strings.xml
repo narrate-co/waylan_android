@@ -1,161 +1,66 @@
 <resources>
 
-    <!--App-->
-    <string name="app_name">Waylan</string>
+  <!--App-->
+  <string name="app_name">Waylan</string>
 
-    <!--List-->
-    <string name="title_favorite">Favorite</string>
-    <string name="title_recent">Recent</string>
-    <string name="title_trending">Trending</string>
-    <string name="title_settings">Settings</string>
-    <string name="list_banner_trending_body">Trending is a list of the most popular entries on Waylan, searched by other users and you.</string>
-    <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
-    <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
-    <string name="list_banner_get_started_button">Get started</string>
-    <string name="list_banner_dismiss_button">Dismiss</string>
+  <!--List-->
+  <string name="title_settings">Settings</string>
+  <string name="list_banner_trending_body">Trending is a list of the most popular entries on Waylan, searched by other users and you.</string>
+  <string name="list_banner_recents_body">Recents is where all your previous searches will appear.</string>
+  <string name="list_banner_favorites_body">Favorites is where you can save words and come back to review important vocabulary.</string>
+  <string name="list_banner_get_started_button">Get started</string>
+  <string name="list_banner_dismiss_button">Dismiss</string>
 
-    <!--Search-->
-    <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>
-    <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
-    <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
-    <string name="orientation_prompt_unlock_orientation">Unlock screen orientation?</string>
-    <string name="orientation_prompt_locked_label">Locked</string>
-    <string name="orientation_prompt_unlocked_label">Unlocked</string>
+  <!--Search-->
+  <string name="search_bar_hint">Search Waylan</string>
+  <string name="search_banner_body">Search results, recent searches and smart suggestions will all appear here.</string>
+  <string name="orientation_prompt_lock_to_landscape">Lock screen to landscape?</string>
+  <string name="orientation_prompt_lock_to_portrait">Lock screen to portrait?</string>
+  <string name="orientation_prompt_unlock_orientation">Unlock screen orientation?</string>
+  <string name="orientation_prompt_locked_label">Locked</string>
+  <string name="orientation_prompt_unlocked_label">Unlocked</string>
 
-    <!--Details-->
-    <string name="details_merriam_webster_card_details_button">Details</string>
-    <string name="details_merriam_webster_card_dismiss_button">Dismiss</string>
+  <string name="search_shelf_action_unfavorite_content_desc">Unfavorite word</string>
+  <string name="search_shelf_action_favorite_content_desc">Favorite word</string>
+  <string name="search_shelf_action_share_content_desc">Share</string>
+  <string name="search_shelf_action_filter_content_desc">Filter list</string>
+  <string name="search_shelf_action_settings_content_desc">Settings</string>
+  <string name="search_shelf_action_keyboard_down_content_desc">Close keyboard</string>
+  <string name="search_shelf_action_sheet_close_content_desc">Close sheet</string>
 
-    <!--MerriamWebsterCardView-->
-    <string name="mw_card_view_free_trial_days_remaining">Free trial: %1$sd</string>
-    <string name="mw_card_view_free_trial_expired">Free trial expired</string>
-    <string name="mw_card_view_plugin_expired">Plugin expired</string>
-    <string name="mw_card_view_renew_days_remaining">Renew: %1$sd remaining</string>
+  <!--Menus-->
+  <string name="menu_favorite_title">Favorite</string>
+  <string name="menu_share_title">Share</string>
 
-    <!--MerriamWebsterAudioView-->
-    <string name="mw_audio_view_no_audio_available_error">No audio available</string>
-    <string name="mw_audio_view_requires_mw_plugin_error">Audio pronunciation requires the Merriam-Webster plugin</string>
+  <!--Auth Screen-->
+  <string name="auth_email_hint">Email</string>
+  <string name="auth_password_hint">Password</string>
+  <string name="auth_confirm_password_hint">Confirm Password</string>
+  <string name="auth_cancel_button">Cancel</string>
 
-    <!--Notifications-->
-    <string name="data_notification_channel_name">Data Notification</string>
-    <string name="data_notification_channel_desc">Notifications which indicate the downloading, unpacking and preparation of dictionary data</string>
-    <string name="data_seed_notification_title">Initializing Dictionary</string>
-    <string name="data_seed_notification_text">Unpacking and loading words…</string>
+  <string name="auth_sign_up_button">Sign up</string>
+  <string name="auth_log_in_button">Log in</string>
 
-    <!--Menus-->
-    <string name="menu_favorite_title">Favorite</string>
-    <string name="menu_share_title">Share</string>
+  <!--Contextual Fragment-->
+  <string name="item_desc">This is a sample description and should be deleted</string>
+  <string name="item_title">Sample title</string>
+  <string name="title_about">About</string>
+  <string name="title_merriamwebster">Merriam-Webster</string>
 
-    <!--Errors-->
-    <string name="auth_error_message_no_current_user">No user is currently signed in</string>
-    <string name="auth_error_message_unknown">An unknown error occurred during authentication</string>
-    <string name="auth_error_message_anon_login_unknown">Unable to log in anonymously</string>
-    <string name="auth_error_message_login_unknown">An unknown error occurred during log in</string>
-    <string name="auth_error_message_login_failed">Failed to log in</string>
-    <string name="auth_error_message_signup_unknown">An unknown error occurred during sign up</string>
-    <string name="auth_error_message_signup_failed">Failed to sign up</string>
-    <string name="auth_error_message_passwords_mismatch">Passwords don\'t match</string>
-    <string name="auth_error_message_no_current_user_to_link">No current user is available to create account with</string>
+  <!--AudioClipHelper-->
+  <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
+  <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
+  <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
+  <string name="audio_clip_no_network_available">No network available</string>
+  <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
 
-    <!--Auth Screen-->
-    <string name="auth_email_hint">Email</string>
-    <string name="auth_password_hint">Password</string>
-    <string name="auth_confirm_password_hint">Confirm Password</string>
-    <string name="auth_cancel_button">Cancel</string>
-    <string name="auth_error_message_empty_fields">Email and password must not be empty</string>
-    <string name="auth_error_message_firestore_user_unknown_error">Unable to create account</string>
-
-    <!--Settings Screen-->
-    <string name="settings_night_mode_title">Night mode</string>
-    <string name="settings_night_mode_desc">Reading late at night? Keep looking up words and give your eyes a break.</string>
-    <string name="settings_about_title">About</string>
-    <string name="settings_about_desc">Where Waylan came from?</string>
-    <string name="settings_contact_title">Contact</string>
-    <string name="settings_contact_desc">Get in touch</string>
-    <string name="settings_email_compose_subject">Getting in touch</string>
-    <string name="settings_email_compose_no_client_error">Looks like you don\'t have an email app installed</string>
-    <string name="settings_header_create_account_body">Want to save your recent and favorite words? Want to continue to look up words with Merriam Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
-    <string name="settings_header_anonymous_free_trial_body">Want to save your recents and favorites across devices? Want continued access to Merriam-Webster definitions? Create an account to extend your Merriam-Webster trial and keep building your vocabulary or log in to restore your history.</string>
-    <string name="settings_header_anonymous_none_body">Want to save your recents and favorites across devices? Want access to Merriam-Webster definitions? Create an account and keep building your vocabulary or log in to restore your history.</string>
-    <string name="settings_header_anonymous_create_account_button">Create Account</string>
-    <string name="settings_header_anonymous_log_in_button">Log in</string>
-    <string name="settings_header_added_label">Added</string>
-    <string name="settings_header_expired_label">Plugin expired</string>
-    <string name="settings_header_free_trial_expired_label">Free trial expired</string>
-    <string name="settings_header_registered_none_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Help support Merriam-Webster and Waylan for an entire year of access.</string>
-    <string name="settings_header_registered_free_trial_expired_body">Looks like your free trial expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Help support Merriam-Webster and Waylan for an entire year of access.</string>
-    <string name="settings_header_registered_free_trial_body">You’re using a free trial of our Merriam-Webster plugin, an extension that inlines definitions, pronunciation, related words and examples into Waylan. Help support Merriam-Webster and Waylan and get an entire year of access.</string>
-    <string name="settings_header_registered_subscribed_body">Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. You have unlimited access. Thank you for your support.</string>
-    <string name="settings_header_registered_subscribed_expired_body">Looks like your purchase expired! Merriam-Webster is a plugin that inlines definitions, pronunciation, related words and examples right into Waylan entries. Renew for a whole year of access.</string>
-    <string name="settings_header_registered_add_button">Add</string>
-    <string name="settings_header_renew_top_button">Renew</string>
-    <string name="settings_sign_out_title">Sign out</string>
-    <string name="settings_sign_out_default_desc">Sign out and log in with a different account.</string>
-    <string name="settings_developer_title">Developer Settings</string>
-    <string name="settings_developer_desc">Helpers to debug and alter configurations</string>
-    <string name="settings_night_mode_set_by_battery_saver_title">Set by Battery Saver</string>
-    <string name="settings_night_mode_set_by_battery_saver_desc">Night mode will automatically be enabled if Battery Saver is turned on</string>
-    <string name="settings_night_mode_system_default_title">System default</string>
-    <string name="settings_night_mode_system_default_desc">Night mode will be used depending on if dark theme is turned on in system settings</string>
-    <string name="settings_night_mode_follows_system_title">Follows system</string>
-    <string name="settings_night_mode_auto_title">Auto</string>
-    <string name="settings_night_mode_yes_title">Yes</string>
-    <string name="settings_night_mode_no_title">No</string>
-    <string name="settings_night_mode_auto_desc">Night mode turns on between sunset and sunrise</string>
-    <string name="settings_night_mode_yes_desc">Always use night mode</string>
-    <string name="settings_night_mode_no_desc">Never use night mode</string>
-    <string name="settings_night_mode_follows_system_desc">Night mode usage is determined by your global system settings</string>
-    <string name="settings_orientation_unspecified_title">None</string>
-    <string name="settings_orientation_unspecified_desc">Allow either portrait or landscape</string>
-    <string name="settings_orientation_portrait_title">Portrait</string>
-    <string name="settings_orientation_portrait_desc">Only allow portrait mode</string>
-    <string name="settings_orientation_landscape_title">Landscape (Left)</string>
-    <string name="settings_orientation_landscape_desc">Only allow landscape (90° counter-clockwise)</string>
-    <string name="settings_orientation_landscape_reverse_title">Landscape (Right)</string>
-    <string name="settings_orientation_landscape_reverse_desc">Only allow landscape (90° clockwise)</string>
-
-
-    <!--About-->
-    <string name="about_header_body">
-        Waylan is a dictionary concept designed to be an ergonomic, one-handable experience. In addition to being a great tool to improve your vocabulary, Waylan experiments with user experience and tries to solve modern problems on growing devices such as navigation, reachability and visual balance.
-    </string>
-    <string name="about_third_party_lib_title">Third Party Libraries</string>
-    <string name="about_third_party_lib_desc">Software that\'s helped make Waylan</string>
-    <string name="about_title">About</string>
-
-    <!--Third Party Libraries-->
-    <string name="third_party_libraries_title">Third Party Libraries</string>
-
-    <!--Developer Settings-->
-    <string name="developer_settings_clear_user_preferences_title">Clear user preferences</string>
-    <string name="developer_settings_clear_user_preferences_desc">Reset user preferences to their default values</string>
-    <string name="developer_settings_toggle_merriam_webster_state_title">Toggle Merriam-Webster state</string>
-    <string name="developer_settings_use_test_skus_title">Use test skus</string>
-    <string name="developer_settings_use_test_skus_desc">Run billing against fake product skus</string>
-    <string name="developer_settings_title">Developer Settings</string>
-    <string name="auth_sign_up_button">Sign up</string>
-    <string name="auth_log_in_button">Log in</string>
-
-    <!--Contextual Fragment-->
-    <string name="period_label_minute">minute</string>
-    <string name="period_label_hour">hour</string>
-    <string name="period_label_day">day</string>
-    <string name="period_label_week">week</string>
-    <string name="period_label_month">month</string>
-    <string name="period_label_year">year</string>
-    <string name="period_label_all_time">all time</string>
-    <string name="developer_settings_all_preferences_cleared">All user preferences cleared</string>
-    <string name="developer_settings_informative_snackbar_test_message">A test piece of information</string>
-    <string name="developer_settings_informative_snackbar_test_action">Okay</string>
-    <string name="developer_settings_error_snackbar_test_action">Report</string>
-    <string name="developer_settings_error_snackbar_test_message">A test error message</string>
-    <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
-    <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
-    <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
-    <string name="audio_clip_no_network_available">No network available</string>
-    <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
-    <string name="item_desc">This is a sample description and should be deleted</string>
-    <string name="item_title">Sample title</string>
-
+  <!--Details-->
+  <string name="details_waylan_example_editable_done">Done</string>
+  <string name="details_waylan_example_editable_cancel">Cancel</string>
+  <string name="details_waylan_example_editable_delete">Delete</string>
+  <string name="details_waylan_example_editable_hint">Your example here…</string>
+  <string name="details_waylan_example_editable_visibility_label_private">Private</string>
+  <string name="details_waylan_example_no_examples_message">No examples. Use the + button to add a custom example to this entry.</string>
+  <string name="title_americanheritage">American Heritage</string>
 
 </resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/keyline_3"
+        android:paddingBottom="@dimen/keyline_3">
+
+        <space.narrate.waylan.core.ui.widget.TextLabelChip
+            android:id="@+id/text_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:id="@+id/mw_subtitle_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_2"
+            android:layout_marginStart="@dimen/keyline_3"
+            android:layout_marginEnd="@dimen/keyline_3"
+            android:text="@string/mw_thesaurus_card_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_label"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/definitions_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_3"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            app:layout_constraintTop_toBottomOf="@+id/mw_subtitle_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/expand_collapse_button"/>
+
+        <Button
+            android:id="@+id/expand_collapse_button"
+            style="?attr/styleTextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/keyline_2"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:layout_marginHorizontal="14dp"
+            android:text="@string/mw_thesaurus_expand_chip_groups_button_title"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

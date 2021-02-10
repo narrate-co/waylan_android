@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Waylan.DayNight" parent="Theme.Waylan"/>
+
+    <style name="Theme.Waylan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--Color-->
+        <item name="colorPrimary">@color/colorGray900</item>
+        <item name="colorPrimaryVariant">@color/colorGray900</item>
+        <item name="colorSecondary">@color/colorForest600</item>
+        <item name="colorSecondaryVariant">@color/colorForest600</item>
+
+        <item name="android:colorBackground">@color/colorIvory100</item>
+        <item name="colorSurface">@color/colorIvory100</item>
+        <item name="colorSurfaceSecondary">@color/colorForest100</item>
+        <item name="colorError">@color/colorMauve100</item>
+        <item name="colorInformative">@color/area</item>
+        <item name="colorArea">@color/colorIvory400</item>
+
+        <item name="colorOnPrimary">@color/colorIvory50</item>
+        <item name="colorOnSecondary">?attr/colorSurfaceSecondary</item>
+        <item name="colorOnBackground">@color/colorGray600</item>
+        <item name="colorOnBackgroundError">@color/colorMauve400</item>
+        <item name="colorOnSurface">@color/colorGray600</item>
+        <item name="colorOnSurfaceSecondary">?attr/colorSecondary</item>
+        <item name="colorOnError">@color/colorGray600</item>
+        <item name="colorOnInformative">@color/colorGray800</item>
+
+        <item name="colorRipple">@color/colorIvory300</item>
+        <item name="colorScrim">@color/colorGray600</item>
+        <item name="colorDivider">@color/colorGray600</item>
+        <item name="colorHairline">@color/colorGray600</item>
+
+        <!--Alpha emphasis-->
+        <item name="alphaEmphasisHighType">0.87</item>
+        <item name="alphaEmphasisMedium">0.60</item>
+        <item name="alphaEmphasisDisabled">0.38</item>
+        <item name="alphaEmphasisArea">0.60</item>
+        <item name="alphaEmphasisScrim">0.05</item>
+        <item name="alphaEmphasisDivider">0.05</item>
+        <item name="alphaEmphasisHairline">0.25</item>
+
+        <!--Typography-->
+        <item name="fontFamilyPrimary">@font/ibm_plex_serif_regular</item>
+        <item name="fontFamilyPrimaryItalic">@font/ibm_plex_serif_italic</item>
+        <item name="fontFamilyPrimaryMedium">@font/ibm_plex_serif_medium</item>
+        <item name="fontFamilyPrimarySemiBold">@font/ibm_plex_serif_semibold</item>
+
+        <item name="fontFamilySecondary">@font/ibm_plex_mono_regular</item>
+        <item name="fontFamilySecondaryMedium">@font/ibm_plex_mono_medium</item>
+        <item name="fontFamilySecondarySemiBold">@font/ibm_plex_mono_semi_bold</item>
+
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Waylan.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Waylan.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Waylan.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Waylan.Headline5</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Waylan.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Waylan.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Waylan.Body2</item>
+        <item name="textAppearanceBody3">@style/TextAppearance.Waylan.Body3</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Waylan.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Waylan.Overline</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Waylan.Button</item>
+
+        <!--Shape-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Words.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Words.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Words.LargeComponent</item>
+
+        <!--Styles-->
+        <item name="reachabilityAppBarLayoutStyle">@style/Widget.Waylan.ReachabilityAppBarLayout.Flat</item>
+        <item name="styleTextButton">@style/Widget.Waylan.Button.TextButton</item>
+        <item name="styleChipOutlined">@style/Widget.Waylan.Chip.Outlined</item>
+        <item name="styleChipOpen">@style/Widget.Waylan.Chip.Open</item>
+        <item name="styleEditTextArea">@style/Widget.Waylan.EditText.Area</item>
+        <item name="styleTextLabel">@style/Widget.Waylan.TextLabel</item>
+        <item name="styleBottomSheetStandard">@style/Widget.Waylan.BottomSheet.Standard</item>
+
+        <!--Android Framework-->
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+        <item name="colorAccent">?attr/colorSecondary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="colorControlHighlight">?attr/colorRipple</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+    </style>
+</resources>

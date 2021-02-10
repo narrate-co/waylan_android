@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import space.narrate.waylan.android.data.Result
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.auth.FirebaseAuthWordsException
-import space.narrate.waylan.android.data.prefs.NightMode
-import space.narrate.waylan.android.data.prefs.PreferenceStore
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.ui.common.Event
-import kotlin.Exception
+import space.narrate.waylan.core.data.Result
+import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
+import space.narrate.waylan.core.data.prefs.NightMode
+import space.narrate.waylan.core.data.prefs.PreferenceStore
+import space.narrate.waylan.core.repo.AnalyticsRepository
+import space.narrate.waylan.core.ui.common.Event
 
 class AuthViewModel(
     private val authenticationStore: AuthenticationStore,

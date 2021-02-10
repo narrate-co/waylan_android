@@ -38,11 +38,8 @@ class AudioClipHelper(
         // dispatch internal errors to be shown by UI-side receivers.
         const val BROADCAST_AUDIO_STATE_EXTRA_MESSAGE = "audio_state_extra_message"
 
-
         // Milliseconds to wait for audio to load before throwing a timeout error
         const val MEDIA_PREPARE_TIMEOUT = 8000L // 8 seconds
-
-        const val TAG = "AudioClipHelper"
     }
 
     /**

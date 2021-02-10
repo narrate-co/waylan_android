@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mw_audio_view_no_audio_available_error">No audio available</string>
+    <string name="mw_audio_view_requires_mw_plugin_error">Audio pronunciation requires the Merriam-Webster plugin</string>
+</resources>

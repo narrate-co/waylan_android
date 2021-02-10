@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/keyline_3">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        android:id="@+id/mw_subtitle_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:layout_marginStart="@dimen/keyline_3"
+        android:layout_marginEnd="@dimen/keyline_3"
+        android:text="Merriam-Webster"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/keyline_3"
+        android:layout_marginTop="@dimen/keyline_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_round_play_arrow_24px"/>
+
+    <View
+        android:id="@+id/underline"
+        android:layout_width="72dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="@dimen/keyline_3"
+        android:background="@drawable/title_underline_background"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/play"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/definitions_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/keyline_3"
+        app:layout_constraintTop_toBottomOf="@+id/underline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceOverline"
+            android:text="adjective"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":marked by inactivity or repose :tranquility at rest"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":causing no trouble or symptoms • quiescent gallstones"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_2"
+            android:layout_marginBottom="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceOverline"
+            android:text="adjective"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":causing no pathological symptoms"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/keyline_1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text=":being quiet, still or inactive"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

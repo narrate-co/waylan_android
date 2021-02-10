@@ -1,0 +1,96 @@
+<resources>
+
+    <!--Buttons-->
+    <style name="Widget.Waylan.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textSize">18sp</item>
+        <item name="cornerRadius">@dimen/keyline_2</item>
+        <item name="android:textColor">@color/material_on_background_emphasis_high_type</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+    </style>
+
+    <!--Chips-->
+    <style name="Widget.Waylan.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
+        <item name="chipBackgroundColor">?attr/colorSurface</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <!--This stroke color will be lessened when String.toChip sets an alpha on the -->
+        <!--entire background of each chip.-->
+        <item name="chipStrokeColor">?attr/colorOnSurface</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.Waylan.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
+        <item name="chipBackgroundColor">@android:color/transparent</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="chipStrokeColor">@android:color/transparent</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="chipCornerRadius">2dp</item>
+    </style>
+
+    <!--Text Labels-->
+    <style name="Widget.Waylan.TextLabel" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body3</item>
+        <item name="android:textColor">?attr/colorOnInformative</item>
+        <item name="android:textSize">12sp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <item name="chipBackgroundColor">?attr/colorInformative</item>
+        <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
+        <item name="chipIconSize">14dp</item>
+        <item name="iconStartPadding">6dp</item>
+        <item name="iconEndPadding">6dp</item>
+        <item name="chipIconTint">@color/material_on_background_emphasis_medium</item>
+    </style>
+
+    <style name="Widget.Waylan.TextLabel.Area" parent="Widget.Waylan.TextLabel">
+        <item name="android:textAppearance">@style/TextAppearance.Waylan.Body3</item>
+        <item name="android:textColor">?attr/colorOnInformative</item>
+        <item name="android:textSize">12sp</item>
+        <item name="chipStartPadding">8dp</item>
+        <item name="chipEndPadding">8dp</item>
+        <item name="rippleColor">?attr/colorRipple</item>
+        <item name="chipBackgroundColor">@color/area</item>
+        <item name="chipCornerRadius">@dimen/text_label_corner_radius</item>
+    </style>
+
+    <!--Edit Texts-->
+    <style name="Widget.Waylan.EditText.Area" parent="Theme.Waylan">
+        <item name="android:fontFamily">?attr/fontFamilySecondary</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/material_on_background_disabled</item>
+        <item name="android:textColor">@color/material_on_background_emphasis_high_type</item>
+    </style>
+
+    <!--Bottom Sheets-->
+    <style name="Widget.Waylan.BottomSheet.Standard" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.BottomSheet.Standard</item>
+    </style>
+
+    <!--Progress Underline-->
+    <style name="Widget.Waylan.ProgressUnderlineView" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="trackColor">?attr/colorControlNormal</item>
+        <item name="indicatorColor">?attr/colorAccent</item>
+    </style>
+
+    <!--Scrim Window Style-->
+    <style name="Widget.Waylan.ScrimWindow" parent="">
+        <item name="backgroundTint">@color/scrim</item>
+        <item name="statusBarScrimTint">?android:colorBackground</item>
+    </style>
+
+    <style name="Widget.Waylan.ReachabilityAppBarLayout.Flat" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+        <item name="dragDismissDirection">down</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="elevation">@dimen/plane_00</item>
+        <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadline3</item>
+        <item name="expandedTitleVerticalBias">0.75</item>
+        <item name="expandedHeight">400dp</item>
+        <item name="dragDismissable">true</item>
+        <item name="navigationIcon">@drawable/ic_round_arrow_down_24px</item>
+    </style>
+
+</resources>

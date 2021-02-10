@@ -1,1 +1,26 @@
+// Core is the base Android library module which holds all code shared between modules. This is
+// also where Waylan's design system is held.
+include ':core'
+// App is the base Android application
 include ':app'
+// Settings holds all UI and logic to display in-app settings, billing and configuration.
+include ':settings'
+// Wordnik is a library that is capable of handling all Wordnik API functions.
+include ':wordnik'
+// Wordset is an android lib that includes all logic for getting and displaying
+// entries from wordset, the app's built-in, offline database.
+include ':wordset'
+// Merriam-Webster is a dynamic feature module that include all logic related to working with
+// Merriam-Webster data. This module also exposes providers to display Merriam-Webster data.
+include ':merriamwebster'
+// Merriam-Webster Thesaurus is a dynamic feature module that includes all logic related to working
+// with Merriam-Webster thesaurus data. this module exposes providers to display Merriam-Webster
+// Thesaurus data.
+include ':merriamwebster_thesaurus'
+// American Heritage is a dynamic feature module that includes all logic related to
+// working with the the Wordnik API to display entries from the American
+// Heritage dictionary.
+include ':americanheritage'
+// Test Common holds all testing code which is shared between module tests, both unit and
+// instrumentation tests. This includes things like utilities, extensions, rules, etc.
+include ':test_common'

@@ -1,0 +1,70 @@
+// :core is a library module which holds dependencies and implementations which are used across
+// all modules.
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply from: '../shared_dependencies.gradle'
+apply from: '../test_dependencies.gradle'
+
+android {
+    compileSdkVersion Versions.compileSdk
+    defaultConfig {
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    // Build configurations
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // View/Data binding
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    // Compile options
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Room
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
+
+    // Firebase & Firestore
+    implementation Libs.firebase
+    implementation Libs.firebaseAuth
+    implementation Libs.firebaseFirestore
+    implementation Libs.crashlytics
+
+    implementation Libs.dynamicAnimation
+
+    // Google Play Billing
+    implementation Libs.playBilling
+}

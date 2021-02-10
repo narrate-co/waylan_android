@@ -1,23 +1,32 @@
 package space.narrate.waylan.android.ui.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.data.prefs.*
-import space.narrate.waylan.android.ui.common.Event
-import space.narrate.waylan.android.util.mapTransform
-import space.narrate.waylan.android.util.switchMapTransform
-import space.narrate.waylan.android.util.MergedLiveData
+import space.narrate.waylan.android.ui.search.ShelfActionModel.*
+import space.narrate.waylan.android.util.SoftInputModel
+import space.narrate.waylan.core.data.firestore.users.UserWord
+import space.narrate.waylan.core.data.prefs.Orientation
+import space.narrate.waylan.core.data.prefs.RotationManager
+import space.narrate.waylan.core.data.prefs.RotationUtils
+import space.narrate.waylan.core.repo.AnalyticsRepository
+import space.narrate.waylan.core.repo.UserRepository
+import space.narrate.waylan.core.repo.WordRepository
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.common.Event
+import space.narrate.waylan.core.util.MergedLiveData
+import space.narrate.waylan.core.util.mapTransform
+import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel for [SearchFragment]
  */
 class SearchViewModel(
-        private val wordRepository: WordRepository,
-        private val userRepository: UserRepository,
-        private val analyticsRepository: AnalyticsRepository
+    private val wordRepository: WordRepository,
+    private val userRepository: UserRepository,
+    private val analyticsRepository: AnalyticsRepository,
+    private val navigator: Navigator
 ): ViewModel(), RotationManager.Observer, RotationManager.PatternObserver {
 
     private val searchInput: MutableLiveData<String> = MutableLiveData()
@@ -26,9 +35,51 @@ class SearchViewModel(
         .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
         .mapTransform { if (it.isEmpty()) addHeader(it) else it }
 
+    val searchShelfRowModel: LiveData<SearchShelfActionRowModel>
+        get() = SearchShelfActionRowLiveData(
+            navigator.currentDestination,
+            currentUserWord,
+            userRepository.trendingListFilterLive,
+            _searchSheetOffset,
+            _searchSheetState,
+            _contextualSheetOffset,
+            _contextualSheetState,
+            _softInputModel
+        )
+
+    private val _currentWord: MutableLiveData<String> = MutableLiveData()
+
+    private val currentUserWord: LiveData<UserWord>
+        get() = _currentWord.switchMapTransform { wordRepository.getUserWord(it) }
+
+    private val _softInputModel: MutableLiveData<SoftInputModel> = MutableLiveData()
+    private val _searchSheetOffset: MutableLiveData<Float> = MutableLiveData()
+    private val _searchSheetState: MutableLiveData<Int> = MutableLiveData()
+    private val _contextualSheetOffset: MutableLiveData<Float> = MutableLiveData()
+    private val _contextualSheetState: MutableLiveData<Int> = MutableLiveData()
+
+    private val _shouldCloseSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldCloseSheet: LiveData<Event<Boolean>>
+        get() = _shouldCloseSheet
+
+    private val _shouldCloseKeyboard: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldCloseKeyboard: LiveData<Event<Boolean>>
+        get() = _shouldCloseKeyboard
+
+    private val _shouldOpenContextualSheet: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldOpenContextualSheet: LiveData<Event<Boolean>>
+        get() = _shouldOpenContextualSheet
+
+    val keyboardHeight: LiveData<Float>
+        get() = _softInputModel.mapTransform { it.height.toFloat() }
+
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
         get() = _shouldShowDetails
+
+    private val _shouldShowSettings: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val shouldShowSettings: LiveData<Event<Boolean>>
+        get() = _shouldShowSettings
 
     private val _shouldShowOrientationPrompt: MutableLiveData<Event<OrientationPromptModel>>
         = MutableLiveData()
@@ -73,8 +124,49 @@ class SearchViewModel(
         }
     }
 
+    fun onCurrentWordChanged(word: String) {
+        _currentWord.value = word
+    }
+
+    fun onSoftInputChanged(model: SoftInputModel) {
+        _softInputModel.value = model
+    }
+
+    fun onSearchSheetOffsetChanged(offset: Float) {
+        _searchSheetOffset.value = offset
+    }
+
+    fun onSearchSheetStateChanged(state: Int) {
+        _searchSheetState.value = state
+    }
+
+    fun onContextualSheetOffsetChanged(offset: Float) {
+        _contextualSheetOffset.value = offset
+    }
+
+    fun onContextualSheetStateChanged(state: Int) {
+        _contextualSheetState.value = state
+    }
+
     fun onSearchInputTextChanged(input: CharSequence?) {
         searchInput.value = input?.toString() ?: ""
+    }
+
+    fun onShelfActionClicked(action: ShelfActionModel) {
+        when (action) {
+            is ShareAction -> { /* Do nothing */ }
+            is FavoriteAction -> setUserWordFavorited(true)
+            is UnfavoriteAction -> setUserWordFavorited(false)
+            is FilterAction -> _shouldOpenContextualSheet.value = Event(true)
+            is CloseSheetAction -> _shouldCloseSheet.value = Event(true)
+            is CloseKeyboardAction -> _shouldCloseKeyboard.value = Event(true)
+            is SettingsAction -> _shouldShowSettings.value = Event(true)
+        }
+    }
+
+    private fun setUserWordFavorited(newFavoriteValue: Boolean) {
+        val id = _currentWord.value ?: return
+        wordRepository.setUserWordFavorite(id, newFavoriteValue)
     }
 
     fun onWordClicked(item: SearchItemModel) {
@@ -104,16 +196,16 @@ class SearchViewModel(
     // RotationManager callbacks
 
     override fun onLockedRotate(
-            old: RotationManager.RotationEvent,
-            new: RotationManager.RotationEvent,
-            lockedTo: Int
+        old: RotationManager.RotationEvent,
+        new: RotationManager.RotationEvent,
+        lockedTo: Int
     ) {
         //do nothing
     }
 
     override fun onUnlockedOrientationChange(
-            old: RotationManager.RotationEvent,
-            new: RotationManager.RotationEvent
+        old: RotationManager.RotationEvent,
+        new: RotationManager.RotationEvent
     ) {
         if (RotationUtils.isPortraitToLandscape(old, new)) {
             userRepository.portraitToLandscapeOrientationChangeCount++
@@ -133,9 +225,9 @@ class SearchViewModel(
     }
 
     override fun onLockedRotatePatternSeen(
-            pattern: List<RotationManager.RotationEvent>,
-            lockedTo: Int,
-            observedSince: Long
+        pattern: List<RotationManager.RotationEvent>,
+        lockedTo: Int,
+        observedSince: Long
     ) {
         if (RotationUtils.isLikelyUnlockDesiredScenario(
                         pattern,
@@ -153,7 +245,5 @@ class SearchViewModel(
     override fun onUnlockedOrientationPatternSeen(pattern: List<RotationManager.RotationEvent>) {
         //do nothing. maybe move to pattern matching over orientation change counts
     }
-
-
 }
 

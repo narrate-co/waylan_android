@@ -2,55 +2,46 @@ package space.narrate.waylan.android.ui.details
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import space.narrate.waylan.android.util.AdapterUtils
-import java.lang.IllegalArgumentException
+import space.narrate.waylan.core.details.DetailAdapterListener
+import space.narrate.waylan.core.details.DetailItemModel
+import space.narrate.waylan.core.details.DetailItemProviderRegistry
+import space.narrate.waylan.core.details.DetailItemType
+import space.narrate.waylan.core.details.DetailItemViewHolder
+import space.narrate.waylan.core.util.AdapterUtils
 
 class DetailItemAdapter(
-    private val listener: Listener
-) : ListAdapter<DetailItemModel, DetailItemViewHolder<DetailItemModel>>(
+    private val itemProviderRegistry: DetailItemProviderRegistry,
+    private val listener: DetailAdapterListener
+) : ListAdapter<DetailItemModel, DetailItemViewHolder>(
     AdapterUtils.diffableItemCallback()
 ) {
 
-    interface Listener : MerriamWebsterCardView.Listener {
-        fun onSynonymChipClicked(synonym: String)
-    }
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        require(item is DetailItemModel) {
+            "The item must be an implementation of DetailItemModel but was ${item::class.java}"
+        }
 
-    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is DetailItemModel.TitleModel -> VIEW_TYPE_TITLE
-        is DetailItemModel.MerriamWebsterModel -> VIEW_TYPE_MERRIAM_WEBSTER
-        is DetailItemModel.WordsetModel -> VIEW_TYPE_WORDSET
-        is DetailItemModel.ExamplesModel -> VIEW_TYPE_EXAMPLE
+        // TODO: Add property to DetailItemType to avoid using ordinal.
+        return item.itemType.ordinal
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): DetailItemViewHolder<DetailItemModel> {
-        return when (viewType) {
-            VIEW_TYPE_TITLE ->
-                DetailItemViewHolder.TitleViewHolder(parent)
-            VIEW_TYPE_MERRIAM_WEBSTER ->
-                DetailItemViewHolder.MerriamWebsterViewHolder(parent, listener)
-            VIEW_TYPE_WORDSET ->
-                DetailItemViewHolder.WordsetViewHolder(parent, listener)
-            VIEW_TYPE_EXAMPLE ->
-                DetailItemViewHolder.ExamplesViewHolder(parent, listener)
-            else ->
-                throw IllegalArgumentException("Unsupported viewType being inflated - $viewType")
-        } as DetailItemViewHolder<DetailItemModel>
+    ): DetailItemViewHolder {
+        val itemType = DetailItemType.values()[viewType]
+        return itemProviderRegistry.createViewHolderFor(itemType, parent, listener)
+            ?: throw IllegalArgumentException(
+                "The view holder for $itemType does not have a provider added to " +
+                    "this adapter's DetailItemFactory"
+            )
     }
 
     override fun onBindViewHolder(
-        holder: DetailItemViewHolder<DetailItemModel>,
+        holder: DetailItemViewHolder,
         position: Int
     ) {
         holder.bind(getItem(position))
-    }
-
-    companion object {
-        const val VIEW_TYPE_TITLE = 1
-        const val VIEW_TYPE_MERRIAM_WEBSTER = 2
-        const val VIEW_TYPE_WORDSET = 3
-        const val VIEW_TYPE_EXAMPLE = 4
     }
 }

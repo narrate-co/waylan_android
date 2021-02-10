@@ -1,7 +1,7 @@
 package space.narrate.waylan.android.ui.search
 
 import space.narrate.waylan.android.R
-import space.narrate.waylan.android.data.prefs.Orientation
+import space.narrate.waylan.core.data.prefs.Orientation
 
 /**
  * A sealed class to hold the possible "smart prompts" which can be displayed in the search shelf.
@@ -18,11 +18,11 @@ import space.narrate.waylan.android.data.prefs.Orientation
  *  [checkedText], indicating that they want to reverse the "checked" or "completed" prompt.
  */
 sealed class OrientationPromptModel(
-        val orientationToRequest: Orientation,
-        val message: Int,
-        val icon: Int,
-        val checkedText: Int,
-        val uncheckedText: Int
+    val orientationToRequest: Orientation,
+    val message: Int,
+    val icon: Int,
+    val checkedText: Int,
+    val uncheckedText: Int
 ) {
 
     class LockToLandscape(orientationToRequest: Orientation) : OrientationPromptModel(

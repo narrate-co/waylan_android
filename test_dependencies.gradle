@@ -1,0 +1,73 @@
+// Dependencies which are used across all modules and should be shared by using
+// apply: ../shared_dependencies.gradle in each module's build file.
+
+android {
+    // Include Android resources for robolectric unit testing.
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    // Show test results in CLI. Helpful for reading CI test outputs or when
+    // running tests from the command line.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+}
+
+dependencies {
+    testImplementation project(':test_common')
+
+    // Unit tests
+    testImplementation Libs.junit
+    testImplementation Libs.mockito
+    testImplementation Libs.mockitoInline
+    testImplementation Libs.hamcrest
+    testImplementation Libs.archCoreTesting
+    testImplementation Libs.kotlinCoroutinesTest
+    testImplementation Libs.kotlinCoroutinesAndroid
+    testImplementation Libs.robolectric
+    testImplementation Libs.espresso
+    testImplementation Libs.espressoContrib
+    testImplementation Libs.espressoIntents
+    testImplementation Libs.truth
+    testImplementation Libs.koinTest
+    testImplementation Libs.okhttp3MockWebServer
+
+    // AndroidX JVM tests
+    testImplementation Libs.testCoreKtx
+    testImplementation Libs.junitKtx
+    testImplementation Libs.testRules
+    testImplementation Libs.fragment
+    testImplementation Libs.fragmentTesting
+
+    debugImplementation Libs.testCoreKtx
+    debugImplementation Libs.fragmentTesting
+
+    // Android Unit tests
+    androidTestImplementation Libs.junit
+    androidTestImplementation Libs.mockito
+    androidTestImplementation Libs.mockitoInline
+
+
+    // Instrumented tests
+    androidTestImplementation Libs.testCoreKtx
+    androidTestImplementation Libs.junitKtx
+    androidTestImplementation Libs.testRules
+    androidTestImplementation Libs.kotlinCoroutinesTest
+    androidTestImplementation Libs.kotlinCoroutinesAndroid
+    androidTestImplementation Libs.roomTesting
+    androidTestImplementation Libs.archCoreTesting
+    androidTestImplementation Libs.espresso
+    androidTestImplementation Libs.espressoContrib
+    androidTestImplementation Libs.espressoIntents
+    debugImplementation Libs.espressoIdlingResource
+    androidTestImplementation Libs.espressoIdlingConcurrent
+    androidTestImplementation Libs.robolectricAnnotations
+
+    androidTestImplementation Libs.appCompat
+    androidTestImplementation Libs.material
+}

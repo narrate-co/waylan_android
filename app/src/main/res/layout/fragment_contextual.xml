@@ -1,122 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contextual_frame"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:paddingBottom="@dimen/search_min_peek_height"
-    android:clickable="true"
-    android:elevation="@dimen/plane_01"
-    android:focusable="true"
-    android:backgroundTint="?colorSurface"
-    android:clipChildren="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/collapsed_container"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/contextual_collapsed_container_height"
-        android:layout_gravity="top"
-        android:alpha="0"
-        tools:alpha="1">
-
-        <HorizontalScrollView
-            android:id="@+id/collapsed_hztl_scroll_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:clipToPadding="false"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/close_image_view"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/collapsed_chip_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </HorizontalScrollView>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/close_image_view"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/circle"
-            android:foreground="?selectableItemBackground"
-            android:padding="@dimen/keyline_2"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_round_close_24px" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/expanded_container"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/contextual_frame"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:paddingBottom="@dimen/keyline_3"
-        >
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:elevation="@dimen/plane_01"
+        android:focusable="true"
+        android:backgroundTint="?attr/colorSurface"
+        android:clipChildren="true"
+        app:behavior_isContextualSheet="@{true}">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Filter"
-            android:textAppearance="?textAppearanceSubtitle2"
-            app:layout_constraintBottom_toTopOf="@+id/collapsed_bar_guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/collapsed_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/contextual_collapsed_container_height"
+            android:layout_gravity="top"
+            android:alpha="0"
+            tools:alpha="1">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/subtitle_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Period"
-            android:textAppearance="?textAppearanceCaption"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/collapsed_bar_guideline" />
+            <HorizontalScrollView
+                android:id="@+id/collapsed_hztl_scroll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:clipToPadding="false"
+                android:paddingHorizontal="12dp"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/close_image_view"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/collapsed_bar_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="52dp" />
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/collapsed_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        <HorizontalScrollView
-            android:id="@+id/expanded_hztl_scroll_view"
+            </HorizontalScrollView>
+
+            <ImageView
+                android:id="@+id/close_image_view"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/circle_area"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="@dimen/keyline_2"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_round_close_24px" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/expanded_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clipToPadding="false"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle_text_view">
+            android:layout_gravity="top"
+            android:paddingBottom="@dimen/keyline_3">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/expanded_chip_group"
+            <TextView
+                android:id="@+id/title_text_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Filter"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                app:layout_constraintBottom_toTopOf="@+id/collapsed_bar_guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </HorizontalScrollView>
+            <TextView
+                android:id="@+id/subtitle_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Period"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/collapsed_bar_guideline" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/collapsed_bar_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="52dp" />
+
+            <HorizontalScrollView
+                android:id="@+id/expanded_hztl_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle_text_view">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/expanded_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</layout>

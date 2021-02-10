@@ -4,28 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.doOnPreDraw
-import androidx.core.view.updatePadding
-import androidx.lifecycle.Observer
+import androidx.core.view.doOnNextLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
+import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import space.narrate.waylan.android.*
+import space.narrate.waylan.android.R
+import space.narrate.waylan.android.databinding.FragmentListBinding
+import space.narrate.waylan.android.ui.MainActivity
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.ui.common.BaseFragment
-import space.narrate.waylan.android.ui.search.ContextualFragment
-import space.narrate.waylan.android.util.*
-import space.narrate.waylan.android.ui.widget.ElasticTransition
+import space.narrate.waylan.android.ui.details.DetailsFragmentDirections
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.ui.TransitionType
+import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
 
 /**
  * A flexible Fragment that handles the display of a [ListType]. Each [ListType] configuration is
@@ -33,16 +36,13 @@ import space.narrate.waylan.android.ui.widget.ElasticTransition
  * AppBarLayout (faked) titleRes is set to.
  *
  */
-class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
+class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
 
-    private lateinit var coordinatorLayout: CoordinatorLayout
-    private lateinit var navigationIcon: AppCompatImageButton
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var toolbarContainer: ConstraintLayout
-    private lateinit var toolbarTitle: AppCompatTextView
-    private lateinit var toolbarTitleCollapsed: AppCompatTextView
-    private lateinit var underline: View
+    private lateinit var binding: FragmentListBinding
+
+    private val navigator: Navigator by inject()
+
+    private val args: ListFragmentArgs by lazy { navArgs<ListFragmentArgs>().value }
 
     // The MainViewModel used to share data between MainActivity and its child Fragments
     private val sharedViewModel: MainViewModel by sharedViewModel()
@@ -54,7 +54,9 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = ElasticTransition()
+        val forward = args.transitionForward
+        val transitionType = args.transitionType
+        setUpTransitions(transitionType, forward)
     }
 
     override fun onCreateView(
@@ -62,135 +64,94 @@ class ListFragment: BaseFragment(), ListItemAdapter.ListItemListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        postponeEnterTransition(500L, TimeUnit.MILLISECONDS)
+        binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Postpone enter transition until we've set everything up.
-        postponeEnterTransition()
-
-        coordinatorLayout = view.findViewById(R.id.coordinator_layout)
-        navigationIcon = view.findViewById(R.id.navigation_icon)
-        appBarLayout = view.findViewById(R.id.app_bar)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        toolbarContainer = view.findViewById(R.id.toolbar_container)
-        toolbarTitle = view.findViewById(R.id.toolbar_title)
-        toolbarTitleCollapsed = view.findViewById(R.id.toolbar_title_collapsed)
-        underline = view.findViewById(R.id.underline)
-
-        viewModel.setListType(navArgs<ListFragmentArgs>().value.listType)
-
-        appBarLayout.setUpWithElasticBehavior(
-            this.javaClass.simpleName,
-            sharedViewModel,
-            listOf(appBarLayout),
-            listOf(recyclerView, appBarLayout)
-        )
-
-        // Set the toolbarTitle according to the above listType
-        navigationIcon.setOnClickListener {
-            // Child fragments of MainActivity should report how the user is navigating away
-            // from them. For more info, see [BaseFragment.setUnconsumedNavigationMethod]
-            sharedViewModel.onNavigationIconClicked(this.javaClass.simpleName)
-        }
-
-        // Set up expanding/collapsing "toolbar"
-        setUpReachabilityAppBar()
+        viewModel.setListType(args.listType)
 
         setUpList()
 
         // Start enter transition now that things are set up.
-        startPostponedEnterTransition()
     }
 
-    override fun handleApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
-        coordinatorLayout.updatePadding(
-            insets.systemWindowInsetLeft,
-            insets.systemWindowInsetTop,
-            insets.systemWindowInsetRight
-        )
-        recyclerView.updatePadding(
-            bottom = ContextualFragment.getPeekHeight(requireContext(), insets)
-        )
-        return super.handleApplyWindowInsets(insets)
+    fun setUpTransitions(type: TransitionType, forward: Boolean) {
+        when (type) {
+            TransitionType.SHARED_AXIS_X, TransitionType.SHARED_AXIS_Y -> {
+                val axis = if (type == TransitionType.SHARED_AXIS_X) {
+                    MaterialSharedAxis.X
+                } else {
+                    MaterialSharedAxis.Y
+                }
+                enterTransition = MaterialSharedAxis(axis, forward)
+                returnTransition = MaterialSharedAxis(axis, !forward)
+
+                exitTransition = MaterialSharedAxis(axis, forward)
+                reenterTransition = MaterialSharedAxis(axis, !forward)
+            }
+          TransitionType.FADE_THROUGH -> {
+              enterTransition = MaterialFadeThrough()
+              returnTransition = MaterialFadeThrough()
+              exitTransition = MaterialFadeThrough()
+              reenterTransition = MaterialFadeThrough()
+          }
+        }
     }
 
     private fun setUpList() {
-        recyclerView.layoutManager = LinearLayoutManager(
-            context,
-            RecyclerView.VERTICAL,
-            false
-        )
-        recyclerView.adapter = adapter
-        val itemDivider = ListItemDividerDecoration(
-            ContextCompat.getDrawable(context!!, R.drawable.list_item_divider)
-        )
-        recyclerView.addItemDecoration(itemDivider)
+        binding.run {
+            recyclerView.layoutManager = LinearLayoutManager(
+                context,
+                RecyclerView.VERTICAL,
+                false
+            )
+            recyclerView.adapter = adapter
+            recyclerView.itemAnimator = DefaultItemAnimator()
+            val itemDivider = ListItemDividerDecoration(
+                ContextCompat.getDrawable(requireContext(), R.drawable.list_item_divider)
+            )
+            recyclerView.addItemDecoration(itemDivider)
 
-        viewModel.listType.observe(this, Observer {
-            toolbarTitle.text = getString(it.titleRes)
-            toolbarTitleCollapsed.text = getString(it.titleRes)
-        })
+            viewModel.listType.observe(this@ListFragment.viewLifecycleOwner) { type ->
+                appBar.title = getString(type.titleRes)
+            }
 
-        viewModel.list.observe(this, Observer {
-            adapter.submitList(it)
-        })
-    }
-
-    /**
-     * If the list is empty or the user has not seen the banner (which acts as an onboarding
-     * mechanism to describe the contents of this instance's [ListType], set the adapter's
-     * header
-     */
-
-
-    /**
-     * Manually translates views in this Fragment's AppBarLayout to create an expanding/collapsing
-     * toolbar.
-     */
-    private fun setUpReachabilityAppBar() {
-
-        appBarLayout.doOnPreDraw {
-            // TODO set height of expanded toolbar based on view height. Set collapsed if
-            // under a certain limit
-
-            // set min height
-            val minCollapsedHeight = underline.bottom - navigationIcon.top
-            val toolbarTitleCollapsedHeight = toolbarTitleCollapsed.height
-
-            val alphaFraction = 0.6F
-            toolbarContainer.minimumHeight = minCollapsedHeight
-            appBarLayout.addOnOffsetChangedListener(
-                AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                    val totalScrollRange = appBarLayout.totalScrollRange - minCollapsedHeight
-                    val interpolationEarlyFinish = Math.abs(
-                        verticalOffset.toFloat()
-                    ) / totalScrollRange
-
-                    // translate the navIcon to make room for the collapsed toolbar titleRes
-                    val navIconTransY =
-                        (1 - interpolationEarlyFinish) * toolbarTitleCollapsedHeight
-                    navigationIcon.translationY = navIconTransY
-
-                    // hide/show the collapsed toolbar titleRes
-                    val offsetInterpolation = MathUtils.normalize(
-                        interpolationEarlyFinish,
-                        alphaFraction,
-                        1F,
-                        0F,
-                        1F
-                    )
-                    toolbarTitleCollapsed.alpha = offsetInterpolation
-                })
+            // Wait for the recycler to draw it's children so they can be found by the shared
+            // element transition
+            recyclerView.doOnNextLayout { startPostponedEnterTransition() }
         }
 
+        viewModel.list.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
-    override fun onWordClicked(word: String) {
+    override fun onWordClicked(word: String, view: View, useSharedElement: Boolean) {
+        exitTransition = Hold()
+        reenterTransition = null
         sharedViewModel.onChangeCurrentWord(word)
-        findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
+        if (useSharedElement) {
+            val extras = FragmentNavigatorExtras(view to "details_container_transition_group")
+            findNavController().navigate(
+                R.id.action_listFragment_to_detailsFragment,
+                null,
+                null,
+                extras
+            )
+        } else {
+            val mainActivity = (requireActivity() as MainActivity)
+            (mainActivity.currentNavigationFragment as? ListFragment)?.apply {
+                setUpTransitions(TransitionType.SHARED_AXIS_Y, true)
+            }
+            findNavController().navigate(
+                DetailsFragmentDirections.actionGlobalDetailsFragment(TransitionType.SHARED_AXIS_Y)
+            )
+        }
+
     }
 
     override fun onBannerClicked() {

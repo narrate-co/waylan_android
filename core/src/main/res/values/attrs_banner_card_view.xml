@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerCardView">
+        <attr name="bannerLabel" format="string"/>
+        <attr name="bannerText" format="string"/>
+        <attr name="bannerTopButtonText" format="string"/>
+        <attr name="bannerBottomButtonText" format="string"/>
+    </declare-styleable>
+</resources>

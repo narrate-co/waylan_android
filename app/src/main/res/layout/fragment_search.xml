@@ -1,116 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:id="@+id/collapsed_container"
-    android:backgroundTint="?colorSurface"
-    android:clickable="true"
-    android:focusable="true"
-    android:elevation="@dimen/plane_02">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/shelf_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/collapsed_container"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:backgroundTint="?colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="@dimen/plane_02"
+        app:behavior_isSearchSheet="@{true}">
 
-    <FrameLayout
-        android:id="@+id/search_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/search_box_height"
-        android:layout_marginStart="@dimen/keyline_2"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/search_input_background"
-        android:foregroundGravity="center_vertical"
-        android:padding="@dimen/keyline_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shelf_container">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/keyline_3"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:alpha="0"
+            app:reverseLayout="true"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/search_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/handle_container" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/search_edit_text"
-            style="?attr/styleEditTextArea"
+        <View
+            android:id="@+id/fade_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginStart="@dimen/keyline_2"
-            android:layout_marginEnd="@dimen/keyline_2"
-            android:focusable="true"
-            android:hint="Search Words"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:paddingStart="8dp"
-            android:paddingEnd="@dimen/keyline_2"
-            android:singleLine="true" />
+            android:layout_height="42dp"
+            app:fadeBackgroundAngle="@{90}"
+            app:fadeBackgroundElevation="@{@dimen/plane_02}"
+            app:layout_constraintTop_toBottomOf="@id/handle_container"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/microphone_image_view"
+        <FrameLayout
+            android:id="@+id/handle_container"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:paddingTop="@dimen/keyline_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                app:srcCompat="@drawable/search_sheet_handle"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/search_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/keyline_2"
+            android:layout_marginTop="@dimen/search_input_area_margin_top"
+            android:layout_marginBottom="@dimen/keyline_3"
+            android:background="@drawable/search_input_area"
+            android:foregroundGravity="center_vertical"
+            android:minHeight="@dimen/search_box_height"
+            android:padding="@dimen/keyline_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_edit_text"
+                style="?attr/styleEditTextArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginStart="@dimen/keyline_2"
+                android:layout_marginEnd="@dimen/keyline_2"
+                android:focusable="true"
+                android:hint="@string/search_bar_hint"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:paddingEnd="@dimen/keyline_2"
+                android:singleLine="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/microphone_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/keyline_3"
+                android:alpha=".5"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_round_mic_24px" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/actions_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="@dimen/keyline_3"
-            android:alpha=".5"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_round_mic_24px" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/search_container"
+            app:layout_constraintStart_toEndOf="@+id/search_container"
+            app:layout_constraintTop_toTopOf="@+id/search_container">
 
+            <FrameLayout
+                android:id="@+id/action_one"
+                android:layout_width="@dimen/search_box_height"
+                android:layout_height="@dimen/search_box_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/keyline_2_5"
+                android:layout_marginRight="@dimen/keyline_2">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/action_one_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center_vertical"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_round_filter_list_24px" />
+            </FrameLayout>
 
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/action_two"
+                android:layout_width="@dimen/search_box_height"
+                android:layout_height="@dimen/search_box_height"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:layout_marginRight="@dimen/keyline_2_5">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/action_two_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/keyline_2"
+                    android:layout_marginRight="@dimen/keyline_2_5"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_round_share_24px" />
+            </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/actions_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/keyline_2"
-        android:paddingRight="@dimen/keyline_2"
-        app:layout_constraintBottom_toBottomOf="@+id/search_container"
-        app:layout_constraintStart_toEndOf="@+id/search_container"
-        app:layout_constraintTop_toTopOf="@+id/search_container">
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/action_one_image_view"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:scaleType="centerInside"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="@dimen/keyline_2"
-            android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_filter_list_24px" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/action_two_image_view"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:scaleType="centerInside"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/keyline_1"
-            android:layout_marginRight="@dimen/keyline_2"
-            android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_round_share_24px"
-            android:visibility="visible"/>
-
-    </LinearLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:overScrollMode="never"
-        android:clipToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_container" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</layout>

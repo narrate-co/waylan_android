@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <space.narrate.waylan.core.ui.widget.ScrimWindowLayout
+        android:id="@+id/scrim_frame"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:windowBackground"
+            app:paddingLeftSystemWindowInsets="@{true}"
+            app:paddingTopSystemWindowInsets="@{true}"
+            app:paddingRightSystemWindowInsets="@{true}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingTop="@dimen/keyline_2"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:paddingBottomSystemWindowInsets="@{true}" />
+
+            <space.narrate.waylan.core.ui.widget.ReachabilityAppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/third_party_libraries_title"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </space.narrate.waylan.core.ui.widget.ScrimWindowLayout>
+</layout>

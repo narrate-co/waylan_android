@@ -1,10 +1,10 @@
 # Module app
 
-# Package space.narrate.waylan.android.billing
+# Package space.narrate.waylan.core.billing
 
 All classes related to Google Play Billing
 
-# Package space.narrate.waylan.android.data
+# Package space.narrate.waylan.core.data
 
 All classes reading, writing or retrieving data for Words. This includes a Wordset Room database, 
 a Merriam-Webster API service, a Merriam-Webster Room database for stored API responses, 

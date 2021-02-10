@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ELEVATION -->
+    <!--Flat surfaces and areas with zero elevation-->
+    <dimen name="plane_00">0dp</dimen>
+
+    <!--Cards and secondary bottom sheets-->
+    <dimen name="plane_01">2dp</dimen>
+
+    <!--Main, persistent bottom sheets, bottom app bars, etc.-->
+    <dimen name="plane_02">16dp</dimen>
+
+    <!--Snackbars and other high-priority dialogs-->
+    <dimen name="plane_03">24dp</dimen>
+
+
+    <!-- TRANSLUCENCE -->
+    <!--Lowest surfaces that have a fully opaque background and are-->
+    <!--usually paired with plane_00 -->
+    <item name="translucence_00" type="dimen" format="float">1.0</item>
+
+    <!--Elevated surfaces that wish to express elevation through-->
+    <!--transparency rather than elevation/shadows. Typically paired -->
+    <!--with plane_01-->
+    <item name="translucence_01" type="dimen" format="float">0.8</item>
+
+</resources>

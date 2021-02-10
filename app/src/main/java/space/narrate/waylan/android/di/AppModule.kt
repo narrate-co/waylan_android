@@ -1,84 +1,115 @@
 package space.narrate.waylan.android.di
 
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import space.narrate.waylan.android.BuildConfig
+import space.narrate.waylan.android.AppNavigator
 import space.narrate.waylan.android.ui.MainViewModel
-import space.narrate.waylan.android.billing.BillingManager
-import space.narrate.waylan.android.data.auth.AuthenticationStore
-import space.narrate.waylan.android.data.disk.AppDatabase
-import space.narrate.waylan.android.data.firestore.FirestoreStore
-import space.narrate.waylan.android.data.mw.MerriamWebsterStore
-import space.narrate.waylan.android.data.mw.RetrofitService
-import space.narrate.waylan.android.data.prefs.PreferenceStore
-import space.narrate.waylan.android.data.prefs.RotationManager
-import space.narrate.waylan.android.data.prefs.ThirdPartyLibraryStore
-import space.narrate.waylan.android.data.prefs.UserPreferenceStore
-import space.narrate.waylan.android.data.repository.AnalyticsRepository
-import space.narrate.waylan.android.data.repository.UserRepository
-import space.narrate.waylan.android.data.repository.WordRepository
-import space.narrate.waylan.android.data.spell.SymSpellStore
 import space.narrate.waylan.android.ui.auth.AuthViewModel
 import space.narrate.waylan.android.ui.details.DetailsViewModel
-import space.narrate.waylan.android.ui.dev.DeveloperSettingsViewModel
-import space.narrate.waylan.android.ui.home.HomeViewModel
+import space.narrate.waylan.android.ui.details.WaylanDefinitionDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanDefinitionsDetailDataProvider
+import space.narrate.waylan.android.ui.details.WaylanExampleDetailItemProvider
+import space.narrate.waylan.android.ui.details.WaylanExamplesDetailDataProvider
 import space.narrate.waylan.android.ui.list.ListViewModel
+import space.narrate.waylan.android.ui.search.ContextualViewModel
 import space.narrate.waylan.android.ui.search.SearchViewModel
-import space.narrate.waylan.android.ui.settings.SettingsViewModel
+import space.narrate.waylan.core.details.DetailDataProviderRegistry
+import space.narrate.waylan.core.details.DetailItemProviderRegistry
+import space.narrate.waylan.core.details.DetailProviderFactory
+import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.wordset.WordsetDetailDataProvider
+import space.narrate.waylan.wordset.WordsetDetailItemProvider
 
+// Dependent on CoreModule
 val appModule = module {
 
-    // Stores
-    single { AppDatabase.getInstance(androidContext()) }
+    // Navigator
+    single { AppNavigator(get()) as Navigator }
 
-    single { PreferenceStore(androidContext()) }
-
-    single { SymSpellStore(androidContext()) }
-
-    single { ThirdPartyLibraryStore }
-
-    single { AuthenticationStore(FirebaseAuth.getInstance(), get()) }
-
-    single { FirestoreStore(FirebaseFirestore.getInstance(), get()) }
-
-    single { MerriamWebsterStore(RetrofitService.getInstance(), get<AppDatabase>().mwDao()) }
-
-    single { UserPreferenceStore(androidContext(), get()) }
-
-    // Repositories
-    single {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(androidContext()).apply {
-            setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-        }
-        AnalyticsRepository(firebaseAnalytics, get())
-    }
-
-    single { WordRepository(get(), get(), get(), get(), get()) }
-
-    single { UserRepository(get(), get(), get(), get(), get()) }
-
-    // Managers
-    single { RotationManager(androidContext()) }
-
-    single { BillingManager(androidContext(), get(), get()) }
-
+    // ViewModels
     viewModel { MainViewModel(get(), get(), get()) }
 
-    viewModel { HomeViewModel(get()) }
+    viewModel { SearchViewModel(get(), get(), get(), get()) }
 
-    viewModel { SearchViewModel(get(), get(), get()) }
-
-    viewModel { SettingsViewModel(get()) }
-
-    viewModel { DeveloperSettingsViewModel(get()) }
+    viewModel { ContextualViewModel(get(), get()) }
 
     viewModel { ListViewModel(get(), get()) }
 
     viewModel { DetailsViewModel(get(), get()) }
 
     viewModel { AuthViewModel(get(), get(), get()) }
+
+    // Use reflection to get an instance of :merriamwebster's DetailProviderFactory.
+    // TODO Move this into :merriamwebster when mw becomes not installed at runtime.
+    single(named("merriamWebsterDetailProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.merriamwebster.di.MerriamWebsterModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
+    // Use reflection to get an instance of :merriamwebster_thesaurus's DetailProviderFactory.
+    single(named("merriamWebsterThesaurusDetailDataProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.merriamwebster_thesaurus.di.MerriamWebsterThesaurusModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
+    // Use reflection to get an instance of :americanheritage's DetailProviderFactory.
+    single(named("americanHeritageDetailProviderFactory")) {
+        Class.forName(
+            "space.narrate.waylan.americanheritage.di.AmericanHeritageModuleProviderFactory"
+        ).newInstance() as DetailProviderFactory
+    }
+
+    // DetailDataProviderRegistry
+    single {
+        val detailDataProviderRegistry = DetailDataProviderRegistry()
+
+        val merriamWebsterDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterDetailProviderFactory"))
+
+        val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
+
+        val americanHeritageDetailProviderFactory: DetailProviderFactory =
+            get(named("americanHeritageDetailProviderFactory"))
+
+        detailDataProviderRegistry.addProviders(
+            merriamWebsterDetailProviderFactory.getDetailDataProvider(),
+            merriamWebsterThesaurusDetailProviderFactory.getDetailDataProvider(),
+            americanHeritageDetailProviderFactory.getDetailDataProvider(),
+            WordsetDetailDataProvider(get()),
+            WaylanDefinitionsDetailDataProvider(get()),
+            WaylanExamplesDetailDataProvider(get())
+        )
+
+        detailDataProviderRegistry
+    }
+
+    // DetailItemProviderRegistry
+    single {
+        val detailItemFactory = DetailItemProviderRegistry()
+
+        val merriamWebsterDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterDetailProviderFactory"))
+
+        val merriamWebsterThesaurusDetailProviderFactory: DetailProviderFactory =
+            get(named("merriamWebsterThesaurusDetailDataProviderFactory"))
+
+        val americanHeritageDetailProviderFactory: DetailProviderFactory =
+            get(named("americanHeritageDetailProviderFactory"))
+
+        // Add the Merriam-Webster provider to the detailItemFactory
+        detailItemFactory.addProviders(
+            merriamWebsterDetailProviderFactory.getDetailItemProvider(),
+            merriamWebsterThesaurusDetailProviderFactory.getDetailItemProvider(),
+            americanHeritageDetailProviderFactory.getDetailItemProvider(),
+            WordsetDetailItemProvider(),
+            WaylanDefinitionDetailItemProvider(),
+            WaylanExampleDetailItemProvider(get())
+        )
+
+        detailItemFactory
+    }
 }

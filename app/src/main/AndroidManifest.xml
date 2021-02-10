@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -16,7 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Words.DayNight"
+        android:theme="@style/Theme.Waylan.DayNight"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".ui.auth.AuthActivity">
@@ -24,7 +24,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity android:name=".ui.MainActivity"
@@ -39,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.disk.DatabaseSeedService" />
+        <service android:name="space.narrate.waylan.core.data.wordset.WordsetDatabaseSeedService" />
 
         <meta-data android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

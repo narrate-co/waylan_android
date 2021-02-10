@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/listFragment">
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="space.narrate.waylan.android.ui.list.ListFragment"
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/action_listFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_listFragment_to_settingsFragment"
+            app:destination="@+id/settingsFragment"/>
+        <argument
+            android:name="listType"
+            app:argType="space.narrate.waylan.core.ui.ListType"
+            android:defaultValue="RECENT"/>
+        <argument
+            android:name="transitionType"
+            app:argType="space.narrate.waylan.core.ui.TransitionType"
+            android:defaultValue="NONE"/>
+        <argument
+            android:name="transitionForward"
+            app:argType="boolean"
+            android:defaultValue="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="space.narrate.waylan.android.ui.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <action
+            android:id="@+id/action_detailsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_addOnsFragment"
+            app:destination="@id/addOnsFragment" />
+        <argument
+            android:name="transitionType"
+            app:argType="space.narrate.waylan.core.ui.TransitionType"
+            android:defaultValue="CONTAINER_TRANSFORM"/>
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="space.narrate.waylan.settings.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_developerSettingsFragment"
+            app:destination="@id/developerSettingsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_addOnsFragment"
+            app:destination="@id/addOnsFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addOnsFragment"
+        android:name="space.narrate.waylan.settings.ui.addons.AddOnsFragment"
+        android:label="AddOnsFragment">
+        <argument
+            android:name="addOn"
+            app:argType="space.narrate.waylan.core.data.firestore.users.AddOn"
+            android:defaultValue="MERRIAM_WEBSTER"/>
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="space.narrate.waylan.settings.ui.about.AboutFragment"
+        android:label="AboutFragment" >
+        <action
+            android:id="@+id/action_aboutFragment_to_thirdPartyLibrariesFragment"
+            app:destination="@id/thirdPartyLibrariesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/developerSettingsFragment"
+        android:name="space.narrate.waylan.settings.ui.developer.DeveloperSettingsFragment"
+        android:label="DeveloperSettingsFragment" />
+    <fragment
+        android:id="@+id/thirdPartyLibrariesFragment"
+        android:name="space.narrate.waylan.settings.ui.thirdparty.ThirdPartyLibrariesFragment"
+        android:label="ThirdPartyLibrariesFragment" />
+    <action
+        android:id="@+id/action_global_listFragment"
+        app:destination="@id/listFragment"
+        app:launchSingleTop="true"/>
+    <action
+        android:id="@+id/action_global_detailsFragment"
+        app:destination="@id/detailsFragment"
+        app:launchSingleTop="true"/>
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment"/>
+</navigation>

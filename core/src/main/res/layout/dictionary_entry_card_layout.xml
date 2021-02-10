@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/card_constraint_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/keyline_3"
+      android:paddingBottom="@dimen/keyline_4">
+
+    <space.narrate.waylan.core.ui.widget.TextLabelChip
+        android:id="@+id/text_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        android:id="@+id/dictionary_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_2"
+        android:layout_marginStart="@dimen/keyline_3"
+        android:layout_marginEnd="@dimen/keyline_3"
+        app:layout_constraintTop_toBottomOf="@+id/text_label"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <space.narrate.waylan.core.ui.widget.UnderlineActionView
+        android:id="@+id/action_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/keyline_3"
+        android:paddingEnd="@dimen/keyline_3"
+        android:paddingTop="@dimen/keyline_1"
+        app:layout_constraintTop_toBottomOf="@id/text_label"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/definitions_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/keyline_3"
+        app:layout_constraintTop_toBottomOf="@+id/action_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/examples_list_container"/>
+
+    <LinearLayout
+        android:id="@+id/examples_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/definitions_list_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/related_words_scroll_view"/>
+
+    <HorizontalScrollView
+        android:id="@+id/related_words_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/examples_list_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:scrollbars="none">
+
+      <com.google.android.material.chip.ChipGroup
+          android:id="@+id/related_words_chip_group"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:scrollbars="none"
+          app:singleLine="true" />
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/permission_pane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_3"
+        android:layout_marginHorizontal="@dimen/keyline_3"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dictionary_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+      <View
+          android:layout_width="100dp"
+          android:layout_height="28dp"
+          android:layout_marginTop="@dimen/keyline_2"
+          android:layout_marginBottom="@dimen/keyline_1"
+          android:background="@drawable/permission_pane_area"/>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="56dp"
+          android:layout_marginTop="@dimen/keyline_1"
+          android:layout_marginBottom="@dimen/keyline_2"
+          android:background="@drawable/permission_pane_area"/>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="@dimen/keyline_2_5"
+          android:gravity="end">
+
+        <Button
+            style="?attr/styleTextButton"
+            android:id="@+id/details_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:text="@string/add_on_permission_pane_details_button_text"
+            android:layout_gravity="right" />
+
+        <Button
+            style="?attr/styleTextButton"
+            android:id="@+id/dismiss_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:text="@string/add_on_permission_pane_dismiss_button_text"
+            android:layout_gravity="right" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>
+
+
+    

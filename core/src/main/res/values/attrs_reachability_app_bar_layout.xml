@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ReachabilityAppBarLayout">
+        <!--The total height of the app bar when expanded-->
+        <attr name="expandedHeight" format="dimension"/>
+        <!--The title to be used for both the expanded and collapsed titles-->
+        <attr name="title"/>
+        <!-- The text appearance of the expanded title-->
+        <attr name="expandedTitleTextAppearance" format="reference"/>
+        <!--The vertical placement in the fully expanded container where the expanded title-->
+        <!--should be. 0.0 would place the title directly up against the top of the app bar-->
+        <!--while 1.0 would place it at the bottom of the app bar.-->
+        <attr name="expandedTitleVerticalBias" format="float" />
+        <!--Whether or noth this app bar can be dragged to "dismiss" or go back-->
+        <attr name="dragDismissable" format="boolean"/>
+        <!--A drawable to be used as the toolbars navigation icon.-->
+        <attr name="navigationIcon" format="reference"/>
+        <!--Menu to use in toolbar that holds action items-->
+        <attr name="menu" format="reference"/>
+    </declare-styleable>
+</resources>
