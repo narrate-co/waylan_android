@@ -15,6 +15,7 @@ import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.data.wordset.Example
 import space.narrate.waylan.core.databinding.DictionaryEntryCardLayoutBinding
+import space.narrate.waylan.core.util.fromHtml
 import space.narrate.waylan.core.util.getFloat
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.themeFloat
@@ -181,7 +182,7 @@ class DictionaryEntryCardView @JvmOverloads constructor (
       binding.definitionsListContainer,
       false
     ) as AppCompatTextView
-    textView.text = ":$def"
+    textView.text = ":${def.fromHtml}"
     return textView
   }
 

@@ -48,10 +48,11 @@
             style="?attr/styleTextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
+            android:paddingVertical="@dimen/keyline_2"
             android:paddingHorizontal="@dimen/keyline_3"
             android:layout_marginHorizontal="14dp"
             android:text="@string/mw_thesaurus_expand_chip_groups_button_title"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

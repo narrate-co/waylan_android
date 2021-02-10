@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginVertical="@dimen/keyline_2">
 
@@ -19,6 +20,8 @@
         android:id="@+id/chip_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:chipSpacingHorizontal="@dimen/keyline_1"
+        app:chipSpacingVertical="0dp"
         android:paddingHorizontal="10dp" />
 
 </LinearLayout>
