@@ -47,6 +47,8 @@ class DetailsViewModel(
                                 DetailItemType.MERRIAM_WEBSTER
                             AddOn.MERRIAM_WEBSTER_THESAURUS ->
                                 DetailItemType.MERRIAM_WEBSTER_THESAURUS
+                            AddOn.AMERICAN_HERITAGE ->
+                                DetailItemType.AMERICAN_HERITAGE
                         }
                         it.itemType == type
                     }

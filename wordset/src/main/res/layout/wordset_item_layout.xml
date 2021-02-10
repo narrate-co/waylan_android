@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<space.narrate.waylan.core.ui.widget.DictionaryEntryCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<space.narrate.waylan.core.ui.widget.DictionaryEntryCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/wordset_card"
     android:layout_width="match_parent"

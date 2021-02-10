@@ -33,6 +33,14 @@ sealed class AddOnItemModel(
         userAddOn
     )
 
+    class AmericanHeritage(addOn: AddOn, userAddOn: UserAddOn) : AddOnItemModel(
+        R.string.add_ons_american_heritage_title,
+        R.string.add_ons_american_heritage_desc_title,
+        R.string.add_ons_american_heritage_desc_body,
+        addOn,
+        userAddOn
+    )
+
     override fun isSameAs(newOther: AddOnItemModel): Boolean = this == newOther
 
     override fun isContentSameAs(newOther: AddOnItemModel): Boolean =

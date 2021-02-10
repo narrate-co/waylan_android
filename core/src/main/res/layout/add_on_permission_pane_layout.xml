@@ -23,31 +23,31 @@
         android:layout_marginBottom="@dimen/keyline_2"
         android:background="@drawable/permission_pane_area"/>
 
-    <Button
-        style="?attr/styleTextButton"
-        android:id="@+id/details_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingRight="@dimen/keyline_3"
-        android:paddingLeft="@dimen/keyline_3"
-        android:layout_marginTop="@dimen/keyline_1"
-        android:text="@string/add_on_permission_pane_details_button_text"
-        android:layout_gravity="right" />
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/keyline_2_5"
+        android:gravity="end">
 
+        <Button
+            style="?attr/styleTextButton"
+            android:id="@+id/details_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:text="@string/add_on_permission_pane_details_button_text"
+            android:layout_gravity="right" />
 
-    <Button
-        style="?attr/styleTextButton"
-        android:id="@+id/dismiss_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingRight="@dimen/keyline_3"
-        android:paddingLeft="@dimen/keyline_3"
-        android:text="@string/add_on_permission_pane_dismiss_button_text"
-        android:layout_gravity="right"
-        />
+        <Button
+            style="?attr/styleTextButton"
+            android:id="@+id/dismiss_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/keyline_3"
+            android:text="@string/add_on_permission_pane_dismiss_button_text"
+            android:layout_gravity="right" />
+
+    </LinearLayout>
 
 </LinearLayout>

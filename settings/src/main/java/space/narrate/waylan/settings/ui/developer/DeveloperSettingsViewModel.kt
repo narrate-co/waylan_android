@@ -36,6 +36,11 @@ class DeveloperSettingsViewModel(
             getLabelForAddOnState(it.state)
         }
 
+    val ahdState: LiveData<String>
+        get() = userRepository.getUserAddOnLive(AddOn.AMERICAN_HERITAGE).mapTransform {
+            getLabelForAddOnState(it.state)
+        }
+
     val useTestSkus: LiveData<Boolean>
         get() = userRepository.useTestSkusLive
 
@@ -87,6 +92,10 @@ class DeveloperSettingsViewModel(
 
     fun onMwThesaurusPreferenceClicked() {
         toggleUserAddOn(AddOn.MERRIAM_WEBSTER_THESAURUS)
+    }
+
+    fun onAdhPreferenceClicked() {
+        toggleUserAddOn(AddOn.AMERICAN_HERITAGE)
     }
 
     private fun toggleUserAddOn(addOn: AddOn) = viewModelScope.launch {

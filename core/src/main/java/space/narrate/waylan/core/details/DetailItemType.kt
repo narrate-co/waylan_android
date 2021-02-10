@@ -10,10 +10,12 @@ enum class DetailItemType(val order: Int) {
     MERRIAM_WEBSTER(2),
     /** Entry from Merriam-Webster Thesaurus. */
     MERRIAM_WEBSTER_THESAURUS(3),
+    /** Entry for American-Heritage. */
+    AMERICAN_HERITAGE(4),
     /** Entry from Wordset. */
-    WORDSET(4),
+    WORDSET(5),
     /** Definitions that are created by users. */
-    DEFINITION(5),
+    DEFINITION(6),
     /** Examples that are created by users. */
-    EXAMPLE(6)
+    EXAMPLE(7)
 }

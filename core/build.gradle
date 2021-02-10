@@ -27,14 +27,6 @@ android {
         }
     }
 
-    // testLib is a set of sources to be shared between both unit and instremented tests as well
-    // as across modules with the target '["${project(':core').projectDir}/src/testLib/java"]'.
-    sourceSets {
-        String testLibDir = 'src/testLib/java'
-        test.java.srcDirs += testLibDir
-        androidTest.java.srcDirs += testLibDir
-    }
-
     // View/Data binding
     buildFeatures {
         dataBinding = true

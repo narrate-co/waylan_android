@@ -19,6 +19,7 @@ class AddOnViewPreviewHolder(
         val layout = when (addOn) {
             is AddOnItemModel.MerriamWebster -> R.layout.add_on_merriam_webster_preview_content
             is AddOnItemModel.MerriamWebsterThesaurus -> R.layout.add_on_merriam_webster_thesaurus_preview_content
+            is AddOnItemModel.AmericanHeritage -> R.layout.add_on_american_heritage_preview_content
         }
 
         // Replace the card's content with a preview of this add-on's content.

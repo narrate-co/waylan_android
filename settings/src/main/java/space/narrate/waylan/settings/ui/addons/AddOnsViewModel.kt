@@ -148,6 +148,8 @@ class AddOnsViewModel(
                         R.string.add_on_merriam_webster_successfully_purchased
                     AddOn.MERRIAM_WEBSTER_THESAURUS ->
                         R.string.add_on_merriam_webster_thesaurus_successfully_purchased
+                    AddOn.AMERICAN_HERITAGE ->
+                        R.string.add_on_american_heritage_successfully_purchased
                 }
                 _shouldShowSnackbar.value = Event(SnackbarModel(
                     message,

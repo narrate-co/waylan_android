@@ -48,8 +48,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core')
-    testImplementation project(':core')
 
     // Google Play Billing
     implementation Libs.playBilling
+
+    // Testing
+    testImplementation project(':core')
 }

@@ -5,8 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOn
-import space.narrate.waylan.settings.ui.addons.AddOnItemModel.MerriamWebster
-import space.narrate.waylan.settings.ui.addons.AddOnItemModel.MerriamWebsterThesaurus
+import space.narrate.waylan.settings.ui.addons.AddOnItemModel.*
 
 /**
  * A LiveData mediator that listens to multiple live data objects and posts values
@@ -16,12 +15,14 @@ class AddOnItemListMediatorLiveData : MediatorLiveData<List<AddOnItemModel>>() {
 
     private var merriamWebsterItem: MerriamWebster? = null
     private var merriamWebsterThesaurusItem: MerriamWebsterThesaurus? = null
+    private var americanHeritage: AmericanHeritage? = null
 
     fun addSource(data: LiveData<UserAddOn>) {
         addSource(data) { userAddOn ->
             set(when(val addOn = AddOn.fromId(userAddOn.id)) {
                 AddOn.MERRIAM_WEBSTER -> MerriamWebster(addOn, userAddOn)
                 AddOn.MERRIAM_WEBSTER_THESAURUS -> MerriamWebsterThesaurus(addOn, userAddOn)
+                AddOn.AMERICAN_HERITAGE -> AmericanHeritage(addOn, userAddOn)
             })
         }
     }
@@ -39,6 +40,11 @@ class AddOnItemListMediatorLiveData : MediatorLiveData<List<AddOnItemModel>>() {
                     merriamWebsterThesaurusItem = item
                     updateList()
             }
+            is AmericanHeritage ->
+                if (shouldUpdateList(americanHeritage, item)) {
+                    americanHeritage = item
+                    updateList()
+                }
         }
     }
 
@@ -52,7 +58,8 @@ class AddOnItemListMediatorLiveData : MediatorLiveData<List<AddOnItemModel>>() {
         // post value
         postValue(listOfNotNull(
             merriamWebsterItem,
-            merriamWebsterThesaurusItem
+            merriamWebsterThesaurusItem,
+            americanHeritage
         ))
     }
 

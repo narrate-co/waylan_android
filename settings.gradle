@@ -5,6 +5,8 @@ include ':core'
 include ':app'
 // Settings holds all UI and logic to display in-app settings, billing and configuration.
 include ':settings'
+// Wordnik is a library that is capable of handling all Wordnik API functions.
+include ':wordnik'
 // Wordset is an android lib that includes all logic for getting and displaying
 // entries from wordset, the app's built-in, offline database.
 include ':wordset'
@@ -15,6 +17,10 @@ include ':merriamwebster'
 // with Merriam-Webster thesaurus data. this module exposes providers to display Merriam-Webster
 // Thesaurus data.
 include ':merriamwebster_thesaurus'
+// American Heritage is a dynamic feature module that includes all logic related to
+// working with the the Wordnik API to display entries from the American
+// Heritage dictionary.
+include ':americanheritage'
 // Test Common holds all testing code which is shared between module tests, both unit and
 // instrumentation tests. This includes things like utilities, extensions, rules, etc.
 include ':test_common'

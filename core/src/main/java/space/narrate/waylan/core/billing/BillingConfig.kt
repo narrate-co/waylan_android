@@ -17,4 +17,5 @@ object BillingConfig {
     // Our actual Google Play sku
     const val SKU_MERRIAM_WEBSTER = "space.narrate.words.android.merriam_webster_plugin"
     const val SKU_MERRIAM_WEBSTER_THESAURUS = "space.narrate.words.android.merriam_webster_thesaurus_plugin"
+    const val SKU_AMERICAN_HERITAGE = "space.narrate.words.android.american_heritage_plugin"
 }
