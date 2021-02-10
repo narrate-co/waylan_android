@@ -1,0 +1,41 @@
+on:
+  push:
+    branches:
+    - prod
+name: Build and Release Android
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Decrypt files
+      run: ./.github/scripts/decrypt_files.sh
+      env:
+        SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+
+    - name: Build release AAB
+      run: ./gradlew bundleRelease
+
+    - name: Sign AAB
+      uses: r0adkll/sign-android-release@v1
+      with:
+        releaseDirectory: app/build/outputs/bundle/release
+        signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+        alias: ${{ secrets.KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+    - name: Upload to alpha track
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_SERVICE_JSON }}
+        packageName: space.narrate.waylan.android
+        releaseFile: app/build/outputs/bundle/release/app-release.aab
+        track: alpha
+        whatsNewDirectory: distribution/whatsnew
+        mappingFile: build/app/outputs/mapping/release/mapping.txt
