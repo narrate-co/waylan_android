@@ -35,7 +35,7 @@ jobs:
       uses: r0adkll/upload-google-play@v1
       with:
         serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_SERVICE_JSON }}
-        packageName: space.narrate.waylan.android
+        packageName: space.narrate.words.android
         releaseFile: app/build/outputs/bundle/release/app-release.aab
         track: alpha
         whatsNewDirectory: distribution/whatsnew
