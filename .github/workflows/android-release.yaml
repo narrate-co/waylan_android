@@ -39,4 +39,3 @@ jobs:
         releaseFile: app/build/outputs/bundle/release/app-release.aab
         track: alpha
         whatsNewDirectory: distribution/whatsnew
-        mappingFile: build/app/outputs/mapping/release/mapping.txt
