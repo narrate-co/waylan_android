@@ -46,7 +46,10 @@ class AmericanHeritageViewHolder(
 
       val partOfSpeechMap = item.definitions
         .groupBy { it.partOfSpeech }
-        .mapValues { m -> m.value.map { it.text.decapitalize(Locale.ENGLISH) } }
+        .mapValues { m ->
+          m.value.map { it.text.decapitalize(Locale.ENGLISH) }
+            .filterNot { it.isEmpty() }
+        }
         .toMap()
       americanHeritageCard.setDefinitions(partOfSpeechMap)
     }
