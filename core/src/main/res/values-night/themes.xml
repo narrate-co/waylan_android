@@ -21,7 +21,7 @@
         <item name="colorOnBackground">@color/colorIvory50</item>
         <item name="colorOnBackgroundError">@color/colorMauve300</item>
         <item name="colorOnSurface">@color/colorIvory50</item>
-        <item name="colorOnError">?attr/colorOnBackgroundError</item>
+        <item name="colorOnError">@color/colorNavy800</item>
         <item name="colorOnInformative">@color/colorIvory50</item>
 
         <item name="colorRipple">@color/colorNavy600</item>
