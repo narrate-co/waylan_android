@@ -12,6 +12,8 @@ import org.threeten.bp.OffsetDateTime
 import space.narrate.waylan.wordnik.BuildConfig
 import space.narrate.waylan.wordnik.data.local.Definition
 import space.narrate.waylan.wordnik.data.local.DefinitionEntry
+import space.narrate.waylan.wordnik.data.local.Example
+import space.narrate.waylan.wordnik.data.local.ExampleEntry
 import space.narrate.waylan.wordnik.data.local.WordnikDao
 import space.narrate.waylan.wordnik.data.remote.WordnikService
 
@@ -72,5 +74,43 @@ class WordnikStore(
     }
 
     return wordnikDao.getDefinitionEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  @ExperimentalCoroutinesApi
+  fun getExamples(word: String): Flow<ExampleEntry> {
+
+    launch {
+      val examples = wordnikDao.getExampleEntryImmediate(word)
+      if (examples == null) {
+        val response = wordnikService.getExamples(word, BuildConfig.WORDNIK_KEY)
+        if (response.isSuccessful && response.body() != null) {
+          // Save to cache
+          val entry = ExampleEntry(
+            word,
+            word,
+            response.body()?.examples?.map {
+              Example(
+                it.provider?.get("id") ?: 0,
+                it.rating ?: 0F,
+                it.url ?: "",
+                it.word ?: word,
+                it.text ?: "",
+                it.documentId ?: 0L,
+                it.exampleId ?: 0L,
+                it.title ?: "",
+                it.author ?: ""
+              )
+            } ?: emptyList(),
+            OffsetDateTime.now()
+          )
+          wordnikDao.insert(entry)
+        } else {
+          // TODO: Handle error
+          Log.e("WordnikStore", response.errorBody().toString())
+        }
+      }
+    }
+
+    return wordnikDao.getExampleEntry(word).filterNotNull().distinctUntilChanged()
   }
 }

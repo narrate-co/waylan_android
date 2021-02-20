@@ -8,7 +8,6 @@ import org.threeten.bp.format.DateTimeFormatter
 
 object WordnikTypeConverters {
 
-  private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
   private val gson = ThreeTenGsonAdapter.registerOffsetDateTime(GsonBuilder()).create()
 
   @TypeConverter
@@ -21,6 +20,19 @@ object WordnikTypeConverters {
   @TypeConverter
   @JvmStatic
   fun fromDefinitionList(value: List<Definition>): String {
+    return gson.toJson(value)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun toExampleList(value: String): List<Example> {
+    val type = object : TypeToken<List<Definition>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromExampleList(value: List<Example>): String {
     return gson.toJson(value)
   }
 }

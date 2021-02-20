@@ -16,8 +16,9 @@ import space.narrate.waylan.core.util.RoomTypeConverters
 @Database(
     entities = [
         DefinitionEntry::class,
+        ExampleEntry::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(RoomTypeConverters::class, WordnikTypeConverters::class)
 abstract class WordnikDatabase : RoomDatabase() {

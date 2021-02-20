@@ -320,4 +320,142 @@ object WordnikApiResponse {
   }
 ]
   """
+
+  val examplesDefenestrate = """
+    {
+      "examples": [
+        {
+          "provider": {
+            "id": 711
+          },
+          "year": 2008,
+          "rating": 200,
+          "url": "http://www.huffingtonpost.com/karen-salmansohn/the-1minute-therapist_1_b_56627.html",
+          "word": "defenestrate",
+          "text": "I'm so happy I finally got to use that word \"defenestrate\" in my writing.",
+          "documentId": 27909825,
+          "exampleId": 679832029,
+          "title": "Karen Salmansohn: The 1-Minute Therapist"
+        },
+        {
+          "provider": {
+            "id": 712
+          },
+          "year": 2009,
+          "rating": 185.83008,
+          "url": "http://that.animeblogger.net/2009/03/15/mariaholic-episode-10-civis-for-perverts/",
+          "word": "defenestrate",
+          "text": "Did you know that \"defenestrate\" means to throw something or someone out of a window?",
+          "documentId": 13114806,
+          "exampleId": 212027317,
+          "title": "Anime Nano!"
+        },
+        {
+          "provider": {
+            "id": 709
+          },
+          "year": 2010,
+          "rating": 124,
+          "url": "http://www.guardian.co.uk/commentisfree/michaeltomasky/2010/oct/07/usa-usimmigration-lou-dobbs-hypocrite",
+          "word": "defenestrate",
+          "text": "But I should think that CNN, MSNBC and ... well, just CNN and MSNBC, really ... would actually like to have the comfort of knowing that their on-air spouters and sermonizers weren't total hypocrites, and would defenestrate hosts who violate basic standards.",
+          "documentId": 30009010,
+          "exampleId": 776213486,
+          "title": "Lou Dobbs, evil idiot",
+          "author": "Michael Tomasky"
+        },
+        {
+          "provider": {
+            "id": 709
+          },
+          "year": 2011,
+          "rating": 124,
+          "url": "http://www.guardian.co.uk/commentisfree/2011/feb/27/kevin-mckenna-education-scotland-cuts",
+          "word": "defenestrate",
+          "text": "Nevertheless, whether it likes it or not, the University of Glasgow is still my alma mater and, truant and impostor though I may have been, I am saddened at its proposals to defenestrate its excellent modern languages department.",
+          "documentId": 32360086,
+          "exampleId": 541797429,
+          "title": "Who will awaken the talents of our poorest kids? | Kevin McKenna"
+        },
+        {
+          "provider": {
+            "id": 715
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.huffingtonpost.com/jason-linkins/_b_516171.html",
+          "word": "defenestrate",
+          "text": "Graham says that many Republicans would rather defenestrate themselves than work with the White House.",
+          "documentId": 27414530,
+          "exampleId": 619101102,
+          "title": "TV SoundOff: Sunday Talking Heads"
+        },
+        {
+          "provider": {
+            "id": 715
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.huffingtonpost.com/doug-bandow/germanys-lesson-for-ameri_b_609950.html",
+          "word": "defenestrate",
+          "text": "The former was present with Washington's decision to defenestrate the Taliban regime after it hosted al-Qaeda.",
+          "documentId": 28423351,
+          "exampleId": 805499566,
+          "title": "Doug Bandow: Germany's Lesson for America: Wars of Necessity, not Choice"
+        },
+        {
+          "provider": {
+            "id": 715
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.huffingtonpost.com/2010/03/28/tv-soundoff-sunday-talkin_n_516171.html",
+          "word": "defenestrate",
+          "text": "Graham says that many Republicans would rather defenestrate themselves than work with the White House.",
+          "documentId": 27790929,
+          "exampleId": 674040664,
+          "title": "TV SoundOff: Sunday Talking Heads"
+        },
+        {
+          "provider": {
+            "id": 713
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.forbes.com/2010/06/22/stanley-mcchrystal-barack-obama-rolling-stone-opinions-columnists-dan-gerstein.html?feed=rss_popstories",
+          "word": "defenestrate",
+          "text": "Let the fear flow, and the public know, that you will not be afraid to defend yourself and your authority -- or to defenestrate those who violate the public trust.",
+          "documentId": 28421035,
+          "exampleId": 804863734,
+          "title": "Obama's MacArthur Moment"
+        },
+        {
+          "provider": {
+            "id": 711
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.spectator.co.uk/coffeehouse/5684628/the-tories-are-frustrating-but-labour-is-unelectable.thtml",
+          "word": "defenestrate",
+          "text": "I am hoping for a hung parliament so the Tories can defenestrate him.",
+          "documentId": 27431335,
+          "exampleId": 627713574,
+          "title": "Tony Blair: The Next Labour Prime Minister?"
+        },
+        {
+          "provider": {
+            "id": 715
+          },
+          "year": 2010,
+          "rating": 122,
+          "url": "http://www.huffingtonpost.com/doug-bandow/germanys-lesson-for-ameri_b_609950.html",
+          "word": "defenestrate",
+          "text": "The former was present with Washington's decision to defenestrate the Taliban regime after it hosted al-Qaeda.",
+          "documentId": 28428089,
+          "exampleId": 807769027,
+          "title": "Doug Bandow:  Germany's Lesson for America: Wars of Necessity, not Choice"
+        }
+      ]
+    }
+  """.trimIndent()
 }

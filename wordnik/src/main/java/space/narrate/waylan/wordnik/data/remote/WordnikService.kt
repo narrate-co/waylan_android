@@ -19,4 +19,10 @@ interface WordnikService {
     @Path("word") word: String,
     @Query("api_key") key: String
   ): Response<List<ApiDefinition>>
+
+  @GET("word.json/{word}/examples")
+  suspend fun getExamples(
+    @Path("word") word: String,
+    @Query("api_key") key: String
+  ): Response<ApiExamples>
 }
