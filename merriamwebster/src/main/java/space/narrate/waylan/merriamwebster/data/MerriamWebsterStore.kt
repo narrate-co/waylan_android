@@ -1,7 +1,9 @@
 package space.narrate.waylan.merriamwebster.data
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import java.lang.Exception
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,9 +57,15 @@ class MerriamWebsterStore(
         launch {
             val definitions = mwDao.getDefinitions(word)
             if (definitions.isNullOrEmpty() || definitions.any { it.lastFetch.isNotFresh() }) {
-                merriamWebsterService
+                try {
+                    merriamWebsterService
                         .getWord(word, DEV_KEY)
                         .enqueue(getMerriamWebsterApiWordCallback(word))
+
+                } catch (e: Exception) {
+                    // TODO: Handle error
+                    Log.e("MerriamWebsterStore", "Retrofit/Okhttp exception", e)
+                }
             }
         }
 
