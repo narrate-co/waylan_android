@@ -257,11 +257,11 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
                 val errorTextColor = ContextCompat.getColor(
                     this,
-                    R.color.on_error_emphasis_high_type
+                    R.color.on_error_area_emphasis_high_type
                 )
                 val errorHintColor = ContextCompat.getColor(
                     this,
-                    R.color.on_error_emphasis_disabled
+                    R.color.on_error_area_emphasis_disabled
                 )
                 binding.run {
                     TransitionManager.beginDelayedTransition(container)

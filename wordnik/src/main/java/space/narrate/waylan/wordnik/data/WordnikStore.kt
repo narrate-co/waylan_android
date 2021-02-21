@@ -29,38 +29,44 @@ class WordnikStore(
     launch {
       val definitions = wordnikDao.getDefinitionEntryImmediate(word)
       if (definitions == null) {
-        val response = wordnikService.getDefinitions(word, BuildConfig.WORDNIK_KEY)
-        if (response.isSuccessful && response.body() != null) {
-          // Save to cache
-          val entry = DefinitionEntry(
-            word,
-            word,
-            response.body()?.map {
-              Definition(
-                it.id ?: "",
-                it.partOfSpeech ?: "",
-                it.attributionText ?: "",
-                it.sourceDictionary ?: "",
-                it.text ?: "",
-                it.sequence ?: "",
-                it.score ?: -1,
-                it.labels ?: emptyList(),
-                it.citations ?: emptyList(),
-                it.word ?: word,
-                it.relatedWords ?: emptyList(),
-                it.exampleUses ?: emptyList(),
-                it.textProns ?: emptyList(),
-                it.notes ?: emptyList(),
-                it.attributionUrl ?: "",
-                it.wordnikUrl ?: ""
-              )
-            } ?: emptyList(),
-            OffsetDateTime.now()
-          )
-          wordnikDao.insert(entry)
-        } else {
+        try {
+          val response = wordnikService.getDefinitions(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            // Save to cache
+            val entry = DefinitionEntry(
+              word,
+              word,
+              response.body()?.map {
+                Definition(
+                  it.id ?: "",
+                  it.partOfSpeech ?: "",
+                  it.attributionText ?: "",
+                  it.sourceDictionary ?: "",
+                  it.text ?: "",
+                  it.sequence ?: "",
+                  it.score ?: -1,
+                  it.labels ?: emptyList(),
+                  it.citations ?: emptyList(),
+                  it.word ?: word,
+                  it.relatedWords ?: emptyList(),
+                  it.exampleUses ?: emptyList(),
+                  it.textProns ?: emptyList(),
+                  it.notes ?: emptyList(),
+                  it.attributionUrl ?: "",
+                  it.wordnikUrl ?: ""
+                )
+              } ?: emptyList(),
+              OffsetDateTime.now()
+            )
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
+          // Retrofit or Okhttp threw an an error and it should be handled
           // TODO: Handle error
-          Log.e("WordnikStore", response.errorBody().toString())
+          Log.e("WordnikStore", "Retrofit/Okhttp exception", e)
         }
       }
     }
