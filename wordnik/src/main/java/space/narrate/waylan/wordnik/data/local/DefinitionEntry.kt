@@ -3,6 +3,7 @@ package space.narrate.waylan.wordnik.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.threeten.bp.OffsetDateTime
+import space.narrate.waylan.wordnik.data.remote.ApiDefinition
 
 @Entity(tableName = "wordnik_definitions")
 data class DefinitionEntry(
@@ -10,7 +11,37 @@ data class DefinitionEntry(
   val word: String,
   val definitions: List<Definition>,
   val lastFetch: OffsetDateTime
-)
+) {
+  companion object {
+    fun fromRemote(word: String, apiDefinitions: List<ApiDefinition>?): DefinitionEntry {
+      return DefinitionEntry(
+        word,
+        word,
+        apiDefinitions?.map {
+          Definition(
+            it.id ?: "",
+            it.partOfSpeech ?: "",
+            it.attributionText ?: "",
+            it.sourceDictionary ?: "",
+            it.text ?: "",
+            it.sequence ?: "",
+            it.score ?: -1,
+            it.labels ?: emptyList(),
+            it.citations ?: emptyList(),
+            it.word ?: word,
+            it.relatedWords ?: emptyList(),
+            it.exampleUses ?: emptyList(),
+            it.textProns ?: emptyList(),
+            it.notes ?: emptyList(),
+            it.attributionUrl ?: "",
+            it.wordnikUrl ?: ""
+          )
+        } ?: emptyList(),
+        OffsetDateTime.now()
+      )
+    }
+  }
+}
 
 class Definition(
   val id: String,

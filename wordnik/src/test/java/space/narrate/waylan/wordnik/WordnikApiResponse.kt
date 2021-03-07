@@ -458,4 +458,122 @@ object WordnikApiResponse {
       ]
     }
   """.trimIndent()
+
+  val audioDefenestrate = """
+    [
+      {
+        "commentCount": 0,
+        "createdBy": "ahd",
+        "createdAt": "2021-03-07T11:45:06.381+0000",
+        "id": 15850,
+        "word": "defenestrate",
+        "duration": 1.41,
+        "audioType": "pronunciation",
+        "attributionText": "from The American Heritage® Dictionary of the English Language, 5th Edition",
+        "attributionUrl": "https://www.wordnik.com/words/defenestrate",
+        "fileUrl": "https://audio.wordnik.com/18844.mp3?Expires=1615118106&Key-Pair-Id=APKAIHXX6B6C37D2VKVA&Signature=QZMVAdw-X6btjPPdgH5WAJ9ZYAPQdx89lokoxBtu8tI4juHuGiqVkvTu5SXVtghmm9hA-oHcQVrD56Q6jZuhZsuGI-HXZB2vAfuZOK0SkH-66L3Lesg9J0uER7GJZMkT5JUvLskrjWgnC4D1tnBkzZBFMUtx0sqJavky2gN38lQxVT1KFBVPeH-~j19FVYRlaM8POzOphu~Bc06zi4sNMVKbr5pq3z0tOVn~RVWRYN0zvwchXNVPs9v8BDmwf~cbP2IoE7RYnexbDF1DJj7oRAnNqoY3HQlvwB~tXmoaY4XnSc-P1ZmLUYcFuaqTRq5nySowdKzpBhjFS3bdSn18aQ__"
+      }
+    ]
+  """.trimIndent()
+
+  val frequencyDefenestrate = """
+    {
+      "frequency": [
+        {
+          "year": "2002",
+          "count": 1
+        },
+        {
+          "year": "2003",
+          "count": 1
+        },
+        {
+          "year": "2004",
+          "count": 1
+        },
+        {
+          "year": "2005",
+          "count": 6
+        },
+        {
+          "year": "2006",
+          "count": 8
+        },
+        {
+          "year": "2007",
+          "count": 4
+        },
+        {
+          "year": "2008",
+          "count": 98
+        },
+        {
+          "year": "2009",
+          "count": 42
+        },
+        {
+          "year": "2010",
+          "count": 27
+        },
+        {
+          "year": "2011",
+          "count": 2
+        }
+      ],
+      "totalCount": 190,
+      "word": "defenestrate",
+      "unknownYearCount": 0
+    }
+  """.trimIndent()
+
+  val hyphenationDefenestrate = """
+    [
+      {
+        "text": "de",
+        "seq": 0
+      },
+      {
+        "text": "fen",
+        "seq": 1,
+        "type": "stress"
+      },
+      {
+        "text": "es",
+        "seq": 2
+      },
+      {
+        "text": "trate",
+        "seq": 3
+      }
+    ]
+  """.trimIndent()
+
+  val pronunciationDefenestrate = """
+    [
+      {
+        "seq": 0,
+        "raw": "dē-fĕn′ĭ-strāt″",
+        "rawType": "ahd-5",
+        "id": "D5092000",
+        "attributionText": "from The American Heritage® Dictionary of the English Language, 5th Edition.",
+        "attributionUrl": "https://ahdictionary.com/"
+      },
+      {
+        "seq": 0,
+        "raw": "/dɪˈfɛnɪstɹeɪt/",
+        "rawType": "IPA",
+        "attributionText": "from Wiktionary, Creative Commons Attribution/Share-Alike License.",
+        "attributionUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      {
+        "seq": 0,
+        "raw": "/dəˈfɛnɪstɹeɪt/",
+        "rawType": "IPA",
+        "attributionText": "from Wiktionary, Creative Commons Attribution/Share-Alike License.",
+        "attributionUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    ]
+  """.trimIndent()
+
+
 }

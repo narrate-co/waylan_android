@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import space.narrate.waylan.core.util.RoomTypeConverters
 
 /**
@@ -16,7 +18,11 @@ import space.narrate.waylan.core.util.RoomTypeConverters
 @Database(
     entities = [
         DefinitionEntry::class,
-        ExampleEntry::class
+        ExampleEntry::class,
+        AudioEntry::class,
+        FrequencyEntry::class,
+        HyphenationEntry::class,
+        PronunciationEntry::class
     ],
     version = 2
 )
@@ -44,7 +50,16 @@ abstract class WordnikDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context, dbName: String): WordnikDatabase {
             return Room
                 .databaseBuilder(context, WordnikDatabase::class.java, dbName)
+                .addMigrations(MIGRATION_1_to_2)
                 .build()
+        }
+
+        private val MIGRATION_1_to_2 = object: Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // do nothing.
+                // version 1 had: wordnik_definitions
+                // version 2 added: wordnik_examples,audio,frequency,hyphenation,pronunciation
+            }
         }
 
     }

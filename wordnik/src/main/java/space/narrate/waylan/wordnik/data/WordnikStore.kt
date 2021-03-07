@@ -10,10 +10,14 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.threeten.bp.OffsetDateTime
 import space.narrate.waylan.wordnik.BuildConfig
+import space.narrate.waylan.wordnik.data.local.AudioEntry
 import space.narrate.waylan.wordnik.data.local.Definition
 import space.narrate.waylan.wordnik.data.local.DefinitionEntry
 import space.narrate.waylan.wordnik.data.local.Example
 import space.narrate.waylan.wordnik.data.local.ExampleEntry
+import space.narrate.waylan.wordnik.data.local.FrequencyEntry
+import space.narrate.waylan.wordnik.data.local.HyphenationEntry
+import space.narrate.waylan.wordnik.data.local.PronunciationEntry
 import space.narrate.waylan.wordnik.data.local.WordnikDao
 import space.narrate.waylan.wordnik.data.remote.WordnikService
 
@@ -35,31 +39,7 @@ class WordnikStore(
           val response = wordnikService.getDefinitions(word, BuildConfig.WORDNIK_KEY)
           if (response.isSuccessful && response.body() != null) {
             // Save to cache
-            val entry = DefinitionEntry(
-              word,
-              word,
-              response.body()?.map {
-                Definition(
-                  it.id ?: "",
-                  it.partOfSpeech ?: "",
-                  it.attributionText ?: "",
-                  it.sourceDictionary ?: "",
-                  it.text ?: "",
-                  it.sequence ?: "",
-                  it.score ?: -1,
-                  it.labels ?: emptyList(),
-                  it.citations ?: emptyList(),
-                  it.word ?: word,
-                  it.relatedWords ?: emptyList(),
-                  it.exampleUses ?: emptyList(),
-                  it.textProns ?: emptyList(),
-                  it.notes ?: emptyList(),
-                  it.attributionUrl ?: "",
-                  it.wordnikUrl ?: ""
-                )
-              } ?: emptyList(),
-              OffsetDateTime.now()
-            )
+            val entry = DefinitionEntry.fromRemote(word, response.body())
             wordnikDao.insert(entry)
           } else {
             // TODO: Handle error
@@ -82,35 +62,123 @@ class WordnikStore(
     launch {
       val examples = wordnikDao.getExampleEntryImmediate(word)
       if (examples == null) {
-        val response = wordnikService.getExamples(word, BuildConfig.WORDNIK_KEY)
-        if (response.isSuccessful && response.body() != null) {
-          // Save to cache
-          val entry = ExampleEntry(
-            word,
-            word,
-            response.body()?.examples?.map {
-              Example(
-                it.provider?.get("id") ?: 0,
-                it.rating ?: 0F,
-                it.url ?: "",
-                it.word ?: word,
-                it.text ?: "",
-                it.documentId ?: 0L,
-                it.exampleId ?: 0L,
-                it.title ?: "",
-                it.author ?: ""
-              )
-            } ?: emptyList(),
-            OffsetDateTime.now()
-          )
-          wordnikDao.insert(entry)
-        } else {
+        try {
+          val response = wordnikService.getExamples(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            // Save to cache
+            val entry = ExampleEntry.fromRemote(word, response.body())
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
           // TODO: Handle error
-          Log.e("WordnikStore", response.errorBody().toString())
+          Log.e("WordnikStore", "Retrofit/Okhttp exception", e)
         }
       }
     }
 
     return wordnikDao.getExampleEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  @ExperimentalCoroutinesApi
+  fun getAudio(word: String): Flow<AudioEntry> {
+
+    launch {
+      val audios = wordnikDao.getAudioEntryImmediate(word)
+      if (audios == null) {
+        try {
+          val response = wordnikService.getAudio(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            val entry = AudioEntry.fromRemote(word, response.body())
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
+          // TODO: Handle error
+          Log.e("WordnikStore", "Retrofit/Okhttp exception: $e")
+        }
+      }
+    }
+
+    return wordnikDao.getAudioEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  @ExperimentalCoroutinesApi
+  fun getFrequency(word: String): Flow<FrequencyEntry> {
+
+    launch {
+      val frequency = wordnikDao.getFrequencyEntryImmediate(word)
+      if (frequency == null) {
+        try {
+          val response = wordnikService.getFrequency(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            val entry = FrequencyEntry.fromRemote(word, response.body())
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
+          // TODO: Handle error
+          Log.e("WordnikStore", "Retrofit/Okhttp exception: $e")
+        }
+      }
+    }
+
+    return wordnikDao.getFrequencyEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  @ExperimentalCoroutinesApi
+  fun getHyphenation(word: String): Flow<HyphenationEntry> {
+
+    launch {
+      val hyphenation = wordnikDao.getHyphenationEntryImmediate(word)
+      if (hyphenation == null) {
+        try {
+          val response = wordnikService.getHyphenation(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            val entry = HyphenationEntry.fromRemote(word, response.body())
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
+          // TODO: Handle error
+          Log.e("WordnikStore", "Retrofit/Okhttp exception: $e")
+        }
+      }
+    }
+
+    return wordnikDao.getHyphenationEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  @ExperimentalCoroutinesApi
+  fun getPronunciation(word: String): Flow<PronunciationEntry> {
+
+    launch {
+      val pronunciation = wordnikDao.getPronunciationEntryImmediate(word)
+      if (pronunciation == null) {
+        try {
+          val response = wordnikService.getPronunciation(word, BuildConfig.WORDNIK_KEY)
+          if (response.isSuccessful && response.body() != null) {
+            val entry = PronunciationEntry.fromRemote(word, response.body())
+            wordnikDao.insert(entry)
+          } else {
+            // TODO: Handle error
+            Log.e("WordnikStore", response.errorBody().toString())
+          }
+        } catch (e: Exception) {
+          // TODO: Handle error
+          Log.e("WordnikStore", "Retrofit/Okhttp exception: $e")
+        }
+      }
+    }
+
+    return wordnikDao.getPronunciationEntry(word).filterNotNull().distinctUntilChanged()
   }
 }
