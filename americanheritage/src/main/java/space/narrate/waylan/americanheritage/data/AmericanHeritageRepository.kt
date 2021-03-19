@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.map
 import space.narrate.waylan.wordnik.data.WordnikStore
 import space.narrate.waylan.wordnik.data.local.Definition
 
-// TODO: Should this filtering be exposed in the wordnik store instead
 private const val AMERICAN_HERITAGE_SOURCE_DICTIONARY_TAG = "ahd-5"
 
 /**
@@ -18,10 +17,8 @@ class AmericanHeritageRepository(
 
   @ExperimentalCoroutinesApi
   fun getDefinitions(word: String): Flow<List<Definition>> {
-    println("AmericanHeritageRepository:: wordnikStore = $wordnikStore, word: $word")
     return wordnikStore.getDefinitions(word)
       .map { entry ->
-        println("AmericanHeritageRepository:: entry = $entry, definitions: ${entry.definitions}")
         entry.definitions
           .filter { it.sourceDictionary ==  AMERICAN_HERITAGE_SOURCE_DICTIONARY_TAG }
           .toList()

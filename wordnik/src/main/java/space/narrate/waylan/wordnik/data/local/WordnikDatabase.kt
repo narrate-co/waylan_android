@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import space.narrate.waylan.core.util.RoomTypeConverters
 
 /**
@@ -16,8 +18,13 @@ import space.narrate.waylan.core.util.RoomTypeConverters
 @Database(
     entities = [
         DefinitionEntry::class,
+        ExampleEntry::class,
+        AudioEntry::class,
+        FrequencyEntry::class,
+        HyphenationEntry::class,
+        PronunciationEntry::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(RoomTypeConverters::class, WordnikTypeConverters::class)
 abstract class WordnikDatabase : RoomDatabase() {
@@ -43,9 +50,9 @@ abstract class WordnikDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context, dbName: String): WordnikDatabase {
             return Room
                 .databaseBuilder(context, WordnikDatabase::class.java, dbName)
+                .fallbackToDestructiveMigration()
                 .build()
         }
-
     }
 }
 

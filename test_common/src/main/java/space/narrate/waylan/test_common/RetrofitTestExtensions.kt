@@ -1,6 +1,7 @@
 package space.narrate.waylan.test_common
 
 import okhttp3.Request
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +35,10 @@ fun <T> T.toSuccessfulCall(): Call<T> {
 
         override fun request(): Request {
             return Request.Builder().build()
+        }
+
+        override fun timeout(): Timeout {
+          return Timeout()
         }
     }
 }

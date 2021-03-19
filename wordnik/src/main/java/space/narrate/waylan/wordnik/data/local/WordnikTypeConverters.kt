@@ -8,7 +8,6 @@ import org.threeten.bp.format.DateTimeFormatter
 
 object WordnikTypeConverters {
 
-  private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
   private val gson = ThreeTenGsonAdapter.registerOffsetDateTime(GsonBuilder()).create()
 
   @TypeConverter
@@ -21,6 +20,72 @@ object WordnikTypeConverters {
   @TypeConverter
   @JvmStatic
   fun fromDefinitionList(value: List<Definition>): String {
+    return gson.toJson(value)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun toExampleList(value: String): List<Example> {
+    val type = object : TypeToken<List<Example>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromExampleList(value: List<Example>): String {
+    return gson.toJson(value)
+  }
+
+
+  @TypeConverter
+  @JvmStatic
+  fun toAudioList(value: String): List<Audio> {
+    val type = object : TypeToken<List<Audio>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromAudioList(value: List<Audio>): String {
+    return gson.toJson(value)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun toFrequencyList(value: String): List<Frequency> {
+    val type = object : TypeToken<List<Frequency>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromFrequencyList(value: List<Frequency>): String {
+    return gson.toJson(value)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun toHyphenationList(value: String): List<Hyphenation> {
+    val type = object : TypeToken<List<Hyphenation>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromHyphenationList(value: List<Hyphenation>): String {
+    return gson.toJson(value)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun toPronunciationList(value: String): List<Pronunciation> {
+    val type = object : TypeToken<List<Pronunciation>>() {}.type
+    return gson.fromJson(value, type)
+  }
+
+  @TypeConverter
+  @JvmStatic
+  fun fromPronunciationList(value: List<Pronunciation>): String {
     return gson.toJson(value)
   }
 }
