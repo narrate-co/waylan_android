@@ -12,10 +12,7 @@ import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.core.data.firestore.users.isValid
 import space.narrate.waylan.core.ui.common.AudioClipHelper
 
-class DictionaryEntryAudioHelper(
-  private val view: UnderlineActionView,
-  private val listener: Listener?
-) {
+class DictionaryEntryAudioHelper {
 
   interface Listener {
     fun onAudioPlayClicked(url: String?)
@@ -23,11 +20,25 @@ class DictionaryEntryAudioHelper(
     fun onAudioError(messageRes: Int)
   }
 
+  private var view: UnderlineActionView? = null
+    set(value) {
+      field = value
+      playPauseButton = value?.findViewById(R.id.image_view)
+      progressUnderlineView = value?.findViewById(R.id.underline)
+      value?.addOnAttachStateChangeListener(onAttachedStateChangedListener)
+    }
+
+  private var playPauseButton: AppCompatImageButton? = null
+    set(value) {
+      field = value
+      value?.setOnClickListener { handlePlayStopButtonClicked(audioState) }
+    }
+  private var progressUnderlineView: ProgressUnderlineView? = null
+
+  private var listener: Listener? = null
+
   private var audioState = AudioClipHelper.AudioState.STOPPED
   private var audioUrls: List<String> = listOf()
-
-  private val playPauseButton: AppCompatImageButton = view.findViewById(R.id.image_view)
-  private val progressUnderlineView: ProgressUnderlineView = view.findViewById(R.id.underline)
 
   private var disabledMessageRes: Int = R.string.audio_no_audio_available_error
 
@@ -71,26 +82,23 @@ class DictionaryEntryAudioHelper(
 
     override fun onViewDetachedFromWindow(v: View) {
       LocalBroadcastManager.getInstance(v.context).unregisterReceiver(audioStateDispatchReceiver)
-      view.removeOnAttachStateChangeListener(this)
     }
   }
 
-  init {
-    view.addOnAttachStateChangeListener(onAttachedStateChangedListener)
-    playPauseButton.setOnClickListener { handlePlayStopButtonClicked(audioState) }
+  private fun setEnabled(enabled: Boolean) {
+    view?.isEnabled = enabled
+    view?.visibility = if (enabled) View.VISIBLE else View.GONE
+    view?.alpha = if (enabled) 1F else 0.38F
   }
 
-  fun setEnabled(enabled: Boolean) {
-    view.isEnabled = enabled
-    view.visibility = if (enabled) View.VISIBLE else View.GONE
-    view.alpha = if (enabled) 1F else 0.38F
-  }
-
-  /**
-   * Set the [MwWordAndDefinitionGroups]s which this view should play pronunciation for when
-   * the play button is clicked.
-   */
-  fun setSources(urls: List<String>, userAddOn: UserAddOn?) {
+  fun setSources(
+    underlineActionView: UnderlineActionView,
+    urls: List<String>,
+    userAddOn: UserAddOn?,
+    listener: Listener?
+  ) {
+    this.view = underlineActionView
+    this.listener = listener
     if (userAddOn?.isValid == false) {
       setEnabled(false)
       disabledMessageRes = R.string.audio_requires_plugin_purchase_error
@@ -105,7 +113,7 @@ class DictionaryEntryAudioHelper(
     }
 
     setEnabled(true)
-    playPauseButton.setImageResource(R.drawable.ic_round_play_arrow_24px)
+    playPauseButton?.setImageResource(R.drawable.ic_round_play_arrow_24px)
 
     // TODO: Possibly clean the urls (stripping off file names?)
     this.audioUrls = urls
@@ -128,24 +136,24 @@ class DictionaryEntryAudioHelper(
   private fun handleAudioStateReceived(state: AudioClipHelper.AudioState) {
     when (state) {
       AudioClipHelper.AudioState.LOADING -> {
-        playPauseButton.setImageResource(R.drawable.ic_round_stop_24px)
-        progressUnderlineView.startProgress()
+        playPauseButton?.setImageResource(R.drawable.ic_round_stop_24px)
+        progressUnderlineView?.startProgress()
       }
       AudioClipHelper.AudioState.PREPARED,
       AudioClipHelper.AudioState.PLAYING -> {
-        playPauseButton.setImageResource(R.drawable.ic_round_stop_24px)
-        progressUnderlineView.stopProgress()
+        playPauseButton?.setImageResource(R.drawable.ic_round_stop_24px)
+        progressUnderlineView?.stopProgress()
       }
       AudioClipHelper.AudioState.STOPPED -> {
-        playPauseButton.setImageResource(R.drawable.ic_round_play_arrow_24px)
-        progressUnderlineView.stopProgress()
+        playPauseButton?.setImageResource(R.drawable.ic_round_play_arrow_24px)
+        progressUnderlineView?.stopProgress()
       }
       // TODO: Handle AudioState.Error
     }
   }
 
   private fun handlePlayStopButtonClicked(state: AudioClipHelper.AudioState) {
-    if (!view.isEnabled) {
+    if (view?.isEnabled == false) {
       listener?.onAudioError(disabledMessageRes)
       return
     }

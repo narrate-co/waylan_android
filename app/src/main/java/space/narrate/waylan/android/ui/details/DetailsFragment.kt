@@ -191,21 +191,6 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
         viewModel.onAudioClipError(messageRes)
     }
 
-    // TODO: Remove
-    override fun onMwAudioPlayClicked(url: String?) {
-      onAudioPlayClicked(url)
-    }
-
-    // TODO: Remove
-    override fun onMwAudioStopClicked() {
-      onAudioStopClicked()
-    }
-
-    // TODO: Remove
-    override fun onMwAudioClipError(messageRes: Int) {
-        onAudioError(messageRes)
-    }
-
     override fun onAddOnDetailsClicked(addOn: AddOn) {
         findNavController()
             .navigate(DetailsFragmentDirections.actionDetailsFragmentToAddOnsFragment(addOn))

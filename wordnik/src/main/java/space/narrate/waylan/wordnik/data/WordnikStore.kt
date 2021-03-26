@@ -87,7 +87,8 @@ class WordnikStore(
 
     launch {
       val audios = wordnikDao.getAudioEntryImmediate(word)
-      if (audios == null) {
+      // The audio urls from Wordnik expire quickly and should be re-queried when expired.
+      if (audios == null || hasExpiredFileUrls(audios)) {
         try {
           val response = wordnikService.getAudio(word, BuildConfig.WORDNIK_KEY)
           if (response.isSuccessful && response.body() != null) {
@@ -105,6 +106,17 @@ class WordnikStore(
     }
 
     return wordnikDao.getAudioEntry(word).filterNotNull().distinctUntilChanged()
+  }
+
+  private fun hasExpiredFileUrls(entry: AudioEntry): Boolean {
+    val earliestDate = entry.audios
+      .map {
+        // Get the unix timestamp from the url param "Expires=
+        it.fileUrl.split("Expires=")[1].split("&")[0].toLong()
+      }
+      .minOrNull() ?: return true
+
+    return earliestDate < System.currentTimeMillis()
   }
 
   @ExperimentalCoroutinesApi

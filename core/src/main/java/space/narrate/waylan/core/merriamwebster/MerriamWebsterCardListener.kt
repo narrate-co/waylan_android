@@ -9,7 +9,4 @@ import space.narrate.waylan.core.ui.common.AddOnListener
 interface MerriamWebsterCardListener : AddOnListener {
     fun onMwRelatedWordClicked(word: String)
     fun onMwSuggestionWordClicked(word: String)
-    fun onMwAudioPlayClicked(url: String?)
-    fun onMwAudioStopClicked()
-    fun onMwAudioClipError(messageRes: Int)
 }

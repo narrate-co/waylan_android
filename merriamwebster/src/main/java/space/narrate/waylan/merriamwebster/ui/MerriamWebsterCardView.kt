@@ -2,18 +2,17 @@ package space.narrate.waylan.merriamwebster.ui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.widget.LinearLayout
+import android.view.LayoutInflater
 import com.google.android.material.card.MaterialCardView
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.UserAddOn
 import space.narrate.waylan.core.merriamwebster.MerriamWebsterCardListener
-import space.narrate.waylan.core.ui.widget.TextLabelChip
+import space.narrate.waylan.core.ui.widget.DictionaryEntryAudioHelper
 import space.narrate.waylan.core.ui.widget.configureWithUserAddOn
-import space.narrate.waylan.core.R as coreR
 import space.narrate.waylan.core.util.getFloat
-import space.narrate.waylan.merriamwebster.R
 import space.narrate.waylan.merriamwebster.data.local.MwWordAndDefinitionGroups
+import space.narrate.waylan.merriamwebster.databinding.MerriamWebsterCardLayoutBinding
+import space.narrate.waylan.core.R as coreR
 
 /**
  * A composite view which is able to display all content retrieved from
@@ -24,38 +23,39 @@ class MerriamWebsterCardView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : MaterialCardView(context, attrs, defStyleAttr),
-    MerriamWebsterItemAdapter.Listener,
-    MerriamWebsterAudioView.Listener {
+    MerriamWebsterItemAdapter.Listener {
 
     private var listener: MerriamWebsterCardListener? = null
 
     private var adapter: MerriamWebsterItemAdapter
 
-    private val listContainer: LinearLayout
-    private val textLabel: TextLabelChip
-    private val mwAudioView: MerriamWebsterAudioView
+    private val binding: MerriamWebsterCardLayoutBinding =
+        MerriamWebsterCardLayoutBinding.inflate(LayoutInflater.from(context), this)
+
+    private val audioHelper: DictionaryEntryAudioHelper = DictionaryEntryAudioHelper()
 
     init {
-        val view = View.inflate(context, R.layout.merriam_webster_card_layout, this)
-        listContainer = view.findViewById(R.id.definitions_list_container)
-        textLabel = view.findViewById(R.id.text_label)
-        mwAudioView = view.findViewById(R.id.mw_audio_view)
-        mwAudioView.listener = this
         background.alpha = (context.getFloat(coreR.dimen.translucence_01) * 255F).toInt()
         elevation = 0F
 
-        adapter = MerriamWebsterItemAdapter(listContainer, this)
+        adapter = MerriamWebsterItemAdapter(binding.definitionsListContainer, this)
 
-        textLabel.setOnClickListener {
+        binding.textLabel.setOnClickListener {
             listener?.onAddOnDetailsClicked(AddOn.MERRIAM_WEBSTER)
         }
-
     }
 
     fun setSource(entries: List<MwWordAndDefinitionGroups>, userAddOn: UserAddOn?) {
-        textLabel.configureWithUserAddOn(userAddOn)
-        mwAudioView.setSource(entries, userAddOn)
+        binding.textLabel.configureWithUserAddOn(userAddOn)
         adapter.submit(entries, userAddOn)
+    }
+
+    fun setAudio(
+        urls: List<String>,
+        userAddOn: UserAddOn?,
+        listener: DictionaryEntryAudioHelper.Listener
+    ) {
+        audioHelper.setSources(binding.actionView, urls, userAddOn, listener)
     }
 
     fun setListener(listener: MerriamWebsterCardListener) {
@@ -72,18 +72,6 @@ class MerriamWebsterCardView @JvmOverloads constructor(
 
     override fun onDismissButtonClicked() {
         listener?.onAddOnDismissClicked(AddOn.MERRIAM_WEBSTER)
-    }
-
-    override fun onAudioPlayClicked(url: String) {
-        listener?.onMwAudioPlayClicked(url)
-    }
-
-    override fun onAudioStopClicked() {
-        listener?.onMwAudioStopClicked()
-    }
-
-    override fun onAudioError(messageRes: Int) {
-        listener?.onMwAudioClipError(messageRes)
     }
 }
 

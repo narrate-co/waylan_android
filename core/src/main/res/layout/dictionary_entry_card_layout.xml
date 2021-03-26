@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/keyline_3"
-        app:layout_constraintTop_toBottomOf="@+id/action_view"
+        app:layout_constraintTop_toBottomOf="@+id/dictionary_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/examples_list_container"/>

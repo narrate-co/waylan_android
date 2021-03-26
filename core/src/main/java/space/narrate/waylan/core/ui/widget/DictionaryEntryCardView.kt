@@ -47,7 +47,7 @@ class DictionaryEntryCardView @JvmOverloads constructor (
   private var permissionPaneListener: PermissionPaneListener? = null
 
   // Only used when setAudio is called by client
-  private var audioHelper: DictionaryEntryAudioHelper? = null
+  private val audioHelper: DictionaryEntryAudioHelper = DictionaryEntryAudioHelper()
 
   init {
     background.alpha = (context.getFloat(R.dimen.translucence_01) * 255F).toInt()
@@ -122,10 +122,7 @@ class DictionaryEntryCardView @JvmOverloads constructor (
     userAddOn: UserAddOn?,
     listener: DictionaryEntryAudioHelper.Listener
   ) {
-    if (audioHelper == null) {
-      audioHelper = DictionaryEntryAudioHelper(binding.actionView, listener)
-    }
-    audioHelper?.setSources(urls, userAddOn)
+    audioHelper.setSources(binding.actionView, urls, userAddOn, listener)
   }
 
   fun setDefinitions(entries: Map<String, List<String>>) {

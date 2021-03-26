@@ -30,7 +30,7 @@ class MerriamWebsterDetailItemProvider : DetailItemProvider {
 
 class MerriamWebsterViewHolder(
     parent: ViewGroup,
-    listener: DetailAdapterListener
+    private val listener: DetailAdapterListener
 ): DetailItemViewHolder(
     AdapterUtils.inflate(parent, R.layout.merriam_webster_item_layout)
 ) {
@@ -45,5 +45,23 @@ class MerriamWebsterViewHolder(
     override fun bind(item: DetailItemModel) {
         if (item !is MerriamWebsterModel) return
         merriamWebsterCard.setSource(item.entries, item.userAddOn)
+
+        // TODO: Maybe move into MerriamWebsterModel
+        val sounds = item.entries.mapNotNull { it.word?.sound }.flatten()
+        val audioUrls = sounds.asSequence().map { it.wavs }
+            .flatten()
+            .map { it.removeSuffix(".wav") }
+            .filter { it.isNotBlank() }
+            .map { fileName ->
+                val firstChar = fileName.toCharArray().firstOrNull() ?: "a"
+                "${BASE_URL}${SEPARATOR}$firstChar${SEPARATOR}$fileName${DEFAULT_AUDIO_EXTENSION}"
+            }.toList()
+        merriamWebsterCard.setAudio(audioUrls, item.userAddOn, listener)
+    }
+
+    companion object {
+        private const val SEPARATOR = "/"
+        private const val BASE_URL = "https://media.merriam-webster.com/audio/prons/en/us/mp3"
+        private const val DEFAULT_AUDIO_EXTENSION = ".mp3"
     }
 }
