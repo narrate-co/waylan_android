@@ -47,13 +47,6 @@
   <string name="title_about">About</string>
   <string name="title_merriamwebster">Merriam-Webster</string>
 
-  <!--AudioClipHelper-->
-  <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
-  <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
-  <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
-  <string name="audio_clip_no_network_available">No network available</string>
-  <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
-
   <!--Details-->
   <string name="details_waylan_example_editable_done">Done</string>
   <string name="details_waylan_example_editable_cancel">Cancel</string>

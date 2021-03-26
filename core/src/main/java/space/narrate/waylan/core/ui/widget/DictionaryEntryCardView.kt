@@ -46,6 +46,9 @@ class DictionaryEntryCardView @JvmOverloads constructor (
   private var listener: DictionaryEntryListener? = null
   private var permissionPaneListener: PermissionPaneListener? = null
 
+  // Only used when setAudio is called by client
+  private var audioHelper: DictionaryEntryAudioHelper? = null
+
   init {
     background.alpha = (context.getFloat(R.dimen.translucence_01) * 255F).toInt()
     elevation = 0F
@@ -112,6 +115,17 @@ class DictionaryEntryCardView @JvmOverloads constructor (
 
   fun setDictionaryName(name: String) {
     binding.dictionaryTitle.text = name
+  }
+
+  fun setAudio(
+    urls: List<String>,
+    userAddOn: UserAddOn?,
+    listener: DictionaryEntryAudioHelper.Listener
+  ) {
+    if (audioHelper == null) {
+      audioHelper = DictionaryEntryAudioHelper(binding.actionView, listener)
+    }
+    audioHelper?.setSources(urls, userAddOn)
   }
 
   fun setDefinitions(entries: Map<String, List<String>>) {

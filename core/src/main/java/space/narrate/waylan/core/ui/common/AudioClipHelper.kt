@@ -1,4 +1,4 @@
-package space.narrate.waylan.android.ui.details
+package space.narrate.waylan.core.ui.common
 
 import android.content.Context
 import android.content.Intent
@@ -10,11 +10,11 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import space.narrate.waylan.android.BuildConfig
-import space.narrate.waylan.android.R
 import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
+import space.narrate.waylan.core.BuildConfig
+import space.narrate.waylan.core.R
 
 class AudioClipHelper(
     private val context: Context,

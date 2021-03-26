@@ -25,6 +25,8 @@ import space.narrate.waylan.core.details.DetailAdapterListener
 import space.narrate.waylan.core.details.DetailItemProviderRegistry
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.TransitionType
+import space.narrate.waylan.core.ui.common.AudioClipAction
+import space.narrate.waylan.core.ui.common.AudioClipHelper
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.FastOutUltraSlowIn
 import space.narrate.waylan.core.util.make
@@ -177,16 +179,31 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
         sharedViewModel.onChangeCurrentWord(synonym)
     }
 
-    override fun onMwAudioPlayClicked(url: String?) {
+    override fun onAudioPlayClicked(url: String?) {
         viewModel.onPlayAudioClicked(url)
     }
 
-    override fun onMwAudioStopClicked() {
+    override fun onAudioStopClicked() {
         viewModel.onStopAudioClicked()
     }
 
-    override fun onMwAudioClipError(messageRes: Int) {
+    override fun onAudioError(messageRes: Int) {
         viewModel.onAudioClipError(messageRes)
+    }
+
+    // TODO: Remove
+    override fun onMwAudioPlayClicked(url: String?) {
+      onAudioPlayClicked(url)
+    }
+
+    // TODO: Remove
+    override fun onMwAudioStopClicked() {
+      onAudioStopClicked()
+    }
+
+    // TODO: Remove
+    override fun onMwAudioClipError(messageRes: Int) {
+        onAudioError(messageRes)
     }
 
     override fun onAddOnDetailsClicked(addOn: AddOn) {
