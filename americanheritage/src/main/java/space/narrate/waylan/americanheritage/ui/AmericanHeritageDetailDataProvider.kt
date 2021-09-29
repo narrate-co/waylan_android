@@ -2,6 +2,7 @@ package space.narrate.waylan.americanheritage.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import space.narrate.waylan.americanheritage.data.AmericanHeritageRepository
 import space.narrate.waylan.core.data.firestore.users.AddOn
@@ -16,8 +17,11 @@ class AmericanHeritageDetailDataProvider(
 ) : DetailDataProvider {
   override fun loadWord(word: String): LiveData<DetailItemModel> {
     return MergedLiveData(
-      americanHeritageRepository.getDefinitions(word).asLiveData(),
+      americanHeritageRepository.getDefinitions(word)
+        .combine(americanHeritageRepository.getAudio(word)) { defs, audios ->
+          Pair(defs, audios)
+        }.asLiveData(),
       userRepository.getUserAddOnLive(AddOn.AMERICAN_HERITAGE)
-    ) { definitions, userAddOn -> AmericanHeritageModel(definitions, userAddOn) }
+    ) { pair, userAddOn -> AmericanHeritageModel(pair.first, pair.second, userAddOn) }
   }
 }

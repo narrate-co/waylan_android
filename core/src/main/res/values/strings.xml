@@ -74,4 +74,16 @@
     <string name="add_on_permission_pane_details_button_text">Details</string>
     <string name="add_on_permission_pane_dismiss_button_text">Dismiss</string>
 
+    <!--Common-->
+    <string name="audio_no_audio_available_error">No audio available</string>
+    <string name="audio_requires_plugin_purchase_error">Audio pronunciations not available for free trials</string>
+
+    <!--AudioClipHelper-->
+    <string name="audio_clip_pay_error">An error occurred playing pronunciations</string>
+    <string name="audio_clip_unable_to_start">Unable to start pronunciations</string>
+    <string name="audio_clip_no_pronunciations_available">No pronunciations available</string>
+    <string name="audio_clip_no_network_available">No network available</string>
+    <string name="audio_clip_unable_to_play_generic">Unable to play clip</string>
+
+
 </resources>

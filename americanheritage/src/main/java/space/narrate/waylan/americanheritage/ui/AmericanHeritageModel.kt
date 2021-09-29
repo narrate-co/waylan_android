@@ -5,6 +5,7 @@ import space.narrate.waylan.core.data.firestore.users.remainingDays
 import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.details.DetailItemModel
 import space.narrate.waylan.core.details.DetailItemType
+import space.narrate.waylan.wordnik.data.local.Audio
 import space.narrate.waylan.wordnik.data.local.Definition
 
 /**
@@ -13,6 +14,7 @@ import space.narrate.waylan.wordnik.data.local.Definition
  */
 class AmericanHeritageModel(
   val definitions: List<Definition>,
+  val audios: List<Audio>,
   val userAddOn: UserAddOn?
 ) : DetailItemModel() {
 
@@ -20,12 +22,15 @@ class AmericanHeritageModel(
 
   override fun isSameAs(newOther: DetailItemModel): Boolean {
     if (newOther !is AmericanHeritageModel) return false
-    return  definitions == newOther.definitions && userAddOn == newOther.userAddOn
+    return  definitions == newOther.definitions
+      && audios == newOther.audios
+      && userAddOn == newOther.userAddOn
   }
 
   override fun isContentSameAs(newOther: DetailItemModel): Boolean {
     if (newOther !is AmericanHeritageModel) return false
     return definitions.toTypedArray().contentDeepEquals(newOther.definitions.toTypedArray())
+      && audios.toTypedArray().contentDeepEquals(newOther.audios.toTypedArray())
       && userAddOn?.state == newOther.userAddOn?.state
       && userAddOn?.remainingDays == newOther.userAddOn?.remainingDays
   }

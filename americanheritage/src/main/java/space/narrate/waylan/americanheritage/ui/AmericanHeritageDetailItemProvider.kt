@@ -11,6 +11,8 @@ import space.narrate.waylan.core.details.DetailItemType
 import space.narrate.waylan.core.details.DetailItemViewHolder
 import space.narrate.waylan.core.ui.widget.DictionaryEntryCardView
 import space.narrate.waylan.core.util.inflater
+import space.narrate.waylan.core.R as coreR
+
 
 class AmericanHeritageDetailItemProvider : DetailItemProvider {
 
@@ -43,6 +45,11 @@ class AmericanHeritageViewHolder(
       americanHeritageCard.setDictionaryName("American Heritage")
       americanHeritageCard.setStatusLabelForUserAddOn(item.userAddOn)
       americanHeritageCard.setPermission(item.userAddOn)
+      americanHeritageCard.setAudio(
+        item.audios.map { it.fileUrl }.toList(),
+        item.userAddOn,
+        listener
+      )
 
       val partOfSpeechMap = item.definitions
         .groupBy { it.partOfSpeech }
