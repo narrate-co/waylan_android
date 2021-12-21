@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:clickable="true"
-        android:elevation="@dimen/plane_01"
+        android:elevation="@dimen/plane_02"
         android:focusable="true"
         android:backgroundTint="?attr/colorSurface"
         android:clipChildren="true"

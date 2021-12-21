@@ -2,6 +2,7 @@ package space.narrate.waylan.android.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -24,6 +25,7 @@ import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.ui.ListType
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.TransitionType
+import space.narrate.waylan.core.util.MathUtils
 import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideIme
@@ -37,6 +39,7 @@ import space.narrate.waylan.core.util.windowTintElevation
 class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallback {
 
     private val binding: ActivityMainBinding by contentView(R.layout.activity_main)
+    private val navHostContainer: View by lazy { findViewById(R.id.nav_host_fragment) }
     private lateinit var searchFragment: SearchFragment
     private lateinit var contextualFragment: ContextualFragment
 
@@ -201,11 +204,17 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
     }
 
     private fun setUpScrimView() {
+        val contentSlideDistance = resources.getDimension(R.dimen.content_slide_distance)
 
         // Show a scrim behind the search sheet when it is expanded by setting the scrims
         // alpha to match the bottom sheet's slide offset.
         searchSheetCallback.addOnSlideAction { _, searchSlide ->
             setBottomSheetScrimAlpha(searchSlide, contextualSheetCallback.currentSlide)
+            setContentTranslationAndAlpha(
+                searchSlide,
+                contextualSheetCallback.currentSlide,
+                contentSlideDistance
+            )
             setFloatingNavigationBarVisibility(searchSlide, contextualSheetCallback.currentSlide)
         }
 
@@ -213,6 +222,11 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         // when either bottom sheet is not resting, hence the use of Math.max
         contextualSheetCallback.addOnSlideAction { _, contextualSlide ->
             setBottomSheetScrimAlpha(searchSheetCallback.currentSlide, contextualSlide)
+            setContentTranslationAndAlpha(
+                searchSheetCallback.currentSlide,
+                contextualSlide,
+                contentSlideDistance
+            )
             setFloatingNavigationBarVisibility(searchSheetCallback.currentSlide, contextualSlide)
         }
 
@@ -259,6 +273,22 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
             binding.bottomSheetScrim.gone()
         } else {
             binding.bottomSheetScrim.visible()
+        }
+    }
+
+    /**
+     * Translate and alpha out the content of the nav host fragment to give visual prominence to the
+     * search or contextual sheet showing.
+     */
+    private fun setContentTranslationAndAlpha(
+        searchSheetSlide: Float,
+        contextualSheetSlide: Float,
+        contentSlideDistance: Float
+    ) {
+        val offset = max(searchSheetSlide, contextualSheetSlide)
+        navHostContainer.apply {
+            translationY = offset * contentSlideDistance
+            alpha = MathUtils.normalize(offset, 0F, 1F,  1F, .5F)
         }
     }
 

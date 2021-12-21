@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
-    <!--Search box dimens -->
+    <!--Main Activity dimens-->
+    <dimen name="content_slide_distance">20dp</dimen>
+    <!--Search box dimens-->
     <dimen name="search_box_height">52dp</dimen>
     <dimen name="search_box_corner_radius">26dp</dimen> <!--50% rounded-->
 
