@@ -8,9 +8,14 @@
         <item name="rippleColor">?attr/colorRipple</item>
     </style>
 
+
+    <!--Cards-->
+    <style name="Widget.Waylan.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="strokeWidth">0dp</item>
+    </style>
+
     <!--Chips-->
-    <style name="Widget.Waylan.Chip.Outlined" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
+    <style name="Widget.Waylan.Chip.Outlined" parent="Base.Widget.Waylan.Chip">
         <item name="chipBackgroundColor">?attr/colorSurface</item>
         <item name="rippleColor">?attr/colorRipple</item>
         <!--This stroke color will be lessened when String.toChip sets an alpha on the -->
@@ -19,14 +24,18 @@
         <item name="chipStrokeWidth">1dp</item>
     </style>
 
-    <style name="Widget.Waylan.Chip.Open" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
+    <style name="Widget.Waylan.Chip.Open" parent="Base.Widget.Waylan.Chip">
         <item name="chipBackgroundColor">@android:color/transparent</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="chipStrokeColor">@android:color/transparent</item>
         <item name="rippleColor">?attr/colorRipple</item>
         <item name="chipStrokeWidth">0dp</item>
-        <item name="chipCornerRadius">2dp</item>
+    </style>
+
+    <style name="Base.Widget.Waylan.Chip" parent="Widget.Material3.Chip.Suggestion">
+        <item name="android:textAppearance">?attr/textAppearanceBody3</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Waylan.Pill</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Waylan.Pill</item>
     </style>
 
     <!--Text Labels-->
@@ -72,14 +81,21 @@
 
     <!--Progress Underline-->
     <style name="Widget.Waylan.ProgressUnderlineView" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="trackColor">?attr/colorControlNormal</item>
-        <item name="indicatorColor">?attr/colorAccent</item>
+        <item name="trackColor">@color/area</item>
+        <item name="indicatorColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!--Progress Underline-->
+    <style name="Widget.Waylan.UnderlineActionView" parent="">
+      <item name="actionIconTint">?attr/colorOnSurface</item>
     </style>
 
     <!--Scrim Window Style-->
     <style name="Widget.Waylan.ScrimWindow" parent="">
         <item name="backgroundTint">@color/scrim</item>
         <item name="statusBarScrimTint">?android:colorBackground</item>
+        <item name="backgroundTintElevation">@dimen/plane_03</item>
+        <item name="statusBarScrimTintElevation">@dimen/plane_01</item>
     </style>
 
     <style name="Widget.Waylan.ReachabilityAppBarLayout.Flat" parent="Widget.MaterialComponents.AppBarLayout.Surface">

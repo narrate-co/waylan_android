@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/image_view"
@@ -15,8 +14,6 @@
         android:id="@+id/underline"
         android:layout_width="@dimen/underline_width"
         android:layout_height="@dimen/underline_height"
-        app:trackColor="@color/divider"
-        app:indicatorColor="?attr/colorPrimary"
         android:layout_marginTop="@dimen/keyline_2"
         android:layout_gravity="right" />
 </merge>

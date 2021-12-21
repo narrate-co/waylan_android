@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.observe
 import androidx.transition.TransitionManager
+import com.google.android.material.elevation.SurfaceColors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,6 +31,7 @@ import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.themeColor
 import space.narrate.waylan.core.util.getStringOrNull
 import kotlin.coroutines.CoroutineContext
+import space.narrate.waylan.core.util.windowTintElevation
 
 class AuthActivity : AppCompatActivity(), CoroutineScope {
 
@@ -63,8 +65,8 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        windowTintElevation(R.dimen.plane_01)
         super.onCreate(savedInstanceState)
-
         binding.progressBarTop.startProgress()
 
         handleIntent(intent)

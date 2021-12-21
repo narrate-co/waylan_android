@@ -58,11 +58,12 @@ class FloatingNavigationBar @JvmOverloads constructor(
       children.forEachIndexed { i, v ->
         if (v is TextView) {
           if (i == value) {
-            v.setTextColor(v.context.themeColor(R.attr.colorOnSecondary))
+            // If this is the selected item
+            v.setTextColor(v.context.themeColor(R.attr.colorSecondaryContainer))
             // Update the location of the selection shape
             maybeAnimateSelectionIndicatorToTarget(v)
           } else {
-            v.setTextColor(v.context.getColorStateList(R.color.color_on_surface_secondary_medium))
+            v.setTextColor(v.context.themeColor(R.attr.colorSecondary))
           }
         }
       }
@@ -93,7 +94,7 @@ class FloatingNavigationBar @JvmOverloads constructor(
       R.attr.chipStyle,
       0
     ).apply {
-      fillColor = ColorStateList.valueOf(context.themeColor(R.attr.colorSurfaceSecondary))
+      fillColor = ColorStateList.valueOf(context.themeColor(R.attr.colorSecondaryContainer))
       // Set the alpha of the entire background to 93%
       alpha = (255 * .93).toInt()
     }

@@ -4,30 +4,51 @@
 
     <style name="Theme.Waylan.Dark" parent="Theme.Waylan">
         <!--Color-->
-        <item name="colorPrimary">@color/colorIvory50</item>
-        <item name="colorPrimaryVariant">@color/colorIvory50</item>
-        <item name="colorSecondary">@color/colorOrange300</item>
-        <item name="colorSecondaryVariant">@color/colorOrange300</item>
+        <item name="colorPrimary">@color/waylan_color_navy_10</item>
+        <item name="colorOnPrimary">@color/waylan_color_ivory_95</item>
+        <item name="colorPrimaryContainer">@color/waylan_color_navy_20</item>
+        <item name="colorOnPrimaryContainer">@color/waylan_color_ivory_95</item>
 
-        <item name="android:colorBackground">@color/colorNavy800</item>
-        <item name="colorSurface">@color/colorNavy800</item>
-        <item name="colorSurfaceSecondary">@color/colorOrange900</item>
-        <item name="colorError">@color/colorMauve300</item>
+        <item name="colorSecondary">@color/waylan_color_orange_60</item>
+        <item name="colorOnSecondary">@color/waylan_color_orange_20</item>
+        <item name="colorSecondaryContainer">@color/waylan_color_orange_20</item>
+        <item name="colorOnSecondaryContainer">@color/waylan_color_orange_60</item>
+
+        <item name="colorTertiary">@color/waylan_color_blue_95</item>
+        <item name="colorOnTertiary">@color/waylan_color_blue_30</item>
+        <item name="colorTertiaryContainer">@color/waylan_color_blue_99</item>
+        <item name="colorOnTertiaryContainer">@color/waylan_color_blue_30</item>
+
+        <item name="colorError">@color/waylan_color_mauve_80</item>
+        <item name="colorOnError">@color/waylan_color_mauve_40</item>
+        <item name="colorErrorContainer">@color/waylan_color_mauve_70</item>
+        <item name="colorOnErrorContainer">@color/waylan_color_mauve_40</item>
+
+        <item name="android:colorBackground">@color/waylan_color_navy_10</item>
+        <item name="colorOnBackground">@color/waylan_color_ivory_95</item>
+
+        <item name="colorSurface">@color/waylan_color_navy_10</item>
+        <item name="colorOnSurface">@color/waylan_color_ivory_95</item>
+
+        <item name="colorSurfaceInverse">@color/waylan_color_navy_40</item>
+        <item name="colorOnSurfaceInverse">@color/waylan_color_navy_10</item>
+
+        <item name="colorSurfaceVariant">@color/waylan_color_navy_40</item>
+        <item name="colorOnSurfaceVariant">@color/waylan_color_ivory_70</item>
+
+        <item name="colorOutline">@color/waylan_color_ivory_80</item>
+
+        <!--Legacy color-->
+        <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+        <item name="colorSecondaryVariant">?attr/colorSecondary</item>
         <item name="colorInformative">@color/area</item>
-        <item name="colorArea">@color/colorIvory50</item>
-
-        <item name="colorOnPrimary">@color/colorNavy800</item>
-        <item name="colorOnSecondary">@color/colorNavy800</item>
-        <item name="colorOnBackground">@color/colorIvory50</item>
-        <item name="colorOnBackgroundError">@color/colorMauve300</item>
-        <item name="colorOnSurface">@color/colorIvory50</item>
-        <item name="colorOnError">@color/colorNavy800</item>
-        <item name="colorOnInformative">@color/colorIvory50</item>
-
-        <item name="colorRipple">@color/colorNavy600</item>
-        <item name="colorScrim">@color/colorNavy800</item>
-        <item name="colorDivider">@color/colorIvory50</item>
-        <item name="colorHairline">@color/colorIvory50</item>
+        <item name="colorArea">?attr/colorPrimaryContainer</item>
+        <item name="colorOnBackgroundError">?attr/colorError</item>
+        <item name="colorOnInformative">?attr/colorOnPrimaryContainer</item>
+        <item name="colorRipple">?attr/colorSurfaceVariant</item>
+        <item name="colorScrim">@color/colorGray600</item>
+        <item name="colorDivider">?attr/colorOnSurface</item>
+        <item name="colorHairline">?attr/colorOutline</item>
 
         <item name="alphaEmphasisScrim">0.25</item>
         <item name="alphaEmphasisArea">0.10</item>

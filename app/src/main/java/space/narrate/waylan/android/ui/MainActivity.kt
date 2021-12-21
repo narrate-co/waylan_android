@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,6 +28,7 @@ import space.narrate.waylan.core.util.contentView
 import space.narrate.waylan.core.util.gone
 import space.narrate.waylan.core.util.hideIme
 import space.narrate.waylan.core.util.visible
+import space.narrate.waylan.core.util.windowTintElevation
 
 /**
  * The main host Activity which displays the perisistent [SearchFragment] bottom sheet as well as a
@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
+        windowTintElevation(R.dimen.plane_01)
         super.onCreate(savedInstanceState)
 
         binding.run {

@@ -14,15 +14,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.use
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.observe
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.MaterialToolbar
-import space.narrate.waylan.core.R
-import space.narrate.waylan.core.util.MathUtils
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.exp
+import space.narrate.waylan.core.R
+import space.narrate.waylan.core.util.MathUtils
 
 /**
  * A large app bar that contains an expanded title and is able to collapse into a normal size

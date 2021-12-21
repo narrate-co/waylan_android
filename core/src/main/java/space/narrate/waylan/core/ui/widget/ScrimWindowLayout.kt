@@ -1,6 +1,7 @@
 package space.narrate.waylan.core.ui.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.FrameLayout
 import androidx.core.content.res.use
 import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.elevation.SurfaceColors
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.util.findFirstDescendantOrNull
 import space.narrate.waylan.core.util.getColorStateList
@@ -62,10 +64,36 @@ class ScrimWindowLayout @JvmOverloads constructor(
             )
 
             setBackgroundColor(backgroundTint.defaultColor)
-            statusBarScrim.setBackgroundColor(statusBarTint.defaultColor)
+            setStatusBarScrimTint(statusBarTint)
+
+            // If this value is present, it will override whatever was set via backgroundTint
+            if (it.hasValue(R.styleable.ScrimWindowLayout_backgroundTintElevation)) {
+                val backgroundTintElevation = it.getDimension(
+                    R.styleable.ScrimWindowLayout_backgroundTintElevation,
+                    0F
+                )
+                setBackgroundColor(
+                    SurfaceColors.getColorForElevation(context, backgroundTintElevation)
+                )
+            }
+
+            // If this value is present, it will override whatever was set via statusBarScrimTint
+            if (it.hasValue(R.styleable.ScrimWindowLayout_statusBarScrimTintElevation)) {
+                val scrimTintElevation = it.getDimension(
+                    R.styleable.ScrimWindowLayout_statusBarScrimTintElevation,
+                    0F
+                )
+                setStatusBarScrimTint(ColorStateList.valueOf(
+                    SurfaceColors.getColorForElevation(context, scrimTintElevation))
+                )
+            }
         }
         clipToPadding = false
         clipChildren = false
+    }
+
+    fun setStatusBarScrimTint(tint: ColorStateList) {
+        statusBarScrim.setBackgroundColor(tint.defaultColor)
     }
 
     override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {

@@ -17,6 +17,11 @@
         <item name="cornerSize">@dimen/shape_small_corner_radius</item>
     </style>
 
+    <style name="ShapeAppearance.Waylan.Pill" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.BottomSheet.Standard" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">@dimen/shape_large_corner_radius</item>
@@ -28,6 +33,6 @@
     <!--Corner radii-->
     <dimen name="shape_small_corner_radius">16dp</dimen>
     <dimen name="shape_medium_corner_radius">8dp</dimen>
-    <dimen name="shape_large_corner_radius">12dp</dimen>
+    <dimen name="shape_large_corner_radius">18dp</dimen>
 
 </resources>

@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import org.koin.android.ext.android.inject
+import space.narrate.waylan.android.R
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
 import space.narrate.waylan.core.ui.Navigator
+import space.narrate.waylan.core.util.windowTintElevation
 
 /**
  * A Theme.NoDisplay Activity that serves as an entry hub for all intent filters which Words
@@ -21,6 +23,7 @@ class RouterActivity : Activity() {
     private val authenticationStore: AuthenticationStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        windowTintElevation(R.dimen.plane_01)
         super.onCreate(savedInstanceState)
 
         // We should only get to RouterActivity by receiving a filtered intent

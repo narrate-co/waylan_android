@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
@@ -154,7 +154,10 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
                     ).defaultColor
                     interpolator = FastOutUltraSlowIn()
                     drawingViewId = R.id.nav_host_fragment
-                    setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+                    setAllContainerColors(SurfaceColors.getColorForElevation(
+                        requireContext(),
+                        resources.getDimension(R.dimen.plane_01)
+                    ))
                 }
             }
             TransitionType.SHARED_AXIS_Y -> {

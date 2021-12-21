@@ -7,10 +7,10 @@
         android:id="@+id/collapsed_container"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:backgroundTint="?colorSurface"
+        android:backgroundTint="?attr/colorSurface"
         android:clickable="true"
         android:focusable="true"
-        android:elevation="@dimen/plane_02"
+        android:elevation="@dimen/plane_03"
         app:behavior_isSearchSheet="@{true}">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             app:fadeBackgroundAngle="@{90}"
-            app:fadeBackgroundElevation="@{@dimen/plane_02}"
+            app:fadeBackgroundElevation="@{@dimen/plane_03}"
             app:layout_constraintTop_toBottomOf="@id/handle_container"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -52,7 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
-                app:srcCompat="@drawable/search_sheet_handle"/>
+                app:srcCompat="@drawable/search_sheet_handle"
+                app:tintElevation="@{@dimen/plane_05}" />
 
         </FrameLayout>
 
@@ -121,7 +122,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_round_filter_list_24px" />
             </FrameLayout>
 
@@ -140,7 +141,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/keyline_2"
                     android:layout_marginRight="@dimen/keyline_2_5"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_round_share_24px" />
             </FrameLayout>
 

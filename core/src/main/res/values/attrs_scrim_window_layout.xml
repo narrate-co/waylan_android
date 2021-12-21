@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resource>
     <declare-styleable name="ScrimWindowLayout">
         <attr name="backgroundTint" format="color"/>
         <attr name="statusBarScrimTint" format="color"/>
+        <!-- If tint elevations are set, these will override the above tint
+             colors in favor of colorSurface + the elevation specified-->
+        <attr name="backgroundTintElevation" format="dimension"/>
+        <attr name="statusBarScrimTintElevation" format="dimension"/>
     </declare-styleable>
-</resources>
+</resource>

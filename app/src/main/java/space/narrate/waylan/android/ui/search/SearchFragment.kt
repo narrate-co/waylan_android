@@ -1,6 +1,5 @@
 package space.narrate.waylan.android.ui.search
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,11 +11,9 @@ import android.view.animation.Transformation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.transition.MaterialSharedAxis
@@ -42,7 +39,6 @@ import space.narrate.waylan.core.util.displayHeightPx
 import space.narrate.waylan.core.util.fadeThroughTransition
 import space.narrate.waylan.core.util.hideIme
 import space.narrate.waylan.core.util.showIme
-import space.narrate.waylan.core.util.themeColor
 
 /**
  * A bottom sheet fragment that handles user search input, current word action items (share,
@@ -98,16 +94,6 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         ).apply {
             initializeElevationOverlay(requireContext())
             elevation = binding.collapsedContainer.elevation
-            fillColor = ColorStateList.valueOf(
-                requireContext().themeColor(R.attr.colorSurface)
-            )
-            // Add a stroke to emphasize the shadow on the top of this bottom sheet.
-            // The stroke is very light as the sheet moves towards the bottom of the screen
-            // due to how Android's light source, used for shadow calculation, works.
-            strokeColor = ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), R.color.shadow_emphasis_color)
-            )
-            strokeWidth = 3F
         }
         ViewCompat.setBackground(binding.collapsedContainer, materialShapeDrawable)
 

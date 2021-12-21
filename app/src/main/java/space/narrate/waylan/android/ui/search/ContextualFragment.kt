@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -87,7 +86,7 @@ class ContextualFragment : Fragment() {
             sharedViewModel.onClearListFilter()
         }
 
-        sharedViewModel.shouldOpenContextualSheet.observe(this) { event ->
+        sharedViewModel.shouldOpenContextualSheet.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { expand() }
         }
     }
@@ -143,7 +142,7 @@ class ContextualFragment : Fragment() {
             }
 
         // Configure UI based on current destination
-        navigator.currentDestination.observe(this) { dest ->
+        navigator.currentDestination.observe(viewLifecycleOwner) { dest ->
             when (dest) {
                 Destination.TRENDING -> setExpandedContainer("Filter trending")
                 else -> { /* Ignore or add other filterable lists in the future */ }
@@ -151,7 +150,7 @@ class ContextualFragment : Fragment() {
         }
 
         // Configure bottom sheet state and UI based on current filter.
-        viewModel.contextualFilterModel.observe(this) { model ->
+        viewModel.contextualFilterModel.observe(viewLifecycleOwner) { model ->
             setCollapsedChips(model.filter)
             peekOrHide(
                 model.isFilterable && model.filter.isNotEmpty(),

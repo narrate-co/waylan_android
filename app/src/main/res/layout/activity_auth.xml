@@ -47,6 +47,7 @@
             app:layout_constraintTop_toBottomOf="@+id/logo_image_view">
 
             <com.google.android.material.card.MaterialCardView
+                style="?attr/cardViewStyle"
                 android:id="@+id/text_area_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

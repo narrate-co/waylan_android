@@ -1,8 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Waylan Palette-->
-    <!--All colors used across both light and dark themes-->
+    <!-- Tonal Palette -->
+    <!-- All colors used across both light and dark themes -->
+    <color name="waylan_color_ivory_100">#FFF5E5</color>
+    <color name="waylan_color_ivory_99">#FCF2E2</color>
+    <color name="waylan_color_ivory_95">#F1E7D8</color>
+    <color name="waylan_color_ivory_90">#E6DCCE</color>
+    <color name="waylan_color_ivory_80">#CCC4B7</color>
+    <color name="waylan_color_ivory_70">#B3ABA0</color>
+    <color name="waylan_color_ivory_60">#999389</color>
+    <color name="waylan_color_ivory_50">#807A72</color>
+    <color name="waylan_color_ivory_40">#66625B</color>
+    <color name="waylan_color_ivory_30">#4D4945</color>
+    <color name="waylan_color_ivory_20">#33312E</color>
+    <color name="waylan_color_ivory_10">#1A1817</color>
+
+    <color name="waylan_color_blue_100">#C7E5FF</color>
+    <color name="waylan_color_blue_99">#C5E2FC</color>
+    <color name="waylan_color_blue_95">#BDD9F2</color>
+    <color name="waylan_color_blue_90">#B3CEE6</color>
+    <color name="waylan_color_blue_80">#9FB7CC</color>
+    <color name="waylan_color_blue_70">#8BA0B3</color>
+    <color name="waylan_color_blue_60">#778999</color>
+    <color name="waylan_color_blue_50">#637280</color>
+    <color name="waylan_color_blue_40">#4F5B66</color>
+    <color name="waylan_color_blue_30">#3C454D</color>
+    <color name="waylan_color_blue_20">#282E33</color>
+    <color name="waylan_color_blue_10">#14171A</color>
+
+    <color name="waylan_color_sage_100">#FEFFF3</color>
+    <color name="waylan_color_sage_99">#FBFCF0</color>
+    <color name="waylan_color_sage_95">#F1F2E7</color>
+    <color name="waylan_color_sage_90">#E2E3D8</color>
+    <color name="waylan_color_sage_80">#CBCCC2</color>
+    <color name="waylan_color_sage_70">#B2B4A1</color>
+    <color name="waylan_color_sage_60">#969881</color>
+    <color name="waylan_color_sage_50">#797B64</color>
+    <color name="waylan_color_sage_40">#636645</color>
+    <color name="waylan_color_sage_30">#494B33</color>
+    <color name="waylan_color_sage_20">#2F3020</color>
+    <color name="waylan_color_sage_10">#1B1C12</color>
+
+    <color name="waylan_color_red_100">#FF888C</color>
+    <color name="waylan_color_red_99">#FC868A</color>
+    <color name="waylan_color_red_95">#F28084</color>
+    <color name="waylan_color_red_90">#E67A7D</color>
+    <color name="waylan_color_red_80">#CC6C6F</color>
+    <color name="waylan_color_red_70">#B35F61</color>
+    <color name="waylan_color_red_60">#995153</color>
+    <color name="waylan_color_red_50">#804446</color>
+    <color name="waylan_color_red_40">#663638</color>
+    <color name="waylan_color_red_30">#4D292A</color>
+    <color name="waylan_color_red_20">#331B1C</color>
+    <color name="waylan_color_red_10">#1A0E0E</color>
+
+    <color name="waylan_color_mauve_100">#FFDADC</color>
+    <color name="waylan_color_mauve_99">#FCD8D9</color>
+    <color name="waylan_color_mauve_95">#F2CFD1</color>
+    <color name="waylan_color_mauve_90">#E6C5C6</color>
+    <color name="waylan_color_mauve_80">#D1B3B4</color>
+    <color name="waylan_color_mauve_70">#B3999A</color>
+    <color name="waylan_color_mauve_60">#998384</color>
+    <color name="waylan_color_mauve_50">#806D6E</color>
+    <color name="waylan_color_mauve_40">#665758</color>
+    <color name="waylan_color_mauve_30">#4D4242</color>
+    <color name="waylan_color_mauve_20">#332C2C</color>
+    <color name="waylan_color_mauve_10">#1A1616</color>
+
+    <color name="waylan_color_navy_100">#BFBFFF</color>
+    <color name="waylan_color_navy_99">#BDBDFC</color>
+    <color name="waylan_color_navy_95">#B6B6F2</color>
+    <color name="waylan_color_navy_90">#ACACE6</color>
+    <color name="waylan_color_navy_80">#9999CC</color>
+    <color name="waylan_color_navy_70">#8686B3</color>
+    <color name="waylan_color_navy_60">#737399</color>
+    <color name="waylan_color_navy_50">#606080</color>
+    <color name="waylan_color_navy_40">#4D4D66</color>
+    <color name="waylan_color_navy_30">#39394D</color>
+    <color name="waylan_color_navy_20">#262633</color>
+    <color name="waylan_color_navy_10">#13131A</color>
+
+    <color name="waylan_color_orange_100">#FFBAA2</color>
+    <color name="waylan_color_orange_99">#FCB8A0</color>
+    <color name="waylan_color_orange_95">#F2B09A</color>
+    <color name="waylan_color_orange_90">#E6A792</color>
+    <color name="waylan_color_orange_80">#CC9582</color>
+    <color name="waylan_color_orange_70">#B38271</color>
+    <color name="waylan_color_orange_60">#996F61</color>
+    <color name="waylan_color_orange_50">#805D51</color>
+    <color name="waylan_color_orange_40">#664A41</color>
+    <color name="waylan_color_orange_30">#4D3831</color>
+    <color name="waylan_color_orange_20">#332520</color>
+    <color name="waylan_color_orange_10">#1A1310</color>
+
+    <!-- Legacy Palette -->
+    <!-- TODO: Remove -->
     <color name="colorPink50">#fce2eb</color>
     <color name="colorPink100">#f7b5ce</color>
     <color name="colorPink900">#891a51</color>

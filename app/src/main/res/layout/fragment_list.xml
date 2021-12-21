@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/coordinator_layout"
-        android:backgroundTint="?android:windowBackground"
         android:transitionGroup="true"
+        app:backgroundElevation="@{@dimen/plane_01}"
         app:paddingLeftSystemWindowInsets="@{true}"
         app:paddingTopSystemWindowInsets="@{true}"
         app:paddingRightSystemWindowInsets="@{true}">

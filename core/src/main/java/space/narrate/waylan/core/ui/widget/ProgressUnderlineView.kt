@@ -34,7 +34,7 @@ import space.narrate.waylan.core.util.getColorStateList
 class ProgressUnderlineView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0,
+        defStyleAttr: Int = R.attr.progressUnderlineViewStyle,
         defStyleRes: Int = DEF_STYLE_RES
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 

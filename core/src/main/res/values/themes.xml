@@ -2,33 +2,53 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Waylan.DayNight" parent="Theme.Waylan"/>
 
-    <style name="Theme.Waylan" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Waylan" parent="Theme.Material3.DayNight.NoActionBar">
         <!--Color-->
-        <item name="colorPrimary">@color/colorGray900</item>
-        <item name="colorPrimaryVariant">@color/colorGray900</item>
-        <item name="colorSecondary">@color/colorForest600</item>
-        <item name="colorSecondaryVariant">@color/colorForest600</item>
+        <item name="colorPrimary">@color/waylan_color_ivory_95</item>
+        <item name="colorOnPrimary">@color/waylan_color_ivory_20</item>
+        <item name="colorPrimaryContainer">@color/waylan_color_ivory_90</item>
+        <item name="colorOnPrimaryContainer">@color/waylan_color_ivory_20</item>
 
-        <item name="android:colorBackground">@color/colorIvory100</item>
-        <item name="colorSurface">@color/colorIvory100</item>
-        <item name="colorSurfaceSecondary">@color/colorForest100</item>
-        <item name="colorError">@color/colorMauve100</item>
+        <item name="colorSecondary">@color/waylan_color_sage_40</item>
+        <item name="colorOnSecondary">@color/waylan_color_sage_90</item>
+        <item name="colorSecondaryContainer">@color/waylan_color_sage_90</item>
+        <item name="colorOnSecondaryContainer">@color/waylan_color_sage_40</item>
+
+        <item name="colorTertiary">@color/waylan_color_blue_95</item>
+        <item name="colorOnTertiary">@color/waylan_color_blue_30</item>
+        <item name="colorTertiaryContainer">@color/waylan_color_blue_99</item>
+        <item name="colorOnTertiaryContainer">@color/waylan_color_blue_30</item>
+
+        <item name="colorError">@color/waylan_color_red_70</item>
+        <item name="colorOnError">@color/waylan_color_red_30</item>
+        <item name="colorErrorContainer">@color/waylan_color_red_80</item>
+        <item name="colorOnErrorContainer">@color/waylan_color_red_30</item>
+
+        <item name="android:colorBackground">@color/waylan_color_ivory_95</item>
+        <item name="colorOnBackground">@color/waylan_color_ivory_20</item>
+
+        <item name="colorSurface">@color/waylan_color_ivory_95</item>
+        <item name="colorOnSurface">@color/waylan_color_ivory_20</item>
+
+        <item name="colorSurfaceInverse">@color/waylan_color_ivory_20</item>
+        <item name="colorOnSurfaceInverse">@color/waylan_color_ivory_95</item>
+
+        <item name="colorSurfaceVariant">@color/waylan_color_ivory_90</item>
+        <item name="colorOnSurfaceVariant">@color/waylan_color_ivory_40</item>
+
+        <item name="colorOutline">@color/waylan_color_ivory_80</item>
+
+        <!--Legacy color-->
+        <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+        <item name="colorSecondaryVariant">?attr/colorSecondary</item>
         <item name="colorInformative">@color/area</item>
-        <item name="colorArea">@color/colorIvory400</item>
-
-        <item name="colorOnPrimary">@color/colorIvory50</item>
-        <item name="colorOnSecondary">?attr/colorSurfaceSecondary</item>
-        <item name="colorOnBackground">@color/colorGray600</item>
-        <item name="colorOnBackgroundError">@color/colorMauve400</item>
-        <item name="colorOnSurface">@color/colorGray600</item>
-        <item name="colorOnSurfaceSecondary">?attr/colorSecondary</item>
-        <item name="colorOnError">@color/colorGray600</item>
-        <item name="colorOnInformative">@color/colorGray800</item>
-
-        <item name="colorRipple">@color/colorIvory300</item>
+        <item name="colorArea">?attr/colorSurfaceVariant</item>
+        <item name="colorOnBackgroundError">?attr/colorError</item>
+        <item name="colorOnInformative">?attr/colorOnPrimaryContainer</item>
+        <item name="colorRipple">?attr/colorSurfaceVariant</item>
         <item name="colorScrim">@color/colorGray600</item>
-        <item name="colorDivider">@color/colorGray600</item>
-        <item name="colorHairline">@color/colorGray600</item>
+        <item name="colorDivider">?attr/colorOnSurface</item>
+        <item name="colorHairline">?attr/colorOutline</item>
 
         <!--Alpha emphasis-->
         <item name="alphaEmphasisHighType">0.87</item>
@@ -67,7 +87,11 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Words.LargeComponent</item>
 
         <!--Styles-->
+        <item name="cardViewStyle">@style/Widget.Waylan.Card</item>
+        <item name="chipStyle">@style/Base.Widget.Waylan.Chip</item>
+        <item name="progressUnderlineViewStyle">@style/Widget.Waylan.ProgressUnderlineView</item>
         <item name="reachabilityAppBarLayoutStyle">@style/Widget.Waylan.ReachabilityAppBarLayout.Flat</item>
+        <item name="underlineActionViewStyle">@style/Widget.Waylan.UnderlineActionView</item>
         <item name="styleTextButton">@style/Widget.Waylan.Button.TextButton</item>
         <item name="styleChipOutlined">@style/Widget.Waylan.Chip.Outlined</item>
         <item name="styleChipOpen">@style/Widget.Waylan.Chip.Open</item>
@@ -79,7 +103,7 @@
         <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
         <item name="colorAccent">?attr/colorSecondary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="android:windowBackground">?attr/colorSurface</item>
         <item name="colorControlHighlight">?attr/colorRipple</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <attr name="underlineActionViewStyle" format="reference"/>
   <attr name="actionIcon" format="reference"/>
   <declare-styleable name="UnderlineActionView">
     <attr name="actionIcon"/>
+    <attr name="actionIconTint" format="color"/>
   </declare-styleable>
 </resources>

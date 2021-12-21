@@ -1,10 +1,14 @@
 package space.narrate.waylan.core.util
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.elevation.ElevationOverlayProvider
+import com.google.android.material.elevation.SurfaceColors
+import space.narrate.waylan.core.ui.widget.ScrimWindowLayout
 
 @BindingAdapter(
     "fadeBackgroundAngle",
@@ -22,6 +26,25 @@ fun View.bindFadeBackground(
         intArrayOf(Color.TRANSPARENT, toColor)
     )
     background = gradientDrawable
+}
+
+@BindingAdapter("tintElevation")
+fun ImageView.bindTintElevation(elevation: Float) {
+    imageTintList = ColorStateList.valueOf(
+        SurfaceColors.getColorForElevation(context, elevation)
+    )
+}
+
+@BindingAdapter("backgroundElevation")
+fun View.bindBackgroundElevation(elevation: Float) {
+  setBackgroundColor(SurfaceColors.getColorForElevation(context, elevation))
+}
+
+@BindingAdapter("backgroundTintElevation")
+fun View.bindBackgroundTintElevation(elevation: Float) {
+    backgroundTintList = ColorStateList.valueOf(
+        SurfaceColors.getColorForElevation(context, elevation)
+    )
 }
 
 private fun getGradientDrawableOrientationFromAngle(angle: Int): GradientDrawable.Orientation {

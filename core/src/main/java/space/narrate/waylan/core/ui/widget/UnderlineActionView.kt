@@ -1,15 +1,19 @@
 package space.narrate.waylan.core.ui.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.res.use
 import space.narrate.waylan.core.R
 import space.narrate.waylan.core.databinding.UnderlineActionViewLayoutBinding
-import space.narrate.waylan.core.util.gone
+import space.narrate.waylan.core.util.getColorStateList
 import space.narrate.waylan.core.util.invisible
 import space.narrate.waylan.core.util.visible
+
+private val DEF_STYLE_ATTR = R.attr.underlineActionViewStyle
+private val DEF_STYLE_RES = R.style.Widget_Waylan_UnderlineActionView
 
 /**
  * A composite view which shows a play/stop button above a [ProgressUnderlineView].
@@ -17,8 +21,8 @@ import space.narrate.waylan.core.util.visible
 class UnderlineActionView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-    defStyleRes: Int = 0
+    defStyleAttr: Int = DEF_STYLE_ATTR,
+    defStyleRes: Int = DEF_STYLE_RES
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val binding: UnderlineActionViewLayoutBinding
@@ -34,8 +38,17 @@ class UnderlineActionView @JvmOverloads constructor(
             defStyleAttr,
             defStyleRes
         ).use {
-          val actionIcon = it.getResourceId(R.styleable.UnderlineActionView_actionIcon, 0)
-          setActionIconResource(actionIcon)
+            val actionIcon = it.getResourceId(R.styleable.UnderlineActionView_actionIcon, 0)
+            setActionIconResource(actionIcon)
+
+            if (it.hasValue(R.styleable.UnderlineActionView_actionIconTint)) {
+                val tint = it.getColorStateList(
+                    context,
+                    R.styleable.UnderlineActionView_actionIconTint,
+                    R.attr.colorOnSurface
+                )
+                setActionIconTint(tint)
+            }
         }
     }
 
@@ -51,6 +64,10 @@ class UnderlineActionView @JvmOverloads constructor(
             visible()
         }
         binding.imageView.setImageResource(resId)
+    }
+
+    fun setActionIconTint(color: ColorStateList) {
+        binding.imageView.imageTintList = color
     }
 
     fun isLoading(): Boolean = binding.underline.isStarted()

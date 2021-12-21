@@ -7,8 +7,8 @@
 object Versions {
     // Build constants
     const val minSdk = 23
-    const val compileSdk = 30
-    const val targetSdk = 30
+    const val compileSdk = 31
+    const val targetSdk = 31
 
     object VersionClassifier {
         const val NONE = ""
@@ -27,11 +27,11 @@ object Versions {
          = "$versionMajor.$versionMinor.$versionPatch$versionClassifier"
 
     // Library versions
-    const val androidX = "1.3.2"
-    const val appCompat = "1.2.0"
-    const val constraintLayout = "1.1.3"
+    const val androidX = "1.6.0"
+    const val appCompat = "1.3.1"
+    const val constraintLayout = "2.1.1"
     const val coreTesting = "2.1.0"
-    const val coroutines = "1.2.1"
+    const val coroutines = "1.5.2"
     const val crashlytics = "2.10.1"
     const val dagger = "2.16"
     const val dokka = "0.9.17"
@@ -43,17 +43,17 @@ object Versions {
     const val firestore = "21.1.1"
     const val fragment = "1.2.5"
     const val googlePlayBilling = "1.2"
-    const val googleServices = "4.2.0"
+    const val googleServices = "4.3.10"
     const val googleTruth = "0.44"
     const val gson = "2.8.4"
     const val hamcrest = "1.3"
     const val insetter = "0.2.0"
     const val junit = "4.12"
     const val koin = "2.0.1"
-    const val kotlin = "1.4.21"
+    const val kotlin = "1.5.20"
     const val lifecycle = "2.2.0"
     const val lifecycle_ext_ktx = "2.3.0-rc01"
-    const val material = "1.3.0-rc01"
+    const val material = "1.5.0-alpha04"
     const val mockito = "2.27.0"
     const val moshi = "1.9.1"
     const val moshiConverter = "2.6.2"
@@ -62,8 +62,8 @@ object Versions {
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.9.0"
     const val robolectric = "4.3.1"
-    const val room = "2.2.6"
-    const val testCoreKtx = "1.3.0-alpha03"
+    const val room = "2.3.0"
+    const val testCoreKtx = "1.4.0"
     const val testExtKotlinRunner = "1.1.2-alpha03"
     const val testRules = "1.3.0-alpha03"
     const val threetenbpGson = "1.0.2"

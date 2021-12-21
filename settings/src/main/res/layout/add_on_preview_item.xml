@@ -14,7 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleX="0.75"
-            android:scaleY="0.75">
+            android:scaleY="0.75"
+            app:strokeWidth="0dp"
+            app:cardElevation="@dimen/plane_01"
+            >
+
             <FrameLayout
                 android:id="@+id/card_content_container"
                 android:layout_width="match_parent"
