@@ -7,8 +7,8 @@
 object Versions {
     // Build constants
     const val minSdk = 23
-    const val compileSdk = 31
-    const val targetSdk = 31
+    const val compileSdk = 33
+    const val targetSdk = 33
 
     object VersionClassifier {
         const val NONE = ""

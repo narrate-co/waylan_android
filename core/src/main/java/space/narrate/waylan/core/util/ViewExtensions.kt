@@ -53,7 +53,7 @@ fun <T : View> T.fadeThroughTransition(with: T.() -> Unit) {
     alphaOut.duration = 100
     alphaOut.interpolator = AccelerateInterpolator()
     alphaOut.addListener(object: AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             with()
         }
     })

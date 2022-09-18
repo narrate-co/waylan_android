@@ -189,10 +189,10 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
             1F
         )
         anim.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) { }
-            override fun onAnimationEnd(animation: Animator?) { }
-            override fun onAnimationCancel(animation: Animator?) { }
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) { }
+            override fun onAnimationEnd(animation: Animator) { }
+            override fun onAnimationCancel(animation: Animator) { }
+            override fun onAnimationStart(animation: Animator) {
                 binding.progressBarTop.visibility = View.VISIBLE
             }
         })
@@ -226,12 +226,12 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
             )
         )
         set.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationRepeat(p0: Animator) {}
+            override fun onAnimationEnd(p0: Animator) {
                 binding.progressBarTop.visibility = View.INVISIBLE
             }
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationStart(p0: Animator?) {
+            override fun onAnimationCancel(p0: Animator) {}
+            override fun onAnimationStart(p0: Animator) {
                 binding.credentialsContainer.visibility = View.VISIBLE
             }
         })
