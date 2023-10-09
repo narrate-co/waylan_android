@@ -88,7 +88,9 @@ class SettingsFragment : Fragment() {
             appBar.setReachableContinuityNavigator(this@SettingsFragment, navigator)
 
             addOnsPreference.setOnClickListener {
-                findNavController().navigate(R.id.action_settingsFragment_to_addOnsFragment)
+                findNavController().navigate(
+                    space.narrate.waylan.core.R.id.action_settingsFragment_to_addOnsFragment
+                )
             }
 
             setUpNightMode()
@@ -104,7 +106,9 @@ class SettingsFragment : Fragment() {
 
             // About preference
             aboutPreference.setOnClickListener {
-                findNavController().navigate(R.id.action_settingsFragment_to_aboutFragment)
+                findNavController().navigate(
+                    space.narrate.waylan.core.R.id.action_settingsFragment_to_aboutFragment
+                )
             }
 
             // Contact preference
@@ -112,7 +116,10 @@ class SettingsFragment : Fragment() {
             contactPreference.setShowDivider(BuildConfig.DEBUG)
             contactPreference.setOnClickListener {
                 try {
-                    requireContext().launchEmail(SUPPORT_EMAIL_ADDRESS, getString(R.string.settings_email_compose_subject))
+                    requireContext().launchEmail(
+                        SUPPORT_EMAIL_ADDRESS,
+                        getString(R.string.settings_email_compose_subject)
+                    )
                 } catch (e: ActivityNotFoundException) {
                     Snackbar.make(
                         coordinatorLayout,
@@ -128,7 +135,9 @@ class SettingsFragment : Fragment() {
             // TODO further lock this down. Possibly by user?
             developerPreference.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
             developerPreference.setOnClickListener {
-                findNavController().navigate(R.id.action_settingsFragment_to_developerSettingsFragment)
+                findNavController().navigate(
+                    space.narrate.waylan.core.R.id.action_settingsFragment_to_developerSettingsFragment
+                )
             }
         }
 

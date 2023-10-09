@@ -35,7 +35,7 @@ import space.narrate.waylan.core.ui.widget.ListItemDividerDecoration
  * AppBarLayout (faked) titleRes is set to.
  *
  */
-class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
+class ListFragment : Fragment(), ListItemAdapter.ListItemListener {
 
     private lateinit var binding: FragmentListBinding
 
@@ -92,12 +92,17 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
                 exitTransition = MaterialSharedAxis(axis, forward)
                 reenterTransition = MaterialSharedAxis(axis, !forward)
             }
-          TransitionType.FADE_THROUGH -> {
-              enterTransition = MaterialFadeThrough()
-              returnTransition = MaterialFadeThrough()
-              exitTransition = MaterialFadeThrough()
-              reenterTransition = MaterialFadeThrough()
-          }
+
+            TransitionType.FADE_THROUGH -> {
+                enterTransition = MaterialFadeThrough()
+                returnTransition = MaterialFadeThrough()
+                exitTransition = MaterialFadeThrough()
+                reenterTransition = MaterialFadeThrough()
+            }
+
+            else -> {
+                // do nothing
+            }
         }
     }
 
@@ -111,7 +116,10 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
             recyclerView.adapter = adapter
             recyclerView.itemAnimator = DefaultItemAnimator()
             val itemDivider = ListItemDividerDecoration(
-                ContextCompat.getDrawable(requireContext(), R.drawable.list_item_divider)
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    space.narrate.waylan.core.R.drawable.list_item_divider
+                )
             )
             recyclerView.addItemDecoration(itemDivider)
 
@@ -136,7 +144,7 @@ class ListFragment: Fragment(), ListItemAdapter.ListItemListener {
         if (useSharedElement) {
             val extras = FragmentNavigatorExtras(view to "details_container_transition_group")
             findNavController().navigate(
-                R.id.action_listFragment_to_detailsFragment,
+                space.narrate.waylan.core.R.id.action_listFragment_to_detailsFragment,
                 null,
                 null,
                 extras

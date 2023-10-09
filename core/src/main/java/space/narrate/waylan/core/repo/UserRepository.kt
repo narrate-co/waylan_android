@@ -1,6 +1,7 @@
 package space.narrate.waylan.core.repo
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.switchMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,6 @@ import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.data.prefs.PreferenceStore
 import space.narrate.waylan.core.data.prefs.UserPreferenceStore
-import space.narrate.waylan.core.util.switchMapTransform
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -37,7 +37,7 @@ class UserRepository(
 
     /** Firestore User */
     val user: LiveData<User>
-        get() = authenticationStore.uid.switchMapTransform {
+        get() = authenticationStore.uid.switchMap {
             firestoreStore.getUserLive(it)
         }
 
@@ -138,13 +138,13 @@ class UserRepository(
     }
 
     fun getUserAddOnLive(addOn: AddOn): LiveData<UserAddOn> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserAddOnLive(it, addOn)
         }
     }
 
     fun getUserAddOnsLive(): LiveData<List<UserAddOn>> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserAddOnsLive(it)
         }
     }

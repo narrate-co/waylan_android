@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
     override fun onCreate(savedInstanceState: Bundle?) {
         ensureAppHasUser()
-        windowTintElevation(R.dimen.plane_01)
+        windowTintElevation(space.narrate.waylan.core.R.dimen.plane_01)
         super.onCreate(savedInstanceState)
 
         binding.run {
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
 
         sharedViewModel.shouldShowDetails.observe(this) { event ->
             event.withUnhandledContent {
-                findNavController().navigate(R.id.action_global_detailsFragment)
+                findNavController().navigate(space.narrate.waylan.core.R.id.action_global_detailsFragment)
             }
         }
 
@@ -243,7 +243,8 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         // Hide keyboard if sheet is manually dragged and collapsed
         searchSheetCallback.addOnStateChangedAction { _, newState ->
             if (newState == BottomSheetBehavior.STATE_COLLAPSED ||
-                    newState == BottomSheetBehavior.STATE_HIDDEN) {
+                newState == BottomSheetBehavior.STATE_HIDDEN
+            ) {
                 //make sure keyboard is down
                 hideIme()
             }
@@ -266,9 +267,9 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
      */
     private fun setBottomSheetScrimVisibility(searchSheetState: Int, contextualSheetState: Int) {
         if ((searchSheetState == BottomSheetBehavior.STATE_COLLAPSED
-                        || searchSheetState == BottomSheetBehavior.STATE_HIDDEN)
-                && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
-                        || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
+                    || searchSheetState == BottomSheetBehavior.STATE_HIDDEN)
+            && (contextualSheetState == BottomSheetBehavior.STATE_COLLAPSED
+                    || contextualSheetState == BottomSheetBehavior.STATE_HIDDEN)
         ) {
             binding.bottomSheetScrim.gone()
         } else {
@@ -288,7 +289,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         val offset = max(searchSheetSlide, contextualSheetSlide)
         navHostContainer.apply {
             translationY = offset * contentSlideDistance
-            alpha = MathUtils.normalize(offset, 0F, 1F,  1F, .5F)
+            alpha = MathUtils.normalize(offset, 0F, 1F, 1F, .5F)
         }
     }
 

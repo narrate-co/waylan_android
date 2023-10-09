@@ -3,12 +3,11 @@ package space.narrate.waylan.settings.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import space.narrate.waylan.core.billing.BillingConfig
+import androidx.lifecycle.map
 import space.narrate.waylan.core.data.prefs.NightMode
 import space.narrate.waylan.core.data.prefs.Orientation
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
-import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.settings.R
 
 /**
@@ -29,7 +28,7 @@ class SettingsViewModel(private val userRepository: UserRepository): ViewModel()
         get() = userRepository.orientationLockLive
 
     val logInSignOut: LiveData<LogInSignOutModel>
-        get() = userRepository.user.mapTransform {
+        get() = userRepository.user.map {
             when {
                 it.isAnonymous -> LogInSignOutModel(
                     R.string.settings_log_in_sign_up_title,

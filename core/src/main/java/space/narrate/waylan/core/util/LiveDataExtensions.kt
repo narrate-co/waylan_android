@@ -3,29 +3,16 @@ package space.narrate.waylan.core.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-
-/**
- * Helper extension to chain Transform.map to the end of a LiveData object.
- */
-fun <X, Y> LiveData<X>.mapTransform(block: (X) -> Y): LiveData<Y> {
-    return Transformations.map(this, block)
-}
-
-/**
- * Helper extension to chain Transform.switchMap to the end of a LiveData object.
- */
-fun <X, Y> LiveData<X>.switchMapTransform(block: (X) -> LiveData<Y>): LiveData<Y> {
-    return Transformations.switchMap(this, block)
-}
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 
 /**
  * Helper extension to add a Transform.map to the end of a LiveData object which only gets
  * called when the [on] LiveData value changes.
  */
 fun <X, Y, Z> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> Z): LiveData<Z> {
-    return Transformations.switchMap(on) { y ->
-        Transformations.map(this) { x ->
+    return on.switchMap { y ->
+        this.map { x ->
             block(x, y)
         }
     }
@@ -36,7 +23,7 @@ fun <X, Y, Z> LiveData<X>.mapOnTransform(on: LiveData<Y>, block: (X, Y) -> Z): L
  * the downstream value of this LiveData object.
  */
 fun <X> LiveData<X>.doOnEmission(block: (X) -> Unit): LiveData<X> {
-    return mapTransform {
+    return map {
         block(it)
         it
     }

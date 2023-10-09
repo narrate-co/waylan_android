@@ -50,7 +50,7 @@ class EducationalOverlayView private constructor(
 
     // The paint used for the educational dot
     private var dotPaint = Paint(ANTI_ALIAS_FLAG).apply {
-        color = context.themeColor(R.attr.colorPrimary)
+        color = context.themeColor(com.google.android.material.R.attr.colorPrimary)
         style = Paint.Style.FILL
     }
 

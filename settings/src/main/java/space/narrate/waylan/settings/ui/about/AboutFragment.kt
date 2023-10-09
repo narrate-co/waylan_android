@@ -75,7 +75,7 @@ class AboutFragment: Fragment() {
             // Third Party Libs preference
             thirdPartyLibsPreference.setOnClickListener {
                 findNavController().navigate(
-                    R.id.action_aboutFragment_to_thirdPartyLibrariesFragment
+                    space.narrate.waylan.core.R.id.action_aboutFragment_to_thirdPartyLibrariesFragment
                 )
             }
         }

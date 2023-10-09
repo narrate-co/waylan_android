@@ -35,7 +35,7 @@ import kotlin.math.log10
  * supports vertical. Horizontal is still a work in progress.
  */
 class ElasticAppBarBehavior @JvmOverloads constructor(
-    context: Context? = null,
+    context: Context,
     attrs: AttributeSet? = null
 ) : AppBarLayout.Behavior(context, attrs), AppBarLayout.OnOffsetChangedListener {
 
@@ -291,7 +291,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             }
 
             override fun onFling(
-                e1: MotionEvent,
+                e1: MotionEvent?,
                 e2: MotionEvent,
                 velocityX: Float,
                 velocityY: Float
@@ -304,7 +304,7 @@ class ElasticAppBarBehavior @JvmOverloads constructor(
             }
 
             override fun onScroll(
-                e1: MotionEvent,
+                e1: MotionEvent?,
                 e2: MotionEvent,
                 distanceX: Float,
                 distanceY: Float

@@ -23,8 +23,8 @@ object AdapterUtils {
 
     fun <T> emptyDiffItemCallback(): DiffUtil.ItemCallback<T> =
         object : DiffUtil.ItemCallback<T>() {
-            override fun areItemsTheSame(oldItem: T, newItem: T): Boolean = false
-            override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = false
+            override fun areItemsTheSame(oldItem: T & Any, newItem: T & Any): Boolean = false
+            override fun areContentsTheSame(oldItem: T & Any, newItem: T & Any): Boolean = false
         }
 
     fun inflate(parent: ViewGroup, layout: Int): View {

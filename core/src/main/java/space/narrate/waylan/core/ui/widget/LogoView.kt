@@ -12,8 +12,8 @@ import android.util.TypedValue
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.scale
-import kotlin.math.min
 import space.narrate.waylan.core.R
+import kotlin.math.min
 import space.narrate.waylan.core.util.themeColor
 
 class LogoView @JvmOverloads constructor(
@@ -50,7 +50,7 @@ class LogoView @JvmOverloads constructor(
   }
 
   private val fgPaint = Paint().apply {
-    color = context.themeColor(R.attr.colorSecondary)
+    color = context.themeColor(com.google.android.material.R.attr.colorSecondary)
     style = Paint.Style.FILL
     textAlign = Paint.Align.RIGHT
     typeface = semiboldTypeface

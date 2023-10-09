@@ -7,8 +7,8 @@
 object Versions {
     // Build constants
     const val minSdk = 23
-    const val compileSdk = 33
-    const val targetSdk = 33
+    const val compileSdk = 34
+    const val targetSdk = 34
 
     object VersionClassifier {
         const val NONE = ""
@@ -50,19 +50,21 @@ object Versions {
     const val insetter = "0.2.0"
     const val junit = "4.12"
     const val koin = "2.0.1"
-    const val kotlin = "1.5.20"
-    const val lifecycle = "2.2.0"
-    const val lifecycle_ext_ktx = "2.3.0-rc01"
+    const val kotlin = "1.9.10"
+//    const val ksp = "1.9.10-1.0.13"
+    const val lifecycle = "2.6.2"
+    const val lifecycle_ext = "2.2.0"
+    const val lifecycle_ext_ktx = "2.6.2"
     const val material = "1.5.0-alpha04"
     const val mockito = "2.27.0"
-    const val moshi = "1.9.1"
+    const val moshi = "1.15.0"
     const val moshiConverter = "2.6.2"
-    const val navigation = "2.3.2"
+    const val navigation = "2.7.3"
     const val okhttp3 = "4.9.1"
     const val okhttp3MockWebServer = "4.2.1"
     const val retrofit = "2.9.0"
     const val robolectric = "4.3.1"
-    const val room = "2.3.0"
+    const val room = "2.5.2"
     const val testCoreKtx = "1.4.0"
     const val testExtKotlinRunner = "1.1.2-alpha03"
     const val testRules = "1.3.0-alpha03"
@@ -128,6 +130,7 @@ object Libs {
 
     // Kotlin
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+//    const val kotlinSymbolProcessing = "com.google.devtools.ksp:symbol-processing-api:${Versions.ksp}"
     const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val kotlinCoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
@@ -136,7 +139,7 @@ object Libs {
     const val dynamicAnimation = "androidx.dynamicanimation:dynamicanimation-ktx:${Versions.dynamicAnimation}"
     const val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_ext_ktx}"
     const val lifecycleLiveDataCore = "androidx.lifecycle:lifecycle-livedata-core-ktx:${Versions.lifecycle}"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle_ext}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
 
     // Material
@@ -146,6 +149,7 @@ object Libs {
     const val mockito =  "org.mockito:mockito-core:${Versions.mockito}"
     const val mockitoInline = "org.mockito:mockito-inline:${Versions.mockito}"
 
+    // Moshi
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshiAdapter = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"

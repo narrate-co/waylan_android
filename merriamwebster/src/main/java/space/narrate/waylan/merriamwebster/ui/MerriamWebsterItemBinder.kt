@@ -24,7 +24,7 @@ sealed class MerriamWebsterItemBinder<T : MerriamWebsterItemModel> {
     object PartOfSpeechBinder :
         MerriamWebsterItemBinder<MerriamWebsterItemModel.PartOfSpeechModel>() {
 
-        override val layout: Int = appR.layout.details_part_of_speech_layout
+        override val layout: Int = space.narrate.waylan.core.R.layout.details_part_of_speech_layout
 
         override fun bind(
             view: View,
@@ -37,7 +37,7 @@ sealed class MerriamWebsterItemBinder<T : MerriamWebsterItemModel> {
 
     object DefinitionBinder : MerriamWebsterItemBinder<MerriamWebsterItemModel.DefinitionModel>() {
 
-        override val layout: Int = appR.layout.details_definition_layout
+        override val layout: Int = space.narrate.waylan.core.R.layout.details_definition_layout
 
         override fun bind(
             view: View,

@@ -69,7 +69,7 @@ object SheetDimens {
 
     private fun getSheetBottomSystemWindowInset(context: Context, insets: WindowInsetsCompat): Int {
         return insets.systemWindowInsetBottom +
-            context.resources.getDimensionPixelSize(R.dimen.keyline_2)
+            context.resources.getDimensionPixelSize(space.narrate.waylan.core.R.dimen.keyline_2)
     }
 
     fun getSearchPeekHeight(context: Context, insets: WindowInsetsCompat): Int {

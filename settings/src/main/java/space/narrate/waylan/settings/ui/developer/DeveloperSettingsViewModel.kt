@@ -3,6 +3,7 @@ package space.narrate.waylan.settings.ui.developer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import space.narrate.waylan.core.billing.BillingConfig
@@ -14,7 +15,6 @@ import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
-import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.core.util.minusDays
 import space.narrate.waylan.settings.R
 import java.util.*
@@ -24,20 +24,20 @@ class DeveloperSettingsViewModel(
 ) : ViewModel() {
 
     val isAnonymousUser: LiveData<Boolean>
-        get() = userRepository.user.mapTransform { it.isAnonymous }
+        get() = userRepository.user.map { it.isAnonymous }
 
     val mwState: LiveData<String>
-        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER).mapTransform {
+        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER).map {
             getLabelForAddOnState(it.state)
         }
 
     val mwThesaurusState: LiveData<String>
-        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER_THESAURUS).mapTransform {
+        get() = userRepository.getUserAddOnLive(AddOn.MERRIAM_WEBSTER_THESAURUS).map {
             getLabelForAddOnState(it.state)
         }
 
     val ahdState: LiveData<String>
-        get() = userRepository.getUserAddOnLive(AddOn.AMERICAN_HERITAGE).mapTransform {
+        get() = userRepository.getUserAddOnLive(AddOn.AMERICAN_HERITAGE).map {
             getLabelForAddOnState(it.state)
         }
 
@@ -137,7 +137,7 @@ class DeveloperSettingsViewModel(
         } else if (result is Result.Error){
             _shouldShowSnackbar.value = Event(SnackbarModel(
                 // TODO: Change error message to use actual exception
-                R.string.auth_error_message_no_current_user,
+                space.narrate.waylan.core.R.string.auth_error_message_no_current_user,
                 isError = true
             ))
         }

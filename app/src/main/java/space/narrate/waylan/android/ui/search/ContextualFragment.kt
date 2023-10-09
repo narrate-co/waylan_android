@@ -50,9 +50,9 @@ class ContextualFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentContextualBinding.inflate(inflater, container, false)
         return binding.root
@@ -70,13 +70,16 @@ class ContextualFragment : Fragment() {
             initializeElevationOverlay(requireContext())
             elevation = binding.contextualFrame.elevation
             fillColor = ColorStateList.valueOf(
-                requireContext().themeColor(R.attr.colorSurface)
+                requireContext().themeColor(com.google.android.material.R.attr.colorSurface)
             )
             // Add a stroke to emphasize the shadow on the top of this bottom sheet.
             // The stroke is very light as the sheet moves towards the bottom of the screen
             // due to how Android's light source, used for shadow calculation, works.
             strokeColor = ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), R.color.shadow_emphasis_color)
+                ContextCompat.getColor(
+                    requireContext(),
+                    space.narrate.waylan.core.R.color.shadow_emphasis_color
+                )
             )
             strokeWidth = 2F
         }
@@ -145,7 +148,8 @@ class ContextualFragment : Fragment() {
         navigator.currentDestination.observe(viewLifecycleOwner) { dest ->
             when (dest) {
                 Destination.TRENDING -> setExpandedContainer("Filter trending")
-                else -> { /* Ignore or add other filterable lists in the future */ }
+                else -> { /* Ignore or add other filterable lists in the future */
+                }
             }
         }
 
@@ -227,7 +231,8 @@ class ContextualFragment : Fragment() {
     }
 
     companion object {
-        private const val DEF_STYLE_ATTR = R.attr.styleBottomSheetStandard
-        private const val DEF_STYLE_RES = R.style.Widget_Waylan_BottomSheet_Standard
+        private val DEF_STYLE_ATTR = space.narrate.waylan.core.R.attr.styleBottomSheetStandard
+        private val DEF_STYLE_RES =
+            space.narrate.waylan.core.R.style.Widget_Waylan_BottomSheet_Standard
     }
 }

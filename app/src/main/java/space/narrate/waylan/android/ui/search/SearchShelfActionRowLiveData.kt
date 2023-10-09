@@ -2,14 +2,14 @@ package space.narrate.waylan.android.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import space.narrate.waylan.android.util.SoftInputModel
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.util.mapOnTransform
-import space.narrate.waylan.core.util.mapTransform
-import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.core.util.toLiveData
 
 /**
@@ -129,18 +129,18 @@ class SearchShelfActionRowLiveData(
 
     private val searchShelfRowModel: LiveData<SearchShelfActionRowModel>
         get() = currentDestination
-            .switchMapTransform { dest ->
+            .switchMap { dest ->
                 val model: LiveData<SearchShelfActionRowModel> = when (dest) {
                     Destination.DETAILS ->
-                        currentUserWord.mapTransform {
+                        currentUserWord.map {
                             SearchShelfActionRowModel.DetailsShelfActions(it)
                         }
                     Destination.TRENDING ->
-                        trendingListFilter.mapTransform {
+                        trendingListFilter.map {
                             SearchShelfActionRowModel.FilterableListShelfActions(it.isNotEmpty())
                         }
                     Destination.RECENT, Destination.FAVORITE ->
-                        trendingListFilter.mapTransform {
+                        trendingListFilter.map {
                             SearchShelfActionRowModel.ListShelfActions()
                         }
                     else -> SearchShelfActionRowModel.None().toLiveData

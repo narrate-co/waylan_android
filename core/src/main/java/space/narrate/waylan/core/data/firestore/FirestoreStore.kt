@@ -143,6 +143,7 @@ class FirestoreStore(
                     FirebaseFirestoreException.Code.NOT_FOUND -> launch {
                         newUserAddOn(uid, addOn)
                     }
+                    else -> { }
                 }
             }
     }

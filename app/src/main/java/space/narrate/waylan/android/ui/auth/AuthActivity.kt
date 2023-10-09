@@ -65,7 +65,7 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        windowTintElevation(R.dimen.plane_01)
+        windowTintElevation(space.narrate.waylan.core.R.dimen.plane_01)
         super.onCreate(savedInstanceState)
         binding.progressBarTop.startProgress()
 
@@ -259,11 +259,11 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
 
                 val errorTextColor = ContextCompat.getColor(
                     this,
-                    R.color.on_error_area_emphasis_high_type
+                    space.narrate.waylan.core.R.color.on_error_area_emphasis_high_type
                 )
                 val errorHintColor = ContextCompat.getColor(
                     this,
-                    R.color.on_error_area_emphasis_disabled
+                    space.narrate.waylan.core.R.color.on_error_area_emphasis_disabled
                 )
                 binding.run {
                     TransitionManager.beginDelayedTransition(container)
@@ -293,8 +293,8 @@ class AuthActivity : AppCompatActivity(), CoroutineScope {
                 bgTransition.isCrossFadeEnabled = true
                 bgTransition.reverseTransition(200)
 
-                val textColor = themeColor(R.attr.colorOnBackground)
-                val hintColor = themeColor(R.attr.colorOnBackground)
+                val textColor = themeColor(com.google.android.material.R.attr.colorOnBackground)
+                val hintColor = themeColor(com.google.android.material.R.attr.colorOnBackground)
 
                 binding.run {
                     TransitionManager.beginDelayedTransition(binding.container)

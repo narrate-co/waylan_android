@@ -75,9 +75,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     private var numberOfShelfActionsShowing: Int = 0
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -110,13 +110,15 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 sharedViewModel.onChangeCurrentWord(it)
                 val mainActivity = (requireActivity() as MainActivity)
                 val navController = mainActivity.findNavController()
-                if (navController.currentDestination?.id != R.id.detailsFragment) {
+                if (navController.currentDestination?.id != space.narrate.waylan.core.R.id.detailsFragment) {
                     (mainActivity.currentNavigationFragment as? ListFragment)?.apply {
                         setUpTransitions(TransitionType.SHARED_AXIS_Y, true)
                     }
-                    navController.navigate(DetailsFragmentDirections.actionGlobalDetailsFragment(
-                        TransitionType.SHARED_AXIS_Y
-                    ))
+                    navController.navigate(
+                        DetailsFragmentDirections.actionGlobalDetailsFragment(
+                            TransitionType.SHARED_AXIS_Y
+                        )
+                    )
                 }
             }
         }
@@ -130,7 +132,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
                 }
                 val navController = mainActivity.findNavController()
                 // Navigating to settings should only ever be available when on the list fragment.
-                navController.navigate(R.id.action_listFragment_to_settingsFragment)
+                navController.navigate(space.narrate.waylan.core.R.id.action_listFragment_to_settingsFragment)
             }
         }
 
@@ -172,7 +174,8 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
     fun handleOnBackPressed(): Boolean {
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED ||
-            bottomSheetBehavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED
+        ) {
             return close()
         }
         return false
@@ -275,10 +278,10 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
         // observe for all orientation/rotation patterns in the viewModel
         rotationManager.observeForPattern(
-                this.javaClass.simpleName,
-                this,
-                RotationManager.PATTERNS_ALL,
-                viewModel
+            this.javaClass.simpleName,
+            this,
+            RotationManager.PATTERNS_ALL,
+            viewModel
         )
     }
 
@@ -305,14 +308,14 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         // Hide actions if sheet is expanded
         (activity as MainActivity).searchSheetCallback.addOnSlideAction { _, offset ->
             setSheetSlideOffsetForActions(
-                    offset,
-                    (requireActivity() as MainActivity).contextualSheetCallback.currentSlide
+                offset,
+                (requireActivity() as MainActivity).contextualSheetCallback.currentSlide
             )
         }
     }
 
     private fun setSheetSlideOffsetForActions(searchOffset: Float, contextualOffset: Float) {
-        val collapsedMargin =  getSearchAreaMarginRightForNumberOfShowingActions(
+        val collapsedMargin = getSearchAreaMarginRightForNumberOfShowingActions(
             numberOfShelfActionsShowing
         )
         val expandedMargin = getSearchAreaMarginRightForNumberOfShowingActions(1)
@@ -331,7 +334,8 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     private fun getSearchAreaMarginRightForNumberOfShowingActions(number: Int): Int {
         // Margin between the right edge of the search area and the right edge of the screen
         // when no actions are showing.
-        val marginFromEdgeOfScreen = resources.getDimensionPixelSize(R.dimen.keyline_2)
+        val marginFromEdgeOfScreen =
+            resources.getDimensionPixelSize(space.narrate.waylan.core.R.dimen.keyline_2)
 
         // Total horizontal margins for each action item.
         val params = binding.actionOne.layoutParams as LinearLayout.LayoutParams
@@ -429,9 +433,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
         }
     }
 
-    override fun afterTextChanged(s: Editable?) { }
+    override fun afterTextChanged(s: Editable?) {}
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         viewModel.onSearchInputTextChanged(s)
@@ -454,8 +458,9 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
     }
 
     companion object {
-        private const val DEF_STYLE_ATTR = R.attr.styleBottomSheetStandard
-        private const val DEF_STYLE_RES = R.style.Widget_Waylan_BottomSheet_Standard
+        private val DEF_STYLE_ATTR = space.narrate.waylan.core.R.attr.styleBottomSheetStandard
+        private val DEF_STYLE_RES =
+            space.narrate.waylan.core.R.style.Widget_Waylan_BottomSheet_Standard
     }
 }
 

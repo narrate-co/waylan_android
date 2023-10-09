@@ -84,7 +84,7 @@ class ProgressUnderlineView @JvmOverloads constructor(
             color = a.getColorStateList(
                 context,
                 R.styleable.ProgressUnderlineView_trackColor,
-                R.attr.colorControlNormal
+                com.google.android.material.R.attr.colorControlNormal
             ).defaultColor
             style = Paint.Style.FILL
         }
@@ -92,7 +92,7 @@ class ProgressUnderlineView @JvmOverloads constructor(
             color = a.getColorStateList(
                 context,
                 R.styleable.ProgressUnderlineView_indicatorColor,
-                R.attr.colorPrimary
+                com.google.android.material.R.attr.colorPrimary
             ).defaultColor
             style = Paint.Style.FILL
         }

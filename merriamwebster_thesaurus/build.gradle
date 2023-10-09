@@ -3,17 +3,18 @@
 
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "com.google.devtools.ksp"
 
 apply from: '../shared_dependencies.gradle'
 apply from: '../test_dependencies.gradle'
 
 android {
-    compileSdkVersion Versions.compileSdk
+    namespace "space.narrate.waylan.merriamwebster_thesaurus"
+    compileSdk Versions.compileSdk
     defaultConfig {
-        minSdkVersion Versions.minSdk
-        targetSdkVersion Versions.targetSdk
+        minSdk Versions.minSdk
+        targetSdk Versions.targetSdk
 
         // Merriam Webster Thesaurus key - hidden from VCS
         if (rootProject.file('keys.properties').exists()) {
@@ -26,17 +27,17 @@ android {
 
     // View/Data binding
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 
     // Compile options
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -48,7 +49,8 @@ dependencies {
     implementation Libs.moshiKotlin
     implementation Libs.moshiAdapter
 
+    // TODO: Maybe remove since these are in the shared deps module?
     // Room
     implementation Libs.roomRuntime
-    kapt Libs.roomCompiler
+    ksp Libs.roomCompiler
 }

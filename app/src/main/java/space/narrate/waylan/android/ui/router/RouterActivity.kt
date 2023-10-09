@@ -23,7 +23,7 @@ class RouterActivity : Activity() {
     private val authenticationStore: AuthenticationStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        windowTintElevation(R.dimen.plane_01)
+        windowTintElevation(space.narrate.waylan.core.R.dimen.plane_01)
         super.onCreate(savedInstanceState)
 
         // We should only get to RouterActivity by receiving a filtered intent

@@ -60,8 +60,8 @@ private fun Snackbar.config(
     context: Context
 ): Snackbar {
     val bgColorAttr = when (type) {
-        SnackbarType.ERROR -> R.attr.colorError
-        SnackbarType.INFORMATIVE -> R.attr.colorSurface
+        SnackbarType.ERROR -> com.google.android.material.R.attr.colorError
+        SnackbarType.INFORMATIVE -> com.google.android.material.R.attr.colorSurface
     }
 
     val background = AppCompatResources.getDrawable(
@@ -70,29 +70,31 @@ private fun Snackbar.config(
     )!!
     val elevationOverlayProvider = ElevationOverlayProvider(context)
     val backgroundTint = elevationOverlayProvider.compositeOverlayIfNeeded(
-      context.themeColor(bgColorAttr),
-      context.resources.getDimension(R.dimen.plane_03)
+        context.themeColor(bgColorAttr),
+        context.resources.getDimension(R.dimen.plane_03)
     )
     DrawableCompat.setTint(background, backgroundTint)
     val textAppearance = R.style.TextAppearance_Waylan_Body1
     val buttonTextAppearance = R.style.TextAppearance_Waylan_Button
     val textColor = when (type) {
-        SnackbarType.ERROR -> context.themeColor(R.attr.colorOnError)
-        SnackbarType.INFORMATIVE -> context.themeColor(R.attr.colorOnSurface)
+        SnackbarType.ERROR -> context.themeColor(com.google.android.material.R.attr.colorOnError)
+        SnackbarType.INFORMATIVE -> {
+            context.themeColor(com.google.android.material.R.attr.colorOnSurface)
+        }
     }
 
     view.background = background
     ViewCompat.setElevation(view, 6F)
 
     //alter textRes
-    val tv = view.findViewById<TextView>(R.id.snackbar_text)
+    val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
     TextViewCompat.setTextAppearance(tv, textAppearance)
     tv.setTextColor(textColor)
     // TODO: Use fontFamily theme attributes
     tv.typeface = ResourcesCompat.getFont(context, R.font.ibm_plex_serif_regular)
 
     //alter action
-    val action = view.findViewById<TextView>(R.id.snackbar_action)
+    val action = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
     TextViewCompat.setTextAppearance(action, buttonTextAppearance)
     action.setTextColor(textColor)
     // TODO: Use fontFamily theme attributes

@@ -12,7 +12,6 @@ import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.elevation.SurfaceColors
 import space.narrate.waylan.core.R
-import space.narrate.waylan.core.util.findFirstDescendantOrNull
 import space.narrate.waylan.core.util.getColorStateList
 import space.narrate.waylan.core.util.invisible
 import space.narrate.waylan.core.util.visible
@@ -108,9 +107,9 @@ class ScrimWindowLayout @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        (findFirstDescendantOrNull { it is AppBarLayout } as AppBarLayout?)
+        (children.firstOrNull { it is AppBarLayout } as AppBarLayout?)
             ?.addOnOffsetChangedListener(
-                AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+                { _, verticalOffset ->
                     if (verticalOffset == 0) statusBarScrim.invisible() else statusBarScrim.visible()
                 })
 

@@ -150,13 +150,13 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
                 sharedElementEnterTransition = MaterialContainerTransform().apply {
                     scrimColor = AppCompatResources.getColorStateList(
                         requireContext(),
-                        R.color.scrim
+                        space.narrate.waylan.core.R.color.scrim
                     ).defaultColor
                     interpolator = FastOutUltraSlowIn()
                     drawingViewId = R.id.nav_host_fragment
                     setAllContainerColors(SurfaceColors.getColorForElevation(
                         requireContext(),
-                        resources.getDimension(R.dimen.plane_01)
+                        resources.getDimension(space.narrate.waylan.core.R.dimen.plane_01)
                     ))
                 }
             }
@@ -166,6 +166,9 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, true)
                 reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+            }
+            else -> {
+                // do nothing
             }
         }
     }

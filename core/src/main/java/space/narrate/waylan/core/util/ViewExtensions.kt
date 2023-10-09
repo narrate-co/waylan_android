@@ -85,26 +85,6 @@ fun String.toChip(
     return chip
 }
 
-/**
- * A breadth first search of all descendants from [ViewGroup]. This returns the first View which
- * matches the given [predicate]. If no matching view is found, this method will return null.
- */
-fun ViewGroup.findFirstDescendantOrNull(predicate: (v: View) -> Boolean): View? {
-    val queue = PriorityQueue<ViewGroup>()
-    queue.add(this)
-    while (queue.isNotEmpty()) {
-        queue.poll()?.children?.forEach {
-            if (predicate(it)) {
-                return it
-            } else if (it is ViewGroup) {
-                queue.add(it)
-            }
-        }
-    }
-
-    return null
-}
-
 fun View.hideIme() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         windowInsetsController?.hide(WindowInsets.Type.ime())

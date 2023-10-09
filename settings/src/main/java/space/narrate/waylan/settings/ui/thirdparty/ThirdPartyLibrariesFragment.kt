@@ -78,7 +78,10 @@ class ThirdPartyLibrariesFragment : Fragment(), ThirdPartyLibraryAdapter.Listene
             recyclerView.adapter = adapter
 
             val itemDivider = ListItemDividerDecoration(
-                ContextCompat.getDrawable(requireContext(), R.drawable.list_item_divider)
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    space.narrate.waylan.core.R.drawable.list_item_divider
+                )
             )
             recyclerView.addItemDecoration(itemDivider)
 
@@ -87,5 +90,7 @@ class ThirdPartyLibrariesFragment : Fragment(), ThirdPartyLibraryAdapter.Listene
         adapter.submitList(thirdPartyLibrariesViewModel.thirdPartyLibraries)
     }
 
-    override fun onClick(lib: ThirdPartyLibrary) { requireContext().launchWebsite(lib.url) }
+    override fun onClick(lib: ThirdPartyLibrary) {
+        requireContext().launchWebsite(lib.url)
+    }
 }

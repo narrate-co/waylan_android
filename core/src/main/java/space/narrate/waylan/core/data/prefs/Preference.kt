@@ -4,8 +4,8 @@ package space.narrate.waylan.core.data.prefs
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.switchMap
 import space.narrate.waylan.core.util.DefaultingMutableLiveData
-import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A class which handles getting and setting a SharedPreference value. This class is able to react
@@ -21,7 +21,7 @@ class Preference<T>(
 
     // get live data
     fun getLive(): LiveData<T> {
-        return sharedPreferences.switchMapTransform {
+        return sharedPreferences.switchMap {
             PreferenceLiveData(it, key, defValue)
         }
     }

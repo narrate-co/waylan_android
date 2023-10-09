@@ -3,6 +3,7 @@ package space.narrate.waylan.android.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnState
 import space.narrate.waylan.core.data.firestore.users.isValid
@@ -15,7 +16,6 @@ import space.narrate.waylan.core.ui.common.AudioClipAction
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.mapOnTransform
-import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * ViewModel for [DetailsFragment]
@@ -29,7 +29,7 @@ class DetailsViewModel(
     private var _word = MutableLiveData<String>()
 
     val list: LiveData<List<DetailItemModel>> = _word
-        .switchMapTransform { word ->
+        .switchMap { word ->
             DetailItemListMediatorLiveData().apply {
                 detailDataProviderRegistry.providers.forEach {
                     addSource(it.loadWord(word))

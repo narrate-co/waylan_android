@@ -3,13 +3,14 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: "com.google.devtools.ksp"
 
 android {
-    compileSdkVersion Versions.compileSdk
+    namespace "space.narrate.waylan.test_common"
+    compileSdk Versions.compileSdk
     defaultConfig {
-        minSdkVersion Versions.minSdk
-        targetSdkVersion Versions.targetSdk
+        minSdk Versions.minSdk
+        targetSdk Versions.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -25,12 +26,11 @@ android {
 
     // Compile options
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -44,7 +44,7 @@ dependencies {
     implementation Libs.kotlinCoroutinesTest
     implementation Libs.kotlinCoroutinesAndroid
     implementation Libs.lifecycleExtensions
-    kapt Libs.lifecycleCompiler
+    ksp Libs.lifecycleCompiler
     implementation Libs.mockito
     implementation Libs.mockitoInline
     implementation Libs.okhttp3MockWebServer

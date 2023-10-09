@@ -3,20 +3,22 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "com.google.devtools.ksp"
+apply plugin: 'kotlin-kapt'
 
 apply from: '../shared_dependencies.gradle'
 apply from: '../test_dependencies.gradle'
 
 android {
-    compileSdkVersion Versions.compileSdk
+    namespace "space.narrate.waylan.android"
+    compileSdk Versions.compileSdk
     defaultConfig {
         applicationId "space.narrate.words.android"
-        minSdkVersion Versions.minSdk
-        targetSdkVersion Versions.targetSdk
+        minSdk Versions.minSdk
+        targetSdk Versions.targetSdk
         versionCode Versions.versionCode
         versionName Versions.versionName
 
@@ -52,12 +54,11 @@ android {
 
     // Compile options
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 
     lintOptions {
@@ -72,10 +73,8 @@ android {
     }
 }
 
-kapt {
-    arguments {
-        arg("room.schemaLocation", "$projectDir/schemas".toString())
-    }
+ksp {
+    arg('room.schemaLocation', "$projectDir/schemas")
 }
 
 dependencies {
@@ -85,9 +84,10 @@ dependencies {
     implementation project(':wordset')
     implementation project(':wordnik')
 
+    // TODO: Maybe remove since these are in the shared deps moduble?
     // Room
     implementation Libs.roomRuntime
-    kapt Libs.roomCompiler
+    ksp Libs.roomCompiler
 
     // Firebase & Firestore
     implementation Libs.firebase

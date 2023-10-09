@@ -3,13 +3,16 @@ package space.narrate.waylan.settings.ui.addons
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import space.narrate.waylan.core.billing.BillingEvent
 import space.narrate.waylan.core.data.firestore.users.AddOn
 import space.narrate.waylan.core.data.firestore.users.AddOnAction
-import space.narrate.waylan.core.data.firestore.users.AddOnAction.*
+import space.narrate.waylan.core.data.firestore.users.AddOnAction.ADD
+import space.narrate.waylan.core.data.firestore.users.AddOnAction.RENEW
+import space.narrate.waylan.core.data.firestore.users.AddOnAction.TRY_FOR_FREE
 import space.narrate.waylan.core.data.firestore.users.AddOnState
 import space.narrate.waylan.core.data.firestore.users.User
 import space.narrate.waylan.core.data.firestore.users.UserAddOnActionUseCase
@@ -20,7 +23,6 @@ import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.ui.common.SnackbarModel
 import space.narrate.waylan.core.util.doOnEmission
 import space.narrate.waylan.core.util.mapOnTransform
-import space.narrate.waylan.core.util.mapTransform
 import space.narrate.waylan.settings.R
 
 /**
@@ -66,7 +68,7 @@ class AddOnsViewModel(
         get() = _shouldScrollToPosition
 
     val shouldShowStatusTextLabel: LiveData<Boolean>
-        get() = currentAddOn.mapTransform {
+        get() = currentAddOn.map {
             when (it.userAddOn.state) {
                 AddOnState.NONE -> false
                 else -> true
@@ -156,6 +158,9 @@ class AddOnsViewModel(
                     SnackbarModel.LENGTH_SHORT
                 ))
                 analyticsRepository.logAddOnEvent(event.addOn, ADD)
+            }
+            is BillingEvent.Canceled -> {
+                // Do nothing
             }
         }
     }

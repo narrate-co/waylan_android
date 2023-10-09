@@ -32,7 +32,8 @@ class AppNavigator(
     override val shouldNavigateBack: LiveData<Event<Boolean>>
         get() = _shouldNavigateBack
 
-    private val _reachabilityState: MutableLiveData<ReachableContinuityNavigator.State> = MutableLiveData()
+    private val _reachabilityState: MutableLiveData<ReachableContinuityNavigator.State> =
+        MutableLiveData()
     override val reachabilityState: LiveData<ReachableContinuityNavigator.State>
         get() = _reachabilityState
 
@@ -88,7 +89,7 @@ class AppNavigator(
         context: Context,
         authRoute: AuthRoute? = null,
         filterIntent: Intent? = null
-    )  {
+    ) {
         val intent = Intent(context, AuthActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         if (authRoute != null) intent.putExtra(AuthActivity.AUTH_ROUTE_EXTRA_KEY, authRoute.name)
@@ -102,18 +103,21 @@ class AppNavigator(
     companion object {
         fun fromDestinationId(destination: NavDestination, args: Bundle?): Destination {
             return when (destination.id) {
-                R.id.listFragment -> when (ListFragmentArgs.fromBundle(args!!).listType) {
+                space.narrate.waylan.core.R.id.listFragment -> when (ListFragmentArgs.fromBundle(
+                    args!!
+                ).listType) {
                     ListType.TRENDING -> Destination.TRENDING
                     ListType.RECENT -> Destination.RECENT
                     ListType.FAVORITE -> Destination.FAVORITE
                     else -> Destination.RECENT
                 }
-                R.id.detailsFragment -> Destination.DETAILS
-                R.id.settingsFragment -> Destination.SETTINGS
-                R.id.addOnsFragment -> Destination.ADD_ONS
-                R.id.aboutFragment -> Destination.ABOUT
-                R.id.thirdPartyLibrariesFragment -> Destination.THIRD_PARTY
-                R.id.developerSettingsFragment -> Destination.DEV_SETTINGS
+
+                space.narrate.waylan.core.R.id.detailsFragment -> Destination.DETAILS
+                space.narrate.waylan.core.R.id.settingsFragment -> Destination.SETTINGS
+                space.narrate.waylan.core.R.id.addOnsFragment -> Destination.ADD_ONS
+                space.narrate.waylan.core.R.id.aboutFragment -> Destination.ABOUT
+                space.narrate.waylan.core.R.id.thirdPartyLibrariesFragment -> Destination.THIRD_PARTY
+                space.narrate.waylan.core.R.id.developerSettingsFragment -> Destination.DEV_SETTINGS
                 else -> Destination.TRENDING
             }
         }

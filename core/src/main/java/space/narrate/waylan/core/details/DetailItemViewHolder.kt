@@ -31,7 +31,6 @@ abstract class DetailItemViewHolder(
 
     open fun bind(item: DetailItemModel) { }
 
-    override fun getLifecycle(): Lifecycle {
-      return lifecycleRegistry
-    }
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
 }

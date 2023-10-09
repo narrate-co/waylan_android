@@ -51,6 +51,7 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
          * collapsed.
          */
         data class State(val id: String, val expanded: Boolean)
+
         val reachabilityState: LiveData<State>
         fun setReachabilityState(state: State)
     }
@@ -144,7 +145,8 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
         }
 
     @StyleRes
-    var expandedTitleTextAppearance: Int = R.style.TextAppearance_MaterialComponents_Headline3
+    var expandedTitleTextAppearance: Int =
+        com.google.android.material.R.style.TextAppearance_MaterialComponents_Headline3
         set(value) {
             field = value
             expandedTitle.setTextAppearance(value)
@@ -185,7 +187,8 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
                 toolbarContainer.height
             )
             title = it.getString(R.styleable.ReachabilityAppBarLayout_title) ?: ""
-            isDragDismissable = it.getBoolean(R.styleable.ReachabilityAppBarLayout_dragDismissable, true)
+            isDragDismissable =
+                it.getBoolean(R.styleable.ReachabilityAppBarLayout_dragDismissable, true)
             expandedTitleTextAppearance = it.getResourceId(
                 R.styleable.ReachabilityAppBarLayout_expandedTitleTextAppearance,
                 expandedTitleTextAppearance
@@ -274,7 +277,7 @@ class ReachabilityAppBarLayout @JvmOverloads constructor(
 class ReachabilityToolbar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.toolbarStyle
+    defStyleAttr: Int = com.google.android.material.R.attr.toolbarStyle
 ) : MaterialToolbar(context, attrs, defStyleAttr) {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {

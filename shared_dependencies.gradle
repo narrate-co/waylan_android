@@ -15,7 +15,7 @@ dependencies {
     implementation Libs.lifecycleLiveDataKtx
     implementation Libs.lifecycleLiveDataCore
     implementation Libs.lifecycleExtensions
-    kapt Libs.lifecycleCompiler
+    ksp Libs.lifecycleCompiler
     implementation Libs.navigationFragmentKtx
     implementation Libs.navigationUiKtx
 
@@ -26,7 +26,7 @@ dependencies {
     // Room
     implementation Libs.room
     implementation Libs.roomRuntime
-    kapt Libs.roomCompiler
+    ksp Libs.roomCompiler
 
     // Material
     implementation Libs.material
@@ -45,7 +45,8 @@ dependencies {
     // Retrofit
     implementation Libs.retrofit
     implementation Libs.retrofitMoshiConverter
-    kapt Libs.moshiCodegen
+    implementation Libs.moshiKotlin
+    ksp Libs.moshiCodegen
     implementation Libs.retrofitConverterSimpleXml
     implementation Libs.retrofitLoggingInterceptor
 }

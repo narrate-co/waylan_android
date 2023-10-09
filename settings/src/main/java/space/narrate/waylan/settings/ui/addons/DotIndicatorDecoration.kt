@@ -18,15 +18,18 @@ class DotIndicatorDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val dotRadius = context.resources.getDimension(R.dimen.dot_indicator_dot_radius)
     private val dotSpacing = context.resources.getDimension(R.dimen.dot_indicator_dot_spacing)
-    private val dotVerticalOffset = context.resources.getDimension(R.dimen.keyline_2)
+    private val dotVerticalOffset =
+        context.resources.getDimension(space.narrate.waylan.core.R.dimen.keyline_2)
 
     private val inactiveDotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = context.getColorStateList(R.color.material_on_background_disabled)
-            .defaultColor
+        color =
+            context.getColorStateList(com.google.android.material.R.color.material_on_background_disabled)
+                .defaultColor
     }
     private val activeDotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = context.getColorStateList(R.color.material_on_background_emphasis_medium)
-            .defaultColor
+        color =
+            context.getColorStateList(com.google.android.material.R.color.material_on_background_emphasis_medium)
+                .defaultColor
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {

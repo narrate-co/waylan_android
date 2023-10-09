@@ -2,8 +2,8 @@ package space.narrate.waylan.core.data.prefs
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import space.narrate.waylan.core.util.DefaultingMutableLiveData
-import space.narrate.waylan.core.util.mapTransform
 
 /**
  * A wrapper class for [Preference] which allows marshalling from a non-supported SharedPreference
@@ -21,7 +21,7 @@ class BoxedPreference<R, T>(
     private val preference = Preference(key, from(defValue), sharedPreferences)
 
     fun getLive(): LiveData<R> {
-        return preference.getLive().mapTransform {
+        return preference.getLive().map {
             to(it)
         }
     }

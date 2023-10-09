@@ -29,14 +29,14 @@ object RoomTypeConverters {
 
     @TypeConverter
     @JvmStatic
-    fun toStringHashSet(value: String): HashSet<String> {
-        val type = object : TypeToken<HashSet<String>>() {}.type
+    fun toStringHashSet(value: String): Set<String> {
+        val type = object : TypeToken<Set<String>>() {}.type
         return gson.fromJson(value, type)
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromStringHashSet(value: HashSet<String>): String {
+    fun fromStringHashSet(value: Set<String>): String {
         return gson.toJson(value)
     }
 

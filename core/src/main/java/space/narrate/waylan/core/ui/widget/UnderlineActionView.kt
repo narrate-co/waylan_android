@@ -45,7 +45,7 @@ class UnderlineActionView @JvmOverloads constructor(
                 val tint = it.getColorStateList(
                     context,
                     R.styleable.UnderlineActionView_actionIconTint,
-                    R.attr.colorOnSurface
+                    com.google.android.material.R.attr.colorOnSurface
                 )
                 setActionIconTint(tint)
             }

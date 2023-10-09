@@ -1,27 +1,23 @@
 package space.narrate.waylan.core.repo
 
 import androidx.lifecycle.LiveData
-import com.google.firebase.firestore.FirebaseFirestoreException
-import java.lang.Exception
+import androidx.lifecycle.switchMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import space.narrate.waylan.core.data.Result
 import space.narrate.waylan.core.data.firestore.AuthenticationStore
+import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
 import space.narrate.waylan.core.data.firestore.FirestoreStore
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.data.firestore.users.UserWord
+import space.narrate.waylan.core.data.firestore.users.UserWordExample
 import space.narrate.waylan.core.data.firestore.words.GlobalWord
 import space.narrate.waylan.core.data.spell.SuggestItem
 import space.narrate.waylan.core.data.spell.SymSpellStore
 import space.narrate.waylan.core.data.wordset.Word
 import space.narrate.waylan.core.data.wordset.WordAndMeanings
 import space.narrate.waylan.core.data.wordset.WordsetDatabase
-import space.narrate.waylan.core.util.switchMapTransform
-import kotlin.coroutines.CoroutineContext
-import space.narrate.waylan.core.data.Result
-import space.narrate.waylan.core.data.firestore.FirebaseAuthWordsException
-import space.narrate.waylan.core.data.firestore.users.UserWordExample
 
 /**
  * A repository for all data access to all underlying dictionaries, including from WordSet,
@@ -53,7 +49,7 @@ class WordRepository(
     }
 
     fun getUserWord(id: String): LiveData<UserWord> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserWordLive(id, it)
         }
     }
@@ -66,7 +62,7 @@ class WordRepository(
     }
 
     fun getUserWordFavorites(limit: Long? = null) : LiveData<List<UserWord>> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserWordsFavoriteLive(it, limit)
         }
     }
@@ -82,7 +78,7 @@ class WordRepository(
     }
 
     fun getUserWordRecents(limit: Long? = null): LiveData<List<UserWord>> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserWordsRecentLive(it, limit)
         }
     }
@@ -98,7 +94,7 @@ class WordRepository(
     }
 
     fun getUserWordExamples(id: String, limit: Long? = null): LiveData<List<UserWordExample>> {
-        return authenticationStore.uid.switchMapTransform {
+        return authenticationStore.uid.switchMap {
             firestoreStore.getUserWordExamplesLive(id, it, limit)
         }
     }

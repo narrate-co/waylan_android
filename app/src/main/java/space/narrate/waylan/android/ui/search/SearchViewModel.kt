@@ -3,6 +3,8 @@ package space.narrate.waylan.android.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.ui.search.ShelfActionModel.*
 import space.narrate.waylan.android.util.SoftInputModel
@@ -16,8 +18,6 @@ import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.Navigator
 import space.narrate.waylan.core.ui.common.Event
 import space.narrate.waylan.core.util.MergedLiveData
-import space.narrate.waylan.core.util.mapTransform
-import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * A ViewModel for [SearchFragment]
@@ -32,8 +32,8 @@ class SearchViewModel(
     private val searchInput: MutableLiveData<String> = MutableLiveData()
 
     val searchResults: LiveData<List<SearchItemModel>> = searchInput
-        .switchMapTransform { if (it.isEmpty()) getRecent() else getSearch(it) }
-        .mapTransform { if (it.isEmpty()) addHeader(it) else it }
+        .switchMap { if (it.isEmpty()) getRecent() else getSearch(it) }
+        .map { if (it.isEmpty()) addHeader(it) else it }
 
     val searchShelfRowModel: LiveData<SearchShelfActionRowModel>
         get() = SearchShelfActionRowLiveData(
@@ -50,7 +50,7 @@ class SearchViewModel(
     private val _currentWord: MutableLiveData<String> = MutableLiveData()
 
     private val currentUserWord: LiveData<UserWord>
-        get() = _currentWord.switchMapTransform { wordRepository.getUserWord(it) }
+        get() = _currentWord.switchMap { wordRepository.getUserWord(it) }
 
     private val _softInputModel: MutableLiveData<SoftInputModel> = MutableLiveData()
     private val _searchSheetOffset: MutableLiveData<Float> = MutableLiveData()
@@ -71,7 +71,7 @@ class SearchViewModel(
         get() = _shouldOpenContextualSheet
 
     val keyboardHeight: LiveData<Float>
-        get() = _softInputModel.mapTransform { it.height.toFloat() }
+        get() = _softInputModel.map { it.height.toFloat() }
 
     private val _shouldShowDetails: MutableLiveData<Event<String>> = MutableLiveData()
     val shouldShowDetails: LiveData<Event<String>>
@@ -92,7 +92,7 @@ class SearchViewModel(
 
     private fun getRecent(): LiveData<List<SearchItemModel>> {
         return wordRepository.getUserWordRecents(25L)
-            .mapTransform { recents -> recents.map { SearchItemModel.UserWordModel(it) } }
+            .map { recents -> recents.map { SearchItemModel.UserWordModel(it) } }
     }
 
     private fun getSearch(input: String): LiveData<List<SearchItemModel>> {

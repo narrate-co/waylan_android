@@ -3,11 +3,11 @@ package space.narrate.waylan.android.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import space.narrate.waylan.core.data.firestore.Period
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.ui.Destination
 import space.narrate.waylan.core.ui.Navigator
-import space.narrate.waylan.core.util.switchMapTransform
 import space.narrate.waylan.core.util.toLiveData
 
 class ContextualViewModel(
@@ -16,7 +16,7 @@ class ContextualViewModel(
 ) : ViewModel() {
 
     val contextualFilterModel: LiveData<ContextualFilterModel> = navigator.currentDestination
-        .switchMapTransform { dest ->
+        .switchMap { dest ->
             val result = MediatorLiveData<ContextualFilterModel>()
 
             result.addSource(

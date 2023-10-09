@@ -3,12 +3,12 @@ package space.narrate.waylan.android.ui.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import space.narrate.waylan.android.R
 import space.narrate.waylan.core.repo.UserRepository
 import space.narrate.waylan.core.repo.WordRepository
 import space.narrate.waylan.core.ui.ListType
-import space.narrate.waylan.core.util.mapTransform
-import space.narrate.waylan.core.util.switchMapTransform
 
 /**
  * ViewModel for [ListFragment]
@@ -25,7 +25,7 @@ class ListViewModel(
     /**
      * Whether or not the user has seen the banner for this list type.
      */
-    private val hasSeenHeader: LiveData<Boolean> = listType.switchMapTransform {
+    private val hasSeenHeader: LiveData<Boolean> = listType.switchMap {
         when (it) {
             ListType.TRENDING -> userRepository.hasSeenTrendingBannerLive
             ListType.RECENT -> userRepository.hasSeenRecentsBannerLive
@@ -34,28 +34,28 @@ class ListViewModel(
     }
 
     val list: LiveData<List<ListItemModel>> = listType
-        .switchMapTransform { type ->
+        .switchMap { type ->
             @Suppress("UNCHECKED_CAST")
             when (type) {
                 ListType.TRENDING -> userRepository.trendingListFilterLive
-                    .switchMapTransform { filter ->
+                    .switchMap { filter ->
                         wordRepository.getGlobalWordTrending(LIST_LIMIT, filter)
                     }
-                    .mapTransform { globalWords ->
+                    .map { globalWords ->
                         globalWords.map { ListItemModel.GlobalWordModel(it) }
                     }
                 ListType.RECENT -> wordRepository.getUserWordRecents(LIST_LIMIT)
-                    .mapTransform { userWords ->
+                    .map { userWords ->
                         userWords.map { ListItemModel.UserWordModel(it) }
                     }
                 ListType.FAVORITE -> wordRepository.getUserWordFavorites(LIST_LIMIT)
-                    .mapTransform { userWords ->
+                    .map { userWords ->
                         userWords.map { ListItemModel.UserWordModel(it) }
                     }
             } as LiveData<List<ListItemModel>>
         }
-        .switchMapTransform { filteredItems ->
-            hasSeenHeader.mapTransform { hasSeenHeader -> addHeader(filteredItems, hasSeenHeader) }
+        .switchMap { filteredItems ->
+            hasSeenHeader.map { hasSeenHeader -> addHeader(filteredItems, hasSeenHeader) }
         }
 
     /**
@@ -95,6 +95,9 @@ class ListViewModel(
             ListType.TRENDING -> userRepository.hasSeenTrendingBanner = true
             ListType.RECENT -> userRepository.hasSeenRecentsBanner = true
             ListType.FAVORITE -> userRepository.hasSeenFavoritesBanner = true
+            else -> {
+                // do nothing
+            }
         }
     }
 
