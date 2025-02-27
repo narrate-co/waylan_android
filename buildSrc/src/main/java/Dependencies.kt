@@ -42,14 +42,14 @@ object Versions {
     const val firebaseCore = "17.2.0"
     const val firestore = "21.1.1"
     const val fragment = "1.2.5"
-    const val googlePlayBilling = "1.2"
+    const val googlePlayBilling = "7.1.1"
     const val googleServices = "4.3.10"
     const val googleTruth = "0.44"
     const val gson = "2.8.4"
     const val hamcrest = "1.3"
     const val insetter = "0.2.0"
     const val junit = "4.12"
-    const val koin = "2.0.1"
+    const val koin = "4.0.0"
     const val kotlin = "1.9.10"
 //    const val ksp = "1.9.10-1.0.13"
     const val lifecycle = "2.6.2"
@@ -124,9 +124,9 @@ object Libs {
     const val junitKtx = "androidx.test.ext:junit-ktx:${Versions.testExtKotlinRunner}"
 
     // Koin
-    const val koin = "org.koin:koin-java:${Versions.koin}"
-    const val koinAndroidViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
-    const val koinTest = "org.koin:koin-test:${Versions.koin}"
+    const val koin = "io.insert-koin:koin-core:${Versions.koin}"
+    const val koinAndroidViewModel = "io.insert-koin:koin-android:${Versions.koin}"
+    const val koinTest = "io.insert-koin:koin-test:${Versions.koin}"
 
     // Kotlin
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"

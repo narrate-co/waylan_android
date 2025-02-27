@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlin.math.max
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.ActivityMainBinding
 import space.narrate.waylan.android.ui.list.ListFragment
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity(), FloatingNavigationBar.SelectionCallbac
         setUpScrimView()
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         processText(intent)
     }

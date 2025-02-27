@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,8 +19,8 @@ import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentListBinding
 import space.narrate.waylan.android.ui.MainActivity
@@ -44,7 +45,7 @@ class ListFragment : Fragment(), ListItemAdapter.ListItemListener {
     private val args: ListFragmentArgs by lazy { navArgs<ListFragmentArgs>().value }
 
     // The MainViewModel used to share data between MainActivity and its child Fragments
-    private val sharedViewModel: MainViewModel by sharedViewModel()
+    private val sharedViewModel: MainViewModel by activityViewModel()
 
     // ListFragment's own ViewModel
     private val viewModel: ListViewModel by viewModel()

@@ -14,8 +14,8 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialSharedAxis
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentDetailsBinding
 import space.narrate.waylan.android.ui.MainViewModel
@@ -47,7 +47,7 @@ class DetailsFragment: Fragment(), DetailAdapterListener {
 
     // The MainViewModel which is used to for data shared between MainActivity and
     // its child fragments (HomeFragment, ListFragment and DetailsFragment)
-    private val sharedViewModel: MainViewModel by sharedViewModel()
+    private val sharedViewModel: MainViewModel by activityViewModel()
 
     // This Fragment's ViewModel
     private val viewModel: DetailsViewModel by viewModel()

@@ -1,7 +1,7 @@
 package space.narrate.waylan.core.billing
 
 import android.util.Base64
-import com.android.billingclient.util.BillingHelper
+import android.util.Log
 import java.io.IOException
 import java.security.InvalidKeyException
 import java.security.KeyFactory
@@ -37,7 +37,7 @@ object Security {
             throw RuntimeException(e)
         } catch (e: InvalidKeyException) {
             val msg = "Invalid key specification : $e"
-            BillingHelper.logWarn(TAG, msg)
+            Log.d(TAG, msg)
             throw IOException(msg)
         }
     }
@@ -46,7 +46,7 @@ object Security {
         val signatureBytes = try {
             Base64.decode(signature, Base64.DEFAULT)
         } catch (e: IllegalArgumentException) {
-            BillingHelper.logWarn(TAG, "Base64 decoding failed.")
+            Log.d(TAG, "Base64 decoding failed.")
             return false
         }
 
@@ -55,16 +55,16 @@ object Security {
             signatureAlgorithm.initVerify(publicKey)
             signatureAlgorithm.update(signedData.toByteArray())
             if (!signatureAlgorithm.verify(signatureBytes)) {
-                BillingHelper.logWarn(TAG, "Signature verification failed.")
+                Log.d(TAG, "Signature verification failed.")
                 return false
             }
             return true
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
         } catch (e: InvalidKeyException) {
-            BillingHelper.logWarn(TAG, "Invalid key specification")
+            Log.d(TAG, "Invalid key specification")
         } catch (e: SignatureException) {
-            BillingHelper.logWarn(TAG, "Signature exception")
+            Log.d(TAG, "Signature exception")
         }
 
         return false

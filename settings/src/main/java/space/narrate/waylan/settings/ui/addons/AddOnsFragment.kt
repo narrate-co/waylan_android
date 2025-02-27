@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
-import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.java.KoinJavaComponent.inject
 import space.narrate.waylan.core.billing.BillingManager
 import space.narrate.waylan.core.data.firestore.users.state
 import space.narrate.waylan.core.data.firestore.users.statusTextLabel
@@ -36,9 +35,9 @@ class AddOnsFragment : Fragment() {
 
     private lateinit var binding: FragmentAddOnsBinding
 
-    private val billingManager: BillingManager by inject()
+    private val billingManager: BillingManager by inject(BillingManager::class.java)
 
-    private val navigator: Navigator by inject()
+    private val navigator: Navigator by inject(Navigator::class.java)
 
     private val viewModel: AddOnsViewModel by viewModel()
 
@@ -56,7 +55,7 @@ class AddOnsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddOnsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -73,20 +72,21 @@ class AddOnsFragment : Fragment() {
             appBar.setOnNavigationIconClicked {
                 navigator.toBack(Navigator.BackType.ICON, this.javaClass.simpleName)
             }
-            appBar.setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener { item ->
+            appBar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.add_on_menu_info -> {
                         showAboutDialog()
                         true
                     }
+
                     else -> false
                 }
-            })
-            appBar.setReachableContinuityNavigator(this@AddOnsFragment, navigator)
+            }
+            appBar.setReachableContinuityNavigator(viewLifecycleOwner, navigator)
 
             viewModel.setShowOnOpenAddOn(navArgs<AddOnsFragmentArgs>().value.addOn)
 
-            viewModel.shouldScrollToPosition.observe(this@AddOnsFragment) { event ->
+            viewModel.shouldScrollToPosition.observe(viewLifecycleOwner) { event ->
                 event.withUnhandledContent {
                     when (val manager = recyclerView.layoutManager) {
                         is LinearLayoutManager -> {
@@ -117,32 +117,32 @@ class AddOnsFragment : Fragment() {
             recyclerView.adapter = adapter
 
 
-            viewModel.currentAddOn.observe(this@AddOnsFragment) {
+            viewModel.currentAddOn.observe(viewLifecycleOwner) {
                 updateDescriptionArea(it)
             }
 
-            viewModel.shouldShowStatusTextLabel.observe(this@AddOnsFragment) {
+            viewModel.shouldShowStatusTextLabel.observe(viewLifecycleOwner) {
                 if (it) textLabel.visible() else textLabel.gone()
             }
 
-            viewModel.addOns.observe(this@AddOnsFragment) {
+            viewModel.addOns.observe(viewLifecycleOwner) {
                 adapter.submitList(it)
             }
         }
 
-        billingManager.billingEvent.observe(this) { event ->
+        billingManager.billingEvent.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 viewModel.onBillingEvent(it)
             }
         }
 
-        viewModel.shouldShowSnackbar.observe(this) { event ->
+        viewModel.shouldShowSnackbar.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 it.make(binding.coordinatorLayout).show()
             }
         }
 
-        viewModel.shouldLaunchPurchaseFlow.observe(this) { event ->
+        viewModel.shouldLaunchPurchaseFlow.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 billingManager.initiatePurchaseFlow(
                     requireActivity(),
@@ -152,7 +152,7 @@ class AddOnsFragment : Fragment() {
             }
         }
 
-        viewModel.shouldShowAccountRequiredDialog.observe(this) { event ->
+        viewModel.shouldShowAccountRequiredDialog.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent {
                 MessageAlertDialog(
                     requireContext(),
@@ -165,11 +165,11 @@ class AddOnsFragment : Fragment() {
             }
         }
 
-        viewModel.shouldLaunchLogIn.observe(this) { event ->
+        viewModel.shouldLaunchLogIn.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { navigator.toLogIn(requireContext()) }
         }
 
-        viewModel.shouldLaunchSignUp.observe(this) { event ->
+        viewModel.shouldLaunchSignUp.observe(viewLifecycleOwner) { event ->
             event.withUnhandledContent { navigator.toSignUp(requireContext()) }
         }
 

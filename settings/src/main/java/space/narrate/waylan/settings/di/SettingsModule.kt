@@ -1,7 +1,7 @@
 package space.narrate.waylan.settings.di
 
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import space.narrate.waylan.settings.ui.developer.DeveloperSettingsViewModel
 import space.narrate.waylan.settings.ui.settings.SettingsViewModel

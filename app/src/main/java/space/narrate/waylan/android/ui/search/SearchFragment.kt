@@ -20,8 +20,8 @@ import com.google.android.material.transition.MaterialSharedAxis
 import kotlin.math.max
 import kotlin.math.roundToInt
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import space.narrate.waylan.android.R
 import space.narrate.waylan.android.databinding.FragmentSearchBinding
 import space.narrate.waylan.android.ui.MainActivity
@@ -58,7 +58,7 @@ class SearchFragment : Fragment(), SearchItemAdapter.SearchItemListener, TextWat
 
     // MainViewModel owned by MainActivity and used to share data between MainActivity
     // and its child Fragments
-    private val sharedViewModel: MainViewModel by sharedViewModel()
+    private val sharedViewModel: MainViewModel by activityViewModel()
 
     // SearchFragment's own ViewModel
     private val viewModel: SearchViewModel by viewModel()
